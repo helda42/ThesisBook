@@ -1,0 +1,48 @@
+---
+title: "Descriptive epidemiology of risk factors and enteric non-typhoidal salmonella in children under 5 years in Chikwawa"
+format:    
+  pdf:
+    geometry:
+      - top=20mm
+      - bottom=20mm
+      - left=20mm
+      - right=20mm
+    toc: true
+    number-sections: true
+    colorlinks: true
+    include-in-header:
+      text: |
+        \usepackage{typearea}
+    cite-method: citeproc
+    bibliography: references.bib
+    csl: diabetologia.csl
+editor: visual
+---
+
+## Introduction 
+
+1/2 page - brief summary - all build up in introdution
+
+## Methods
+
+Brief - main details in methods ch
+
+High low malaria EA
+
+Malaria RTS,S/AS01 vaccine is highly confounded so not useful to look at in this setting. Mostly interested only in do kids have malaria exposure or not, regardless of cause. Not much impact of malaria
+
+## Results
+
+### Cohort demographic and socio-economic characteristics
+
+### Epidemiology of enteric non-typhoidal salmonella
+
+### Epidemiology of risk factors; malaria, anaemia, malnutrition, sickle cell
+
+Need table for each EA N kids MRDT, salmonella +, etc
+
+Table high/ low malaria
+
+## Discussion 
+
+## Conclusion 

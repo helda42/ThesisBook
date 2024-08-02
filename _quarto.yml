@@ -2,14 +2,15 @@ project:
   type: book
 
 book:
-  title: "ThesisBook"
-  author: "Norah Jones"
+  title: "Clinical Epidemiology and Seroepidemiology of Non-Typhoidal Salmonella to inform vaccine implementation"
+  author: "Helen Dale"
   date: "8/2/2024"
   chapters:
     - index.qmd
-    - intro.qmd
+    - 1_introduction.qmd
+    - 2_methods.qmd
+    - 5_Descriptive.qmd
     - summary.qmd
-    - references.qmd
 
 bibliography: references.bib
 

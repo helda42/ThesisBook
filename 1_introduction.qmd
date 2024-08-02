@@ -1,0 +1,207 @@
+---
+title: "General Introduction"
+format:    
+  pdf:
+    geometry:
+      - top=20mm
+      - bottom=20mm
+      - left=20mm
+      - right=20mm
+    toc: true
+    tof: true
+    number-sections: true
+    colorlinks: true
+    include-in-header:
+      text: |
+        \usepackage{typearea}
+    cite-method: citeproc
+    bibliography: references.bib
+    csl: diabetologia.csl
+editor: visual
+---
+
+## Non-typhoidal Salmonella Epidemiology and Pathology
+
+### Burden of disease and Epidemiology
+
+#### Serovars and nomenclature
+
+Non-typhoidal strains of *Salmonella* (NTS) includes all serovariants of *Salmonella* *enterica* species excluding subspecies *Salmonella* Typhi and *Salmonella* Paratyphi A, B and C. Salmonella has a broad host range, and the majority of salmonella disease in in high income countries
+
+#### Global incidence and burden of disease
+
+NTS infections are an important cause of enterocolitis in high income settings, which is usually self-limiting with an estimated global disease incidence of 95 million cases in 2017, but with a low case-fatality rate [@stanaway_global_2019-1].
+
+However, non-typhoidal salmonella can cause serious life-threatening disease through invasion of the bloodstream, meninges and other normally sterile sites, a high case-fatality rate (14·7%) [@marchello_incidence_2021]. Invasive non-typhoidal salmonella (iNTS) often presents with a non-specific febrile illness, and diagnosis can only be made on microbiological culture [@feasey_invasive_2012-1]. The serovar Salmonella Typhimurium has been found to account for 77%, and Salmonella Enteritidis for 17% globally of NTS invasive infections on a recent systematic review [@marchello_incidence_2021], with a range of other serovars accounting for the remainder.
+
+Recent global estimates of iNTS disease give overall age-standardised incidence rates of 7.5 per 100,000 person-years in 2017, with the highest incidence in sub-Saharan Africa, which accounted for almost 80% of all cases of iNTS globally with an incidence of 34.5 per 100,000 person years (1).
+
+Invasive disease is predominantly seen in HIV-infected adults and children under 5 years with malaria, malnutrition and anaemia [@feasey_invasive_2012-1], in sub-Saharan Africa [@marchello_incidence_2021].
+
+#### Changing epidemiology of NTS
+
+In high-income countries strains of NTS are transmitted predominantly through the food chain, contaminated by animal faeces. Clinical presentation is usually of a self-limiting enterocolitis with diarrhoea in humans (7). Blood stream infections are rare with infants, the elderly and immune-compromised most at risk (7). Modes of transmission of non-typhoidal salmonella in low and middle-income countries are not as well understood. The most widely reported serovars associated with invasive disease across Africa are *Salmonella* serovar Typhimurium and *Salmonella* serovar Enteritidis (7), with some serovars prominent in specific areas.
+
+A novel Salmonella serovar Typhimurium multilocus sequence type ST313 has been described and dominates the invasive infection across much of sub-Saharan Africa (8). There has been no proven zoonotic source of ST313 infections, and human to human transmission has been postulated (4). Two clonal lineages of S. Typhimurium ST313, named I and II have spread sequentially across Sub-Saharan Africa in the past 40 years, with lineage II being dominant within the last decade (4, 9, 10). The success of these pandemics has been largely attributed to antibiotic resistance within these lineages, and the emergence of HIV (1, 11). ST313 is associated with multi-drug resistance to chloramphenicol, co-trimoxazole and ampicillin (2, 3, 12). Furthermore there have been alarming reports of acquired ESBL plasmids within ST313 conferring additional resistance to Ceftriaxone, ciprofloxacin and tetracycline, rendering these invasive infections virtually untreatable with currently available antibacterial drugs (1, 9).
+
+Invasive NTS is most commonly seen in Sub-Saharan Africa, where certain serovars are endemic within populations. Specific strains, such as *Salmonella enterica* serovar Typhimurium sequence type ST313 has caused large epidemics of NTS bacteraemia, with resistance to many anti-bacterials including first line agents (3-5). Resistant infections are in themselves associated with poor clinical outcomes.
+
+#### Age-Distribution
+
+Data from the Global Burden of Diseases Study 2017 [@stanaway_global_2019-1] showed the highest incidence of iNTS disease globally was in children under 5 years in SubSaharan Africa?? 34·3 (23·2 to 54·7) per 100,000, reaching up to 150 (110-230) cases per 100,000 population in neonates and infants in sub-Saharan Africa. Globally the highest incidence is in children younger than 5 years of age (1), with a peak of disease in one endemic area in Malawi at around 13 months of age (6). In Sub-Saharan Africa overall, the incidence is highest in the under 5 age group, after which it falls significantly (figure 2). However, there is a doubling from baseline incidence by 35-44 years of age, which is likely to reflect the impact of high HIV prevalence on iNTS disease. Mean all-age case fatality rate was 14.5% in 2017, but higher in high-risk groups, including 13.5% in those aged \<5yrs with the highest estimated mortality in \>70yrs with HIV infection (75.7% mortality). It is estimated that each death due to iNTS disease results in 72 years of life lost (YLL) resulting in overall 4.26 million YLLs in 2017 (1). Comparatively, although typhoid and paratyphoid fever are more common; in 2017 there were 14.3 million cases vs 535 000 of iNTS, there were only double the number of deaths (136,00 vs 77,500), illustrating the greater severity and case-fatality associated with iNTS disease. The burden of disease is in Sub-Saharan Africa where access to healthcare, particularly amongst groups at high risk, is patchy. There is therefore urgent need for understanding epidemiology, accurate early diagnostics and prevention in order to reduce the morbidity and mortality associated with disease (1).
+
+#### Risk Factors
+
+Invasive NTS disease is also associated with poor nutritional status, younger age, immune-suppression and severe malarial anaemia (1).
+
+### Asymptomatic carriage and household transmission
+
+Systemic natural protective immunity to iNTS, which is largely acquired between 6 months - 3 years in Malawi, develops following exposure of the GI tract to Salmonella. A longitudinal study of a cohort of 50 healthy Malawian children, who were sampled monthly, showed that between the ages of 6-18 months more than 50% had at least one episode when a non-typhoidal strain of Salmonella was detected in their stool. Most of these episodes were not associated with current or recent diarrhoea. In any month, there was an 8-9% chance of stool positivity for Salmonella. Quantitative PCR using a pan-Salmonella marker (TTR, tetrathionate reductase gene) was more sensitive than culture for detection. Among samples that were culture-positive, 48% of isolates comprised ST313 S. Typhimurium, with the remainder being a wide range of non-typhoidal serovars that are not seen from blood cultures in Malawi. We have termed these enteric infection/exposure events “eNTS” events ( unpublished work T. Nyirenda).
+
+### iNTS vs eNTS
+
+Most iNTS disease is caused by Salmonella enterica subspecies enterica serovars Typhimurium and Enteritidis, with particular subtypes being associated with invasive disease. For S Typhimurium, sequence type (ST) 313 has been frequently identified as the most common cause of iNTS disease.
+
+**Definitions**
+
+-   Enteric nontyphoidal Salmonella (eNTS): Where the gastrointestinal tract is asymptomatically colonized by nontyphoidal Salmonella. It can either precede or follow Salmonella-induced illness, or not be associated with illness at all.
+
+-   Diarrheal nontyphoidal Salmonella (dNTS): Refers to diarrheal symptoms with NTS isolated from the stool.
+
+-   Invasive nontyphoidal Salmonella (iNTS): Where symptomatic disease occurs (eg, sepsis, meningitis) with NTS isolated from a usually sterile site (ie, bloodstream or cerebrospinal fluid).
+
+![A schematic diagram of the known sources of diarrheal nontyphoidal Salmonella (dNTS) infection, and the 2 hypothesized sources of invasive nontyphoidal Salmonella (iNTS) infections. Option 1 for iNTS infections, highlighted in red, is that Salmonella from an animal reservoir colonizes the human gastrointestinal tract, leading to enteric nontyphoidal Salmonella (eNTS). Option 2 is that the source of infections leading to eNTS exposures are other humans with intestinal colonization of nontyphoidal Salmonella. In either case, once eNTS is established, there are 3 outcomes that can follow: (i) no active infection, just colonization; (ii) dNTS; or (iii) iNTS disease. Figure reproduced from [@chirwa2023]](1_images/ints_ents_dnts.png)
+
+### Clinical features of invasive disease
+
+#### Clinical spectrum of disease, diagnostics and management
+
+Another challenge for children and adults in sub-Saharan Africa is recognition of iNTS. It usually presents with a non-specific illness with predominant fever and can be challenging to differentiate from other causes of fever, particularly where recent or acute malaria is a risk factor and may complicate the diagnostics. Many severely ill children are treated empirically with broad-spectrum antibiotics. The ability of health facilities to diagnose iNTS based on blood cultures, is variable across the region.
+
+#### Evolution and host adaptation
+
+#### ST313 emerged – immune niche, genome degradation, special intracellular adaptation (Jay)
+
+#### How crosses gut HIV/ Child
+
+#### Intra and extracellular periods of life cycle
+
+#### PGTE – complement resistance
+
+### Immunopathogenesis
+
+#### Ab as part of extracellular and intracellular response (see paints/ maheshi)
+
+#### Function of Ab as correlate of protection vs burden of disease
+
+### Host immune response and susceptibility factors
+
+#### The acquisition of natural systemic immunity
+
+We have described the age-stratified sequential acquisition of CD4 cellular immunity, followed by functional antibody-mediated immunity and serum bactericidal activity against iNTS among children in Malawi  (6). This demonstrated the nadir of functional humoral immunity, which occurs after the waning of maternal antibody, but before the sequential acquisition of first cellular immunity, then anti-LPS IgG antibody and associated functional serum bactericidal activity (SBA). This nadir coincides with the peak incidence of iNTS disease among children at 9-13 months (figure 6.), further demonstrating how a serological protective threshold of humoral protection develops following eNTS exposure over time.
+
+Robust defence against iNTS required both cellular and humoral immunity, and we have previously demonstrated both cellular and humoral defects that cause susceptibility to iNTS disease. Humoral and cellular defences have both been shown to be impaired in current and recent uncomplicated malaria (figure 7.). Bound, complement-opsonised antibody is required both for serum bactericidal activity, and for uptake of bacteria by phagocytes prior to killing by respiratory burst.
+
+Recent evidence suggests that complement depletion during current or recent falciparum malaria could contribute to both immune defects. Nyirenda *et al.* have observed transient loss of Serum Bactericidal Activity (SBA) during and after uncomplicated malaria in Malawian children, which is also associated with a transient reduction in complement C3b binding (29). In addition, we have described that invasive African ST313 *S.* Typhimurium  strains have a single nucleotide non coding promotor-region mutation that causes an 11-fold increase in expression of PgtE, a virulence factor in African *S.* Typhimurium, which disrupts the complement cascade by increasing the degradation of the factor B component of human complement, thus contributing to serum resistance (30). This suggests that evasion of complement-mediated serum killing may be one key bottleneck evolutionary point for invasive African strains. Though transient, lasting just a few weeks, malaria-associated consumptive complement deficiency could exert an important effect in at a population level in settings such as Southern Malawi, where approximately 50% of children cross-sectionally surveyed are rapid diagnostic test-positive for malaria during the rainy season (31).
+
+There are critical current knowledge gaps in our understanding of the relationship of enteric Salmonella exposure and the development of protective immunity amongst those in the highest risk age bands; of what are the correlates of protection for iNTS disease; and of how the effect of known susceptibility risk-factors in different populations affect these relationships.
+
+Several mechanisms of humoral and cellular immunity are required for protection against iNTS disease, and different risk factors act on different elements of the immune response. This means that some of the resultant background immunological susceptibilities might be fully vaccine-responsive (eg a lack of sufficient protective antibody), while others might not be fully ameliorated by vaccine-induced immunity (eg periods of complement deficiency, or failure of respiratory burst due to haemosiderin damage to phagocytes). This means that the potential impact of vaccine deployment to prevent iNTS disease might be different in different epidemiological settings.
+
+Understanding these influences will ultimately allow us to understand the effects of specific known risk factors, and to describe antibody correlates of protection. This will allow us to accelerate vaccine licensure and deployment, and to model predicted vaccine impact among different susceptible populations in sub-Saharan Africa.
+
+#### Model of exposure and immunity
+
+We therefore present a theoretical framework (figure 8) for asymptomatic enteric infection with NTS (eNTS) among Malawian children, followed by the development of first antigen-specific cellular immunity, and then functional systemic immunity. Systemic immunity is evidenced by the presence of anti-Salmonella LPS IgG antibody (αLPS IgG) which, when combined with complement opsonisation, results in functional protection, reflected in serum bactericidal activity (SBA). This is likely to be influenced by several factors including social factors such as poverty and sanitation, by seasonal climatic conditions through the year, and by the impacts on immune status of malaria, malnutrition and anaemia. There is likely to be interaction between several of these influencing risk factors.
+
+![Theoretical framework for a model of exposures and protection in iNTS disease](1_images/Theoretical_framework.jpeg)
+
+CoPs have been strengthened for other vaccines using animal models, or by the use of Controlled Human Infection Models (CHIM). However, the role of these models is very limited in iNTS disease – animal models fail to accurately recapitulate the multiple and complex levels of susceptibility among children at risk of iNTS disease, and development of a CHIM for iNTS disease is not likely possible or ethical, because of the essential role of significant immunocompromise to permit invasive disease, and the associated severity and high case fatality. This strengthens the need for a comprehensive understanding of the epidemiological settings, and a full understanding of both serological and functional correlates.
+
+Generally, a defined antibody cut-off is used as a CoP. Humoral immunity may or may not, however, represent the true mechanism of protection. If the measured immune endpoint can be demonstrated to be closely associated with the causal mediator of protection it can still provide a useful tool for assessing protection (16). The mechanism of immunity developed as a result of natural immunity is often the same as vaccine induced immunity, in terms of functional antibodies. However, the protective threshold may differ according to qualitative characteristics of the antibody (15). In addition to simple high through-put measures of function, such as a SBA bactericidal assay, a systems serology discovery approach can therefore play a key role in understanding the mechanism of protection, how this relates to the proposed correlate of protection, and how variation in antibody characteristics may play a role in influencing the level of protection.
+
+#### Host susceptability factors
+
+iNTS disease has a bimodal age distribution in sub-Saharan Africa, being commonest in adults with HIV, and in young children (18), among whom the median age of invasive disease is 13 months (figure 4) (6). iNTS disease is linked to several underlying susceptibilities among children, particularly recent malaria, severe malarial anaemia and malnutrition (19). The attributable fraction of disease in children from each of these susceptibilities are unknown (ongoing work). Children, particularly between the ages of 6 months to 2 years are particularly at risk, suggesting protection before 6 months by breastfeeding and transferred maternal antibody (20, 21).
+
+HIV infection in both adults and children is a risk factor for iNTS disease, although more so in adult populations (18), with over 95% of cases in adults being associated with HIV infection compared with 20% among pediatric cases in the pre-ART era. Acute malnutrition is also associated with iNTS disease in African children with an OR for disease amongst Kenyan children of 1.68 (1.15-2.44) (22). Seasonality of iNTS disease is well recognized, coinciding with the rainy season (7, 12). This may reflect a number of risk factors changing with seasons, including food availability and malaria risk.  A genome-wide association study in Kenya and Malawi has shown an association with a STAT4 locus which is linked to reduced interferon-γ production by NK cells (23).
+
+The epidemiological data, however, consistently implicate malaria as the commonest risk factor with a large effect-size adjusted OR: 4.13 (2.66–6.44) (24). Recent uncomplicated malaria, acute severe malaria and severe malarial anaemia are particular phenotypes specifically associated with an increased risk for iNTS disease (7, 18, 25). Two different estimates have suggested that malaria is a key contributing factor in 50-70% of cases of iNTS disease (26, 27) and the negative association of malaria with an HbAS (sickle cell trait) genotype has been used to demonstrate the contribution of malaria risk to invasive bacterial disease (26). It is not clear how malaria exerts this effect – possible mechanisms include haemolysis and impairment of cellular defence because of haemosiderin-laden macrophages; the effects of malaria on the gut microbiota causing impaired mucosal defence; an altered and suppressed inflammatory cytokine environment with raised IL-10; and transient complement depletion. We have reviewed these possibilities in Nyirenda *et al* (2018) (28).
+
+#### Malaria
+
+#### Anaemia
+
+#### Severe Acute Malnutrition
+
+#### Sickle Cell Disease
+
+#### Malignancy
+
+## Public Health interventions for iNTS
+
+Feasey modelling risks/ papers from attrib risks
+
+## Assessing iNTS disease burden
+
+### Blood culture surveillance
+
+### Serosurveillance
+
+Seroepi uses in other pathogens
+
+### Environmental surveillance
+
+### Impact of SARS-COV2
+
+COVID-19 has caused substantial disruptions to health care services directly and indirectly across the globe, particularly LIMICs (6), impacting on detection, treatment and prevention of transmission of many infectious diseases. This disruption has resulted from numerous factors including; overwhelmed health care facilities, and laboratory services, health worker sickness and reduced attendance at health facilities (6); due to fear of being infected or prohibitive transport fares due to reduced vehicle capacity under COVID-19 preventive measures. The impact of the pandemic on health was similar across many other countries in the region.  The 2021 WHO Tuberculosis report, highlights a significant decline (18%) in TB case notification rates in the post COVID-19 period, in the context of increasing notification rates between 2017-2019, resulting in an increase of 100,000 of TB deaths between 2019 and 2020 globally (7), and initial modeling suggested this disruption could have long lasting effects resulting in 1.4 million deaths between 2020-2025 (8). A scoping review on the impact of COVID-19 on Malaria in SSA, found overall, fewer countries reporting data during 2020, but overall mixed results with high endemic countries reporting fewer cases, and low endemic countries reporting more cases and deaths (9). A systematic review showed that healthcare utilisation dropped by a third during the pandemic (10).
+
+In Malawi, from the detection of the first COVID-19 case in Malawi till 31 March 2022[\[1\]](#_msocom_1) [\[2\]](#_msocom_2) , there have been a total of 84,475 cases and 2558 deaths reported. Health care in Malawi has been particularly hard hit by the COVID pandemic; an interrupted time series analysis of TB case notifications in Blantyre, Malawi found a fall of 35.9% in the immediate COVID period, with 333 missed cases during the first wave (11). There has been little published regarding the impact of COVID-19 on typhoid case detection. In Madagascar, a 6.4-fold increase in typhoid intestinal perforations was observed in the 6 months following the onset of covid-19, attributed to delayed health-seeking behaviour. However, concerns regarding the impact of COVID-19 on typhoid have been highlighted; including the similar clinical presentation to COVID-19 with non-specific febrile illness, which may lead to delay or incorrect diagnosis and/ or treatment of typhoid, including increasing risks of antimicrobial resistance with the widespread use of azithromycin in COVID-19, particularly XDR strains (12).
+
+We hypothesize that the COVID-19 pandemic in Malawi has led to 1. Reduced typhoid detection secondary to: 2. Decreased healthcare facility attendances and subsequently a reduction blood culture collection. Our primary objective is: To quantify the number of missed typhoid cases following the COVID-19 pandemic, and secondary objective is to quantify the decline in health facility attendances and blood culture collection rates following the COVID-19 pandemic.
+
+We need to check the dates for each COVID wave depending on the case count data from Malawi - Phil mentioned a data platform that has this done well. Also can check Phil's SARS-COV2 genomics pre-print for start of detection of each variant + Kondawni's papers - which dates did he use?
+
+1st wave (July-November 2020), 2nd wave (December 2020-March 2021), 3rd wave  (June 2021-
+
+October 2021). From Phil's pre-print
+
+## iNTS vaccines
+
+### Role of vaccines in iNTS disease control
+
+Progress in controlling iNTS infections are hampered by non-specific clinical presentation, lack of accurate diagnostics, and incomplete knowledge of transmission pathways within the community and correlates of protection.
+
+### Vaccine efficacy in animal models
+
+### Controlled human infection studies
+
+### Vaccines in development
+
+There is no currently licensed vaccine available against iNTS disease. There are three iNTS vaccines that are in early clinical or pre-clinical development. One is a trivalent lipopolysaccharide-flagellin conjugate, targeting typhoid and the 2 commonest iNTS serovars in Africa (Typhimurium and Enteritidis) developed by the Centre for Vaccine Development, Baltimore, which is currently in Wellcome-Trust-funded Phase 1 clinical trials in the US and Mali (13). A second is another trivalent conjugate vaccine developed by the International Vaccine Institute (IVI) and supported by Wellcome Innovations an earlier pre-clinical stage of development. The third is a novel parenteral bivalent iNTS vaccine based on Generalized Modules for Membrane Antigens (GMMA), also targeting serovars Typhimurium and Enteritidis (14).
+
+### iNTS vaccine clinical trials and assessing vaccine efficacy
+
+### Correlates of protection
+
+Other vaccines licenced on correlates e.g. pneumo/ menigo SBA/IgG
+
+Co-correlates/ functional correlates
+
+The gold standard for vaccine licensure and policy decisions are double-blind placebo-controlled randomized trials to determine vaccine efficacy with clinical endpoints. However, this can be prohibitively expensive and impractical, requiring very large sample sizes if the clinical endpoint is uncommon and expensive to diagnose, as is the case for iNTS. Immune Correlates of Protection (CoP) can accelerate the development of vaccines, providing non-clinical pivotal end points in vaccine studies (15, 16). CoP can be defined as immune markers shown to correlate statistically with a reduced risk of disease (17). CoPs have been key in licencing several vaccines, including meningococcal C conjugate vaccine in the UK in 1999, A serogroup A meningococcal polysaccharide-tetanus toxoid conjugate vaccine in India in 2009, and MenB-4C in Europe in 2013 (15). Sero-epidemiology studies are being used currently to identify an antibody CoP in GBS vaccination development (15).
+
+Estimating an easily measured, robust antibody CoP, would be a key step accelerating any iNTS vaccine towards licensure and deployment.
+
+The SaiNTS-Malawi study will expand upon the VacciNTS sero-epidemiology workpackage (WP7), in order to create CoP and epidemiological models that not only advance the development of GMMA vaccines, but also advance other vaccines in early pre-clinical and clinical development.
+
+### VacciNTS consortium
+
+GMMA has a unique and robust technical production platform uniquely suited to manufacture in a low income setting like Africa, and the VacciNTS consortium has recently been funded by a European Union H2020 grant, and aims to accelerate WHO prequalification and licensure of the vaccine, and position the vaccine for future phase 2 and 3 trials. The highly cost-effective GMMA-technology is based on outer membrane blebs released by genetically modified bacteria. Clinical proof-of-concept for the GMMA-technology was achieved with a Shigella sonnei vaccine in European and African adults. In animals, iNTS-GMMA were highly immunogenic and induced antibodies with bactericidal activity against African iNTS strains. Simple, robust and scalable manufacturing processes for iNTS-GMMA, suited for sSA, have been developed. Vacc-iNTS proposes GMP manufacturing of clinical lots followed by a two-stage Phase 1 trial in healthy European and African adults to investigate safety and immunogenicity of the iNTS-GMMA vaccine. Analysis include serum antibody levels and functionality, cellular responses, transcriptomics and data integration through a systems biology approach. Sero-epidemiological analysis will be conducted to provide essential data in preparation for future Phase 2 and 3 trials. Vacc-iNTS will also strengthen a collaborative network of iNTS experts from academia, industry and non-profit including partners from disease-endemic countries of sSA. The VacciNTS network will generate data to accelerate further vaccine development, enhance awareness, drive advocacy and vaccine deployment in limited-resources disease-endemic countries, tackling major roadblocks in advancing a vaccine against iNTS (figure 3).
+
+Additionally, a series of work-packages (WP) aims to enable deployment and uptake in sub-Saharan countries where the burden of iNTS disease is greatest. These supporting activities include cross-sectional sero-epidemiological studies in potential future phase 2 and 3 clinical trial sites in Malawi, Ghana, Burkina Faso and Kenya (WP7); assessment of the global burden of disease using different risk-based modelling methodologies, and stakeholder engagement and advocacy activities (WP8); and assessments of the cost of iNTS illness and cost-effectiveness of iNTS vaccine introduction (WP9). GSK Vaccines Institute for Global Health (GVGH) are providing the laboratory training and support for the sero-epidemiology studies.
+
+The sero-epidemiology work package (WP7) is part of a larger body of work which aims to bridge the gap between pre-clinical and early clinical development of a novel vaccine against iNTS disease, based on GMMA (Generalised Modules for Membrane Antigens) technology. This work-package focuses on sero-epidemiological studies to aim to better understand serological prevalence and correlates of protection against iNTS in the community in Sub-Saharan Africa, to pave the way for early-phase field trials.
+
+## Summary
+
+## References
