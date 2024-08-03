@@ -33,6 +33,77 @@ Malaria RTS,S/AS01 vaccine is highly confounded so not useful to look at in this
 
 ## Results
 
+\newpage
+
+<!-- changing the orientation to landscape --------------------------------- -->
+
+```{=tex}
+\KOMAoptions{usegeometry, paper=landscape,pagesize}
+\recalctypearea
+```
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.align = "centre", fig.width = 7, fig.height=7, out.width = "7.5in"}
+#| tbl-cap: risk factor distribution across recruited enumeration areas
+
+library(rio)
+library(here)
+library(tidyverse)
+library(janitor)
+library(Hmisc)
+library(flextable)
+master <- import(here("5_data", "master_data2.csv")) %>% 
+  mutate(ta_code = substr(ta_code,5,8),
+         cluster = ifelse(cluster==1,"Chikwawa","St Montfort"))
+
+sum_tab <- master %>% 
+  group_by(cluster,ta_code) %>% 
+  summarise(N = n(),
+            MRDT_pos_d1 = sum(mrdt_result,na.rm=T),
+            perMRDT_pos_d1 = round((MRDT_pos_d1/N)*100,digits=1),
+            MRDT_pos_d90 = sum(d90_stl_mrdt_result,na.rm=T),
+            perMRDT_pos_d90 = round((MRDT_pos_d90/N)*100,digits=1),
+            sum_pcr_pos = sum(PCR_pos,na.rm = T),
+            sum_pcr_tested = sum(PCR_tested_bin,na.rm = T),
+            PCR_pos_percent = round((sum_pcr_pos/sum_pcr_tested)*100,digits=1),
+            sum_sal_pos = sum(Salmonella_bin, na.rm = T),
+            sum_stool_tested = sum(stool_tested, na.rm = T),
+            Salm_pos_percent = round((sum_sal_pos/sum_stool_tested)*100,digits=1)) %>% 
+  select(-c(sum_pcr_tested, sum_stool_tested)) %>% 
+  ungroup()
+
+# sum_tab2 <- tabulator(x = sum_tab, rows = c("cluster", "ta_code"), columns = c("N","MRDT_pos_d1","perMRDT_pos_d1","MRDT_pos_d90", "perMRDT_pos_d90","sum_pcr_pos","PCR_pos_percent","sum_sal_pos","Salm_pos_percent"))
+
+sum_tabft <- sum_tab %>% 
+  flextable() %>% 
+  fontsize(size=10, part = "body") %>% 
+  fontsize(size=10, part = "header") %>% 
+  bold(i = 1, bold = TRUE, part = "header") %>%           
+  # add_header_row(values = c("EA","N", "MRDT+ day 1 (n)", "MRDT+ day 1 (%)", "MRDT+ day 90 (n)", "MRDT+ day 90 (%)", "Salmonella PCR+ (n)","Salmonella PCR+ (%)","Salmonella Culture+ (n)","Salmonella Culture+ (%)",),
+  #                top = TRUE) %>% 
+  set_header_labels(
+    cluster = "Cluster",
+    ta_code = "EA",
+    N = "N", 
+    MRDT_pos_d1 = "MRDT+ day 1 (n)", 
+    perMRDT_pos_d1 = "MRDT+ day 1 (%)",
+    MRDT_pos_d90 = "MRDT+ day 90 (n)",
+    perMRDT_pos_d90 = "MRDT+ day 90 (%)",
+    sum_pcr_pos = "Salmonella PCR+ (n)",
+    PCR_pos_percent = "Salmonella PCR+ (%)",
+    sum_sal_pos = "Salmonella Culture+ (n)",
+    Salm_pos_percent = "Salmonella Culture+ (%)"
+  )      
+sum_tabft
+```
+
+\newpage
+
+<!-- % changing the orientation to portrait again -------------------------- -->
+
+```{=tex}
+\KOMAoptions{usegeometry, paper=portrait,pagesize}
+\recalctypearea
+```
+
 ### Cohort demographic and socio-economic characteristics
 
 ### Epidemiology of enteric non-typhoidal salmonella

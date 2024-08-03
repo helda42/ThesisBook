@@ -2,13 +2,14 @@ project:
   type: book
 
 book:
-  title: "Clinical Epidemiology and Seroepidemiology of Non-Typhoidal Salmonella to inform vaccine implementation"
   author: "Helen Dale"
-  date: "8/2/2024"
+  title: "Clincal and Seroepidemiology of non-typhoidal salmonenella to inform public health control of invasive disease and vaccine implementation"
+  date: today
+  date-format: "MMMM YYYY"
   chapters:
     - index.qmd
-    - 1_introduction.qmd
-    - 2_methods.qmd
+    - 1-introduction.qmd
+    - 2-methods.qmd
     - 5_Descriptive.qmd
     - summary.qmd
 
@@ -19,6 +20,38 @@ format:
     theme: cosmo
   pdf:
     documentclass: scrreprt
+    papersize: a4
+    header-includes: |
+      \usepackage{titling}
+      \pretitle{\begin{center}
+        \includegraphics[width=5in,height=4in]{figures/UoL_logo.png}\\ % cover figure
+        \Large
+        \vspace{8mm}
+      }
+      \posttitle{
+        \vspace{20mm}
+        \end{center}
+      }
+      \setlength{\droptitle}{-2cm}
+      \preauthor{
+        \begin{center}
+        Thesis submitted in accordance with the requirements of the University of Liverpool for the degree of Doctor of Philosophy\\
+        \vspace{20mm}
+        }
+        \postauthor{
+         \end{center}
+        }
+        \predate{
+         \begin{center}
+          MBChB, DTM\&H, MSc, MRes\\
+          \vspace{8mm}
+        }
+        \postdate{
+          \end{center}
+          \newpage
+          \mbox{}
+          \vfill
+         }
 
 editor: visual
 
