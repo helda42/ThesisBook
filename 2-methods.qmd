@@ -1,0 +1,499 @@
+---
+title: "Setting, Materials and Methods"
+format:    
+  pdf:
+    geometry:
+      - top=20mm
+      - bottom=20mm
+      - left=20mm
+      - right=20mm
+    toc: true
+    tof: true
+    number-sections: true
+    colorlinks: true
+    include-in-header:
+      text: |
+        \usepackage{typearea}
+    cite-method: citeproc
+    bibliography: references.bib
+    csl: diabetologia.csl
+editor: visual
+---
+
+## Malawi
+
+Malawi is situated in Southern Africa, a land-locked country bordered by Mozambique, Zambia, and Tanzania. The country's estimated population is 20.41 million (2022) with an annual growth rate of 2.6%. projected increase of 82% to 37.16 million by 2050 [@world_health_organisation_malawi_nodate]. Healthcare expenditure is 7.41% (2021) of Gross Domestic Product (GDP) [@world_health_organisation_malawi_nodate]. Life expectancy at birth (years) has improved by 17.8 years from 44.7 years in 2000 to 62.5 years in 2021 [@world_health_organisation_malawi_nodate]. Malawi remains one of the poorest countries in the world despite making significant economic and structural reforms to sustain economic growth. Over 80% of the population are employed in agriculture, which is highly vulnerable to external shocks, particularly climatic change (world bank).
+
+### Epidemiology of iNTS in Malawi
+
+Previous data from Malawi has shown that iNTS disease peaked in Malawi in 2002 reaching epidemic incidence of 242 cases per 100,000 population [@feasey_three_2015], and has been steadiliy declining to 6.9 per 100,000 in 2019 [@wilson_incidence_2022].
+
+### NTS clinical studies in Malawi
+
+Pull out from systematic review. Gordon
+
+### Chikwawa
+
+Chikwawa district is in the southern region on Malawi and covers an area of 4,755 km^2^. Based on the recent census carried out in 2018, the district has a population of 564,684. This rural area has a high burden of disease, mostly infections. Conditions particular to this area including high seasonal rainfall, relative humidity, low altitude, high relative temperature and the presence of numerous water bodies make the district favourable for diseases such as malaria, pneumonia and enteric disease. The majority of the population rely on subsistence farming for their livelihoods, live in mud houses with thatched roofs and over half of households have food insecurity. Data from the Fiebre study collecting blood cultures in Chikwawa, and carriage studies, suggests that there is a significant burden of iNTS disease. Furthermore, significant risk factors within the population, such as malaria and food shortage make it a suitable candidate site for studying iNTS and a good candidate site for a vaccine trial.
+
+### Queen Elizabeth Central Hospital (QECH)
+
+QECH is the largest government hospital in Malawi, with 1350 beds officially, but frequently operating over capacity, recieving secondary referrals from health centres serving population of 1.3 million across Blantyre District, including Urban and Rural areas. QECH also accepts tertiary referrals from regional district hospitals in the southern region of Malawi, and as far away as Northern Malawi and Mozambique. There are separate adult and paediatric emergency departments with over 30,000 patients attending and 13,000 paediatric admissions annually, including surgical, oncological and orthopaedic patients \[Harris\].
+
+A fourbed intensive care unit is shared by adults and children but has a limited capability to care for infants. Patients can self-refer but, apart from those who live locally, transport to hospital often depends on a group of patients being transferred together which is a major contributor to delayed presentation. Investigations available for paediatric patient
+
+### Malawi-Liverpool-Wellcome (MLW) Clinical Research Program
+
+The Malawi-Liverpool-Wellcome (MLW) Clinical Research Program is a prominent research institution based in Blantyre, Malawi. It is a collaboration between the University of Malawi College of Medicine, the University of Liverpool, and the Wellcome Trust, aiming to conduct high-quality research to improve health outcomes in Malawi and the wider Sub-Saharan region. Established in 1995, MLW focuses on major public health challenges such as infectious diseases, including malaria, HIV, and tuberculosis, as well as non-communicable diseases and maternal and child health. The institution is renowned for its extensive fieldwork, laboratory research, and clinical trials. Additionally, MLW plays a vital role in capacity building by training local scientists and healthcare professionals, thereby strengthening the health research infrastructure in Malawi. Through its rigorous research and community engagement, MLW contributes significantly to global health knowledge and the development of effective health interventions.
+
+The Queen Elizabeth Central Hospital (QECH)/ Malawi-Liverpool Wellcome (MLW) Research Program has been collecting blood culture data since 1996. It has one of the largest blood culture databases in sub-Saharan Africa.
+
+### Kamuzu University for Health Sciences (KUHES)
+
+Kamuzu University of Health Sciences (KUHeS), located in Blantyre, Malawi, is a leading institution dedicated to health education and research in the region. Established to advance medical and health sciences education, KUHeS offers a wide range of undergraduate and postgraduate programs in fields such as medicine, nursing, pharmacy, and public health. The university is known for its strong emphasis on research, particularly in areas relevant to public health challenges in Malawi and Sub-Saharan Africa, including infectious diseases, maternal and child health, and non-communicable diseases. KUHeS collaborates with numerous international institutions and organizations, enhancing its research capabilities and educational outreach. Through its comprehensive programs and initiatives, KUHeS plays a crucial role in addressing the healthcare needs of the local population and contributing to global health knowledge.
+
+Dr Tonney Nyirenda has expertise in NTS immunology and runs immunology and microbiology laboratories at KUHES, where samples for this study were processed.
+
+## VacciNTS seroepidemiology sites
+
+### Overview
+
+Four field sites were chosen for the sero-epidemiological survey. Four thousand children from the age-group 0-5 years were recruited from four sites in Sub-Saharan Africa, one thousand children from each site in Malawi, Kenya, Burkina Faso, and Ghana, respectively. Mapped and censused populations in each site were used to randomly identify two hundred children within each 1-year age bracket for inclusion in the study. Clinical and demographic data along with blood samples were collected from participants as a basis for the epidemiological studies to estimate antibody correlates of protection, to inform vaccine development, and to assess the suitability of these areas for roll-out of the iNTS vaccine. Participant recruitment and data collection were conducted at a single time point, and there was no requirement for sites to collect data simultaneously. Nor was there a requirement to undertake this work at a particular time of year; however, attempts were made to collect samples across the period of peak incidence of iNTS disease within each country, which was affected by local seasonality.
+
+### Setting
+
+#### Malawi
+
+The field site in Chiwawa, Southern Malawi has been described above.
+
+### Burkina Faso
+
+The sero-survey in Burkina Faso included two sites, Polesgo and Nioko II in the Nongr-Massom health district, which are both part of the Ougadougou Health and Demographic Surveillance System (HDSS), and where passive fever surveillance for *Salmonella* infections started in 2011 and is ongoing. In this study area, social mobilization was be implemented and were be led by 5 main groups: community elders, religious leaders, teachers, parents and health professionals (including nurses and doctors).
+
+Polesgo is a locality in the department of Ougadougou, in the province of Kadiogo (centre region) in Burkina Faso. Its population is approximately 8,000 individuals. Nioko II is also located on the outskirts of Ougadougou with a population size of 18,000 inhabitants.
+
+These districts, like many others within the city, are informal settlements, meaning that housing is spontaneous and anarchic, with no basic sanitary facilities, no running water and no electricity. There is a significant burden of iNTS disease indicated by past and ongoing passive surveillance studies and this makes it a suitable site for sero-epidemiology studies of iNTS.
+
+#### Kenya
+
+Three sites in Kenya have were selected based on their differing burden of known risk factors including HIV infection and malaria transmission. Each site also has a population register suitable for application of random sampling methods. These sites are:
+
+-   Mukuru Slums, Nairobi County, Central Kenya
+
+-   Lwak Area, Kisumu County, Lake region Western Kenya
+
+-   Kilifi Country
+
+**Mukuru Slums**
+
+Mukuru slum (20 km East of Nairobi) is home to a population of over 150,000 in an area approximately 2km2(population density, 75,000/km2) \[Kenya Population Census, 2010\] living in congested housing and under poor sanitary conditions. The majority of the population work in nearby industrial areas. Over the last 5 years, we conducted household census and socioeconomic surveys and mapped the geospatial coordinates of each household in the study site for 34,000 households. Families (3-5 members) live in corrugated iron huts measuring ca. 3m x3m. The residents obtain water from common vending points supplied by the City Council, each serving close to 1500 residents.
+
+**Lwak Area, Kisumu**
+
+Lwak hospital is a mission-ran health facility located in Rarieda sub-county, Siaya County, western Kenya. The hospital serves a population of 85,000 in mainly a rural mixed agricultural area. The hospital is a 51 bed capacity with 15 beds in the paediatric ward. This area has endemic malaria and also comorbidities including sickle cell disease and iNTS
+
+**Kilifi**
+
+Kilifi County, is a rural area three degrees south of the equator on the Indian Ocean coast, typical of much of tropical sub-Saharan Africa. Kilifi County Hospital (KCH) is located at the center of the Kilifi Health and Demographic Surveillance System (KHDSS), which was established in 2000 to monitor births, deaths, in and out migrations in a population of approximately 280,000 over an area of 891Km2. Events are monitored at KCH and through routine 4-monthly home visits. Each resident receives a unique personal identifier, which is used to link all admissions to demographic records from the KHDSS in real time. Prior to 2000 children were linked to population denominators based on their described place of residence.
+
+Individuals for sampling will be selected evenly across the three sites by age-stratified sampling. The sampling frame will be selected from the KHDSS for the Kilifi site, the population based surveillance census data for Lwak in Kisumu (population ca 250,000) and the most recent census data in Mukuru area, Nairobi (population ca 150,000).
+
+**Ghana**
+
+The study was be conducted at an urban and a rural site in Ghana. Rural Site: The rural site is the Asante Akim North Municipal district specifically at the Agogo Presbyterian Hospital (APH). APH is a secondary and the biggest referral hospital in the district. The hospital catchment population is approximately 170,000 (per profile presented by the hospital). Patient enrollment took place at the pediatric ward and outpatient department. The population in the Asante Akim Central District is characterized by both semi-urban and rural settlements and low population migration. The main economic activities within the capital Konongo are mining and trading. The catchment area of the participating health care facilities includes the population of Konongo, estimated at about 50,000. 
+
+Urban Site: Kumasi metropolis is the second largest city in Ghana and its located in the Ashanti region. The city has a population of about two million. The study was conducted at the Komfo Anokye Teaching Hospital (KATH) and the Maternal and Child Hospital (MCHH). 
+
+KATH is the second largest teaching hospital in Ghana with about 1000-bed capacity. It is affiliated to the College of Health Sciences, Kwame Nkrumah University of Science and Technology, Ghana. KATH serves as a referral hospital for the northern part of Ghana with a population of about 4,939,100. Subjects will be recruited from the Child Health Directorate of the Hospital. The Child Health directorate attends to children from birth up to 24 years. On the average, for every year, the out-patient department receives about 20,000 patients and in-patient unit attends to about 10,000.
+
+MCHC is centrally located in the Sub-Metro within the Kumasi Metropolis. It has a catchment population of about 244,431 representing 11.75% of the population in Kumasi. The first half-year report (January – June) for 2019 showed a hospital attendance of 20,988 with children less than 5 years constituting 11,258 (53%) patients. The total hospital deliveries has risen from 979 in 2017 to 1,379 by June of 2019. The Hospital has an active unit for immunization of newborns and could thus provide the needed numbers for this iNTS study.
+
+## Incidence of iNTS in children 0-5 years in Blantyre, Malawi (2010-2023)
+
+### Data sources
+
+#### **Population Denominators**
+
+For the Blantyre district were interpolated from national population census data collected in 1998, 2008, and 2018 (NSO). Neonatal denominators\*\* back-calculated using national estimates on neonatal death rates?
+
+#### **Blood Culture Data**
+
+Since 1998, the Malawi Liverpool Wellcome (MLW) Trust Programme has provided a standard, routine blood culture service to patients presenting with febrile illness at the largest tertiary health care facility, Queen Elizabeth Central Hospital (QECH), in Blantyre, Malawi. Enhanced community blood culture surveillance is also ongoing in two sites for the TyVAC) clinical trial (13) within Blantyre. Non-typhoidal salmonella blood and CSF (cerebrospinal fluid) culture surveillance at QECH continued uninterrupted through all four waves of COVID-19, however, blood culture activities in the TyVAC study were suspended during the first wave (14). We utilised the electronic records of all paediatric (0-14 years) blood cultures collected between January 1996 - May 2024 to obtain all salmonella positive blood cultures and total cultures collected, using the Laboratory Information Management Systems (LIMS) platform at QECH/ MLW. Data on location of collection of blood culture was patchy and not reliable.
+
+#### **Laboratory Methods**
+
+Antimicrobial susceptibility testing was performed by disc diffusion using ampicillin, chloramphenicol, cotrimoxazole, cefpodoxime, and ciprofloxacin discs according to British Society of Antimicrobial Chemotherapy methods and breakpoints. Since 2009, isolates found to be resistant to ciprofloxacin or ceftriaxone by disc testing have had Etests (bioMérieux) performed \[17\]. Diminished ciprofloxacin susceptibility was classified on the basis of a minimum inhibitory concentration (MIC) between 0.06 mg/L and 1 mg/L) \[17\]. Isolates were described as “fully susceptible” if susceptible to these 5 antimicrobials and multidrug resistant (MDR) if resistant to ampicillin, cotrimoxazole, and chloramphenicol. Prior to October 2010, these data were entered into ledgers, then double-entered into a validated database. Since then, they have been directly entered into an electronic laboratory information management system. Resistance to first-line anti-microbials: Phenotypic MDR to three first-line antimicrobials (cotrimoxazole, ampicillin and chloramphenicol). Resistance to fluoroquinolones and third generation cephalosporins (3GC).
+
+Isolates were described as ‘fully susceptible’ if susceptible to these 5 antimicrobials (cotrimoxazole, ampicillin, chloramphenicol, cefpodoxime, ciprofloxacin) and multidrug resistant (MDR) if resistant to ampicillin, cotrimoxazole, and chloramphenicol. Laboratory data were routinely entered by the diagnostic microbiology service using the Prelink (Prelink V3.0.2429.0), laboratory information management system and data were stored on a secure Microsoft SQL Server database
+
+### Statistical Analysis 
+
+Data analysis was conducted in the r statistical environment (15). Incidence was calculated using the sum of NTS positive blood and CSF cultures for a given year over the mid-year population estimate for that year.
+
+To estimate incidence for children under 5 years, we selected a negative binomial distribution to account for overdispersion, to model monthly counts of NTS cases as a function of age, with b-splines fitted for smoothing.
+
+Model 1:
+
+$$ log(cases) = ~ \alpha + \beta_{2}*bspline(age, df=8) + log(population) $$
+
+Data smoothing using B-splines was implemented for the
+
+## Systematic review of population attributable fractions (PAF) of host factors for iNTS disease
+
+### Literature search
+
+We searched for data relating to blood culture confirmed invasive non-typhoidal salmonella and any one or more of the following host factors; HIV, malaria, severe anaemia, severe acute malnutrition, and sickle cell disease. We searched peer-reviewed literature using three scientific databases: PubMed/MEDLINE, Scopus, and Web of Science using the OVID™ interface/platform for articles likely to contain data relating to iNTS and HIV, malaria, severe anaemia, severe acute malnutrition, and sickle cell disease. Sets of search strings were developed for searching the databases using both keywords and database specific terms for the following: \<non-typhoidal salmonella\>, \<invasive disease\>. These search terms were developed in consultation with a librarian at the University of Liverpool. Searches were conducted in March 2020, and updated in November 2020 and May 2021. No restrictions were placed on study setting (e.g., inpatient versus outpatient setting), language, country, or date. Selection criteria were set prior to the initial database searches. Systematic reviews identified with potentially relevant sources were hand-searched for relevant literature.
+
+**MEDLINE search strategy**
+
+Keywords are noted in regular type, ‘MESH’ (Medical subject heading) terms in bold.
+
+|     | **Search 1: Non-typhoidal Salmonella**                                                                                                                                                                  |     |
+|--------|--------------------------------------------------------|--------|
+|     | salmonella\* OR salmonellosis OR typhimurium OR enteritidis OR nontyph\* OR non-typh\* OR "Salmonella newport" OR "Salmonella heidelberg" OR NTS OR iNTS                                                |     |
+|     | **Search 2: Invasive disease**                                                                                                                                                                          |     |
+|     | bacteraemi\* OR bacteremi\* OR septicaemi\* OR septicemi\* OR septic OR sepsis OR blood isolate OR bloodstream OR invasive                                                                              |     |
+|     | **Search 3: Epidemiology**                                                                                                                                                                              |     |
+|     | incidence OR prevalence OR host factors OR host OR “relative host” OR “host ratio” OR burden OR proportion OR attributable OR fraction OR mortality OR death OR fatality OR predictor OR determinant OR |     |
+|     | **Search 4: Host Factors**                                                                                                                                                                              |     |
+|     | HIV OR “human immunodeficiency virus” OR “acquired immunodeficiency syndrome” OR malaria OR anemia OR anaemia OR sickle cell OR hemoglobinopath\* OR malnourished OR malnutrition OR undernutrition     |     |
+|     | **Search 5: Humans**                                                                                                                                                                                    |     |
+|     | **Humans**                                                                                                                                                                                              |     |
+
+**Scopus search strategy**
+
+|     | TITLE-ABS-KEY                                                                                                                                                                                        |     |
+|--------|--------------------------------------------------------|--------|
+|     | **Search 1: Non-typhoidal Salmonella**                                                                                                                                                               |     |
+|     | salmonella\* OR salmonellosis OR typhimurium OR enteritidis OR nontyph\* OR non-typh\* OR "Salmonella newport" OR "Salmonella heidelberg" OR NTS OR iNTS                                             |     |
+|     | **Search 2: Invasive disease**                                                                                                                                                                       |     |
+|     | bacteraemi\* OR bacteremi\* OR septicaemi\* OR septicemi\* OR septic OR sepsis OR blood isolate OR bloodstream OR invasive                                                                           |     |
+|     | **Search 3: Epidemiology**                                                                                                                                                                           |     |
+|     | incidence OR prevalence OR host factors OR host OR “relative host” OR “host ratio” OR burden OR proportion OR attributable OR fraction OR mortality OR death OR fatality OR predictor OR determinant |     |
+|     | **Search 4: Host Factors**                                                                                                                                                                           |     |
+|     | HIV OR “human immunodeficiency virus” OR “acquired immunodeficiency syndrome” OR malaria OR anemia OR anaemia OR sickle cell OR hemoglobinopath\* OR malnourished OR malnutrition OR undernutrition  |     |
+|     | Additional restrictions                                                                                                                                                                              |     |
+|     | LIMIT-TO ( SUBJAREA,"MEDI" ) OR LIMIT-TO ( SUBJAREA,"IMMU" ) OR LIMIT-TO ( SUBJAREA,"BIOC" )                                                                                                         |     |
+
+**Web of science search strategy**
+
+|     | **Search 1: Non-typhoidal Salmonella**                                                                                                                                                                  |     |
+|--------|--------------------------------------------------------|--------|
+|     | salmonella\* OR salmonellosis OR typhimurium OR enteritidis OR nontyph\* OR non-typh\* OR "Salmonella newport" OR "Salmonella heidelberg" OR NTS OR iNTS                                                |     |
+|     | **Search 2: Invasive disease**                                                                                                                                                                          |     |
+|     | bacteraemi\* OR bacteremi\* OR septicaemi\* OR septicemi\* OR septic OR sepsis OR blood isolate OR bloodstream OR invasive                                                                              |     |
+|     | **Search 3: Epidemiology**                                                                                                                                                                              |     |
+|     | incidence OR prevalence OR host factors OR host OR “relative host” OR “host ratio” OR burden OR proportion OR attributable OR fraction OR mortality OR death OR fatality OR predictor OR determinant OR |     |
+|     | **Search 4: Host Factors**                                                                                                                                                                              |     |
+|     | HIV OR “human immunodeficiency virus” OR “acquired immunodeficiency syndrome” OR malaria OR anemia OR anaemia OR sickle cell OR hemoglobinopath\* OR malnourished OR malnutrition OR undernutrition     |     |
+|     | **Search 5: Humans**                                                                                                                                                                                    |     |
+|     | infant OR child OR children OR adolescent OR adult OR patient OR human OR community OR participant OR volunteer OR subject OR incidence OR hospital OR men OR women OR man OR woman                     |     |
+
+### Data selection process and extraction
+
+We included studies that had data on individuals with laboratory confirmed iNTS infection including bloodstream infection, meningitis, or infection of other normally sterile site (excluding focal infections like osteomyelitis and septic arthritis), and a suitable control group (subjects without iNTS disease). Only studies with consecutively recruited patients meeting clinical criteria (e.g. febrile, or signs of sepsis or meningitis) for obtaining a blood culture aerobic or mycobacterial blood culture or culture from another normally sterile site as the reference standard diagnostic test, with invasive nontyphoidal Salmonella (iNTS), confirmed on culture, were included. In addition, studies were required to have information on iNTS disease stratified by at least one host factor (malaria, HIV, malnutrition, anaemia or sickle cell disease), and a suitable control group (see below) to be able to calculate odds ratio (OR) for the iNTS for that host factor. Studies were excluded if a) the study design not suitable to calculate OR b) the data was not in an extractable format c) the published data are a duplicate data published in another paper, d) the controls were unsuitable e.g. salmonella typhi only (known protective effect of HIV), or pseudomonas aeruginosa (known association with anaemia), for the host factor that data was being extracted for, as this would lead to under- or over-estimation of the association of iNTS with that host factor.
+
+Host Factor definitions: For HIV we used 2005 as an arbitrary cut-off as the start of ART roll out in sub-Saharan Africa (1,2). Children were defined as ≤15 years of age. Current malaria was defined as malarial parasites seen on blood film (BF) or malaria rapid diagnostic test (MRDT) positive. Where results are available for both BF and MRDT, recent malaria was defined as BF negative and MRDT positive. Severe anaemia was defined as haemoglobin \<7g/dL, and SAM (weight for length/ height Z-score less than - 3 OR MUAC less than 11.5cm,  Oedema both feet was defined as according WHO criteria (3).
+
+Using hospital data for estimation of ORs introduces the problem of Berkson’s bias; exposed cases, who suffer from both conditions (outcome and exposure), are more likely to be hospitalized as each disease increases the probability of hospital attendance. Hence, a spurious correlation between these diseases would be observed, even if they are independent. This is a special type of collider stratification bias where stratifying on hospital attendance may introduce selection bias. Symptom severity of the respective case and control disease will affect the likelihood of presentation to hospital. Krumkamp *et al.* (4) illustrated that ‘case-disease’ analysis (controls are people who have a similar disease severity i.e. a significant pathogen other than NTS confirmed on blood (or other) culture), compared to the traditional ‘case-control’ analysis (controls are people who do not have NTS confirmed on blood culture i.e. all people that had a blood (or other) culture whether positive or negative), reduced Berkson’s bias when investigating the association between malaria and iNTS. However, this approach may still underestimate the effect size due to the association of gram negative bacteraemia with malaria, which increases apparent malaria incidence in controls. Hence, Krumkamp *et al.* additionally carried out a bias analysis accounting for the proportion of gram negative bacteraemias and strength of this association with malaria. As a result, studies using these two approaches will be analysed separately and compared and discussed in this review.
+
+We collected data separately on two different control types using the ‘case-control’ approach (all people that had a blood (or other) culture whether positive or negative) or the ‘case-disease’ approach (all people who grew a significant pathogen other than NTS confirmed on blood (or other) culture).
+
+Publications identified through the search strategies above were transferred to an Endnote (version 20) library. Documents were screened by researchers at the University of Liverpool and the University of Ontago. Google Translate was used to translate non-English language documents. All peer-reviewed literature citations were first reviewed by title, and then by abstract (where available). If the abstract was judged to potentially contain data that was relevant to the review, then the full texts were obtained. Full texts were reviewed in full, and all data required to answer the review question were extracted using a data extraction google form (see OSF folder for form questions). The data extraction form was designed to standardise data entry, using questions designed to guide the correct data collection including multiple choice responses, and restricted data entry cells for numbers, where appropriate, and free-text boxes to allow flexibility if any data need to be captured but did not fit the restricted entry questions. Data were extracted independently by HD, CM and JC; discrepancies were resolved by consensus.
+
+### Data extraction and quality assessment
+
+The quality of individual studies was assessed using the modified Newcastle-Ottawa assessment scale for case-control studies (5). Assessment for selection bias, information and measurement bias and residual confounding was assessed. Each study was judged as low, medium or high host, and visualised creating a traffic light plot using the \`robvis\` R package.
+
+![](2_images/NOS1.png)
+
+#### Statistical analysis for the systematic review
+
+#### Data analysis
+
+**Calculation of Population Attributable Fraction (PAF)**
+
+Odds ratios (OR) for odds of iNTS for each host factor group were calculated from 2 by 2 tables, as was the prevalence of exposure in cases and controls, using the formula OR = A x D/ B X C.
+
+|     | **Exposure**             |     | **iNTS Positive** |     | **iNTS Negative** |     |
+|----------|------------|----------|----------|----------|----------|----------|
+|     | **Host factor Positive** |     | A                 |     | B                 |     |
+|     | **Host factor Negative** |     | C                 |     | D                 |     |
+
+*Example layout of 2 x2 table for data extraction of raw data for analysis*
+
+The population attributable fraction (PAF) was calculated for each study, each host factor and each control type (case-control and case-disease), using Miettinen’s formula (6,7), where:
+
+ PAF = prevalence among cases (P~c~) × \[(odds ratio − 1)/odds ratio\]
+
+P~c~ = Prevalence in cases = number of exposed cases/overall number of cases
+
+The OR is mathematically similar to the host ratio when the outcome is rare, because A+B will be similar to B, and C+D will be similar to D. Therefore, as iNTS is rare (estimated prevalence \~35/100000 in sub-Saharan Africa (8), well below 1%), we can use the OR. The prevalence of the outcome (A+C) relative to the prevalence of the exposure (B+D) will be compared for each host factor and study to ensure this assumption remains valid. Only case-control studies that randomly sample controls (therefore more accurately estimate RR), were used in the analysis.
+
+This approach would produce valid estimates in the presence of confounding, assuming exposure status and confounders have been accurately measured and adjusted for. However, the data presented in the studies identified for this review did not allow for extraction of data on confounders (stratified data not available). Some studies did present adjusted OR for a range of potential confounders (from age, other host factors), however, the confounders adjusted for were not consistent across studies and were only available for a few studies. Therefore, we were unable to utilise this data. We have completed a sensitivity analysis with any studies that provided adjusted data, to compare to the main findings.
+
+**Choice of controls for this meta-analysis**
+
+Blood culture positive controls (BCC) vs all controls (febrile and had a blood culture taken = AC) have been presented separately for all host factors. Due to the association of malaria with gram negative bacteraemia a bias analysis was carried out as per Kumpkamp *et al.* (5) on all case-disease analyses which takes into account effect sizes from the literature (ranging from 1.5 – 3.5) and the prevalence of gram negative bacteraemias in the control group.
+
+**Bias analysis**
+
+Due to the association of malaria with gram negative bacteraemia[\[JC1\]](#_msocom_1) (9) and potential to lead to underestimation of the association of malaria with iNTS disease, by increasing the numbers in cell B in table 6A, and biasing the estimated OR for the association between iNTS and malaria toward the null, we carried out a bias analysis(4) on all CD analyses. We included a range of potential effect sizes, ranging from 1.5 – 3.5, based on protection against different bacteraemias in children with the malaria-protective phenotype sickle-cell trait (HbAS), compared to children with normal hamoglobin phenotype (4,9).  We considered possible range of prevalences of gram negative bacteraemias in the control group, resulting in an estimated malaria bias adjusted odds ratio (OR~m~) range of 1.5 to 3.5 (4) (appendix 6). [\[JC2\]](#_msocom_2) This OR~m~ was applied to the raw data to generate a corrected corrected selection proportions of the exposed control-disease group (cell B, table 6A).
+
+*Table 6A: Example of Simple Bias Analyses of the Malaria–Invasive Nontyphoidal Salmonella Association, Showing Bias Parameter Used for Adjustment, Selection Odds Ratios, and Bias-Adjusted Odds Ratios, illustrated by KrumKamp et al* (4)
+
+**Bootstrapping**
+
+To derive 95% confidence intervals (CIs) we used a parametric bootstrap procedure. We simulated prevalence of exposure for each host factor from the calculated prevalence of exposure in cases (CF) using a binomial distribution, with N=10,000,000 prevalence samples from each distribution. This was used to obtain a distribution of N estimates of the population attributable fraction for each host factor. We then took the empirical 2.5th and 97.5th quantiles of this sample to be the lower and upper bound of the 95% CI for the population level exposure estimate.
+
+**Meta-analysis**
+
+If deemed to be adequate quality (as assessed using ROB tools as described above), pooled using a random effects meta-analysis for each host factor. Statistical heterogeneity was assessed using the I2- statistic, with I2 \>50% indicative of substantial heterogeneity. We estimated pooled PAF using a DerSimonian-Laird random effects model, with a Knapp-Sidik-Jonkman adjustment as implemented in the R package meta.
+
+**Sensitivity analysis**
+
+Where data was available, the analysis was repeated without bloodstream infections with specific pathogens that have previously been found to be associated with host factors, such as increased risk of *M. tuberculosis* with HIV (10), and protective effect of HIV against *Salmonella* Typhi bloodstream infection (11), in the control groups. Assumptions such as the approximation of odds ratios to risk ratios were tested by estimating the risk in each group and ensuring this was \<20% in each host factor group[\[HD3\]](#_msocom_3)  (12)
+
+## Cross-Sectional Seroepidemiology Studies across four sites
+
+### Study design
+
+The study is a cross-sectional community-based serosurvey to understand the sero-epidemiology of iNTS in Africa in high incidence iNTS areas in Malawi, Ghana, Burkina Faso and Kenya. Children 0 – 5 years will be sampled as this is known to be the age range covering disease susceptibility, over which protective immunity develops, and over which seroconversion occurs, and will broadly cover the target age range for future Phase II/III vaccination trials.
+
+### Methods
+
+#### Study procedure
+
+Children aged 0-5 years (200 in each age stratum of 1 year) will be randomly selected from known censused or mapped areas in high incidence areas at each site. Children who meet the inclusion criteria and whose parent/guardian provides consent, will be enrolled in the study and a blood sample will be collected at their home or at the nearest study facility. One thousand serum samples will be collected at each of the 4 African sites and will be analysed in the country of collection by Enzyme Linked Immunosorbent Assay (ELISA) for anti-OAg antibodies, IgG against Lipopolysaccharide (LPS) and by high-throughput Serum Bactericidal Assay (SBA) for functional activity. Antibody and bactericidal levels will be correlated and age-distribution and correlation of antibody levels with clinical, socio-demographic and water and sanitation characteristics will be explored. Samples will be collected around peak season for iNTS within each site.
+
+#### Inclusion criteria
+
+-   Written informed consent received
+
+-   Child ≤ 5 years
+
+-   Able to comply with study requirements
+
+-   Resident in the catchment area
+
+#### Exclusion criteria
+
+-   Not resident in the catchment area
+
+-   Deemed clinically unstable by the survey team
+
+-   Parents of children who are unwilling to provide informed consent
+
+### Study Procedure and Recruitment
+
+#### Recruitment
+
+1000 children from mapped/enumerated areas will be randomly selected into equally sized 1-year age bands (i.e. 200 individuals for each of the groups, 0-\<1 yr, 1-\<2 yrs, 2-\<3 yrs, 3-\<4 yrs, 4-\<5 yrs). Community engagement and information dissemination with health care services and traditional authorities will take place prior to study activities. Field workers will approach the parents of children and provide information about the study. Parents who are interested and willing for their child to participate will provide written consent following which a single sample (3-5mls) will be collected from each child. Children less than 1 year will have at least 1ml of blood collected while children older than 1 year will have at least 3mls collected. Additionally, details on demographics will also be collected and recorded for all enrolled children.
+
+#### Informed consent
+
+Consent will be sought from the child’s parent/guardian. A trained member of the study team will undertake the informed consent process, with the parent/guardian, who will be provided with information about the study aims and procedures, implications of the protocol and risks. They will receive participant information according to requirements of local ethics committee and in keeping with GCP.
+
+Parents/guardians will be given as much time as they wish to consider the information, and ask questions to the study staff, or other independent parties, to determine if they wish their child to participate.
+
+Written informed consent will be obtained by means of a dated signature, or thumbprint, with dated signature of the person obtaining informed consent. A copy will be provided to the participant’s parents/guardian and the original retained in the study archive. If a potential participant’s parent/guardian is illiterate, a third party may act as an impartial witness to attest that the information on the consent form and written information was accurately explained to the parent/guardian and apparently understood and that informed consent was obtained.
+
+#### Sampling
+
+Blood samples were collected from children whose parents have consented. Collected samples will be stored using standardized protocols and laboratory procedures.  
+
+Samples will be transported daily to the field laboratory for centrifugation, aliquoting and storage at -70℃ (range -65℃ to -80℃). All samples will be tested in the country of collection by ELISA for antibodies to O antigen, and by high-throughput SBA for functional bactericidal activity. These assays will be conducted by staff who will be trained by GSK Vaccines Institute for Global Health (GVGH) and supported with use of GVGH reagents. A subset of samples from all sites were be sent to Malawi for Quality Assurance (QA) of results.
+
+## Community cohort study (Malawi)
+
+### Study design
+
+We carried out a prospective cohort study with paired serology samples at baseline and 3-months taken from the same individuals. Two thousand children aged 0–5 years sampled across age-strata were recruited, randomly sampled throughout household-censused enumeration areas. We spread sampling evenly throughout the year in Chikwawa district, Malawi, aiming to capture peak iNTS season in the middle of the study period. These children were evenly recruited from the vaccinated (Montfort) and non-vaccinated clusters (Chikwawa) of the EPIMAL trial. We selected households containing children 0–5 years via a two-stage sampling technique. In the first stage enumeration areas (EA) were selected using probability proportional to size (PPS) sampling, with stratification according to malaria prevalence. In the second stage households containing children 0–5 years were randomly sampled from selected Enumeration Area (EA). Any child eligible in the household was invited to participate in the study. We aimed to collect approximately 2500 stool samples and 4000 paired blood samples (to account for 20% loss to follow-up), measuring antibody titres (IgG) and changes in serum bactericidal activity (SBA) for the most common NTS serovars (S. Typhimurium and S. Enteritidis) and other serovars, to understand the age-stratified acquisition of immunity and how this varied with risk factor exposure. We performed anthropometric measurements, malaria (rapid diagnostic tests \[RDT\] and thick blood films), haemocue and sickle RDT to assess the association with the main risk factors.
+
+::: {layout-nrow="2"}
+![Location of SAINTS study, Chikwawa District, Southern Malawi](figures/5_images/ChikBaselineMapGeo.png){width="300"} ![EPIMAL Study Cluster Areas: Chikwawa (shaded pink) and St Montfort (shaded purple)](figures/5_images/ChikBaselineMapGeo2.png){width="300"}
+:::
+
+We planned to compare the age-stratified acquisition of immunity (IgG and SBA) between children receiving the malaria vaccine (RTS,S/AS01) and un-vaccinated children matched on factors known to influence vaccine uptake. The EPIMAL study has conducted a GPS-mapped household census, allowing us to randomly select children across the study age-strata to approach for recruitment. Selection of enumeration areas has assumed approximately 50% uptake of consent to the study, and statistical power calculations have assumed a further 10% drop out for the second visit.
+
+![Scheme showing sampling rotation through enumeration areas (EAs) (1 to 18), with four cohorts (C1 to C4) starting at 3 monthly time intervals in each of the high and low malaria transmission areas. Each EA will be visited at four time periods throughout the year, to capture variations in seasonality. A total of 2400 children will be recruited, 1200 at each site, with 30-40 children recruited over 7-12 days at each EA at each round of recruitment. Each child will have paired samples collected 3 months apart, and the next cohort of children will be recruited at the same time as the day 90 follow-up at each EA.](2_images/rotation_scheme.png){width="650"}
+
+## Inclusion and exclusion criteria
+
+Guardians of children aged 0-5 years resident in Chikwawa district enumeration areas defined by the EPIMAL trial were be approached to enter the study.
+
+**Inclusion criteria**
+
+-   Written informed consent received
+
+-   Child ≤ 5 years
+
+-   Able to comply with study requirements
+
+-   Resident in the catchment area
+
+-   Planning to be in study area for next 3 months
+
+**Exclusion criteria**
+
+-   Not resident in the catchment area
+
+-   Deemed clinically unstable by the survey team
+
+-   Parents/ guardians who are unwilling to provide an informed consent
+
+#### Community engagement
+
+A community engagement plan was developed in collaboration with the Science Communication Department (SciCom), MLW. Sensitive issues regarding for example blood and sample collection from young children, asking personal information about poverty and concerns and fears regarding risk of COVID-19 transmission and staff working in PPE were included in the staff training and community engagement activities. The SAiNTS-Malawi utilised the existing infrastructure of public engagement activities that are planned and continuously implemented by SciCom throughout the year. These include Community Advisory Group (CAG), Chiefs, District Executive committee (DEC) and other stakeholders meetings, Science Cafes, etc. The following groups were specifically identified for consultation on study activities before, during and following completion of the study:
+
+-   Community Advisory Group (CAG),
+
+-   Chiefs,
+
+-   District Executive committee (DEC)
+
+-   District Health Management Team meeting
+
+-   Community Liaison Team (CoLT)
+
+-   Health personnel at local health centres
+
+-   Participant Public Involvement (PPI) groups
+
+Following engagement with the above groups general community engagement activities included:
+
+-   SAiNTS study video explaining what the study involves, what happens to the samples and the expected impacts of this study, including a debate about advantages and disadvantages of the study which helped to answer their questions and to address any misconceptions they may have had.
+
+-   Distribution of information leaflets
+
+-   Due to COVID-19 limiting large group gatherings; a mobile PA system van and radio was employed to disseminate information about the study
+
+**Summary of engagement activities** 
+
+**Fieldworkers training** – aimed at imparting fieldwork skills with the team that was recruited to work in the study.
+
+**Community Liaison Team training (CoLT) -** Saints study was conducted in a catchment area where other projects were in progress. CoLT is a group of community representatives supporting study activities done such as identification households of selected participants, communication of health messages to participants. The group was initially set up to support a Malaria Vaccine study, a same structure was oriented to support Saints study since it was done in a similar setting.
+
+**Study briefing meetings with Health facility Staff and community leaders –** These are main stakeholders providing health care in facilities the study was conducted. The meetings aimed at introducing the study and raising awareness. Among others, we engaged Health Surveillance Assistants (HSAs), Village Headmen, Area Development Committees, Nurses, Medical Assistants, Religious leaders.
+
+**Community Film shows** – This was one of the main events planned to engage direct communities where potential participants resided. Two documentaries were used, the first one focused on importance of health research and the second one focused on sharing study overview.  At the beginning of the project, we piloted film shows to understand its impact as a tool to raise study awareness in Enumeration areas (EAs) the project was to be conducted, due to high levels of illiteracy in rural areas. Using visual communication becomes engaging as opposed to community meetings. The idea was echoed by community leaders who mentioned that including study procedures in a documentary would help people easily understand what comprised of study activities.
+
+**Use of a mobile van** – This was another engagement activity that aimed at raising study awareness in the catchment area.  Study key messages were developed and were shared using a Public Addressing System (PA) mounted on a van. Focus was on study inclusion and exclusion criteria, voluntary participation in research and others. This activity was done at the beginning, during and at the end of the study. Saints study was recruiting in over 20 Enumeration Areas (EAs), with many remote villages and households further apart.
+
+To review the engagement activities, science and communication team together with study staff, had focus group discussion with different stakeholders to discuss progress and challenges.
+
+### Consent
+
+Consent was sought from the child’s parent/guardian, or for the hepatitis B maternal testing, from the mother herself. A trained member of the study team undertook the informed consent process with the parent/guardian, who was provided with information about the study aims and procedures, implications of the protocol, and risks. They received participant information according to the requirements of the local ethics committee and in keeping with GCP.
+
+Parents/guardians were given as much time as they wished to consider the information and ask questions to the study staff or other independent parties to determine if they wished their child or themselves to participate. Fieldworkers attended randomly selected households to recruit participants. Informed consent could be taken on the following or another day if the parent/guardian wanted more time to decide if they would like their child to participate, and they were provided the date, time, and location of where to attend to enroll in the study if the team was still working in the local area.
+
+Written informed consent was obtained by means of a dated signature or thumbprint, with a dated signature of the person obtaining informed consent. A copy was provided to the participant’s parents/guardian, and the original retained in the study archive. If a potential participant’s parent/guardian was illiterate, a third party could act as an impartial witness to attest that the information on the consent form and written information was accurately explained to the parent/guardian and apparently understood and that informed consent was obtained.
+
+### Screening and recruitment protocol
+
+Any child eligible in the household was invited to participate in the study. Community engagement and information dissemination with health care services and traditional authorities took place prior to study activities in the selected EA’s. Field workers identified households from a list of randomly selected households. They approached the parents of appropriately aged children and provided information about the study. Parents who were interested and willing for their child to participate provided details for the screening log and were issued a screening identification number. Parents/guardians were asked to provide written informed consent to permit collection of household GPS data and a stool specimen. Parents/guardians were provided a stool specimen container labeled with a screening identification number and invited to return the following day to a specified location for study enrolment and full informed consent for the study. Enrolment took place at either the local health center or a study tent erected in the local village for the blood samples to be taken, the stool specimen to be returned, the questionnaire completed, and anthropometric measurements (height, weight, MUAC) to be taken. A participant identification number was issued at enrolment. This enabled parents/guardians time to discuss with other family members and to make a decision before enrolling in the study. If participants were undecided about consent for GPS coordinates or stool collection on the day they were invited, they were offered the opportunity to enrol the following day, and this data was collected after enrolment if possible. Blood samples were obtained by fully trained staff according to the blood sampling standard operating procedure (SOP). Rapid diagnostic tests will be undertaken in the field for malaria, anaemia and sickle cell disease.
+
+![Study recruitment summary flowchart](2_images/Recruitment_flow.png){width="450"}
+
+## Clinical treatment protocols
+
+Any children found to have positive malaria tests were provided treatment by the field team. Any child with a low haemoglobin was provided treatment according to the Integrated Management of Childhood Illnesses (IMCI)/ World Health Organisation (WHO) guidelines [@world_health_organisation_integrated_2014] for management of anaemia and referred to hospital for follow-up. A comprehensive record of the treatments administered throughout the study was documented for subsequent analysis. Any child diagnosed with sickle cell disease or malnutrition (based on weight-for-height z-scores or Mid-Upper Arm Circumference (MUAC)) was referred to the local health facility for further management.
+
+### Longitudinal cohort and weekly stool sampling
+
+A subset of children had extra follow-up visits with blood samples at six, nine and 12 months to track individual immunity and waning over time. In addition, this subset will had additional monthly stool samples and malaria RDTs to explore the extent of missing exposures which may have an impact less than three months on humoral immunity, and the impact of repeated exposures on acquisition of immunity. We carried out weekly follow-ups for a subset of children with Salmonella stool culture up until they have two consecutive negative stool cultures, to assess the duration of asymptomatic salmonella carriage.
+
+## Inpatient Case Study
+
+We prospectively recruited any child between the ages of 0–5 years with a positive blood culture for NTS at Queen Elizabeth Central Hospital (QECH), Zingwangwa, and Ndirande health centres. Participants had a blood sample taken to test for immune markers as close as possible to presentation, as soon as blood culture was determined to be positive, and repeat samples at one, three-, six-, nine-, and 12-month follow-ups. These samples were tested for antibody and bactericidal activity to NTS and other immune markers to understand the acquisition of immunity post-invasive disease compared to immunity developed in the community sero-survey data. All other details, including risk factor testing and socio-economic and WASH questionnaires, were carried out in the same way as the main study. For each case, a control from the community serological survey data from SAiNTS samples was recruited and matched on age and geographic location (as close as possible) to compare immune markers at baseline and post-invasive disease to help validate estimated correlates of protection.
+
+### Inclusion and exclusion criteria
+
+We will prospectively recruit any child between the ages of 0-5 years with a positive blood or cerebrospinal fluid culture for NTS identified through the Malawi Liverpool Wellcome (MLW) Programme’s Laboratory Information Management System (LIMS) as a case.
+
+**Inclusion criteria (iNTS Cases)**
+
+-   Blood or cerebrospinal fluid culture positive for non-typhoidal salmonella
+
+-   Child ≤ 5 years
+
+### Consent
+
+Consent procedures were followed as above for the community cohort study.
+
+### Screening and recruitment protocol
+
+Particpants were identified through the QECH/ MLW blood culture records on LIMS. Any child with a positive blood culture for NTS and was either an inpatient or could be contacted after discharge. The parent was approached by a clinical study nurse and offered information about the study, either in the hospital or invited by phone if contact details were available, and invited to return for a blood sample. If the parent provided informed consent for their child to participate in the study, the child had a blood sample taken to test for immune markers as close as possible to presentation, as soon as blood culture was determined to be positive, and a repeat sample at 1 month and 3 months follow-up. Phone numbers were collected if available, and were used to make phone call reminders for follow-ups.
+
+### Clinical treatment protocols
+
+Clinical treatment protocols were followed as above for the community cohort study.
+
+## Laboratory Analysis
+
+### Serum sample collection and processing
+
+Serum samples were collected in serum-gel vaccutainers, and transported in cooler boxes with temperature loggers, to maintain temperature 4-8°C. Samples were transported daily to the main laboratory at KUHES, Blantyre for centrifugation, aliquoting and storage at -70℃ (range -65℃ to -80℃).
+
+### Malaria microscopy and PCR
+
+All children had malaria peripheral blood smears (PBS) for microscopy as well as dried blood spot (DBS) and a subset for malaria PCR testing. These were dried in the field and transported in slide boxes at room temperature to the laboratory in Blantyre, where the films will be read by two independent, blinded trained laboratory technicians, on the day of sample collection.
+
+### Stool sample collection and processing
+
+Briefly, stool samples were collected in the field in a 30ml universal container and then transported to the laboratory in Blantyre in a cold box at 4-8°C.
+
+### Stool culture and serotyping
+
+A matchstick head-size sample of stool was inoculated in 10 ml of selenite F broth (Oxoid, UK, catalog number: 2300631) and aerobically incubated overnight at 37 °C for 18–24 hours. The top layer (1 ml) of an overnight culture and spun at 20,000 g for 5 minutes. This is a method that has been developed in our laboratory [@chirambo_performance_2020]. A 1 ul loop was used to subculture *Salmonella* from the pellet by spreading on Xylose Lysine Deoxycholate (XLD) agar (Oxoid, UK, catalog number: 2547703) to achieve single colonies. Careful plate spreading prevents overcrowding of colonies.
+
+Pure colonies with black centres were picked and cultured on XLD. An aliquot of the selenite broth was also frozen for molecular detection. A single colony of presumptive *Salmonella* was cultured onto re-cultured on MacConkey agar plates (Oxoid, UK, catalog number: 2529552) and Nutrient agar (NA) (Oxoid, UK, catalog number: ) , and incubated aerobically at 37°C for 18–24 hours. Oxidase test and API 20E were performed on the pure colonies from NA to identify Salmonella. Salmonella Anti-sera tests were conducted following a positive API20E identification to distinguish between O4 and O9 serovars. Pure Salmonella colonies from NA were stored in a commercially purchased microbank vial.
+
+### Stool DNA extraction
+
+Bacterial DNA extraction on the stored selenite samples was done in batches within 14 days of collection. DNA was extracted using QIAamp Fast DNA Stool Mini Kit (QIAGEN, Netherlands, catalog number: 51604) according to the manufacturer’s instructions, with an added bead-beating step. Eluted DNA was stored at –20°C. DNA was extracted from pure cultures using the Omega BioTek Mag-Bind Universal Pathogen kit on the Thermo KingFisher Flex. To avoid any age-related bias, batched analysis was performed in the order in which the samples were collected.
+
+### Stool PCR testing
+
+For the monoplex-qPCR, the *ttr* primers and probe were designed and validated by Federal Institute for Risk Assessment, Berlin, Germany, according to the published DNA sequence of the *S. enterica* serotype Typhimurium *ttr* locus for *Salmonella* detection (GenBank accession no. [AF282268](https://www.ncbi.nlm.nih.gov/nuccore/AF282268)). The use of *ttr* was based on [@chirambo_performance_2020]. For the monoplex qPCR, approximately 200μl top layer of frozen Selenite F broth overnight stool culture, was suspended in 500 μl of PBS.
+
+A previously-optimised in-house PCR protocol was used [@chirambo_performance_2020]. Briefly, the master mix for RT-PCR was prepared using pre-defined quantities. A total of 20μl master-mix for each sample was comprised of the following: 12.5μl Platinum *®* Quantitative PCR Super Mix-UDG (Life Technologies, USA, Catalog number: 11730025), 0.10μl specific forward primer, 0.10 specific reverse primer, 0.10 specific probe (all primers and probes at 200nM), 0.05μl ROX reference dye (Life Technologies, USA, Catalog number: 12223012) at 50nM final concentration, and 7.15μl nuclease-free water. This mixture was transferred to 96-well plate PCR wells. 5μl of test DNA, positive controls DNA (DNA from D23580), technical extraction negative control, and assay negative control (UV treated water) were added in triplicates to appropriate wells containing 20ul of master-mix. The qPCR was run for 40 cycles using Applied Biosystems® 7500 Real-Time PCR Systems (Life Technologies, USA). The following cycling conditions were used; initial denaturation at 95°C for 1 minute, denaturation at 95°C for 15 seconds, annealing/extension at 60°C for 30 seconds, final extension: 12°C. The threshold was set in the lag phase. An assay was considered to have passed when the positive controls were positive, and both the technical extraction negative and assay negative controls were negative. Test sample cycle threshold (Ct) values were evaluated after subtracting the baseline value. Samples with cycle threshold (Ct) values of less than or equal to 35 were considered positive.
+
+### Stool genome sequencing
+
+DNA was sequenced using Illumina sequencing at MLW
+
+### Quantification of O-Ag IgG to Salmonella Typhimurium and Salmonella Enteriditis by ELISA
+
+Antibody responses against OAg from *S.* Typhimurium and *S*. Enteritidis in samples from all subjects at each time point will be analysed. Test samples, in triplicate, will be analysed at three dilutions, and colour change compared with a standard curve made with calibrated human serum pool, included on each assay plate. Anti-OAg responses will be expressed in ELISA Units. Test sample ELISA units are interpolated from the standard curve. Well-characterized standard OAg from S. Typhimurium and S. Enteritidis will be used as plate coating antigen. A detailed description of this method has recently been published [@aruta_characterization_2023].
+
+Positive controls were
+
+### Quantification of serum bactericidal activity to Salmonella Typhimurium and Salmonella Enteriditis by high throughput luminescent SBA assay
+
+Serum Bactericidal Activity will be measured using a high-throughput fluorescent assay, be used to measure functional activity of antibodies, which detects bacterial ATP via a fluorescent dye as a readout of viability, developed by GVGH as a partner within the VacciNTS consortium [@necchi_development_2017]. The assay will be conducted in the presence of full complement repletion with 50% baby rabbit complement. Results will be available on the same day, without the need for overnight incubation or colony counting. The samples from all subjects will be analysed, by SBA assay using *S. Typhimurium* and *S. Enteritidis* wild type strains. Well-characterized cell banks of the test strains will be routinely used for the SBA.
+
+All serological laboratory assays (ELISA and SBA) will be standardised throughout the consortium, and quality assurance between sites will be conducted, with the aim of becoming the international standard assays for use in future iNTS clinical trials, thus ensuring highly comparable dataset for modelling approaches across the consortium. Standardized sera has been validated between Malawi and GVGH to ensure reproducibility of both assays. Malawi is the African reference site for the assay. A detailed description of this SBA method has recently been published [@aruta2022].
+
+## Ethical review
+
+### Approvals
+
+The protocol, informed consent form, participant information sheet and any proposed advertising material has been approved by the sponsor (University of Liverpool) and the University of Malawi College of Medicine Research Ethics Committee (COMREC), and University of Liverpool (UoL) Ethical Review Board for written approval.
+
+-   COMREC reference approval number P.07/20/3092
+
+-   University of Liverpool Sponsorship reference number: UoL001562
+
+-   University of Liverpool ethics reference number: 7923
+
+The Investigator will submit and, where necessary, obtain approval from the above parties for all substantial amendments to the original approved documents.
+
+Each site (Malawi, Kenya, Burkina Faso and Ghana) have obtained their own local ethics approval.
+
+#### Sponsor
+
+The University of Liverpool was the Sponsor for this study. It is recognised that as an employee of the University the Chief Investigator has been delegated specific duties, as detailed in the Sponsorship Approval letter.
+
+## References
