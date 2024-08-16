@@ -3,14 +3,17 @@ project:
 
 book:
   author: "Helen Dale"
-  title: "Clincal and Seroepidemiology of non-typhoidal salmonenella to inform public health control of invasive disease and vaccine implementation"
+  title: "Clinical and seroepidemiology of non-typhoidal salmonenella to inform public health control of invasive disease and vaccine implementation"
   date: today
   date-format: "MMMM YYYY"
   chapters:
     - index.qmd
     - 1-introduction.qmd
     - 2-methods.qmd
-    - 5_Descriptive.qmd
+    - 3-Incidence.qmd
+    - 5-Descriptive.qmd
+    - 6-serocatalytic.qmd
+    - 7-ChangePoint.qmd
     - summary.qmd
 
 bibliography: references.bib

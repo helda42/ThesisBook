@@ -1,0 +1,742 @@
+---
+title: "Mechanistic serological catalytic model for acquisition of natural immunity to non-typhoidal salmonella"
+format:    
+  pdf:
+    geometry:
+      - top=20mm
+      - bottom=20mm
+      - left=20mm
+      - right=20mm
+    toc: true
+    number-sections: true
+    colorlinks: true
+    include-in-header:
+      text: |
+        \usepackage{typearea}
+    cite-method: citeproc
+    bibliography: references.bib
+    csl: diabetologia.csl
+editor: visual
+---
+
+## Introduction \*\* Could try fitting other vaccints sites to predict exposure?? Malaria??
+
+Children exposed to enteric nontyphoidal *Salmonella* (eNTS) develop effective natural immunity against invasive disease, which can inform vaccine derived immunity. Understanding the age-stratified natural acquisition of immunity in relation to age-stratified asymptomatic eNTS infections and invasive disease incidence in different settings can identify correlates of protection (COP) and inform vaccine impact and implementation.
+
+## Methods
+
+Paired serum from 2428 healthy children recruited in the community was tested for O-Ag (O4) immunoglobulin G (IgG) and high throughput luminescent serum bactericidal activity (L-SBA) to *Salmonella* Typhimurium. We designed a serotype-specific catalytic serological model assuming an exponential decay of maternal antibodies with age from birth, and exposure to eNTS leading to induction of immunity (anti-O-Ag (O4) IgG) through a Gompertz function relationship by age. We compared two models; model 1 assumed a constant force of infection (FOI) throughout ages from birth to 60 months, model 2 assumed FOI changed with age in a sigmoidal relationship with age. Both models were fitted to the serological data per age-bin using a Markov-chain Monte-Carlo (MCMC) approach, and models were compared by Pareto smoothed importance sampling (PSIS) and Widely applicable information criterion (WAIC).
+
+### Hypotheses to be tested by model
+
+![](images/clipboard-3702128345.png)
+
+### Model equations
+
+$$GMC(a, t)  =  mAB(a)  +  \Phi(\theta(a,t))  $$
+
+-   a = age
+
+-   t= time
+
+-   mAB = maternal antibodies which decay at a rate of $\mu$ given an initial value $mAB_{0}$
+
+-   $\theta(a,t))$ = Estimated number of exposures for individuals at age a and time t
+
+-   $\Phi(\theta(a,t))$ = Relationship between number of estimated number of exposures and antibody response
+
+Conceptually remove time from equation if assume $\lambda(t)$ exposure over time is constant
+
+Assume age (a) = time e.g. at 1 month of age child has been in model for 1 month of time
+
+Obtain $\lambda(t)$ = Force of infection (FOI) = rate at which individuals become infectious (from literature - usually in units of days): $\lambda(t)=\beta(t)$
+
+However, there has been little work done on this from what I can find. Can I get the model to estimate $\beta$ from fitting to the data?
+
+### Probability of event using poisson distribution
+
+Using the poisson distribution formula, the probability of observing x number of exposure events in an interval is: $$P(x) = \frac{\lambda^{x}}{x!}  e^{-\lambda}$$ Where: x = 0, 1, 2, 3..... = number of occurrences of an event in an interval $\lambda(t)$ = mean number of occurrences in the interval = event interval e = Euler's constant = 2.71828 = the base of natural logarithms
+
+If use months as units of age...
+
+To calculate yi(a), a = 1 month = proportion of population with i number of infections at 1 month of age; calculate poisson of a fixed $\lambda(t)$ on the 1st month
+
+$$y_{i}(1m) = \frac{\lambda^{i}}{i!}  e^{-\lambda}$$
+
+To calculate for a 5m old: calculate sum of poisons for subsequent 5th months:
+
+$$y_{i}(a) = \sum \frac{\lambda^{i}a^{i}}{i!}  e^{-\lambda.a}$$ N.B. If we want to consider that $\lambda(t)$ changes with time then each $\lambda(t)$ will be incorporated for each time-age bin of exposure
+
+### Calculate Ab by natural exposure
+
+Using Gompertz function for growth, which exhibits exponential decay of relative growth rate:
+
+$$ f(t) = ce^{-ke^{-rt}}$$ Where c = upper asymptote (carrying capacity) of f(t) $$ lim_{t \to \infty} ke^{-ce^{-rt}} = ke^{0} = k $$\
+e = Euler's constant = 2.71828 = the base of natural logarithms
+
+k = sets displacement along the x-axis (translates graph to left or right).
+
+When c = log(2), f(0) = k/2, also called halfway point
+
+r = sets the growth rate (y scaling)
+
+t = time
+
+Using Gompertz function, can calculate $\Phi$
+
+$$ \Phi(\theta n_{s}(a)) = ce^{-i_{s}e^{-k_{s}n_{s}(a)}}$$ Where:
+
+ns = number of exposures
+
+c = will be set at constant as highest antibody titre measured in the population - if had an infinite number of exposures this would be the plateau of antibody response (upper asymptote/ carrying capacity of f(t))
+
+ks = growth rate (y scaling)
+
+is = number of exposures above which antibodies begins to increase (displacement along x-axis)
+
+e = Euler's constant
+
+a = age
+
+Two parameters that will be fitted to the data:
+
+k = growth rate i = number of exposures above which the antibody response will enter the growth function?
+
+### Calculate Ab by natural exposure
+
+Using Gompertz function for growth, which exhibits exponential decay of relative growth rate:
+
+$$ f(t) = ce^{-ke^{-rt}}$$ Where c = upper asymptote (carrying capacity) of f(t) $$ lim_{t \to \infty} ke^{-ce^{-rt}} = ke^{0} = k $$\
+e = Euler's constant = 2.71828 = the base of natural logarithms k = sets displacement along the x-axis (translates graph to left or right). When c = log(2), f(0) = k/2, also called halfway point r = sets the growth rate (y scaling) t = time
+
+Using Gompertz function, can calculate $\Phi$
+
+$$ \Phi(\theta n_{s}(a)) = ce^{-i_{s}e^{-k_{s}n_{s}(a)}}$$ Where:
+
+ns = number of exposures
+
+c = will be set at constant as highest antibody titre measured in the population - if had an infinite number of exposures this would be the plateau of antibody response (upper asymptote/ carrying capacity of f(t))
+
+ks = growth rate (y scaling)
+
+is = number of exposures above which antibodies begins to increase (displacement along x-axis)
+
+e = Euler's constant
+
+a = age
+
+Two parameters that will be fitted to the data:
+
+k = growth rate i = number of exposures above which the antibody response will enter the growth function?
+
+### Fitting to model using Markov-Chain Monte-Carlo (MCMC)
+
+### Changing force of infection
+
+#### Changing lambda with age (linear exposure does not fit the model well)
+
+$$ f(ns) = m_xe^{-we^{-rt}}$$ Where mx = upper limit of new infections (cumulative) by age 60 months = 40 if 1 infection every 6 weeks on average across cohort - may need to adjust for age distribution $$ lim_{t \to \infty} ke^{-ce^{-rt}} = ke^{0} = k $$\
+e = Euler's constant = 2.71828 = the base of natural logarithms
+
+w = age in months before before enter exponential phase (x-axis displacement) - weaning
+
+r = exponential phase/ growth rate high feco-oral transmission at weaning/ crawling age
+
+### Model comparison and diagnostics
+
+Model comparison and diagnostics were run using widely applicable information criteria (WAIC) and Pareto smoothed importance sampling (PSIS)
+
+## Results
+
+### Model 1: Constant force of infection
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, ft.align = "centre", ft.width = 5, out.width = "5.5in"}
+#| fig-cap: Model 1 outputs using Markov Chain Monte Carlo (MCMC) to estimate model parameters, A. Posterior chains and posterior distributions of parameters i, k, and mab
+
+require(tidyverse)
+require(ggplot2)
+require(cowplot)
+require(rio)
+require(here)
+
+##load data
+#dataS <- import(here("Data", "dataS.rds"))   # import cleaned dataset
+#data <- import(here("Data", "data.rds"))   # import cleaned dataset
+data <- import(here("data","6_data", "sero_data_agegroup_mth.csv"))   ## serology data
+dataS <- data %>% 
+  group_by(AGEGROUP_mth) %>%
+  summarise(MIDAGE=mean(AGE, na.rm = T), ##keep the actual mean age of the groups
+            LPS_ME=mean(log(EU_all.sero_d1),na.rm=T),
+            LPS_SD=sd(log(EU_all.sero_d1),na.rm=T)) %>% 
+  ungroup() %>% 
+  arrange(MIDAGE)
+
+#######################################################
+
+sampleDist<- function(mean, sd, min, max){
+	repeat{
+		point= rnorm(1,mean=mean,sd=sd)
+		if(point>=min & point<=max) break;
+	}
+	return(point)
+}
+
+calcLikelihood<- function(model_points, data_points){
+  probs<- dnorm(model_points, mean=data_points$LPS_ME, sd=data_points$LPS_SD)
+	loglikelihood<- sum(log(probs))
+	return(loglikelihood)
+}
+
+##using "_0" for everything you assume is set at the start
+model<- function(mab, i, k){
+  ninf<- lambda_0 * dataS$MIDAGE
+	phi<- phi_0 * exp(-i * exp(-k*ninf))
+  mab<- mab*exp(-beta_0*dataS$MIDAGE)
+  m<- phi + mab
+	return(m)
+}
+
+
+##define some parameters
+
+    ##constants
+    lambda_0<- 0.11 ##prior:: no idea what this should be! literature, dont forget it has to be per month
+    phi_0<- max(log(data$EU_all.sero_d1),na.rm=T) ##prior:: the max you may get from the data
+    # MAb_0<- mean(log(data$LPS[which(data$AGE==0)])) ##prior:: assume that AGE==0 is ~~ to MAB at birth
+    beta_0<- 0.5 ##prior:: has to be decided according to how long you think mab last for
+
+		##the ones you will 'fit'
+		p_i<- 3 ##starting value of i   ##5
+		p_k<- 0.25 ##starting value of k   ##1
+		p_mab<- 4 ##starting value of mab   ##1
+		c_i<- p_i ##starting value of i
+		c_k<- p_k ##starting value of k
+    c_mab<- p_mab ##starting value of mab
+
+    # ##can try to run model
+    # test<- data.frame(age=dataS$MIDAGE, LPS_model=model(c_i,c_k), LPS_data=dataS$LPS_ME)
+    # ggplot(test) + geom_point(aes(x=age, y=LPS_model, col="LPS_model")) + geom_point(aes(x=age, y=LPS_data, col="LPS_data"))
+    #
+    # ##this is how mab will behave, good? or change?
+    # mabts<- data.frame(mab= MAb_0*exp(-beta_0*(0:24)), age=0:24)
+    # ggplot(mabts) + geom_point(aes(x=age, y=mab))
+
+		mcmc_steps<- 100000 ##how many steps the MCMC tries (sample of i and k)
+		p_likelihood<- 0 ##the first likelihood, assumed to be zero
+		accepted_i<- rep(NA, mcmc_steps) ##we will save the accepted i here
+		accepted_k<- rep(NA, mcmc_steps) ##we will save the accepted i here
+		accepted_mab<- rep(NA, mcmc_steps) ##we will save the accepted i here
+
+		step<- 1
+		repeat{
+
+			model_sol<- model(mab=c_mab, i=c_i, k=c_k)
+			c_likelihood<- calcLikelihood(model_points=model_sol, data_points=dataS)
+			alpha<- exp(c_likelihood - p_likelihood)
+
+			if(step==1){
+				accept<- TRUE ##assume c_i and c_k accepted
+			}else{
+				accept<- FALSE ##assume c_i and c_k not accepted
+				if(runif(1)<alpha){ ##test if accepted
+					accept<- TRUE ##mark as accepted to make other decisions below
+				}
+			}
+
+			if(accept){
+
+				accepted_i[step]<- c_i
+				accepted_k[step]<- c_k
+				accepted_mab[step]<- c_mab
+
+				##change previous values to current ones
+				p_i<- c_i
+				p_k<- c_k
+				p_mab<- c_mab
+				p_likelihood<- c_likelihood
+
+				c_i<- sampleDist(mean=c_i, sd=0.01, min=0, max=100)
+				c_k<- sampleDist(mean=c_k, sd=0.01, min=0, max=100)
+				c_mab<- sampleDist(mean=c_mab, sd=0.05, min=0, max=100)
+
+			}else{
+
+				accepted_i[step]<- p_i
+				accepted_k[step]<- p_k
+				accepted_mab[step]<- p_mab
+
+				##change previous values to current ones
+				p_i<- p_i
+				p_k<- p_k
+				p_mab<- p_mab
+				p_likelihood<- p_likelihood
+
+				c_i<- sampleDist(mean=p_i, sd=0.01, min=0, max=100)
+				c_k<- sampleDist(mean=p_k, sd=0.01, min=0, max=100)
+				c_mab<- sampleDist(mean=p_mab, sd=0.05, min=0, max=100)
+			}
+
+			if(step>= mcmc_steps) break; ##(*)
+			step<- step+1
+
+      if(step %% 1000 ==0) print(paste("MCMC at",round(100*step/mcmc_steps),"%"))
+
+}
+
+##################################
+
+chains<- data.frame(step=1:mcmc_steps, i=accepted_i, k=accepted_k, mab=accepted_mab)
+
+##these are good if they converge to a 'plateau' (always with noise)
+# ggplot(chains) +
+#     geom_line(aes(x=step, y=i), col="red") +
+#     geom_line(aes(x=step, y=k), col="blue") +
+#     geom_line(aes(x=step, y=mab), col="green")
+
+##################################
+
+burnin<- 1/4 * mcmc_steps ##we will burnin this amount of the chain
+posteriors<- chains[burnin:mcmc_steps,]
+
+gg_chain<- ggplot(posteriors) +
+          geom_line(aes(x=step, y=i), col='red') +
+          geom_line(aes(x=step, y=k), col='blue') +
+          geom_line(aes(x=step, y=mab), col='green') +
+          theme_bw() +
+          ggtitle("A: Posterior Chains") +
+          theme(axis.text=element_text(size=10),
+                axis.title=element_text(size=10,face="bold"),
+                plot.title = element_text(size=10))
+
+gg_i_den<- ggplot(posteriors) + geom_density(aes(x=i), col='red') + theme_bw() +
+            ggtitle("Density Distribution of i") +
+            theme(axis.text=element_text(size=10),
+                  axis.title=element_text(size=10,face="bold"),
+                  plot.title = element_text(size=10))
+            
+gg_k_den<- ggplot(posteriors) + geom_density(aes(x=k), col='blue') + theme_bw() +
+          ggtitle("Density Distribution of k") +
+          theme(axis.text=element_text(size=10),
+                axis.title=element_text(size=10,face="bold"),
+                plot.title = element_text(size=10))
+
+gg_mab_den<- ggplot(posteriors) + geom_density(aes(x=mab), col='green') + theme_bw() +
+              ggtitle("Density Distribution of mab") +
+              theme(axis.text=element_text(size=10),
+                    axis.title=element_text(size=10,face="bold"),
+                    plot.title = element_text(size=10))
+
+##these are good if they appear as constant with noise
+##and distributions do not look bimodal
+plot_grid(gg_chain, gg_i_den, gg_k_den,gg_mab_den,  ncol=2)
+# ggsave(file=here("Outputs", "LPS_Ab", "Posteriors_model1.png"), width=9, height=6)
+
+#################################
+
+##to see how the model looks vs data, we need to run the model N times
+##with the values of i and k from our posteriors, we can do this
+##by brute force sampling i and k posteriors, then running the model for each
+##then calculating mean and sd
+
+sample_N<- 1000
+samples<- sample(1:nrow(posteriors), sample_N)
+sample_posteriors<- posteriors[samples,]
+
+all_model_sol<- matrix(0, ncol=nrow(dataS), nrow=sample_N)
+all_ninf_sol<- matrix(0, ncol=nrow(dataS), nrow=sample_N)
+all_phi_sol<- matrix(0, ncol=nrow(dataS), nrow=sample_N)
+all_mab_sol<- matrix(0, ncol=nrow(dataS), nrow=sample_N)
+for(ss in 1:sample_N){
+  sample_i<- sample_posteriors$i[ss]
+  sample_k<- sample_posteriors$k[ss]
+  sample_mab<- sample_posteriors$mab[ss]
+  model_sol<- model(mab=sample_mab, i=sample_i, k=sample_k)
+  ninf<- lambda_0 * dataS$MIDAGE
+  phi<- phi_0 * exp(-sample_i * exp(-sample_k*ninf))
+  mab<- sample_mab*exp(-beta_0*dataS$MIDAGE)
+  all_model_sol[ss,]<- model_sol
+  all_ninf_sol[ss,]<- ninf
+  all_phi_sol[ss,]<- phi
+  all_mab_sol[ss,]<- mab
+}
+
+model_me<- apply(all_model_sol, MARG=2, FUN=mean)
+model_sd<- apply(all_model_sol, MARG=2, FUN=sd)
+ninf_me<- apply(all_ninf_sol, MARG=2, FUN=mean)
+ninf_sd<- apply(all_ninf_sol, MARG=2, FUN=sd)
+mab_me<- apply(all_mab_sol, MARG=2, FUN=mean)
+mab_sd<- apply(all_mab_sol, MARG=2, FUN=sd)
+phi_me<- apply(all_phi_sol, MARG=2, FUN=mean)
+phi_sd<- apply(all_phi_sol, MARG=2, FUN=sd)
+
+model_vs_data<- rbind(
+                data.frame(MIDAGE=dataS$MIDAGE, MEAN=model_me, SD=model_sd, ninf_MEAN=ninf_me, ninf_SD=ninf_sd, mab_MEAN=mab_me, mab_SD=mab_sd, phi_MEAN=phi_me, phi_SD=phi_sd, type='model'),
+                data.frame(MIDAGE=dataS$MIDAGE, MEAN=dataS$LPS_ME, SD=dataS$LPS_SD, ninf_MEAN=NA, ninf_SD=NA, mab_MEAN=NA, mab_SD=NA, phi_MEAN=NA, phi_SD=NA, type='data')
+                )
+# ggsave(file=here("Outputs", "LPS_Ab", "LPS_Ab_fit.png"), height = 7, width = 12)
+```
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, ft.align = "centre", ft.width = 5, out.width = "5.5in"}
+#| fig-cap: B. Model 1 fit for model components mab and theta
+#| 
+gg_mab_phi<- ggplot(model_vs_data %>% filter(type=="model")) +
+      geom_ribbon(aes(x=MIDAGE, ymin=mab_MEAN-mab_SD, ymax=mab_MEAN+mab_SD), col='pink', alpha=0.3) +
+      geom_point(aes(x=MIDAGE, y=mab_MEAN), col='pink') +
+      geom_ribbon(aes(x=MIDAGE, ymin=phi_MEAN-phi_SD, ymax=phi_MEAN+phi_SD), col='gold', alpha=0.3) +
+      geom_point(aes(x=MIDAGE, y=phi_MEAN), col='gold') +
+      theme_bw() +
+      xlab("Mid-age in months") +
+      ylab("Anti-STm LPS IgG titers (log)") +
+      ggtitle("B: Mab and Theta (θ) by age") +
+      scale_x_continuous(breaks = c(seq(0,60,5))) +
+      theme(axis.text=element_text(size=10),
+            axis.title=element_text(size=10,face="bold"),
+            plot.title = element_text(size=10))
+
+gg_mab_phi
+```
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, ft.align = "centre", ft.width = 5, out.width = "5.5in"}
+#| fig-cap: C. Model 1 fit for number of infections by age
+gg_ninf<- ggplot(model_vs_data %>% filter(type=="model")) +
+      geom_ribbon(aes(x=MIDAGE, ymin=ninf_MEAN-ninf_SD, ymax=ninf_MEAN+ninf_SD), alpha=0.3) +
+      geom_point(aes(x=MIDAGE, y=ninf_MEAN)) +
+      theme_bw() +
+      xlab("Mid-age in months") +
+      ylab("Number of infections") +
+      ggtitle("C: Number of infections by age") +
+      scale_x_continuous(breaks = c(seq(0,60,5))) +
+      theme(axis.text=element_text(size=10),
+            axis.title=element_text(size=10,face="bold"),
+            plot.title = element_text(size=10))
+
+gg_ninf
+```
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, ft.align = "centre", ft.width = 5, out.width = "5.5in"}
+#| fig-cap: D. Model 1 fit, blue points are fitted GMC by age band, blue shaded area are 95% prediction intervals, pink points are observed GMC, pink shaded area are 95% prediction intervals.
+
+gg_fit_orig<- ggplot(model_vs_data) +
+      geom_ribbon(aes(x=MIDAGE, ymin=MEAN-SD, ymax=MEAN+SD, fill=type), alpha=0.3) +
+      geom_point(aes(x=MIDAGE, y=MEAN, col=type)) +
+      theme_bw() +
+      xlab("Mid-age in months") +
+      ylab("Anti-STm LPS IgG titers (log)") +
+      ggtitle("D: LPS IgG titres by age: model vs data") +
+      scale_x_continuous(breaks = c(seq(0,60,5))) +
+      theme(axis.text=element_text(size=10),
+            axis.title=element_text(size=10,face="bold"),
+            plot.title = element_text(size=10))
+
+gg_fit_orig
+# row1<- plot_grid(gg_chain, gg_i_den, gg_k_den, gg_mab_den, ncol=2)
+# p <- print(plot_grid(row1, gg_mab_phi, gg_ninf, gg_fit_orig, nrow=4) )
+# jpeg("~/work/PhD/VacciNTS/Analysis/Modelling/NTS_COP_modeling/Outputs/LPS_Ab/LPS_Ab.jpeg", width=1200,height=900)
+# print(p)
+# dev.off()
+
+# print(plot_grid(gg_mab_phi, gg_ninf, gg_fit_orig, nrow=3))
+
+```
+
+### Model 2: Changing force of infection with age
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, ft.align = "centre", ft.width = 5, out.width = "5.5in"}
+#| fig-cap: Model 2 outputs using Markov Chain Monte Carlo (MCMC) to estimate model parameters, A. Posterior chains and posterior distributions of parameters i, k, and mab
+
+sampleDist<- function(mean, sd, min, max){
+  repeat{
+    point= rnorm(1,mean=mean,sd=sd)
+    if(point>=min & point<=max) break;
+  }
+  return(point)
+}
+
+calcLikelihood<- function(model_points, data_points){
+  probs<- dnorm(model_points, mean=data_points$LPS_ME, sd=data_points$LPS_SD)
+  loglikelihood<- sum(log(probs))
+  return(loglikelihood)
+}
+
+##using "_0" for everything you assume is set at the start
+model<- function(mab_0, i, k, lambda_b){
+  ninf <- mx*exp(-w*exp(-r*dataS$MIDAGE))*lambda_b ## cumulative number of infections by each age bin, lambda is gompertz curve by function of age(i.e. 0.667 infections per month) = probability total = 1, multiply by av. lambda / av_duration of infection
+  cum_ninf <- mx*exp(-w*exp(-r*dataS$MIDAGE))*lambda_b*dataS$MIDAGE
+  phi<- phi_0 * exp(-i * exp(-k*ninf))
+  mab<- mab_0*exp(-beta_0*dataS$MIDAGE)
+  m<- phi + mab
+  return(m)
+}
+
+##define some parameters
+##constants
+## Number of infections over time: mx/r/w will be updated/ informed by analysis of PCR and stool culture data in the SAINTS cohort - currently based on gompertz formula
+mx=1  # upper limit of new infections (cumulative) by age 60 months = 40 if 1 infection every 6 weeks on average across cohort - may need to adjust for age dist
+r=0.2 # exponential phase where enter high feco-oral transmission at weaning/ crawling age  
+w=3   # age in months before before enter exponential phase (x-axis displacement) - weaning 
+#av_dur = 0.25 # average duration of exposures/ infection in months average 1.11 weeks - based on our cohort (might be less as didn't do less than 1 weekly sampling)
+#me = 0.667 #average monthly exposure rate if 1 infection every 6 weeks on average (based on 16% point prevalence and 1 week duration of infection from our cohort) - might be overestimate??
+
+#lambda_0<- 0.11 ##prior:: no idea what this should be! literature, dont forget it has to be per month # Lambda now defined by gompertz relationship
+
+phi_0<- max(log(data$EU_all.sero_d1),na.rm=T) ##prior:: the max you may get from the data
+#MAb_0<- mean(log(data$LPS[which(data$AGE==0)])) ##prior:: assume that AGE==0 is ~~ to MAB at birth
+beta_0<- 0.5 ##prior:: has to be decided according to how long you think mab last for
+
+##the ones you will 'fit'
+p_i<- 3 ##starting value of i
+p_k<- 0.25 ##starting value of k
+p_mab_0<- 4 ##starting value of mab_0
+p_lambda_b <- 0.25##starting value of baseline lambda
+c_i<- p_i ##starting value of i
+c_k<- p_k ##starting value of k
+c_mab_0<- p_mab_0 ##starting value of mab_0
+c_lambda_b <- p_lambda_b ##starting value of baseline lambda
+
+
+# ##can try to run model
+# test<- data.frame(age=dataS$MIDAGE, LPS_model=model(c_i,c_k), LPS_data=dataS$LPS_ME)
+# ggplot(test) + geom_point(aes(x=age, y=LPS_model, col="LPS_model")) + geom_point(aes(x=age, y=LPS_data, col="LPS_data"))
+#
+# ##this is how mab_0 will behave, good? or change?
+# mabts<- data.frame(mab= MAb_0*exp(-beta_0*(0:24)), age=0:24)
+# ggplot(mabts) + geom_point(aes(x=age, y=mab))
+
+mcmc_steps<- 100000 ##how many steps the MCMC tries (sample of i and k)
+p_likelihood<- 0 ##the first likelihood, assumed to be zero
+accepted_i<- rep(NA, mcmc_steps) ##we will save the accepted i here
+accepted_k<- rep(NA, mcmc_steps) ##we will save the accepted i here
+accepted_mab_0<- rep(NA, mcmc_steps) ##we will save the accepted i here
+accepted_lambda_b<- rep(NA, mcmc_steps) ##we will save the accepted i here
+
+
+step<- 1
+repeat{
+  
+  model_sol<- model(mab_0=c_mab_0, i=c_i, k=c_k, lambda_b=c_lambda_b)
+  c_likelihood<- calcLikelihood(model_points=model_sol, data_points=dataS)
+  alpha<- exp(c_likelihood - p_likelihood)
+  
+  if(step==1){
+    accept<- TRUE ##assume c_i and c_k accepted
+  }else{
+    accept<- FALSE ##assume c_i and c_k not accepted
+    if(runif(1)<alpha){ ##test if accepted
+      accept<- TRUE ##mark as accepted to make other decisions below
+    }
+  }
+  
+  if(accept){
+    
+    accepted_i[step]<- c_i
+    accepted_k[step]<- c_k
+    accepted_mab_0[step]<- c_mab_0
+    accepted_lambda_b[step]<- c_lambda_b
+    
+    ##change previous values to current ones
+    p_i<- c_i
+    p_k<- c_k
+    p_mab_0<- c_mab_0
+    p_lambda_b<- c_lambda_b
+    p_likelihood<- c_likelihood
+    
+    c_i<- sampleDist(mean=c_i, sd=0.01, min=0, max=100)
+    c_k<- sampleDist(mean=c_k, sd=0.01, min=0, max=100)
+    c_mab_0<- sampleDist(mean=c_mab_0, sd=0.05, min=0, max=100)
+    c_lambda_b<- sampleDist(mean=c_lambda_b, sd=0.025, min=0, max=100)
+    
+    
+  }else{
+    
+    accepted_i[step]<- p_i
+    accepted_k[step]<- p_k
+    accepted_mab_0[step]<- p_mab_0
+    accepted_lambda_b[step]<- p_lambda_b
+    
+    ##change previous values to current ones
+    p_i<- p_i
+    p_k<- p_k
+    p_mab_0<- p_mab_0
+    p_lambda_b<- p_lambda_b
+    p_likelihood<- p_likelihood
+    
+    c_i<- sampleDist(mean=p_i, sd=0.01, min=0, max=100)
+    c_k<- sampleDist(mean=p_k, sd=0.01, min=0, max=100)
+    c_mab_0<- sampleDist(mean=p_mab_0, sd=0.05, min=0, max=100)
+    c_lambda_b<- sampleDist(mean=p_lambda_b, sd=0.01, min=0, max=100)
+  }
+  
+  if(step>= mcmc_steps) break; ##(*)
+  step<- step+1
+  
+  if(step %% 1000 ==0) print(paste("MCMC at",round(100*step/mcmc_steps),"%"))
+  
+}
+
+##################################
+
+chains<- data.frame(step=1:mcmc_steps, i=accepted_i, k=accepted_k, mab_0=accepted_mab_0, lambda_b=accepted_lambda_b)
+
+##these are good if they converge to a 'plateau' (always with noise)
+# ggplot(chains) +
+#   geom_line(aes(x=step, y=i), col="red") +
+#   geom_line(aes(x=step, y=k), col="blue") +
+#   geom_line(aes(x=step, y=mab_0), col="green")+
+#   geom_line(aes(x=step, y=lambda_b), col="purple")
+
+
+##################################
+
+burnin<- 1/4 * mcmc_steps ##we will burnin this amount of the chain
+posteriors<- chains[burnin:mcmc_steps,]
+
+gg_chain<- ggplot(posteriors) +
+  geom_line(aes(x=step, y=i), col='red') +
+  geom_line(aes(x=step, y=k), col='blue') +
+  geom_line(aes(x=step, y=mab_0), col='green') +
+  geom_line(aes(x=step, y=lambda_b), col='purple') +
+  theme_bw() +
+  ggtitle("A: Posterior Chains") +
+  theme(axis.text=element_text(size=10),
+        axis.title=element_text(size=10,face="bold"),
+        plot.title = element_text(size=10))
+
+gg_i_den<- ggplot(posteriors) + geom_density(aes(x=i), col='red') + theme_bw() +
+  ggtitle("Density Distribution of i") +
+  theme(axis.text=element_text(size=10),
+        axis.title=element_text(size=10,face="bold"),
+        plot.title = element_text(size=10))
+
+gg_k_den<- ggplot(posteriors) + geom_density(aes(x=k), col='blue') + theme_bw() +
+  ggtitle("Density Distribution of k") +
+  theme(axis.text=element_text(size=10),
+        axis.title=element_text(size=10,face="bold"),
+        plot.title = element_text(size=10))
+
+gg_mab_0_den<- ggplot(posteriors) + geom_density(aes(x=mab_0), col='green') + theme_bw() +
+  ggtitle("Density Distribution of mab_0") +
+  theme(axis.text=element_text(size=10),
+        axis.title=element_text(size=10,face="bold"),
+        plot.title = element_text(size=10))
+
+gg_lambda_b_den<- ggplot(posteriors) + geom_density(aes(x=lambda_b), col='purple') + theme_bw() +
+  ggtitle("Density Distribution of lambda_b") +
+  theme(axis.text=element_text(size=10),
+        axis.title=element_text(size=10,face="bold"),
+        plot.title = element_text(size=10))
+
+##these are good if they appear as constant with noise
+##and distributions do not look bimodal
+plot_grid(gg_chain, gg_i_den, gg_k_den,gg_mab_0_den,gg_lambda_b_den, ncol=2)
+# ggsave(file=here("Outputs", "LPS_Ab", "Posteriors_model2.png"), width=9, height=6)
+#mean(posteriors$lambda_b)*60
+#################################
+
+##to see how the model looks vs data, we need to run the model N times
+##with the values of i and k from our posteriors, we can do this
+##by brute force sampling i and k posteriors, then running the model for each
+##then calculating mean and sd
+
+sample_N<- 1000
+samples<- sample(1:nrow(posteriors), sample_N)
+sample_posteriors<- posteriors[samples,]
+
+all_model_sol<- matrix(0, ncol=nrow(dataS), nrow=sample_N)
+all_ninf_sol<- matrix(0, ncol=nrow(dataS), nrow=sample_N)
+all_phi_sol<- matrix(0, ncol=nrow(dataS), nrow=sample_N)
+all_mab_0_sol<- matrix(0, ncol=nrow(dataS), nrow=sample_N)
+
+for(ss in 1:sample_N){
+  sample_i<- sample_posteriors$i[ss]
+  sample_k<- sample_posteriors$k[ss]
+  sample_mab_0<- sample_posteriors$mab_0[ss]
+  sample_lambda_b<- sample_posteriors$lambda_b[ss]
+  model_sol<- model(mab_0=sample_mab_0, i=sample_i, k=sample_k, lambda_b=sample_lambda_b)
+  ninf<- mx*exp(-w*exp(-r*dataS$MIDAGE))*sample_lambda_b
+  phi<- phi_0 * exp(-sample_i * exp(-sample_k*ninf))
+  mab_0<- sample_mab_0*exp(-beta_0*dataS$MIDAGE)
+  all_model_sol[ss,]<- model_sol
+  all_ninf_sol[ss,]<- ninf
+  all_phi_sol[ss,]<- phi
+  all_mab_0_sol[ss,]<- mab_0
+}
+
+model_me<- apply(all_model_sol, MARG=2, FUN=mean)
+model_sd<- apply(all_model_sol, MARG=2, FUN=sd)
+ninf_me<- apply(all_ninf_sol, MARG=2, FUN=mean)
+ninf_sd<- apply(all_ninf_sol, MARG=2, FUN=sd)
+mab_0_me<- apply(all_mab_0_sol, MARG=2, FUN=mean)
+mab_0_sd<- apply(all_mab_0_sol, MARG=2, FUN=sd)
+phi_me<- apply(all_phi_sol, MARG=2, FUN=mean)
+phi_sd<- apply(all_phi_sol, MARG=2, FUN=sd)
+
+model_vs_data<- rbind(
+  data.frame(MIDAGE=dataS$MIDAGE, MEAN=model_me, SD=model_sd, ninf_MEAN=ninf_me, ninf_SD=ninf_sd, mab_0_MEAN=mab_0_me, mab_0_SD=mab_0_sd, phi_MEAN=phi_me, phi_SD=phi_sd, type='model'),
+  data.frame(MIDAGE=dataS$MIDAGE, MEAN=dataS$LPS_ME, SD=dataS$LPS_SD, ninf_MEAN=NA, ninf_SD=NA, mab_0_MEAN=NA, mab_0_SD=NA, phi_MEAN=NA, phi_SD=NA, type='data')
+)
+```
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, ft.align = "centre", ft.width = 5, out.width = "5.5in"}
+#| fig-cap: B. Model 2 fit for model components mab and theta
+gg_mab_0_phi<- ggplot(model_vs_data %>% filter(type=="model")) +
+  geom_ribbon(aes(x=MIDAGE, ymin=mab_0_MEAN-mab_0_SD, ymax=mab_0_MEAN+mab_0_SD), col='pink', alpha=0.3) +
+  geom_point(aes(x=MIDAGE, y=mab_0_MEAN), col='pink') +
+  geom_ribbon(aes(x=MIDAGE, ymin=phi_MEAN-phi_SD, ymax=phi_MEAN+phi_SD), col='gold', alpha=0.3) +
+  geom_point(aes(x=MIDAGE, y=phi_MEAN), col='gold') +
+  theme_bw() +
+  xlab("Mid-age in months") +
+  ylab("Anti-STm LPS IgG titers (log)") +
+  ggtitle("B: mab_0 and Theta (θ) by age") +
+  scale_x_continuous(breaks = c(seq(0,60,5))) +
+  theme(axis.text=element_text(size=10),
+        axis.title=element_text(size=10,face="bold"),
+        plot.title = element_text(size=10))
+
+gg_mab_0_phi
+```
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, ft.align = "centre", ft.width = 5, out.width = "5.5in"}
+#| fig-cap: C. Model 2 fit for number of infections by age
+
+gg_ninf<- ggplot(model_vs_data %>% filter(type=="model")) +
+  geom_ribbon(aes(x=MIDAGE, ymin=ninf_MEAN-ninf_SD, ymax=ninf_MEAN+ninf_SD), alpha=0.3) +
+  geom_point(aes(x=MIDAGE, y=ninf_MEAN)) +
+  theme_bw() +
+  xlab("Mid-age in months") +
+  ylab("Number of infections") +
+  ggtitle("C: Number of infections by age") +
+  scale_x_continuous(breaks = c(seq(0,60,5))) +
+  theme(axis.text=element_text(size=10),
+        axis.title=element_text(size=10,face="bold"),
+        plot.title = element_text(size=10))
+
+gg_ninf
+```
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, ft.align = "centre", ft.width = 5, out.width = "5.5in"}
+#| fig-cap: D. Model fit, blue points are fitted GMC by age band, blue shaded area are 95% prediction intervals, pink points are observed GMC, pink shaded area are 95% prediction intervals.
+
+gg_fit<- ggplot(model_vs_data) +
+  geom_ribbon(aes(x=MIDAGE, ymin=MEAN-SD, ymax=MEAN+SD, fill=type), alpha=0.3) +
+  geom_point(aes(x=MIDAGE, y=MEAN, col=type)) +
+  theme_bw() +
+  xlab("Mid-age in months") +
+  ylab("Anti-STm LPS IgG titers (log)") +
+  ggtitle("D: LPS IgG titres by age: model vs data - changing FOI") +
+  scale_x_continuous(breaks = c(seq(0,60,5))) +
+  theme(axis.text=element_text(size=10),
+        axis.title=element_text(size=10,face="bold"),
+        plot.title = element_text(size=10))
+
+gg_fit
+# ggsave(file=here("Outputs", "LPS_Ab", "LPS_Ab_fit_change_FOI_fit_lambda.png"), height = 7, width = 12)
+
+```
+
+Model 2 was selected as the best fit model, supporting the hypothesis that the relationship of exposure to eNTS is consistent with a changing (sigmoidal) FOI with age, as reflected in O4 OAg IgG responses in children. This model estimated that on average at birth children were experiencing 0.2 (0.18 – 0.22) eNTS average infections capable of inducing a serotype specific serological response, increasing to 2 (95% CI 1.1 to 3.0) by 6 months of age and 4 (95% CI 2.1 to 5.7) by 12 months of age, plateauing at 5 (95% CI 2.2 to 7.1) eNTS infections cumulatively by age 20 - 60 months.
+
+## Discussion
+
+Model fit was improved assuming FOI increased around age of weaning (4-6 months); this is consistent with the observed age-stratified point prevalence of eNTS detected on stool microbiology in the same study cohort. Next steps include modeling age-stratified serological responses versus disease incidence, and cross-validation considering risk factors and epidemiological setting.
+
+## Conclusions

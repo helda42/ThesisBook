@@ -1,0 +1,655 @@
+---
+title: "Relationship between NTS immunity and age in Children aged 0-60 months across four sub-Saharan African sites: Principled Change Point Analysis"
+format:    
+  pdf:
+    geometry:
+      - top=20mm
+      - bottom=20mm
+      - left=20mm
+      - right=20mm
+    toc: true
+    number-sections: true
+    colorlinks: true
+    include-in-header:
+      text: |
+        \usepackage{typearea}
+    cite-method: citeproc
+    bibliography: references.bib
+    csl: diabetologia.csl
+editor: visual
+---
+
+## Introduction
+
+Understanding the age-distribution of natural immunity to non-typhoidal salmonella (NTS) in children living in areas endemic to invasive NTS is key to understanding potential windows of immune-susceptibility to disease. This knowledge is key to informing vaccine development, including identifying the ages at which children have a nadir of antibody that could be boosted by vaccine-derived immunity, and to explore the potential role for maternal vaccines. As described in the previous chapter, the key components are the role of maternally acquired immunity in the first 6 months of life, followed by acquisition of naturally acquired immunity after 6 months of life, which increases rapidly after exposure to enteric NTS. Data on the age of nadir and antibody concentration at this nadir across a range of epidemiological settings is essential to guide vaccine strategies across different countries and geographic settings with different patterns of host risk factors.
+
+Malaria has been associated with increased risk of developing invasive NTS disease in children (3,4), which has been proposed to impair the innate, humoral and cell-mediated immune responses against NTS (5,6). Immunoglobulin-gamma (IgG) antibodies against NTS lipopolysaccharide (LPS) have been associated with protection against iNTS (7), and are being currently investigated as a potential correlate of protection for clinical vaccine trials. However, little attention has been paid to the role malaria may have on maternally acquired immunity. Placental malaria has been associated with impaired transplacental transfer of antibodies to a range of vaccine preventable infections (8–13), although the association has been inconsistent across studies.
+
+## Methods
+
+### Study Design
+
+The relationship between age and antibody concentrations for IgG to S. Typhimurium and S.Enteritidis O-Ag were examined from the cross-sectional serosurveys for each VacciNTS site; Malawi, Kenya, Burkina Faso. In Malawi, the relationship between age and antibody concentration was stratified by malaria transmission intensity. Site-specific malaria transmission data was not available.
+
+### Definitions
+
+-   Low Malaria Transmission \<5% MRDT positivity
+
+-   High Malaria Transmission \>=5% positivity
+
+### Statistical Methods
+
+A flexible modelling framework using linear splines for censored regression models to estimate serological profiles, as developed by Henrion *et a*l [@swarthout_waning_2022].\], was used to identify the peaks and troughs of IgG antibodies to a range of pneumococcal serotypes, by age at a population level.
+
+Before model fitting, the IgG data are log-transformed, so that the fitted arithmetic mean corresponds to the log of the geometric mean on the original data scale. The ELISA assays for anti-Salmonella O-Antigen antibodies had a lower limit of detection (LLD, 3 ELISA Units/mL); as a result any observations below the detection limit (DL) are left-censored. To account for this, censored regression was used. A Gaussian linear model for 𝑦, the natural logarithm of the measured IgG concentration, was selected, with a single explanatory variable, 𝑥,
+
+$$
+age: y = \beta0 + \beta1x + \epsilon = f(x, \beta) + \epsilon (1)
+$$ where: $\epsilon \sim N(0, \sigma^2)$
+
+As we cannot not directly observe 𝑦, we can use 𝑦𝑀, where values below the detection limit are censored:
+
+$$
+𝑦𝑀 = {𝑦, 𝑦 > \tau, 𝑦 ≤ \tau} 
+$$ where $\tau$ is the lower limit of detection ($\tau$ = 3EU/mL in our data).
+
+Assuming a Gaussian model, we can write, for an observed data set:
+
+$$ {𝑥_𝑖 , 𝑦𝑀,𝑖 }$$ $$ 𝑖=1 𝑛  $$
+
+the loglikelihood below, utilising the maximum likelihood inference theory:
+
+$$𝑙(\beta, \sigma^2 ) = \sum 𝑦𝑀,𝑖>\tau log (\phi ((𝑦𝑀,𝑖 − 𝑓(𝑥,\beta)) /\sigma))+ \sum 𝑦 log 𝑀,𝑖≤\tau (\phi(𝑓(𝑥, \beta) − \tau)) (2)$$
+
+To identify and estimate change points I used linear regression splines to fit a model that allows the linear relationship between age and IgG to change over time. Fitting a piece-wise linear regression model, allows the slope to change at specific values of the predictor variable. These change points, or knots, split the model into intervals; within each interval the relationship between predictor and response is linear.
+
+For a response 𝑦 and a predictor 𝑥, a linear spline with 3 knots at locations $𝑥 = 𝑘_1 , 𝑘_2 , 𝑘_3$
+
+$$ 𝑦 = \beta_0 + \beta_1 ⋅ 𝑥 + \beta_2 ⋅ (𝑥 − 𝑘_1 ) + \beta_3 ⋅ (𝑥 −𝑘_2 )+ +\beta_4 ⋅ (𝑥 − 𝑘_3 ) + \epsilon (3) $$
+
+where (𝑥)+ = 𝑥 if 𝑥 ≥ 0 and 0 otherwise. This means that the fitted curve has different slopes in different intervals of values of 𝑥:
+
+$$interval Slope (-Inf, k_1) \beta_1 [k_1,k_2) \beta_1 + \beta_2 [k_2,k_3) \beta_1 + \beta_2 + \beta_3 [k_3,Inf) \beta_1 + \beta_2 + \beta_3 + \beta_44$$
+
+Usually splines are used to produce smooth fits using cubic rather than linear functions, and knot locations are either user-provided or set to regular intervals in the predictor variable. For the purpose of this analysis however, the number and the locations of the knots, i.e., the change points, are of interest themselves and making statistical inference on the knot locations is a key research question. Therefore the knot locations $𝑘_1 , 𝑘_2 , 𝑘_3...$ are added as model parameters and estimated using numerical optimisation; minimisation of a least squares function. Confidence intervals for the locations of the knots and the slopes were derived using bootstrapping (bootstrap percentile method), as maximum likelihood can not be used after making the knots parameters in the model.
+
+Models were fit with a number of knots ranging from zero to three, and the best fitting model was selected by Akaike Information Criterion (AIC).
+
+Implementation was done in the R environment for statistical programming, using packages rms (for linear spline terms), censReg (for the censored regression likelihood), boot (for the bootstrapped CIs) and custom code to estimate model parameters and selecting the number of knots / changepoints.
+
+## Results
+
+### VacciNTS Sites
+
+#### Descriptive Analysis
+
+Overall O-Ag IgG antibody levels for *S.* Typhimurium ranged from in Malawi a median of 28.0 EU/ml (IQRL 7.4 - 91.6) , Burkina Faso 44.0 (16.3 – 129.6), and Kenya 33.4 (13.0 – 103.4) (@tbl-desc). For *S.* Enteritidis values were for Malawi 21.2 (8.1 – 47.9), Burkina Faso 21.2 (8.1 – 47.9), and Kenya 30.5 (10.7 – 121.1).
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+library(censReg) # for Tobin / censored regression models
+library(rms) # for spline terms
+library(boot) # to compute adjusted percentile method bootstrap CIs
+library(tidyverse)
+library(grid)
+library(gridExtra)
+library(here)
+library(rio)
+library(rlist)
+library(cowplot)
+library(flextable)
+library(scrutiny)
+
+## Plot function
+ggPlotFun<-function(fit,strain,varNameOrigNum,DL=3.5,colModel="red",colModelCI="red",colData="grey50",colGeoM="black",colChangepoints="grey70",alphaModelCI=70,alphaChangepoints=150,alphaData=50,cexData=0.2,cexGeoM=1,doLegend=TRUE,xLegPoints=38,xLegRibbons=c(48,51),yLegMin=4,plotModel=TRUE,colAnnot="black",xAnnot=60,cexAnnot=2,cexText=5,doGeoMConfInt=FALSE,axisLabels=TRUE,s,c){
+  yMin<-min(c(DL,fit$datGeoM$geoM_better))
+  yMax<-max(fit$dat[,varNameOrigNum],na.rm=TRUE)
+  
+  if(plotModel){
+    dfCI<-data.frame(x=fit$xxCI,ymin=fit$yyLow,ymax=fit$yyHigh)
+    dfFit<-data.frame(x=fit$xx,y=fit$yy)
+    dfKnots<-NULL
+    dfKnotsCI<-NULL
+    if(fit$k>0){
+      dfKnots<-data.frame(x=fit$coefs[2+fit$k+1+1:fit$k])
+      dfKnotsCI<-data.frame(x=numeric(),y=numeric(),k=integer())
+      for(i in 1:fit$k){
+        dfKnotsCI<-rbind(dfKnotsCI,data.frame(x=fit$knotCIs[[i]]$perc[4:5],ymin=rep(10^(log10((1+(i-1)*0.11)*0.75*yMax)),2),ymax=rep(10^(log10((1.1+(i-1)*0.11)*0.75*yMax)),2),k=i))
+      }
+    }
+  }
+  
+  
+  if(doGeoMConfInt){
+    varNameOrig<-gsub(varNameOrigNum,pattern="_[a-zA-Z0-9]*",replacement="")
+    varNameOrigNum<-paste(sep="_",varNameOrig,"num")
+    
+    fit$dat<-fit$dat %>% mutate(
+      geoMLow=NA,
+      geoMUpp=NA,
+      age_cat_gmc = fct_relevel(age_cat_gmc, c("[0,3]", "(3,6]","(6,9]","(9,12]","(12,15]", "(15,18]", "(18,21]","(21,24]","(24,27]", "(27,30]","(30,33]","(33,36]","(36,39]", "(39,42]", "(42,45]","(45,48]","(48,51]", "(51,54]","(54,57]","(57,60]"))
+    )
+    
+    for(i in 1:nrow(fit$datGeoM)){
+      if(sum(fit$dat[fit$dat$age_cat_gmc==fit$datGeoM$ageCat[i],varNameOrigNum]<3.5)>0){
+        if(sum(fit$dat[fit$dat$age_cat_gmc==fit$datGeoM$ageCat[i],varNameOrigNum]<3.5)==sum(fit$dat$age_cat_gmc==fit$datGeoM$ageCat[i])){
+          tmp<-rep(DL,2)
+        }else{
+          tmp<-exp(confint(censReg(as.formula(paste(sep="","log(",varNameOrigNum,")~1")),data=fit$dat[fit$dat$age_cat_gmc==fit$datGeoM$ageCat[i],],left=log(DL)))["(Intercept)",])
+        }
+      }else{
+        tmp<-exp(confint(lm(as.formula(paste(sep="","log(",varNameOrigNum,")~1")),data=fit$dat[fit$dat$age_cat_gmc==fit$datGeoM$ageCat[i],]))["(Intercept)",])
+      }
+      fit$datGeoM$geoMLow[i]<-tmp[1]
+      fit$datGeoM$geoMUpp[i]<-tmp[2]
+    }
+    geoM<-data.frame(age=fit$datGeoM$ageCat,geoM=paste(sep="",format(nsmall=2,round(digits=2,fit$datGeoM$geoM_better))," (",format(nsmall=2,round(digits=2,fit$datGeoM$geoMLow)),",",format(nsmall=2,round(digits=2,fit$datGeoM$geoMUpp)),")"))
+  }else{
+    geoM<-NULL
+  }
+  
+  dfText<-data.frame(
+    x=c(rep(xLegPoints+2,2),rep(xLegRibbons[2]+2,3)),
+    y=c(yLegMin*1.5*1.5,yLegMin*1.5,yLegMin*1.5*1.5,yLegMin*1.5,yLegMin),
+    lab=c("data","GMC","model fit","95% CI (model fit)","95% CI (change points)")
+  )
+  if(!plotModel){dfText<-dfText[1:2,]}
+  
+  if(doLegend){
+    mar<-c(5,0.5,0.5,0.5)
+    clipOnOff<-"off"
+  }else{
+    mar<-rep(0.5,4)
+    clipOnOff<-"on"
+  }
+  
+  rgbTmp<-col2rgb(colData)
+  rgbData<-rgb(red=rgbTmp[1],green=rgbTmp[2],blue=rgbTmp[3],alpha=alphaData,maxColorValue=255)
+  rgbTmp<-col2rgb(colGeoM)
+  rgbGeoM<-rgb(red=rgbTmp[1],green=rgbTmp[2],blue=rgbTmp[3],alpha=255,maxColorValue=255)
+  rgbTmp<-col2rgb(colModel)
+  rgbModel<-rgb(red=rgbTmp[1],green=rgbTmp[2],blue=rgbTmp[3],alpha=255,maxColorValue=255)
+  rgbTmp<-col2rgb(colModelCI)
+  rgbModelCI<-rgb(red=rgbTmp[1],green=rgbTmp[2],blue=rgbTmp[3],alpha=alphaModelCI,maxColorValue=255)
+  rgbTmp<-col2rgb(colChangepoints)
+  rgbChangepoints<-rgb(red=rgbTmp[1],green=rgbTmp[2],blue=rgbTmp[3],alpha=alphaChangepoints,maxColorValue=255)
+  
+  g<-ggplot() +
+    geom_point(data=fit$dat,mapping=aes(x=ageMonths,y=get(varNameOrigNum)),col=rgbData,pch=1,size=cexData) +
+    {if(plotModel) geom_line(data=dfFit,mapping=aes(x=x,y=y),col=rgbModel,lwd=0.5)} +
+    geom_point(data=fit$datGeoM,mapping=aes(x=ageCatNum,y=geoM_better),pch=20,size=cexGeoM,col=rgbGeoM) +
+    {if(plotModel) geom_ribbon(data=dfCI,mapping=aes(x=x,ymin=ymin,ymax=ymax),fill=rgbModelCI)} +
+    {if(plotModel) geom_vline(data=dfKnots,mapping=aes(xintercept=x),lty=2,lwd=0.5,col=rgbChangepoints)} +
+    {if(plotModel) geom_ribbon(data=dfKnotsCI,mapping=aes(x=x,ymin=ymin,ymax=ymax,group=k),fill=rgbChangepoints)} +
+    theme_light() +
+    theme(plot.margin = unit(mar, "lines"),text=element_text(size=cexText)) +
+    scale_x_continuous(breaks = seq(0, 60, by = 3)) +
+    scale_y_log10() +
+    coord_cartesian(xlim = c(0,60), ylim = c(yMin,yMax),clip=clipOnOff) +  # ylim = c(0,10000)
+    {if(axisLabels) labs(y=paste(sep="",strain," IgG concentration (EU/ml)"),x="Age (months)")} +
+    {if(!axisLabels) labs(y=NULL,x=NULL)} +
+    {if(doLegend) geom_point(data=data.frame(x=xLegPoints,y=6),mapping=aes(x=x,y=y),pch=20,size=cexGeoM,col=rgbGeoM)} +
+    {if(doLegend) geom_point(data=data.frame(x=xLegPoints,y=8),mapping=aes(x=x,y=y),pch=1,size=cexData,col=rgbData)} +
+    {if(doLegend & plotModel) geom_ribbon(data=data.frame(x=xLegRibbons,ymin=rep(yLegMin*1.5*1.5,2),ymax=rep(yLegMin*1.5*1.5*1.1,2)),mapping=aes(x=x,ymin=ymin,ymax=ymax),fill=rgbModel)} +
+    {if(doLegend & plotModel) geom_ribbon(data=data.frame(x=xLegRibbons,ymin=rep(yLegMin*1.5,2),ymax=rep(yLegMin*1.5*1.1,2)),mapping=aes(x=x,ymin=ymin,ymax=ymax),fill=rgbModelCI)} +
+    {if(doLegend & plotModel) geom_ribbon(data=data.frame(x=xLegRibbons,ymin=rep(yLegMin,2),ymax=rep(yLegMin*1.1,2)),mapping=aes(x=x,ymin=ymin,ymax=ymax),fill=rgbChangepoints)} +
+    {if(doLegend) geom_text(dat=dfText,mapping=aes(x=x,y=y,label=lab),hjust=0,vjust=0.25,size=1)} +
+    {if(doGeoMConfInt) geom_errorbar(data=fit$datGeoM,mapping=aes(x=ageCatNum,ymin=geoMLow,ymax=geoMUpp),col=colGeoM,lwd=0.15,width=0.3)} +
+   geom_text(data=data.frame(x=xAnnot,y=0.8*yMax,label=paste0(sep=" ",strain," IgG, ",c)),mapping=aes(x=x,y=y,label=label),col=colAnnot,size=cexAnnot,hjust=1,vjust=1,fontface="bold") +
+    geom_hline(yintercept=3.5, linetype="dashed", color = "red", size=0.3) +
+    geom_text(aes(x=0,y=150,label=round(CpIgG[[s]][[c]]$IgG_age0,digits=1)),size=cexAnnot, fontface="bold",col=colModel)+
+    geom_text(aes(x=5.5,y=20,label=round(CpIgG[[s]][[c]]$low,digits=1)),size=cexAnnot,fontface="bold",col=colModel)+
+    geom_text(aes(x=27,y=100,label=round(CpIgG[[s]][[c]]$peak,digits=1)),size=cexAnnot,fontface="bold",col=colModel)+
+    geom_text(aes(x=60,y=150,label=round(CpIgG[[s]][[c]]$IgG_age60,digits=1)),size=cexAnnot,fontface="bold",col=colModel)
+    #geom_line(data=risk_per_3mth_logscale,aes(y=risk_pred, x=midage)) +
+    #geom_ribbon(data=risk_per_3mth_logscale,aes(ymax=risk_high, ymin=risk_low, x=midage), fill="red", alpha=0.3 )
+  
+  return(list(g=g,fit=fit,geoM=geoM))
+}
+
+```
+
+\newpage
+
+<!-- changing the orientation to landscape --------------------------------- -->
+
+```{=tex}
+\KOMAoptions{usegeometry, paper=landscape,pagesize}
+\recalctypearea
+```
+```{r echo=FALSE, warning=FALSE, fig.align = "centre", fig.width = 8, fig.height=8, out.width = "8.5in"}
+#| label: tbl-desc
+#| tbl-cap: "Summary of number of samples included in analysis and median and interquartile ranges (IQR)"
+#| 
+st <- c("STm", "SEn")
+co <- c("Malawi", "Kenya", "BF")
+fitListIgG <- list()
+CpIgG <- list()
+parsMat <- list()
+plotls <- list()
+CpIgG_ls <- list()
+parsMat_ls <- list()
+raw <- list()
+raw_ls <- list()
+
+# raw$Malawi <- import(here("data", "VacciNTS_sites", "Malawi_STmIgG_master.csv"))
+# raw$BF <- import(here("data", "VacciNTS_sites", "BF_STmIgG_master.csv"))
+# raw$Kenya <- import(here("data", "VacciNTS_sites", "Kenya_STmIgG_master.csv"))
+
+for(s in st){
+  for(c in co){
+    fitListIgG[[s]][[c]] <- import_list(here("data", "7_data", "VacciNTS_sites", paste(sep="","fit",s,c,".RData")))  #
+    CpIgG[[s]][[c]] <- import(here("data", "7_data", "VacciNTS_sites", paste(sep="","peaksLowsTroughsMat",s,c,"_IgG.csv"))) %>% mutate(country = c, strain = s)
+    # CpIgG[[s]][[c]]$country <- mutate(country = c, strain = s)
+    parsMat[[s]][[c]] <- import(here("data", "7_data", "VacciNTS_sites", paste(sep="","parsMat",s,c,"_IgG.csv"))) %>% mutate(country = c, strain = s)
+    # parsMat[[s]][[c]] <- mutate(country = c, strain = s)
+    CpIgG[[s]][[c]]$low_age <- round(CpIgG[[s]][[c]]$low_age,digits=1)
+    CpIgG[[s]][[c]]$peak_age <- round(CpIgG[[s]][[c]]$peak_age, digits = 1)
+    # IgGT0_[[s]][[c]] <- parsMat[[s]][[c]]$IgGTime0
+    # IgGNadir_[[s]][[c]] <- parsMat[[s]][[c]]$IgGNadir
+    # IgGPeak_[[s]][[c]] <- parsMatT[[s]][[c]]$IgGPeak
+    # IgGT60_[[s]][[c]] <- parsMatTmp[[s]][[c]]$IgGTime60
+    raw[[s]][[c]] <- import(here("data", "7_data", "VacciNTS_sites", paste(sep="",c,"_",s,"IgG_master.csv"))) %>% select(EU_all.sero) %>% mutate(country = c, strain = s)
+    raw[[s]][[c]]$median <- round(median(raw[[s]][[c]]$EU_all.sero, na.rm=TRUE), digits = 1)
+    raw[[s]][[c]]$q25 <- round(quantile(raw[[s]][[c]]$EU_all.sero, 0.25, na.rm=TRUE), digits=1)
+    raw[[s]][[c]]$q75 <- round(quantile(raw[[s]][[c]]$EU_all.sero, 0.75, na.rm=TRUE), digits = 1)
+
+    plotls[[s]][[c]] <- ggPlotFun(fit=fitListIgG[[s]][[c]],strain=s,varNameOrigNum=paste(sep="",s,"_num"),colModel=ifelse(s=="STm","steelblue","orchid"),colModelCI=ifelse(s=="STm","steelblue","orchid"),colChangepoints="orange",s=s,c=c)$g
+   }
+  #   panel1 <- do.call("plot_grid", c(plotls[[s]], ncol=2, labels="AUTO"))
+  #   print(panel1)
+  CpIgG_ls[[s]] <- do.call("rbind", CpIgG[[s]]) #%>% relocate(c("strain", "country"), .before = IgG_age0)
+  parsMat_ls[[s]] <- do.call("rbind", parsMat[[s]]) 
+  raw_ls[[s]] <- do.call("rbind", raw[[s]]) 
+} 
+
+raw_df <- do.call("rbind", raw_ls) %>% 
+  mutate(median_comb = paste0(sep=" ", median, " (", q25,"-", q75, ")")) %>% 
+  select(c(country, strain, median_comb)) %>% 
+  group_by(country, strain) %>% 
+  mutate(N = n()) %>% 
+  slice_head(n=1) %>% 
+  ungroup() %>% 
+  relocate(N, .before = median_comb) %>% 
+  arrange(desc(strain), desc(country))
+
+raw_ft <- flextable(raw_df)
+raw_ft %>% 
+      fontsize(size=8, part = "body") %>% 
+      fontsize(size=8, part = "header") %>% 
+      bold(i = 1, bold = TRUE, part = "header") %>%           
+      set_header_labels(
+        strain = "Strain",
+        country = "Country", 
+        N = "Number of samples", 
+        median_comb = "Median (IQR)"
+      ) %>% 
+      # set_caption( 
+      #   caption = "Population Nadirs and Peaks of IgG to Salmonella Typhimurium and Enteriditis in children 0-60 months across three sub-Saharan African sites; Change point model estimates", 
+      #   style = "Table Caption") %>% 
+      autofit()
+```
+
+\newpage
+
+<!-- % changing the orientation to portrait again -------------------------- -->
+
+```{=tex}
+\KOMAoptions{usegeometry, paper=portrait,pagesize}
+\recalctypearea
+```
+#### Anti-LPS O-Ag IgG: Relationship with age
+
+Change point analysis (piecewise linear regression) was carried out to identify peaks and nadirs in immunity associated with age, for the data from Malawi, Burkina Faso and Kenyan sites. Change point analysis shows all three sites had a peak geometric mean concentration (GMC) at birth, falling to a nadir at 4.1-6.0 months, the increasing to a plateau (18-40 months), for both OAg IgG to *S*. Typhimurium and *S*. Enteritidis (@fig-STm, @fig-SEn, @tbl-sites). All results are presented with GMC and 95% confidence intervals in brackets.
+
+#### OAg IgG to S. Typhimurium
+
+Anti-LPS OAg IgG to *S.* Typhimurium GMC in Kenyan children GMC was higher at birth `{r} parsMat$STm$Kenya$IgGTime0` EU (ELISA units)/mL, compared to Burkina Faso `{r} parsMat$STm$BF$IgGTime0` EU/ml and Malawi `{r} parsMat$STm$Malawi$IgGTime0` EU/mL. The nadir was `{r} parsMat$STm$Malawi$IgGNadir` EU/ml in Malawi at `{r} CpIgG$STm$Malawi$low_age` months compared to Burkina Faso, `{r} parsMat$STm$BF$IgGNadir` EU/ml and Kenya, `{r} parsMat$STm$Kenya$IgGNadir` EU/ml at `{r} CpIgG$STm$Kenya$low_age` and `{r} CpIgG$STm$BF$peak_age` months respectively. Kenyan children reached a relative plateau at `{r} CpIgG$STm$Kenya$peak_age` months (`{r} parsMat$STm$Kenya$IgGPeak` EU/ml), later reaching a maximum at 60 months (`{r} parsMat$STm$Kenya$IgGTime60` EU/ml). In contrast Malawian children plateaued at `{r} CpIgG$STm$Malawi$peak_age` months (peak `{r} parsMat$STm$Malawi$IgGPeak` EU/ml), and Burkina Faso at `{r} CpIgG$STm$BF$peak_age` months (peak `{r} parsMat$STm$BF$IgGPeak` EU/ml).
+
+#### OAg IgG to S. Enteritidis
+
+For IgG to *S.* Enteritidis; Kenyan children GMC was higher at birth `{r} parsMat$SEn$Kenya$IgGTime0` EU/mL, compared to Burkina Faso `{r} parsMat$SEn$BF$IgGTime0` and Malawi `{r} parsMat$SEn$Malawi$IgGTime0`. The nadir was lowest and earliest in Malawi `{r} parsMat$SEn$Malawi$IgGNadir` EU/ml at `{r} CpIgG$SEn$Malawi$peak_age` months, compared to Burkina Faso `{r} parsMat$SEn$BF$IgGNadir` and Kenya (`{r} parsMat$SEn$Kenya$IgGNadir` EU/ml at `{r} CpIgG$STm$BF$low_age` months). Burkina Faso children rapidly reached a plateau at `{r} CpIgG$SEn$BF$peak_age` months, with Kenyan and Malawian children reaching a plateau slightly later at `{r} round(CpIgG$SEn$Kenya$peak_age,digits=1)` and `{r} CpIgG$SEn$Malawi$peak_age` months respectively. After this initial plateau, Malawian children had relatively stable GMCs of `{r} parsMat$SEn$Malawi$IgGPeak` EU/ml at `{r} CpIgG$SEn$Malawi$peak_age` months, with a slight decline after 58 months. In contrast, Kenyan children continued to have a rise in GMC, peaking at `{r} parsMat$SEn$Kenya$IgGPeak` EU/ml at `{r} CpIgG$SEn$Kenya$peak_age` months.
+
+#### Absolute antibody concentration
+
+The IgG concentration for S. Typhimurium was xx in malawi @fig-combined
+
+\newpage
+
+<!-- changing the orientation to landscape --------------------------------- -->
+
+```{=tex}
+\KOMAoptions{usegeometry, paper=landscape,pagesize}
+\recalctypearea
+```
+```{r echo=FALSE, warning=FALSE, fig.align = "centre", fig.width = 8, fig.height=8, out.width = "8.5in"}
+#| label: fig-STm
+#| fig-cap: "Change Point Analysis for Salmonella Typhimurium (STm) IgG antibodies to O-Ag by age at three sites; Malawi, Kenya, Burkina Faso"
+#| 
+    panel1 <- do.call("plot_grid", c(plotls$STm, ncol=2, labels="AUTO"))
+    print(panel1)
+
+```
+
+```{r echo=FALSE, warning=FALSE, fig.align = "centre", fig.width = 8, fig.height=8, out.width = "8.5in"}
+#| label: fig-SEn
+#| fig-cap: "Change Point Analysis for Salmonella Enteritidis (SEn) IgG antibodies to O-Ag by age at three sites; Malawi, Kenya, Burkina Faso"
+#| 
+    panel1 <- do.call("plot_grid", c(plotls$SEn, ncol=2, labels="AUTO"))
+    print(panel1)
+```
+
+\newpage
+
+```{r echo=FALSE, warning=FALSE, fig.align = "centre", fig.width = 8, fig.height=8, out.width = "8.5in"}
+
+#| label: tbl-sites
+#| tbl-cap: "Population Nadirs and Peaks of IgG to Salmonella Typhimurium and Enteriditis in children 0-60 months across three sub-Saharan African sites; Change point model estimates"
+
+## Results preparation
+CpIgG_df <- do.call("rbind", CpIgG_ls)
+parsMat_df <- do.call("rbind", parsMat_ls)
+Cptbl <- left_join(CpIgG_df, parsMat_df, by=c("strain", "country")) %>% 
+  select(c(strain, country, IgGTime0, low_age, IgGNadir, peak_age, IgGPeak, IgGTime60))
+Cptblft <- flextable(Cptbl)
+Cptblft %>% 
+      fontsize(size=8, part = "body") %>% 
+      fontsize(size=8, part = "header") %>% 
+      bold(i = 1, bold = TRUE, part = "header") %>%           
+      set_header_labels(
+        strain = "Strain",
+        country = "Country", 
+        IgGTime0 = "IgG age 0", 
+        low_age = "Nadir age", 
+        IgGNadir = "IgG nadir",
+        peak_age = "Peak age", 
+        IgGPeak = "IgG peak",
+        IgTime60 = "IgG age 60m"
+      ) %>% 
+      set_caption( 
+        # caption = "Population Nadirs and Peaks of IgG to Salmonella Typhimurium and Enteriditis in children 0-60 months across three sub-Saharan African sites; Change point model estimates", 
+        style = "Table Caption") %>% 
+      autofit()
+```
+
+\newpage
+
+<!-- % changing the orientation to portrait again -------------------------- -->
+
+```{=tex}
+\KOMAoptions{usegeometry, paper=portrait,pagesize}
+\recalctypearea
+```
+```{r echo=FALSE, warning=FALSE, fig.align = "centre", fig.width = 6.5, fig.height=4.5, out.width = "7in"}
+#| fig-cap: "Change Point Analysis for Salmonella Typhimurium (STm) IgG antibodies to O-Ag by age at three sites, Malawi (Blue), Kenya (Purple), Burkina Faso (Orange)"
+#| label: fig-combined
+#| 
+fitList_combined <- import_list(here("data", "7_data", "VacciNTS_sites", "fitList_combined.RData")) 
+
+## Plot all on same graph
+st <- c("Malawi", "BF", "Kenya")
+fitList_combined$Malawi$col$colModel <- "#0099CC"
+fitList_combined$Malawi$col$colModelCI <- "#0099CC"
+fitList_combined$Kenya$col$colModel <- "#FF9900"
+fitList_combined$Kenya$col$colModelCI <- "#FF9900"
+fitList_combined$BF$col$colModel <- "#9933FF"
+fitList_combined$BF$col$colModelCI <- "#9933FF"
+# 
+fitBF <- import_list(here("data", "7_data", "VacciNTS_sites", "fitBF.RData"))
+fitKenya <- import_list(here("data", "7_data", "VacciNTS_sites", "fitKenya.RData"))
+fitMalawi <- import_list(here("data", "7_data", "VacciNTS_sites", "fitMalawi.RData"))
+
+extractList <- list()
+extractList[1] <- list(fitMalawi)
+extractList[2] <- list(fitBF)
+extractList[3] <- list(fitKenya)
+names(extractList) <- c("Malawi", "BF", "Kenya")
+# extractList$Malawi$dfFit$colModel <- "#0099CC"
+# extractList$Malawi$dfCI$colModelCI <- "#0099CC"
+# extractList$Kenya$dfFit$colModel <- "#9933FF"
+# extractList$Kenya$dfCI$colModelCI <- "#9933FF"
+# extractList$BF$dfFit$colModel <- "#FF9900"
+# extractList$BF$dfCI$colModelCI <- "#FF9900"
+# ####
+# # combined
+#cols<-c(modcicol1="steelblue", modcicol2="purple")
+#labels <- c(modcicol1="Malawi", modcicol2="BF")
+cols<-c(modcicol1="steelblue", modcicol2="orange", modcicol3="purple")
+labels <- c(modcicol1="Malawi", modcicol2="BF", modcicol3="Kenya")
+
+gplotFunx2 <- function(fit1, fit2,fit3, cexText = 10, cexGeoM=3, strain="STm", modcicol1, modcicol2, modcicol3){ #modcol1, modcicol1, modcol2, modcicol2, modcol3, modcicol3
+  ggplot() +
+    geom_line(data=fit1$dfFit,mapping=aes(x=x,y=y,colour="Malawi"),lwd=0.8) +
+    geom_point(data=fit1$datGeoM,mapping=aes(x=ageCatNum,y=geoM_better),pch=20,size=cexGeoM,col=modcicol1) +
+    geom_ribbon(data=fit1$dfCI,mapping=aes(x=x,ymin=ymin,ymax=ymax, colour=modcicol1),alpha=0.4, lwd=0.1, fill=modcicol1) +
+    geom_line(data=fit2$dfFit,mapping=aes(x=x,y=y,colour="BF"),lwd=0.8) +
+    geom_point(data=fit2$datGeoM,mapping=aes(x=ageCatNum,y=geoM_better),pch=20,size=cexGeoM,col=modcicol2) +
+    geom_ribbon(data=fit2$dfCI,mapping=aes(x=x,ymin=ymin,ymax=ymax, colour=modcicol2), alpha=0.4,lwd=0.1, fill=modcicol2) +
+    geom_line(data=fit3$dfFit,mapping=aes(x=x,y=y,colour="Kenya"),lwd=0.8) +
+    geom_point(data=fit3$datGeoM,mapping=aes(x=ageCatNum,y=geoM_better),pch=20,size=cexGeoM,col=modcicol3) +
+    geom_ribbon(data=fit3$dfCI,mapping=aes(x=x,ymin=ymin,ymax=ymax, colour=modcicol3),alpha=0.4, lwd=0.1, fill=modcicol3) +
+    theme_light() +
+    scale_x_continuous(breaks = seq(0, 60, by = 3)) +
+    scale_y_log10() +
+    coord_cartesian(xlim = c(0,60), ylim = c(fit1$dfFit$yMin, fit1$dfFit$yMax)) +
+    labs(y=paste(sep="",strain," IgG concentration (EU/ml)"),x="Age (months)", legend="cols")+
+    # scale_colour_manual(name="Country",values=cols, labels=labels)+
+    # theme(legend.position = "none") +
+    geom_hline(yintercept=3, linetype="dashed", color = "red", size=0.4)+
+    scale_color_manual(name="Country",
+                     breaks=c("Malawi", "BF", "Kenya"),
+                     values=c("Malawi"='steelblue', "BF"='orange', "Kenya"='purple'))
+}
+
+combplot2 <- (gplotFunx2(fit1=extractList[[1]], fit2=extractList[[2]], fit3=extractList[[3]], modcicol1 = fitList_combined$Malawi$col$colModelCI, modcicol2 = fitList_combined$BF$col$colModelCI, modcicol3 = fitList_combined$Kenya$col$colModelCI))
+combplot2
+# ggsave(here("outputs","VacciNTS_sites", "IgG", "Combined_sites_BF_Malawi.tiff"), width = 9, height = 6)
+# cowplot::plot_grid(combplot1, combplot2, nrow = 2)
+```
+
+### Subgroup analysis by malaria transmission areas (Malawi Site)
+
+In Malawi, the analysis was stratified by malaria transmission intensity. In the high malaria transmission areas the modelled IgG at age 0 was 20 – 25 EU/ml compared to 50 – 60 EU/ml for low malaria transmission EAs when using the cut-off was 5% or above (@fig-malHL, @tbl-mal). Similarly, the area under the curve from age 0 to the nadir age of antibody was 100 – 120 for high malaria areas compared to 225 – 250 for low malaria areas for all cut-off values above 5% (@fig-malsum,d), indicating that children had higher antibody levels in the first months of life in low compared to high malaria areas. The lowest antibody level at the nadir in each of the groups was lower in the high malaria areas (3.5 – 5 EU/ml) compared to high malaria areas (6 – 7 EU/ml) for all cut-off values above 10% prevalence (@fig-malsum,b). Children in high malaria areas also had a slightly higher age at IgG nadir of 4.7 – 6.5 months compared to children in low malaria areas (4 – 4.3 months) for cut offs above 10% (@fig-malsum,c).
+
+\newpage
+
+<!-- % changing the orientation to landscape again -------------------------- -->
+
+```{=tex}
+\KOMAoptions{usegeometry, paper=landscape,pagesize}
+\recalctypearea
+```
+```{r echo=FALSE, warning=FALSE, fig.align = "centre", fig.width = 7, fig.height=4, out.width = "7.5in"}
+#| fig-cap: "Population Nadirs and Peaks of IgG to Salmonella Typhimurium in children 0-60 months across high and low malaria transmission areas in Southern Malawi; Change point model estimates"
+#| label: tbl-mal
+#| 
+parsMatTmp_mal <- import(here("data", "7_data", "Malaria", "parsMatTmp_malaria.csv")) %>% 
+  rownames_to_column() %>% 
+  rename(group = V1) %>% 
+  mutate(IgGTime0CI_lo = as.numeric(substr(IgGTime0,8,12)),
+         IgGTime0CI_hi = as.numeric(substr(IgGTime0,14,18)),
+         IgGNadirCI = inside_parens(IgGNadir, sep="parens")) %>% 
+  separate(IgGNadirCI,c('IgGNadirCI_lo', 'IgGNadirCI_hi'), ",") %>% 
+  mutate(
+    #IgGNadir = as.numeric(IgGNadir),
+         IgGNadirCI_lo = as.numeric(IgGNadirCI_lo),
+         IgGNadirCI_hi = as.numeric(IgGNadirCI_hi))
+  # mutate(IgGTime0CI = str_extract(IgGTime0, "\\(([^()]+)\\)"))
+fitList_malaria <- import_list(here("data", "7_data", "Malaria", "fitList_malaria.RData"))
+peaksLowsTroughsMat_Mal <- import(here("data", "7_data", "Malaria", "peaksLowsTroughsMat_Malaria.csv")) %>% 
+  rename(peak2 = peak) %>% 
+  mutate(peak = ifelse(is.na(peak2),peak2,trough),
+         peak = as.numeric(peak),
+         low = as.numeric(low))
+co <- c(paste0("STmL", 1:20), paste0("STmH", 1:20))
+# parsMatTmp_malaria <- list()
+CpIgG <- list()
+parsMatTmp <- list()
+for(c in co){
+  CpIgG$STm[[c]] <- filter(peaksLowsTroughsMat_Mal, group==c)
+  parsMatTmp$STm[[c]] <- filter(parsMatTmp_mal, group==c)
+  # CpIgG$STm[[c]]$low_age <- round(CpIgG$STm[[c]]$low_age,digits=1)
+  # CpIgG$STm[[c]]$peak_age <- round(CpIgG$STm[[c]]$peak_age, digits = 1)
+}
+
+# CpIgG_df <- do.call("rbind", CpIgG)
+# parsMat_df <- do.call("rbind", parsMat)
+maltab <- left_join(peaksLowsTroughsMat_Mal, parsMatTmp_mal, by=c("group")) %>% 
+  mutate(Group =  substr(group,4,4),
+         Group = ifelse(Group=="L", "Low", "High"),
+         Trans = as.numeric(str_extract(group,"[0-9]{1,2}")))
+Cptbl <- maltab %>% 
+  select(c(Group, Trans, IgGTime0, low_age, IgGNadir, peak_age, IgGPeak, IgGTime60)) %>% 
+  arrange(Trans)
+Cptblft <- flextable(Cptbl)
+Cptblft %>% 
+      fontsize(size=8, part = "body") %>% 
+      fontsize(size=8, part = "header") %>% 
+      bold(i = 1, bold = TRUE, part = "header") %>%           
+      set_header_labels(
+        Group = "Group",
+        Trans = "Transmission %", 
+        IgGTime0 = "IgG age 0", 
+        low_age = "Nadir age", 
+        IgGNadir = "IgG nadir",
+        peak_age = "Peak age", 
+        IgGPeak = "IgG peak",
+        IgTime60 = "IgG age 60m"
+      ) %>% 
+      autofit()
+# lowage_L5 <- round(CpIgG$STm$STmL5$low_age,digits=1)
+# peakage_L5 <- CpIgG$STm$STmL5$peak_age
+# lowage_H5 <- round(CpIgG$STm$STmH5$low_age,digits=1)
+# peakage_H5 <- CpIgG$STm$STmH5$peak_age
+# IgGT0_L5 <- parsMatTmp_malaria$STmL5$IgGTime0
+# IgGNadir_L5 <- parsMatTmp_malaria$STmL5$IgGNadir
+# IgGPeak_L5 <- parsMatTmp_malaria$STmL5$IgGPeak
+# IgGT60_L5 <- parsMatTmp_malaria$STmL5$IgGTime60
+# IgGT0_H5 <- parsMatTmp_malaria$STmH5$IgGTime0
+# IgGNadir_H5 <- parsMatTmp_malaria$STmH5$IgGNadir
+# IgGPeak_H5 <- parsMatTmp_malaria$STmH5$IgGPeak
+# IgGT60_H5 <- parsMatTmp_malaria$STmH5$IgGTime60
+```
+
+```{r echo=FALSE, warning=FALSE, fig.align = "centre", fig.width = 7, fig.height=4, out.width = "7.5in"}
+#| fig-cap: "Change Point Analysis for Salmonella Typhimurium (STm) IgG antibodies to O-Ag by age malaria transmission area"
+#| label: fig-malHL
+#| 
+H <- ggPlotFun(fit=fitList_malaria[["STmH5"]],strain="STmH5",varNameOrigNum=paste(sep="","STmH5","_num"),colModel="darkgreen",colModelCI="darkgreen",colChangepoints="orchid",c="STmH5",s="STm")$g
+L <- ggPlotFun(fit=fitList_malaria[["STmL5"]],strain="STmL5",varNameOrigNum=paste(sep="","STmL5","_num"),colModel="darkgreen",colModelCI="darkgreen",colChangepoints="orchid", c="STmL5",s="STm")$g
+cowplot::plot_grid(H,L, nrow=1)
+```
+
+```{r echo=FALSE, warning=FALSE, fig.align = "centre", fig.width = 8, fig.height=5.5, out.width = "8.5in"}
+#| fig-cap: "Change Point Analysis model outputs - estimated population levels of Salmonella Typhimurium (STm) IgG antibodies to O-Ag by age malaria transmission area. A. Age 0, B. Nadir C. Age at nadir D. Area under the curve between age 0 and nadir"
+#| label: fig-malsum
+#| 
+
+#####
+## Plot graphs
+plot_age0 <- maltab %>% 
+  ggplot()+
+  geom_point(aes(Trans, IgG_age0, colour=Group))+
+  geom_line(aes(Trans, IgG_age0, colour=Group)) +
+  geom_ribbon(aes(Trans, ymin=IgGTime0CI_lo, ymax=IgGTime0CI_hi, fill=Group), alpha=0.5)+
+  ggtitle("IgG to STm at age 0")+
+  xlab("MRDT positive %")+
+  ylab("IgG concentration (EU/ml)")+
+  # scale_fill_discrete(name="Malaria Transmission")+
+  labs(color='Malaria Transmission') +
+  # guides(fill=guide_legend(title="Malaria Transmission"))+
+  theme_minimal()+
+  theme(title = element_text(size=8, face = "bold"),
+        axis.title = element_text(size = 8, face = "plain"),
+        axis.text = element_text(size = 7, face = "plain"),
+        legend.title = element_text(size = 8, face="plain"),
+        legend.text = element_text(size=8))
+
+plot_low <- maltab %>% 
+  ggplot()+
+  geom_point(aes(Trans, low, colour=Group))+
+  geom_line(aes(Trans, low, colour=Group))+
+  geom_ribbon(aes(Trans, ymin=IgGNadirCI_lo, ymax=IgGNadirCI_hi, fill=Group), alpha=0.5)+
+  ggtitle("IgG to STm at nadir")+
+  xlab("Malaria prevalence (%)")+
+  ylab("IgG concentration (EU/ml)")+
+  labs(color='Malaria Transmission') +
+  theme_minimal()+
+  theme(title = element_text(size=8, face = "bold"),
+        axis.title = element_text(size = 8, face = "plain"),
+        axis.text = element_text(size = 7, face = "plain"),
+        legend.title = element_text(size = 8, face="plain"),
+        legend.text = element_text(size=8))
+
+
+plot_lowage <- maltab %>% 
+  ggplot()+
+  geom_point(aes(Trans, low_age, colour=Group))+
+  geom_line(aes(Trans, low_age, colour=Group))+
+  ggtitle("Age at nadir of IgG to STm")+
+  xlab("Malaria prevalence (%)")+
+  ylab("Age (months)")+
+  labs(color='Malaria Transmission') +
+  theme_minimal()+
+  theme(title = element_text(size=8, face = "bold"),
+        axis.title = element_text(size = 8, face = "plain"),
+        axis.text = element_text(size = 7, face = "plain"),
+        legend.title = element_text(size = 8, face="plain"),
+        legend.text = element_text(size=8))
+
+
+plot_AUC <- maltab %>% 
+  ggplot()+
+  geom_point(aes(Trans, AUC, colour=Group))+
+  geom_line(aes(Trans, AUC, colour=Group))+
+  ggtitle("Area Under the Curve")+
+  xlab("Malaria prevalence (%)")+
+  ylab("Area under the curve")+
+  labs(color='Malaria Transmission') +
+  theme_minimal()+
+  theme(title = element_text(size=8, face = "bold"),
+        axis.title = element_text(size = 8, face = "plain"),
+        axis.text = element_text(size = 7, face = "plain"),
+        legend.title = element_text(size = 8, face="plain"),
+        legend.text = element_text(size=8))
+
+
+cowplot::plot_grid(plot_age0,plot_low,plot_lowage,plot_AUC)
+```
+
+\newpage
+
+<!-- % changing the orientation to portrait again -------------------------- -->
+
+```{=tex}
+\KOMAoptions{usegeometry, paper=portrait,pagesize}
+\recalctypearea
+```
+## Discussion
+
+The rapid early waning of maternal anti-NTS antibody across all African sites indicates early vaccine administration dosing would be desirable. Variation in nadirs, peaks and plateaus suggests a variable force of infection and epidemiology by site. Despite differences in the force of infection and absolute antibody titres between sites, the similarities in ages of peaks and nadirs in immunity across both S. Typhimurium and S. Enteritidis highlights the window of susceptibility that would benefit from vaccine-derived protection. The difference in absolute values for the ELISA assays may indicate either a difference in force of infection or differing immune responses in children at different Sub-Saharan African sites, including the varying epidemiology of immune-suppressing co-morbidities such as malaria, anaemia, malnutrition, sickle cell disease and HIV.
+
+As illustrated in chapter 4, the crude estimates of invasive NTS disease, via blood culture confirmation suggests that Malawi has the highest incidence of iNTS, and has the lowest median S.Typhimurium and S.Enteritidis
+
+### Limitations
+
+This change point analysis of cross-sectional sero-epidemiological samples at a population level allows us to identify trends across age-groups across a range of geographical settings. There are limitations in interpreting cross-sectional data, and we have to consider However, due to the differences in sample collection periods and seasons across different countries, this could lead to variation in antibody concentrations and therefore absolute IgG concentrations should be interpreted with caution.
+
+The O-Antigen used in this ELISA may have some cross-reactivity with the polysacharide core antigen of other serovars and may not be specific to the typhimurium and enteritidis serogroups (04 and O9 respectively).
+
+Further work to investigate the impact of risk factors on the acquisition of immunity, and in the incidence of invasive disease, is on-going at the Malawi site, supported by the additional collection of meta-data on the key risk factors (Malaria, Anaemia, Malnutrition) through additional leveraged funding. The lower absolute antibody concentrations seen in Malawi may result from the serosurvey being conducted in a high malaria-transmission area, compared to a lower malaria prevalence at the other sites at the time of sample collection. This hypothesis is supported by the higher apparent crude incidence rates of invasive disease reported in Malawi, highlighting a more immune-susceptible population in Malawi. Further future analysis includes correlation between IgG and L-SBA and with age-stratified iNTS incidence, taking account of the additional metadata. These data therefore generally further field study sites or trials to be located in Malawi where there remains a high burden of disease likely due to an immune-compromised population, likely secondary to a high level of epidemiological risk factors, most importantly malaria. This would make Malawi an epidemiologically relevant and appropriate trial site. However, also note that it is preferable for clinical trials to be multi-centre, in order to ensure that results are generalizable, and this means that Ghana or Burkina Faso can also be profitably considered as additional trial sites in future.
+
+The seroepidemiology in Africa of iNTS study has recruited mother and infant pairs from areas of varying malaria transmission intensity in southern Malawi, which has shown infants under 4 months from high malaria transmission areas have lower S. typhimurium O-antigen immunoglobulin-gamma (IgG) concentrations than infants from low malaria transmission areas. This important finding requires further study to collect further meta-data on other potential confounding factors and to test additional samples from a separate cohort of mother and infant pairs with known malaria status, to validate this finding.
+
+**Conclusions**: This difference in immunity in infants in malaria endemic region of Malawi requires further investigation to establish if this is a true finding. Weaknesses of these data include
+
+1)Although they are paired with maternal sera, the numbers are relatively small (appx 60 pairs)
+
+2)The children vary in age from 0 – 6 months, meaning that their maternally-derived antibody is falling
+
+3)Maternal malaria exposure status is only determined at populations level (by % MRDT positivity in the enumeration area from which the children were recruited
+
+4)This would optimally include further characterisation of the mothers (HIV and nutritional status, parity), and infants (prematurity/ birthweight), testing of paired maternal and infant samples with known malaria status of the mother at antenatally and birth, and further multilevel modelling to take into account any potential confounding and seasonality.
+
+If true, however this finding would be important to inform public health interventions in reducing the burden of iNTS in infants, including reinforcing maternal chemoprophylaxis for malaria in high-risk areas to improve maternal antibody transfer. This could be beneficial to many other early-life vaccine-preventable diseases that depend on protection from maternal antibodies.
+
+## References
