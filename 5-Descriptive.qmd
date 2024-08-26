@@ -1,0 +1,506 @@
+---
+title: "Descriptive epidemiology of risk factors and enteric non-typhoidal salmonella in children under 5 years in Chikwawa"
+format:    
+  pdf:
+    geometry:
+      - top=20mm
+      - bottom=20mm
+      - left=20mm
+      - right=20mm
+    toc: true
+    lof: true
+    lot: true
+    number-sections: true
+    colorlinks: true
+    include-in-header:
+      text: |
+        \usepackage{typearea}
+    cite-method: citeproc
+    bibliography: references.bib
+    csl: diabetologia.csl
+editor: visual
+---
+
+## Introduction
+
+1/2 page - brief summary - all build up in introdution
+
+## Methods
+
+Brief - main details in methods ch
+
+High low malaria EA
+
+Malaria RTS,S/AS01 vaccine is highly confounded so not useful to look at in this setting. Mostly interested only in do kids have malaria exposure or not, regardless of cause. Not much impact of malaria
+
+## Results
+
+### Recruitment across VacciNTS sites
+
+summary table of recruitment numbers
+
+::: {layout-nrow="2"}
+![Selected Enumerations from the EPIMAL study census](figures/5_images/clusterMap.png){width="300"} ![EPIMAL Study Clusters](figures/5_images/selectedEA.png){width="300"}
+:::
+
+### SAiNTS Cohort demographic and socio-economic characteristics
+
+2428 children were aged 0-5 were recruited across xx EAs. *Salmonella* stool positivity rate in healthy children is 5.3% (n=128): *S. Typhimurium* 16.4% (21), *S.* *Enteritidis* 12.5% (16), *S.* species 71.1% (91), S. Typhi 1.6% (2) and shows a seasonal pattern. Age-stratified distribution of salmonella stool culture and PCR positivity shows a sigmoidal distribution, showing low rates of exposure in the first 6 month of life (2% culture and 5% PCR positive), entering the exponential phase during the weaning period, and a plateau phase after 24 months (10% culture and 20% PCR positive).  Malaria RDT positivity at enrolment is 10.9% (262); 17.1% (210) in high and 4.3% (52) in low malaria transmission areas. Severe-acute malnutrition was present in 1.2% (31) by weight-for-height z-scores (\<-3 SD) and 3.2% (79) by mid-upper arm circumference \<12.5cm.
+
+\newpage
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.align = "centre", fig.width = 6, fig.height=7, out.width = "6.5in"}
+#| tbl-cap: Descriptive summary of children recruited across enumeration areas, by cluster. Chikwawa cluster did not receieve RTS,S/AS01 malaria vaccine. St Montfort did recieve RTS,S AS01 malaria vaccine
+
+library(rio)
+library(here)
+library(tidyverse)
+library(janitor)
+library(Hmisc)
+library(flextable)
+library(gt)
+library(gtsummary)
+
+master <- import(here("data", "5_data", "master.csv")) %>% 
+  mutate(ta_code = substr(ta_code,5,8)) 
+         # cluster = ifelse(cluster==1,"Chikwawa","St Montfort"))
+
+master %>% 
+  select(c(cluster, calc_age_months, AGEGROUP_yr, gender, pov_score, pov_score_cat, mrdt_result, d90_stl_mrdt_result, malaria_film_result_d1, malaria_film_grade_d1, malaria_film_result_d90, malaria_film_grade_d90, hemocue_result, wfh_zscore, muac, sicklecell_test_result, hiv_exposed, hiv_test, hivtest_result, PCR_pos, Salmonella_bin, salm_fact)) %>% 
+  mutate(sicklecell_test_result = ifelse(sicklecell_test_result=="", NA,sicklecell_test_result),
+         hiv_exposed = ifelse(hiv_exposed=="", NA,hiv_exposed),
+         hiv_test = ifelse(hiv_test=="", NA,hiv_test),
+         hivtest_result = ifelse(hivtest_result=="", NA,hivtest_result),
+         gender = ifelse(gender=="", NA,gender),
+         pov_score_cat = ifelse(pov_score_cat=="", NA,pov_score_cat),
+         mrdt_result = ifelse(mrdt_result=="", NA,mrdt_result),
+         d90_stl_mrdt_result = ifelse(d90_stl_mrdt_result=="", NA,d90_stl_mrdt_result),
+         malaria_film_result_d1 = ifelse(malaria_film_result_d1=="", NA,malaria_film_result_d1),
+         malaria_film_result_d90 = ifelse(malaria_film_result_d90=="", NA,malaria_film_result_d90),
+         PCR_pos = ifelse(PCR_pos=="", NA,PCR_pos)) %>%
+  tbl_summary(by=cluster,
+              statistic = list(all_continuous() ~ "{mean} ({sd})"),        # stats and format for continuous columns
+                     # all_categorical() ~ "{n} / {N} ({p}%)"),   # stats and format for categorical columns
+              digits = all_continuous() ~ 1,                              # rounding for continuous columns
+              type   = all_categorical() ~ "categorical",                 # force all categorical levels to display
+              label  = list(                                              # display labels for column names
+                calc_age_months   ~ "Age (months)",                           
+                AGEGROUP_yr ~ "Age (years)",
+                gender    ~ "Gender",
+                pov_score ~ "Poverty Score",
+                pov_score_cat ~ "Poverty Score Quintile",
+                mrdt_result  ~ "MRDT result (day 1)",
+                d90_stl_mrdt_result  ~ "MRDT result (day 90)",
+                malaria_film_result_d1  ~ "Malaria film result (day 1)",
+                malaria_film_result_d90  ~ "Malaria film result (day 90)",
+                malaria_film_grade_d1  ~ "Malaria film grade (day 1)",
+                malaria_film_grade_d90  ~ "Malaria film grade (day 90)",
+                hemocue_result  ~ "Haemoglobin",
+                wfh_zscore    ~ "Weight-for-height z-score",
+                muac    ~ "Mid-Upper Arm Circumference",
+                sicklecell_test_result    ~ "Sickle Cell Disease",
+                hiv_exposed~ "HIV exposed",
+                hiv_test ~ "Had HIV test",
+                hivtest_result ~ "HIV test result (if done)",
+                PCR_pos ~ "Salmonella PCR result",
+                Salmonella_bin ~ "Salmonella Culture result",
+                salm_fact ~ "Salmonella sub-species (if culture positive"),
+               missing_text = "Missing"                                    # how missing values should display
+            ) %>% 
+  bold_labels() %>%
+  # convert to kableExtra
+  as_kable_extra(booktabs = TRUE, longtable = TRUE) %>%
+  # reduce font size to make table fit. 
+  # you may also use the `latex_options = "scale_down"` argument here.
+  kableExtra::kable_styling(latex_options = "scale_down", position='float_left')
+```
+
+\newpage
+
+<!-- changing the orientation to landscape --------------------------------- -->
+
+```{=tex}
+\KOMAoptions{usegeometry, paper=landscape,pagesize}
+\recalctypearea
+```
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.align = "centre", fig.width = 7, fig.height=7, out.width = "7.5in"}
+#| tbl-cap: Host risk factor and NTS exposure distribution across recruited enumeration areas
+
+sum_tab <- master %>% 
+  group_by(cluster,ta_code) %>% 
+  summarise(N = n(),
+            MRDT_pos_d1 = sum(mrdt_num,na.rm=T),
+            perMRDT_pos_d1 = round((MRDT_pos_d1/N)*100,digits=1),
+            MRDT_pos_d90 = sum(d90_stl_mrdt_num,na.rm=T),
+            perMRDT_pos_d90 = round((MRDT_pos_d90/N)*100,digits=1),
+            sum_pcr_pos = sum(PCR_pos_num,na.rm = T),
+            sum_pcr_tested = sum(PCR_tested_bin,na.rm = T),
+            PCR_pos_percent = round((sum_pcr_pos/sum_pcr_tested)*100,digits=1),
+            sum_sal_pos = sum(Salmonella_num, na.rm = T),
+            sum_stool_tested = sum(stool_tested, na.rm = T),
+            Salm_pos_percent = round((sum_sal_pos/sum_stool_tested)*100,digits=1)) %>% 
+  select(-c(sum_pcr_tested, sum_stool_tested)) %>% 
+  ungroup()
+
+# sum_tab2 <- tabulator(x = sum_tab, rows = c("cluster", "ta_code"), columns = c("N","MRDT_pos_d1","perMRDT_pos_d1","MRDT_pos_d90", "perMRDT_pos_d90","sum_pcr_pos","PCR_pos_percent","sum_sal_pos","Salm_pos_percent"))
+
+sum_tab %>% 
+  flextable() %>% 
+  fontsize(size=8, part = "body") %>% 
+  fontsize(size=8, part = "header") %>% 
+  bold(i = 1, bold = TRUE, part = "header") %>%           
+  # add_header_row(values = c("EA","N", "MRDT+ day 1 (n)", "MRDT+ day 1 (%)", "MRDT+ day 90 (n)", "MRDT+ day 90 (%)", "Salmonella PCR+ (n)","Salmonella PCR+ (%)","Salmonella Culture+ (n)","Salmonella Culture+ (%)",),
+  #                top = TRUE) %>% 
+  set_header_labels(
+    cluster = "Cluster",
+    ta_code = "EA",
+    N = "N", 
+    MRDT_pos_d1 = "MRDT+ day 1 (n)", 
+    perMRDT_pos_d1 = "MRDT+ day 1 (%)",
+    MRDT_pos_d90 = "MRDT+ day 90 (n)",
+    perMRDT_pos_d90 = "MRDT+ day 90 (%)",
+    sum_pcr_pos = "Salmonella PCR+ (n)",
+    PCR_pos_percent = "Salmonella PCR+ (%)",
+    sum_sal_pos = "Salmonella Culture+ (n)",
+    Salm_pos_percent = "Salmonella Culture+ (%)"
+    ) #%>% 
+   # gdtools::register_gfont(family="Roboto")
+  # merge_v(j = ~ cluster) %>% 
+  # align(align = "center", part = "body")
+
+```
+
+\newpage
+
+::: {layout-nrow="2"}
+![MRDT positivity (%) by EA (dry season; May-Oct)](figures/5_images/MRDTdry.png){width="200"}
+
+![MRDT positivity (%) by EA (wet season; Nov-Apr)](figures/5_images/MRDTwet.png){width="200"}
+
+![Salmonella PCR positivity (%) (dry season; May-Oct)](figures/5_images/PCRdry.png){width="200"}
+
+![Salmonella PCR positivity (%) (wet season; Nov - Apr)](figures/5_images/PCRwet.png){width="200"}
+:::
+
+\newpage
+
+<!-- % changing the orientation to portrait again -------------------------- -->
+
+```{=tex}
+\KOMAoptions{usegeometry, paper=portrait,pagesize}
+\recalctypearea
+```
+### Epidemiology of enteric non-typhoidal salmonella
+
+### Stool micro
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.align = "centre", fig.width = 7, fig.height=7, out.width = "7.5in"}
+# #| fig-cap: Host risk factor and NTS exposure distribution across recruited enumeration areas
+#
+# master %>%
+#   filter(salm_fact!="Nil") %>%
+#   ggplot() +
+#     geom_histogram(aes(salm_fact), fill="dark green") +
+#     theme_bw() +
+#     theme(axis.text=element_text(size=12),
+#           axis.title=element_text(size=18,face="bold"),
+#           axis.text.x = element_text(angle=45, hjust=1)) +
+#     labs(y="Number of samples", x="Organism") +
+#     geom_text(stat='count', aes(label=..count..), vjust=-1) +
+#     scale_y_continuous(limits = c(0, 60)) +
+#     facet_grid(~cluster)
+
+```
+
+### Stool micro season
+
+![](images/clipboard-1197040819.png)
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.align = "centre", fig.width = 7, fig.height=7, out.width = "7.5in"}
+# 
+# salm_micro <- micro_lims_uniq[grepl("S", micro_lims_uniq$organism), , drop = FALSE]
+# 
+# 
+# ggplot(salm_micro, aes(x=month_yr_v1, fill=organism)) +
+#   geom_bar() +
+#   theme_bw() +
+#   theme(axis.text=element_text(size=8),
+#         axis.title=element_text(size=18,face="bold"),
+#         axis.text.x = element_text(angle=45, hjust=1)) +
+#   labs(y="Number of samples", x="Organism") +
+#   geom_text(stat='count', aes(label=..count..), position = position_stack(0.5)) +
+#   scale_y_continuous(limits = c(0, 20))
+
+
+```
+
+### Stool salmonella by month
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.align = "centre", fig.width = 7, fig.height=7, out.width = "7.5in"}
+# 
+# ## Replace blank with NA
+# unique_enrolled_v1_2_mal <- unique_enrolled_v1_2_mal %>%
+#   mutate(across(c("organism.d1"), ~ifelse(.=="", NA, as.character(.))))
+# 
+# ### Percentage salmonella by month
+# 
+# unique_enrolled_v1_2_mal <- unique_enrolled_v1_2_mal %>%
+#   mutate(
+#     organism_cat = case_when(
+#       str_detect(organism.d1, "Salmonella") ~ "Salmonella",
+#       str_detect(organism.d1, "Typhi") ~ "Salmonella",
+#       str_detect(organism.d1, "Citrobacter") ~ "Other",
+#       str_detect(organism.d1, "Enterobacter") ~ "Other",
+#       str_detect(organism.d1, "Proteus") ~ "Other",
+#       str_detect(organism.d1, "Citrobacter yougae") ~ "Other",
+#       str_detect(organism.d1, "C.Youngue") ~ "Other",
+#       str_detect(organism.d1, "P.Mirabilis") ~ "Other",
+#       str_detect(organism.d1, "R.orthnolityca") ~ "Other",
+#       str_detect(organism.d1, "Proteus mirabilis") ~ "Other",
+#       str_detect(organism.d1, " ") ~ "No growth",
+#       is.na(organism.d1) ~ "No growth",
+#       TRUE ~ organism.d1
+#     )
+#   )
+# 
+# 
+# #table(unique_enrolled_v1_2_mal$organism_cat, unique_enrolled_v1_2_mal$month_fac)
+# sal_per_mon <- data.frame(prop.table(table(unique_enrolled_v1_2_mal$organism_cat, unique_enrolled_v1_2_mal$month_yr_v1), 2))
+# sal_per_mon <- sal_per_mon %>%
+#   rename(
+#     "Culture_result" = Var1,
+#     "Month" = Var2,
+#     "Percent" = Freq
+#   ) %>%
+#   mutate(
+#     Percentage = round(Percent, digits = 2) *100
+#   ) %>%
+#   na.omit()
+# 
+# plotS_per <- ggplot(sal_per_mon, aes(x= factor(Month), y=Percentage, fill= Culture_result)) +
+#               geom_bar(position="stack", stat='identity',  width = .7, colour="black", lwd=0.1) +
+#               geom_text(aes(label = Percentage), colour="black", size = 2.5, position = position_stack(vjust = .5)) +
+#               labs(y="% of stool samples processed", x="Month") + 
+#               theme_bw() +
+#               scale_fill_brewer("Culture Result", palette = "RdYlBu") +
+#               theme(axis.text=element_text(size=8),
+#                     axis.title=element_text(size=8,face="bold"),
+#                     legend.text=element_text(size=8),
+#                     legend.title=element_text(size=8),
+#                     axis.text.x = element_text(angle=45, hjust=1))
+# 
+# ### Counts salmonella by month
+# 
+# stool_sum <- unique_enrolled_v1_2_mal %>% 
+#   group_by(month_yr_v1, organism_cat) %>% 
+#   summarise(count = sum(child_stool.d1)) %>%   # Within each Brand, sum all values in each Category
+#   mutate( pos = cumsum(count)-0.5*count)
+# 
+# plotS_count <- ggplot(stool_sum, aes(x= factor(month_yr_v1), count, function(x)+sum(x), y=count, fill= factor(organism_cat))) +
+#                 geom_bar(stat='identity',  width = .7, colour="black", lwd=0.1) +
+#                 geom_text(aes(label=count), colour="white", size=2.5, position = position_stack(vjust = .5)) +
+#                 labs(y="Number of enrolled participants", x="Month") + 
+#                 theme_bw() +
+#                 scale_fill_brewer("Culture Result", palette = "RdYlBu") +
+#                 theme(axis.text=element_text(size=8),
+#                       axis.title=element_text(size=8,face="bold"),
+#                       legend.text=element_text(size=8),
+#                       legend.title=element_text(size=8),
+#                       axis.text.x = element_text(angle=45, hjust=1))
+# 
+# grid.arrange(plotS_count, plotS_per, nrow=2)
+# 
+
+```
+
+### Salmonella by age
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.align = "centre", fig.width = 7, fig.height=7, out.width = "7.5in"}
+ # v1 <- subset(unique_enrolled_v1_2_mal)
+# 
+# age_salm_v1 <- data.frame(prop.table(table(v1$organism_cat, v1$AGEGROUP),2)) %>%
+#   rename(Agegroup = Var2,
+#          organism_cat = Var1,
+#          Percentage = Freq) %>%
+#   mutate(percentagelabelpos = ifelse(organism_cat=="Salmonella", Percentage/2, NA))
+# 
+# age_salm_v1$Percentage <- round(age_salm_v1$Percentage, digits = 3)
+# 
+# 
+# ggplot(age_salm_v1, aes(x=Agegroup, y=Percentage, fill=factor(organism_cat))) +
+#   geom_bar(position="fill", stat="identity", color='black', width=0.9) +
+#   labs(y="Percentage", x="Age group (months)") + 
+#   theme_bw() +
+#   scale_y_continuous(labels = scales::percent) +
+#   scale_fill_discrete(name = "Organism") +
+#   geom_text(aes(label = paste0(Percentage*100,"%"), 
+#                 y=percentagelabelpos), size = 3) +
+#   ggtitle("Salmonella stool exposure by age") +
+#   theme(axis.text=element_text(size=10),
+#         axis.title=element_text(size=10,face="bold"),
+#         legend.text=element_text(size=6),
+#         legend.title=element_text(size=8),
+#         axis.text.x = element_text(angle=45, hjust=1))
+# 
+
+```
+
+### Epidemiology of risk factors; malaria, anaemia, malnutrition, sickle cell
+
+\newpage
+
+<!-- changing the orientation to landscape --------------------------------- -->
+
+![](images/clipboard-157373631.png)
+
+![](images/clipboard-2812805379.png)
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.align = "centre", fig.width = 7, fig.height=7, out.width = "7.5in"}
+#| fig-cap: MRDT positivity across recruited enumeration areas
+
+# master$mrdt_result <- as.numeric(master$mrdt_result)
+# #master$v1_month <- months(as.Date(master$v1_date))
+# #master$v2_month <- months(as.Date(master$fup_crf_date))
+# master <- master %>%
+#   mutate(
+#     month_yr_v1 = zoo::as.yearmon(v1_date) ,
+#     month_yr_v2 = zoo::as.yearmon(fup_crf_date))
+# 
+# master$month_yr_v2 <- factor(master$month_yr_v2)
+# master <- master %>%
+#   mutate(month_yr_v2 = fct_expand(month_yr_v2, "Jan 2021", "Feb 2021","Mar 2021"),
+#          month_yr_v2 = fct_relevel(month_yr_v2, c("Jan 2021", "Feb 2021","Mar 2021","Apr 2021", "May 2021", "Jun 2021","Jul 2021",
+#                                                      "Aug 2021","Sep 2021","Oct 2021","Nov 2021","Dec 2021","Jan 2022")))
+# 
+# ### Malaria by month percentages
+# 
+# malaria_m <- subset(master, cluster_new=="Chikwawa")
+# malaria_v1 <- data.frame(prop.table(table(malaria_m$mrdt_result, malaria_m$month_yr_v1),2))
+# names(malaria_v1) <- c("mrdt", "month", "percentage")
+# #malaria_v1$month_fac <- factor(malaria_v1$month, levels = month.name)
+# # malaria_v1 <- malaria_v1 %>%
+# #   arrange(month)
+# malaria_v1$percentage <- round(malaria_v1$percentage, digits = 3)
+# 
+# malaria_v1$percentagelabelpos <- ifelse(malaria_v1$mrdt==1,
+#                                         malaria_v1$percentage/2, 1 - malaria_v1$percentage/2)
+# 
+# plot1 <- ggplot(malaria_v1, aes(fill = factor(mrdt), x=month, y=percentage)) +
+#   geom_bar(position="fill", stat="identity", color='black', width=0.9) +
+#   labs(y="Percentage", x="Month") + 
+#   theme_bw() +
+#   scale_y_continuous(labels = scales::percent) +
+#   scale_fill_discrete(name = "MRDT", labels=c("Neg", "Pos")) +
+#   geom_text(aes(label = paste0(percentage*100,"%"), 
+#                 y=percentagelabelpos), size = 1) +
+#   ggtitle("Chikwawa Day 1 MRDT +") +
+#   theme(axis.text=element_text(size=5),
+#         axis.title=element_text(size=10,face="bold"),
+#         legend.text=element_text(size=6),
+#         legend.title=element_text(size=8),
+#         axis.text.x = element_text(angle=45, hjust=1))
+# 
+# malaria_m <- subset(master, cluster_new=="St Montfort")
+# malaria_v1 <- data.frame(prop.table(table(malaria_m$mrdt_result, malaria_m$month_yr_v1),2))
+# names(malaria_v1) <- c("mrdt", "month", "percentage")
+# #malaria_v1$month_fac = factor(malaria_v1$month, levels = month.name)
+# # malaria_v1 <- malaria_v1 %>%
+# #   arrange(month)
+# malaria_v1$percentage <- round(malaria_v1$percentage, digits = 3)
+# 
+# malaria_v1$percentagelabelpos <- ifelse(malaria_v1$mrdt==1,
+#                                         malaria_v1$percentage/2, 1 - malaria_v1$percentage/2)
+# 
+# plot2 <- ggplot(malaria_v1, aes(fill = factor(mrdt), x=month, y=percentage)) +
+#   geom_bar(position="fill", stat="identity", color='black', width=0.9) +
+#   labs(y="Percentage", x="Month") + 
+#   theme_bw() +
+#   scale_y_continuous(labels = scales::percent) +
+#   scale_fill_discrete(name = "MRDT", labels=c("Neg", "Pos")) +
+#   geom_text(aes(label = paste0(percentage*100,"%"), 
+#                 y=percentagelabelpos), size = 1) +
+#   ggtitle("St Montfort Day 1 MRDT +") +
+#   theme(axis.text=element_text(size=5),
+#         axis.title=element_text(size=10,face="bold"),
+#         legend.text=element_text(size=6),
+#         legend.title=element_text(size=8),
+#         axis.text.x = element_text(angle=45, hjust=1))
+# 
+# 
+# ##### Day 90 MRDT pos
+# 
+# malaria_m <- subset(master, cluster_new=="Chikwawa")
+# malaria_v2 <- data.frame(prop.table(table(malaria_m$stl_mrdt_result, malaria_m$month_yr_v2),2))
+# names(malaria_v2) <- c("mrdt", "month", "percentage")
+# #malaria_v2$month_fac = factor(malaria_v2$month, levels = month.name)
+# # malaria_v2 <- malaria_v2 %>%
+# #    mutate(
+# #     month_yr_v1 = format_ISO8601(v1_date, precision = "ym")) %>%
+# #   arrange(month_yr_v1)
+# malaria_v2$percentage <- round(malaria_v2$percentage, digits = 3)
+# 
+# malaria_v2$percentagelabelpos <- ifelse(malaria_v2$mrdt==1,
+#                                         malaria_v2$percentage/2, 1 - malaria_v2$percentage/2)
+# 
+# plot3 <- ggplot(malaria_v2, aes(fill = factor(mrdt), x=month, y=percentage)) +
+#   geom_bar(position="fill", stat="identity", color='black', width=0.9) +
+#   labs(y="Percentage", x="Month") + 
+#   theme_bw() +
+#   scale_y_continuous(labels = scales::percent) +
+#   scale_fill_discrete(name = "MRDT", labels=c("Neg", "Pos")) +
+#   geom_text(aes(label = paste0(percentage*100,"%"), 
+#                 y=percentagelabelpos), size = 1) +
+#   ggtitle("Chikwawa Day 90 MRDT +") +
+#   theme(axis.text=element_text(size=5),
+#         axis.title=element_text(size=10,face="bold"),
+#         legend.text=element_text(size=6),
+#         legend.title=element_text(size=8),
+#         axis.text.x = element_text(angle=45, hjust=1))
+# 
+# 
+# 
+# malaria_m <- subset(master, cluster_new=="St Montfort")
+# malaria_v2 <- data.frame(prop.table(table(malaria_m$mrdt_result, malaria_m$month_yr_v2),2))
+# names(malaria_v2) <- c("mrdt", "month", "percentage")
+# malaria_v2$month_fac = factor(malaria_v2$month, levels = month.name)
+# # malaria_v2 <- malaria_v2 %>%
+# #   mutate(
+# #     month_yr_v1 = format_ISO8601(v1_date, precision = "ym")) %>%
+# #   arrange(month_yr_v1)
+# malaria_v2$percentage <- round(malaria_v2$percentage, digits = 3)
+# 
+# malaria_v2$percentagelabelpos <- ifelse(malaria_v2$mrdt==1,
+#                                         malaria_v2$percentage/2, 1 - malaria_v2$percentage/2)
+# 
+# plot4 <- ggplot(malaria_v2, aes(fill = factor(mrdt), x=month, y=percentage)) +
+#   geom_bar(position="fill", stat="identity", color='black', width=0.9) +
+#   labs(y="Percentage", x="Month") + 
+#   theme_bw() +
+#   scale_y_continuous(labels = scales::percent) +
+#   scale_fill_discrete(name = "MRDT", labels=c("Neg", "Pos")) +
+#   geom_text(aes(label = paste0(percentage*100,"%"), 
+#                 y=percentagelabelpos), size = 1) +
+#   ggtitle("St Montfort Day 90 MRDT +") +
+#   theme(axis.text=element_text(size=5),
+#         axis.title=element_text(size=10,face="bold"),
+#         legend.text=element_text(size=6),
+#         legend.title=element_text(size=8),
+#         axis.text.x = element_text(angle=45, hjust=1))
+# 
+# grid.arrange(plot1, plot2, plot3, plot4, ncol=2, nrow=2)
+
+```
+
+![](images/clipboard-32344022.png)
+
+Table high/ low malaria definitions
+
+![](images/clipboard-4586853.png)
+
+## Discussion
+
+iNTS incidence increases rapidly in early life, but begins to fall between 18-36 months, despite continuing community exposure to *Salmonella* and malaria
+
+Salmonella shedding [@gal-mor2018] NTS shedding rates......
+
+## Conclusion

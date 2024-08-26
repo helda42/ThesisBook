@@ -19,17 +19,23 @@ format:
 editor: visual
 ---
 
-## Introduction \*\* Could try fitting other vaccints sites to predict exposure?? Malaria??
+## Introduction 
 
-Children exposed to enteric nontyphoidal *Salmonella* (eNTS) develop effective natural immunity against invasive disease, which can inform vaccine derived immunity. Understanding the age-stratified natural acquisition of immunity in relation to age-stratified asymptomatic eNTS infections and invasive disease incidence in different settings can identify correlates of protection (COP) and inform vaccine impact and implementation.
+Children exposed to enteric nontyphoidal *Salmonella* (eNTS) develop effective natural immunity against invasive disease [@nyirenda_sequential_2014, @maclennan_neglected_2008], which can inform understanding of windows in immune susceptibility to inform approaches to developing vaccine derived immunity. Understanding the age-stratified natural acquisition of immunity in relation to age-stratified asymptomatic eNTS infections and invasive disease incidence in different settings can contribute to understanding of possible correlates of protection (COP) and inform vaccine impact and implementation. It is particularly important to understand the role that naturally acquired immunity plays in protection against invasive disease as this will be important when considering the impact that vaccination may play on both asymptomatic or sub-clinical enteric NTS infections and invasive NTS disease. As naturally acquired immunity appears to be effective protection against invasive disease (as explored in chapter 1), it is important to understand how vaccine-derived immunity may impact this, for example reduce enteric NTS infections, or fecal shedding durtation and therefore may impact the force of infection of NTS from enteric infections and may reduce natural immunity. Vaccine strategy will need to understand the impacts of this to ensure that the most at risk groups are protected, whilst continuing to allow children to boost natural immunity from asymptomatic eNTS events.
+
+Serocatalytic models have been used to understand the mechanisms behind the age-stratified serological responses to a wide range of infectious diseases including dengue[@cox_estimating_2022], malaria [@yman_antibody_2016] and pneumococcus [@lourenco_determinants_2019].
 
 ## Methods
 
-Paired serum from 2428 healthy children recruited in the community was tested for O-Ag (O4) immunoglobulin G (IgG) and high throughput luminescent serum bactericidal activity (L-SBA) to *Salmonella* Typhimurium. We designed a serotype-specific catalytic serological model assuming an exponential decay of maternal antibodies with age from birth, and exposure to eNTS leading to induction of immunity (anti-O-Ag (O4) IgG) through a Gompertz function relationship by age. We compared two models; model 1 assumed a constant force of infection (FOI) throughout ages from birth to 60 months, model 2 assumed FOI changed with age in a sigmoidal relationship with age. Both models were fitted to the serological data per age-bin using a Markov-chain Monte-Carlo (MCMC) approach, and models were compared by Pareto smoothed importance sampling (PSIS) and Widely applicable information criterion (WAIC).
+Serum from healthy children recruited in the community was tested for O-Ag immunoglobulin G (IgG) to *Salmonella* Typhimurium using an ELISA assay developed by GVGH [@aruta_characterization_2023], as part of the VacciNTS consortium as described in chapters 1 and 2. Samples were analysed at the Kamuzu University of Health Sciences (KUHES) laboratory, Blantyre, Malawi as described in chapter 2.
+
+### Modeling approach
+
+A serotype-specific catalytic serological model was designed assuming an exponential decay of maternal antibodies with age from birth, and exposure to eNTS leading to induction of immunity (anti-O-Ag (O4) IgG) through a Gompertz function relationship by age. Two models were compared; model 1 assumed a constant force of infection (FOI) throughout ages from birth to 60 months, model 2 assumed FOI changed with age in a sigmoidal relationship with age. Both models were fitted to the serological data per age-bin using a Markov-chain Monte-Carlo (MCMC) approach, and models were compared by Pareto smoothed importance sampling (PSIS) and Widely applicable information criterion (WAIC).
 
 ### Hypotheses to be tested by model
 
-![](images/clipboard-3702128345.png)
+![Adaptation to serological catalytic model developed by Lourenco et al [@lourenco_determinants_2019]](figures/6_images/model_diag.png){#fig-serocatalytic width="599"}
 
 ### Model equations
 
@@ -148,31 +154,65 @@ Model comparison and diagnostics were run using widely applicable information cr
 
 ## Results
 
-### Model 1: Constant force of infection
+### Descriptive analysis
 
-```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, ft.align = "centre", ft.width = 5, out.width = "5.5in"}
-#| fig-cap: Model 1 outputs using Markov Chain Monte Carlo (MCMC) to estimate model parameters, A. Posterior chains and posterior distributions of parameters i, k, and mab
+Cross-sectional samples were analysed for `{r} total` Malawian children 0-60 months recruited in the SAiNTS study, recruited between 9th January 2021 and 30th May 2022. Antibody responses to *Salmonella* typhimurium O-antigen IgG were used to fit the model.
 
+```{r echo=FALSE, warning=FALSE, message=FALSE, results='show', ft.align = "centre", ft.width = 5, out.width = "5.5in"}
+#| fig-cap: Summary of serological data (IgG against O-antigen of Salmonella Typhimiruim) used for the serocatalytic model by 3 month age groups. GMC = Geometric mean concentration IgG for each agegroup.SD = Standard Deviation IgG. STm = S. Typhimurium. N.B. 1 month age groups were used for the model.
+#| label: fig-serodatsum
+#| 
 require(tidyverse)
 require(ggplot2)
 require(cowplot)
 require(rio)
 require(here)
+library(flextable)
 
 ##load data
-#dataS <- import(here("Data", "dataS.rds"))   # import cleaned dataset
-#data <- import(here("Data", "data.rds"))   # import cleaned dataset
 data <- import(here("data","6_data", "sero_data_agegroup_mth.csv"))   ## serology data
 dataS <- data %>% 
   group_by(AGEGROUP_mth) %>%
-  summarise(MIDAGE=mean(AGE, na.rm = T), ##keep the actual mean age of the groups
+  summarise(N=n(),
+            MIDAGE=mean(AGE, na.rm = T), ##keep the actual mean age of the groups
             LPS_ME=mean(log(EU_all.sero_d1),na.rm=T),
             LPS_SD=sd(log(EU_all.sero_d1),na.rm=T)) %>% 
   ungroup() %>% 
   arrange(MIDAGE)
 
-#######################################################
+data3 <- data %>% 
+  group_by(AGEGROUP_3mth) %>%
+  summarise(N=n(),
+            MIDAGE=mean(AGE, na.rm = T), ##keep the actual mean age of the groups
+            LPS_ME=mean(log(EU_all.sero_d1),na.rm=T),
+            LPS_SD=sd(log(EU_all.sero_d1),na.rm=T)) %>% 
+  ungroup() %>% 
+  arrange(MIDAGE)
 
+flextable(data3) %>% 
+  fontsize(i = 1, size = 8, part = "header") %>%   # adjust font size of header
+  bold(i = 1, bold = TRUE, part = "header") %>%    # adjust bold face of header
+  fontsize(size = 8, part = "body") %>%  # adjust font size of header
+  set_header_labels(         # Rename the columns in original header row
+    AGEGROUP_3mth = "Age Group (month range)",
+    N = "Number of children",
+    MIDAGE = "Midage",
+    LPS_ME = "GMC anti-STm IgG",
+    LPS_SD = "SD anti-STm IgG"
+  ) %>% 
+  autofit()
+
+total <- dataS %>% 
+  summarise(n())
+```
+
+### Model 1: Constant force of infection
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, ft.align = "centre", ft.width = 5, out.width = "5.5in"}
+#| fig-cap: Model 1 outputs using Markov Chain Monte Carlo (MCMC) to estimate model parameters, osterior chains and posterior distributions of parameters i, k, and mab
+#| label: fig-chains1
+
+# Set up MCMC 
 sampleDist<- function(mean, sd, min, max){
 	repeat{
 		point= rnorm(1,mean=mean,sd=sd)
@@ -303,7 +343,7 @@ gg_chain<- ggplot(posteriors) +
           geom_line(aes(x=step, y=k), col='blue') +
           geom_line(aes(x=step, y=mab), col='green') +
           theme_bw() +
-          ggtitle("A: Posterior Chains") +
+          ggtitle("Posterior Chains") +
           theme(axis.text=element_text(size=10),
                 axis.title=element_text(size=10,face="bold"),
                 plot.title = element_text(size=10))
@@ -328,7 +368,7 @@ gg_mab_den<- ggplot(posteriors) + geom_density(aes(x=mab), col='green') + theme_
 
 ##these are good if they appear as constant with noise
 ##and distributions do not look bimodal
-plot_grid(gg_chain, gg_i_den, gg_k_den,gg_mab_den,  ncol=2)
+plot_grid(gg_chain, gg_i_den, gg_k_den,gg_mab_den,  ncol=2, labels = "AUTO")
 # ggsave(file=here("Outputs", "LPS_Ab", "Posteriors_model1.png"), width=9, height=6)
 
 #################################
@@ -377,7 +417,8 @@ model_vs_data<- rbind(
 ```
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, ft.align = "centre", ft.width = 5, out.width = "5.5in"}
-#| fig-cap: B. Model 1 fit for model components mab and theta
+#| fig-cap: Model 1 fit for model components mab and theta
+#| label: fig-phi1
 #| 
 gg_mab_phi<- ggplot(model_vs_data %>% filter(type=="model")) +
       geom_ribbon(aes(x=MIDAGE, ymin=mab_MEAN-mab_SD, ymax=mab_MEAN+mab_SD), col='pink', alpha=0.3) +
@@ -387,7 +428,7 @@ gg_mab_phi<- ggplot(model_vs_data %>% filter(type=="model")) +
       theme_bw() +
       xlab("Mid-age in months") +
       ylab("Anti-STm LPS IgG titers (log)") +
-      ggtitle("B: Mab and Theta (θ) by age") +
+      ggtitle("Mab and Theta (θ) by age") +
       scale_x_continuous(breaks = c(seq(0,60,5))) +
       theme(axis.text=element_text(size=10),
             axis.title=element_text(size=10,face="bold"),
@@ -397,14 +438,15 @@ gg_mab_phi
 ```
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, ft.align = "centre", ft.width = 5, out.width = "5.5in"}
-#| fig-cap: C. Model 1 fit for number of infections by age
+#| fig-cap: Model 1 fit for number of infections by age
+#| label: fig-ninf1
 gg_ninf<- ggplot(model_vs_data %>% filter(type=="model")) +
       geom_ribbon(aes(x=MIDAGE, ymin=ninf_MEAN-ninf_SD, ymax=ninf_MEAN+ninf_SD), alpha=0.3) +
       geom_point(aes(x=MIDAGE, y=ninf_MEAN)) +
       theme_bw() +
       xlab("Mid-age in months") +
       ylab("Number of infections") +
-      ggtitle("C: Number of infections by age") +
+      ggtitle("Number of infections by age") +
       scale_x_continuous(breaks = c(seq(0,60,5))) +
       theme(axis.text=element_text(size=10),
             axis.title=element_text(size=10,face="bold"),
@@ -422,7 +464,7 @@ gg_fit_orig<- ggplot(model_vs_data) +
       theme_bw() +
       xlab("Mid-age in months") +
       ylab("Anti-STm LPS IgG titers (log)") +
-      ggtitle("D: LPS IgG titres by age: model vs data") +
+      ggtitle("LPS IgG titres by age: model vs data") +
       scale_x_continuous(breaks = c(seq(0,60,5))) +
       theme(axis.text=element_text(size=10),
             axis.title=element_text(size=10,face="bold"),
@@ -442,7 +484,8 @@ gg_fit_orig
 ### Model 2: Changing force of infection with age
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, ft.align = "centre", ft.width = 5, out.width = "5.5in"}
-#| fig-cap: Model 2 outputs using Markov Chain Monte Carlo (MCMC) to estimate model parameters, A. Posterior chains and posterior distributions of parameters i, k, and mab
+#| fig-cap: Model 2 outputs using Markov Chain Monte Carlo (MCMC) to estimate model parameters; posterior chains and posterior distributions of parameters i, k, and mab
+#| label: fig-chains2
 
 sampleDist<- function(mean, sd, min, max){
   repeat{
@@ -596,7 +639,7 @@ gg_chain<- ggplot(posteriors) +
   geom_line(aes(x=step, y=mab_0), col='green') +
   geom_line(aes(x=step, y=lambda_b), col='purple') +
   theme_bw() +
-  ggtitle("A: Posterior Chains") +
+  ggtitle("Posterior Chains") +
   theme(axis.text=element_text(size=10),
         axis.title=element_text(size=10,face="bold"),
         plot.title = element_text(size=10))
@@ -677,7 +720,8 @@ model_vs_data<- rbind(
 ```
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, ft.align = "centre", ft.width = 5, out.width = "5.5in"}
-#| fig-cap: B. Model 2 fit for model components mab and theta
+#| fig-cap: Model 2 fit for model components mab and theta
+#| label: fig-phi2
 gg_mab_0_phi<- ggplot(model_vs_data %>% filter(type=="model")) +
   geom_ribbon(aes(x=MIDAGE, ymin=mab_0_MEAN-mab_0_SD, ymax=mab_0_MEAN+mab_0_SD), col='pink', alpha=0.3) +
   geom_point(aes(x=MIDAGE, y=mab_0_MEAN), col='pink') +
@@ -686,7 +730,7 @@ gg_mab_0_phi<- ggplot(model_vs_data %>% filter(type=="model")) +
   theme_bw() +
   xlab("Mid-age in months") +
   ylab("Anti-STm LPS IgG titers (log)") +
-  ggtitle("B: mab_0 and Theta (θ) by age") +
+  ggtitle("mab_0 and Theta (θ) by age") +
   scale_x_continuous(breaks = c(seq(0,60,5))) +
   theme(axis.text=element_text(size=10),
         axis.title=element_text(size=10,face="bold"),
@@ -696,7 +740,8 @@ gg_mab_0_phi
 ```
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, ft.align = "centre", ft.width = 5, out.width = "5.5in"}
-#| fig-cap: C. Model 2 fit for number of infections by age
+#| fig-cap: Model 2 fit for number of infections by age
+#| label: fig-ninf2
 
 gg_ninf<- ggplot(model_vs_data %>% filter(type=="model")) +
   geom_ribbon(aes(x=MIDAGE, ymin=ninf_MEAN-ninf_SD, ymax=ninf_MEAN+ninf_SD), alpha=0.3) +
@@ -714,7 +759,8 @@ gg_ninf
 ```
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, ft.align = "centre", ft.width = 5, out.width = "5.5in"}
-#| fig-cap: D. Model fit, blue points are fitted GMC by age band, blue shaded area are 95% prediction intervals, pink points are observed GMC, pink shaded area are 95% prediction intervals.
+#| fig-cap: Model fit, blue points are fitted GMC by age band, blue shaded area are 95% prediction intervals, pink points are observed GMC, pink shaded area are 95% prediction intervals.
+#| label: fig-fit2
 
 gg_fit<- ggplot(model_vs_data) +
   geom_ribbon(aes(x=MIDAGE, ymin=MEAN-SD, ymax=MEAN+SD, fill=type), alpha=0.3) +
@@ -722,7 +768,7 @@ gg_fit<- ggplot(model_vs_data) +
   theme_bw() +
   xlab("Mid-age in months") +
   ylab("Anti-STm LPS IgG titers (log)") +
-  ggtitle("D: LPS IgG titres by age: model vs data - changing FOI") +
+  ggtitle("LPS IgG titres by age: model vs data - changing FOI") +
   scale_x_continuous(breaks = c(seq(0,60,5))) +
   theme(axis.text=element_text(size=10),
         axis.title=element_text(size=10,face="bold"),
@@ -737,6 +783,10 @@ Model 2 was selected as the best fit model, supporting the hypothesis that the r
 
 ## Discussion
 
-Model fit was improved assuming FOI increased around age of weaning (4-6 months); this is consistent with the observed age-stratified point prevalence of eNTS detected on stool microbiology in the same study cohort. Next steps include modeling age-stratified serological responses versus disease incidence, and cross-validation considering risk factors and epidemiological setting.
+Model fit was improved assuming FOI increased around age of weaning (4-6 months); this is consistent with the observed age-stratified point prevalence of eNTS detected on stool microbiology in the same study cohort. Next steps include modeling age-stratified serological responses versus disease incidence, and cross-validation considering risk factors and epidemiological setting. Enteric NTS exposure events continue throughout childhood, however, anti-LPS IgG and SBA plateau, suggesting that these serological markers of immunity do not represent protection against enteric infections.
+
+Data from Kenya indicates asymptomatic exposures
+
+\*\* Could try fitting other vaccints sites to predict exposure?? Malaria??
 
 ## Conclusions

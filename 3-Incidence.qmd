@@ -615,7 +615,7 @@ ggplot(allageYrB3, aes(x=ageyrs, y=risk, group=YearBand, colour = YearBand))+
 
 ### Fit risk
 risk_predict <- function(df, name ){ #Switch, grp
-  spline_risk <-glm.nb(count ~ bs((midage), df=8)+ offset(log(pop)), df) 
+  spline_risk <-glm.nb(count ~ bs((midage), df=5)+ offset(log(pop)), df) 
   pred_obj <- predict(spline_risk, type="link", data=df, se.fit=T)
   df2 <- df %>%
   mutate(case_pred=exp(pred_obj$fit),
@@ -942,40 +942,46 @@ AMR_paeds_sumyr %>%
           legend.title  = element_text(face = "bold", size = 8))
 ```
 
-+------------------+------------------+--------+----------------------------+--------+----------------------------+--------+
-| Country          |                  |        | Crude incidence,           |        | Adjusted incidence         |        |
-|                  |                  |        |                            |        |                            |        |
-|                  |                  |        | iNTS cases per 100,000 PYO |        | iNTS cases per 100,000 PYO |        |
-+==================+==================+========+============================+========+============================+========+
-| **Malawi**       |                  |        |                            |        |                            |        |
-+------------------+------------------+--------+----------------------------+--------+----------------------------+--------+
-|                  | Age 0-11 months  |        | 80 (22-205)                |        | n/a                        |        |
-+------------------+------------------+--------+----------------------------+--------+----------------------------+--------+
-|                  | Age 12-23 months |        | 124 (45-269)               |        | n/a                        |        |
-+------------------+------------------+--------+----------------------------+--------+----------------------------+--------+
-|                  | Age 24-35 months |        | 41 (1-156)                 |        | n/a                        |        |
-+------------------+------------------+--------+----------------------------+--------+----------------------------+--------+
-|                  | Age 36-47 months |        | 18 (0-130)                 |        | n/a                        |        |
-+------------------+------------------+--------+----------------------------+--------+----------------------------+--------+
-| **Ghana**        |                  |        |                            |        |                            |        |
-+------------------+------------------+--------+----------------------------+--------+----------------------------+--------+
-|                  | Under 2 years    |        | 7.9                        |        | 82 (61 - 110)              |        |
-+------------------+------------------+--------+----------------------------+--------+----------------------------+--------+
-|                  | 2-4 years        |        | 11.0                       |        | 167 (124 - 219)            |        |
-+------------------+------------------+--------+----------------------------+--------+----------------------------+--------+
-| **Burkina Faso** |                  |        |                            |        |                            |        |
-+------------------+------------------+--------+----------------------------+--------+----------------------------+--------+
-|                  | Under 2 years    |        | 18.7                       |        | 339 (245 - 497)            |        |
-+------------------+------------------+--------+----------------------------+--------+----------------------------+--------+
-|                  | 2-4 years        |        | 36.3                       |        | 605 (486 - 772)            |        |
-+------------------+------------------+--------+----------------------------+--------+----------------------------+--------+
+![](images/clipboard-271940250.png)
+
++------------------+------------------+---+----------------------------+---+----------------------------+---+
+| Country          |                  |   | Crude incidence,           |   | Adjusted incidence         |   |
+|                  |                  |   |                            |   |                            |   |
+|                  |                  |   | iNTS cases per 100,000 PYO |   | iNTS cases per 100,000 PYO |   |
++==================+==================+===+============================+===+============================+===+
+| **Malawi**       |                  |   |                            |   |                            |   |
++------------------+------------------+---+----------------------------+---+----------------------------+---+
+|                  | Age 0-11 months  |   | 80 (22-205)                |   | n/a                        |   |
++------------------+------------------+---+----------------------------+---+----------------------------+---+
+|                  | Age 12-23 months |   | 124 (45-269)               |   | n/a                        |   |
++------------------+------------------+---+----------------------------+---+----------------------------+---+
+|                  | Age 24-35 months |   | 41 (1-156)                 |   | n/a                        |   |
++------------------+------------------+---+----------------------------+---+----------------------------+---+
+|                  | Age 36-47 months |   | 18 (0-130)                 |   | n/a                        |   |
++------------------+------------------+---+----------------------------+---+----------------------------+---+
+| **Ghana**        |                  |   |                            |   |                            |   |
++------------------+------------------+---+----------------------------+---+----------------------------+---+
+|                  | Under 2 years    |   | 7.9                        |   | 82 (61 - 110)              |   |
++------------------+------------------+---+----------------------------+---+----------------------------+---+
+|                  | 2-4 years        |   | 11.0                       |   | 167 (124 - 219)            |   |
++------------------+------------------+---+----------------------------+---+----------------------------+---+
+| **Burkina Faso** |                  |   |                            |   |                            |   |
++------------------+------------------+---+----------------------------+---+----------------------------+---+
+|                  | Under 2 years    |   | 18.7                       |   | 339 (245 - 497)            |   |
++------------------+------------------+---+----------------------------+---+----------------------------+---+
+|                  | 2-4 years        |   | 36.3                       |   | 605 (486 - 772)            |   |
++------------------+------------------+---+----------------------------+---+----------------------------+---+
+| Kenya (2014)     |                  |   |                            |   |                            |   |
++------------------+------------------+---+----------------------------+---+----------------------------+---+
 
 : Crude and Adjusted incidence rates for iNTS disease in Malawi, Burkina Faso, and Kenya. The Malawi incidence was estimated from the community-based STRATAA study (Meiring et al, Lancet Infectious Disease 2021). The incidences from Ghana and Burkina Faso are estimated from the SEAP study (unpublished data, personal communication from investigators).
 
+Kenya [@verani2015]
+
+![](figures/3_images/Kenya_iNTS_age.jpg){width="495"}
+
 ## Discussion
 
-There are differences between the methodologies used between sites in Malawi, Burkina Faso and Kenya on these field sites (explored in Carey et al, Clin Infect Dis, 2020), which make it difficult to directly compare these data, and adjusting crude data to give an adjusted incidence adds additional variability and has not yet been undertaken for the Malawi estimates. However, the most directly comparable data sets, on crude unadjusted incidence (see below) in the relevant age-bands, suggest that Malawi could have the highest age-linked incidences of iNTS. Country Crude incidence, iNTS cases per 100,000 PYO Adjusted incidence iNTS cases per 100,000 PYO.
+There are differences between the methodologies used between sites in Malawi, Burkina Faso and Kenya on these field sites (explored in [@carey_surveillance_2020]), which make it difficult to directly compare these data, and adjusting crude data to give an adjusted incidence adds additional variability and has not yet been undertaken for the Malawi estimates. However, the most directly comparable data sets, on crude unadjusted incidence (see below) in the relevant age-bands, suggest that Malawi could have the highest age-linked incidences of iNTS.
 
 \newpage
-
-## References

@@ -11,11 +11,13 @@ book:
     - 1-introduction.qmd
     - 2-methods.qmd
     - 3-Incidence.qmd
+    - 4-attributable_fractions.qmd
     - 5-Descriptive.qmd
     - 6-serocatalytic.qmd
     - 7-ChangePoint.qmd
     - summary.qmd
     - bibliography.qmd
+    - appendices.qmd
 
 bibliography: references.bib
 

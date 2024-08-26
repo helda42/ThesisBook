@@ -1,0 +1,400 @@
+---
+title: "Appendices"
+format:    
+  pdf:
+    geometry:
+      - top=20mm
+      - bottom=20mm
+      - left=20mm
+      - right=20mm
+    toc: true
+    tof: true
+    number-sections: true
+    colorlinks: true
+    include-in-header:
+      text: |
+        \usepackage{typearea}
+    cite-method: citeproc
+    bibliography: references.bib
+    csl: diabetologia.csl
+editor: visual
+---
+
+## Attributable Fractions
+
+### Included studies
+
+\newpage
+
+<!-- changing the orientation to landscape --------------------------------- -->
+
+```{=tex}
+\KOMAoptions{usegeometry, paper=landscape,pagesize}
+\recalctypearea
+```
+```{r, echo=FALSE, results='show', warning=FALSE, message=FALSE}
+#| fig-cap: "Details of included studies in attributable fractions analysis"
+#| label: tbl-AFincludedstud
+
+library(dplyr)
+library(ggplot2)
+library(flextable)
+library(tidyr)
+library(naniar)
+library(tidyverse)
+library(here)
+library(rio)
+descript_tab2 <- import(here("data", "9_data", "descript_tab2.csv"))
+ft_desc_tab <- flextable(descript_tab2) %>% 
+  fontsize(i = 1, size = 12, part = "header") %>%   # adjust font size of header
+  bold(i = 1, bold = TRUE, part = "header")#
+ft_desc_tab
+```
+
+\newpage
+
+<!-- changing the orientation to portrait --------------------------------- -->
+
+```{=tex}
+\KOMAoptions{usegeometry, paper=portrait,pagesize}
+\recalctypearea
+```
+## Estimating protective thresholds for STm anti-OAg IgG using reverse cumulative distribution curve functions (RCD’s)
+
+We estimated protective thresholds using the population-based model developed by Chang and Kohberger for pneumococcal vaccines [@siber_methods_1997]. The model makes one critical simplifying assumption which is that there is a sharp cut-off between protective and non-protective antibody levels: i.e. that all individuals, whether immunized or controls, with antibody above the threshold are protected and those with antibody below it are at risk. To estimate a protective threshold of IgG against iNTS, we assumed that all children with an antibody response above a specified level are protected. We estimated the PEth quantile of the RCD, where PE (protective efficacy) is the protection against iNTS seen in a low-risk group (children \>35 months), relative to a high-risk group (children \<=35 months).
+
+To capture the uncertainty in both the RCD and the estimate of VE we used a double bootstrap approach; In each ith iteration of the bootstrap we sampled VEi from a normal distribution with mean and variance that reflected the published data (on a log-VE scale). Then the VEith quantile was estimated from an RCD constructed from a resampling of the immune response data (fixed n, sampled with replacement). After 10,000 iterations the 2.5th and 97.5th percentiles were estimated from the distribution of computed thresholds providing a 95% confidence interval [@goldblatt_towards_2022]. \[NOT YET DONE\]
+
+```{r, message=FALSE, echo=FALSE, results='hide', warning=FALSE}
+# set-up
+#| echo: false
+library(dplyr)
+library(ggplot2)
+library(Hmisc)
+library(tidyr)
+library(naniar)
+library(tidyverse)
+library(here)
+library(rio)
+
+sero_data2 <- import(here("data","9_data", "sero_data_agegroup_mth.csv")) 
+#isk_per_1mth_ms <- import(here("Data", "risk_per_1mth_ms.csv"))
+risk_per_1mth_ms <- import(here("data", "9_data", "risk_per_mth.csv"))
+
+```
+
+## Inverse relationship of incidence of invasive disease in children under 5 years in Malawi, compared to acquisition of immunity
+
+![Acquisition of STm OAg IgG in children recruited into the SAINTS study vs iNTS incidence from QECH-MLW blood culture service Blantyre, Malawi in children (0-5 years)](figures/9_images/inverseAbiNTS.png){#fig-inverseiNTSAb width="890"}
+
+## RCD curves by 1 year age band for LPS IgG to STm
+
+First calculate protective efficacy from disease data age-groups
+
+Including under 4 months
+
+```{r echo=FALSE, results='show', warning=FALSE}
+
+## Protective efficacy = risk of disease in each age band based on age
+# Protected
+risk_mean <- risk_per_1mth_ms %>% 
+  mutate(protected = ifelse(midage>35,1,0)) %>% 
+  group_by(protected) %>% 
+  summarise(mean_risk = mean(risk_pred, na.rm = T)) %>% 
+  ungroup()
+
+PE_35m <- (risk_mean[which(risk_mean$protected==0),"mean_risk"] - risk_mean[which(risk_mean$protected==1),"mean_risk"])/ risk_mean[which(risk_mean$protected==0),"mean_risk"]
+PE_35m <- PE_35m %>% 
+  rename(mean_risk_under35m = mean_risk)
+PE_35m
+
+risk_mean_24 <- risk_per_1mth_ms %>% 
+  mutate(protected = ifelse(midage>23,1,0)) %>% 
+  group_by(protected) %>% 
+  summarise(mean_risk = mean(risk_pred, na.rm = T)) %>% 
+  ungroup()
+
+PE_24m <- (risk_mean_24[which(risk_mean_24$protected==0),"mean_risk"] - risk_mean_24[which(risk_mean_24$protected==1),"mean_risk"])/ risk_mean_24[which(risk_mean_24$protected==0),"mean_risk"]
+PE_24m <- PE_24m %>% 
+  rename(mean_risk_under24m = mean_risk)
+PE_24m
+```
+
+Excluding under 4 months
+
+```{r echo=FALSE, results='show', warning=FALSE}
+## Protective efficacy = risk of disease in each age band based on age
+# Protected
+risk_mean <- risk_per_1mth_ms %>% 
+  filter(midage>=4) %>% 
+  mutate(protected = ifelse(midage>35,1,0)) %>% 
+  group_by(protected) %>% 
+  summarise(mean_risk = mean(risk_pred, na.rm = T)) %>% 
+  ungroup()
+
+PE_35m <- (risk_mean[which(risk_mean$protected==0),"mean_risk"] - risk_mean[which(risk_mean$protected==1),"mean_risk"])/ risk_mean[which(risk_mean$protected==0),"mean_risk"]
+A4_PE_35m <- PE_35m %>% 
+  rename(mean_risk_under35m = mean_risk)
+A4_PE_35m
+
+risk_mean_24 <- risk_per_1mth_ms %>% 
+  filter(midage>=4) %>% 
+  mutate(protected = ifelse(midage>23,1,0)) %>% 
+  group_by(protected) %>% 
+  summarise(mean_risk = mean(risk_pred, na.rm = T)) %>% 
+  ungroup()
+
+PE_24m <- (risk_mean_24[which(risk_mean_24$protected==0),"mean_risk"] - risk_mean_24[which(risk_mean_24$protected==1),"mean_risk"])/ risk_mean_24[which(risk_mean_24$protected==0),"mean_risk"]
+A4_PE_24m <- PE_24m %>% 
+  rename(mean_risk_under24m = mean_risk)
+A4_PE_24m
+
+```
+
+```{r echo=FALSE, results='hide', warning=FALSE,fig.align = "left", fig.height = 4, fig.width = 6, out.width = "6.5in"}
+agebands1 <- ggplot(sero_data2, aes(EU_all.sero_d1, colour = AGEGROUP_yr, y = 1 - ..y..)) +
+  stat_ecdf(geom = "step", pad = FALSE) +
+  ggtitle("Reverse Cumulative Distribution Functions for STm IgG")+
+  xlab("LPS IgG Ab Concentration")+
+  ylab("Probability of disease")+
+  scale_x_log10() +
+  labs(colour = "Agegroups")+
+  theme_bw()+
+  theme(title = element_text(face = "bold", size=12),
+        axis.title = element_text(face= "plain" , size = 10),
+        axis.text = element_text(face = "plain", size = 10),
+        axis.text.x = element_text(face = "plain", size = 10, vjust = 0.5),
+        legend.text = element_text(face = "bold", size = 8))
+agebands1
+#ggsave(here("Outputs","cases", "RCF_agebands1.tiff"), plot = agebands1)
+```
+
+```{r, message=FALSE, echo=FALSE, results='hide', warning=FALSE}
+## Need to fix
+# sero_data2 <- sero_data2 %>%
+#         mutate(agebands_grp1 = cut(AGE, breaks = c(-1, 5, 23, 60), labels = c('0-5', '6-23', '>24')),
+#                agebands_grp2 = cut(AGE, breaks = c(-1, 5, 35, 60), labels = c('Maternal Ab (0-5m)', 'Unprotected (6-35m)', 'Protected (>35m)')))
+# 
+# agebincut <- function(cp){
+#   labs <- c(paste(sep="", "Unprotected (<", cp, ")"), paste(sep="", "Protected (>=", cp, ")"))
+#   # cutpoints <- c(4,c)
+#     sero_data2 <- sero_data2 %>%
+#         filter(AGE>=4) %>% 
+#         mutate(paste(sep="", "agebands_bin", cp) = cut(AGE, breaks = c(4, cp, 60), labels = labs, include.lowest = T, right=F))
+# }
+
+sero_data2 <- sero_data2 %>%
+  filter(AGE>=4) %>% 
+  mutate(Agebands = cut(AGE, breaks = c(4, 6, 9, 24), labels = c('4-6', '6-9', '>=2'), include.lowest = T, right=F),
+         agebands_grp1 = cut(AGE, breaks = c(-1, 5, 23, 60), labels = c('0-5', '6-23', '>24')),
+         agebands_grp2 = cut(AGE, breaks = c(-1, 5, 35, 60), labels = c('Maternal Ab (0-5m)', 'Unprotected (6-35m)', 'Protected (>35m)')),
+         agebands_bin1 = cut(AGE, breaks = c(4, 6, 60), labels = c( 'Unprotected', 'Protected'), include.lowest = T, right=F),
+         agebands_bin2 = cut(AGE, breaks = c(4, 9, 60), labels = c( 'Unprotected', 'Protected'), include.lowest = T, right=F),
+         agebands_bin3 = cut(AGE, breaks = c(4, 12, 60), labels = c( 'Unprotected', 'Protected'), include.lowest = T, right=F),
+         agebands_bin4 = cut(AGE, breaks = c(4, 15, 60), labels = c( 'Unprotected', 'Protected'), include.lowest = T, right=F),
+         agebands_bin5 = cut(AGE, breaks = c(4, 18, 60), labels = c( 'Unprotected', 'Protected'), include.lowest = T, right=F),
+         agebands_bin6 = cut(AGE, breaks = c(4, 21, 60), labels = c( 'Unprotected', 'Protected'), include.lowest = T, right=F),
+         agebands_bin7 = cut(AGE, breaks = c(4, 24, 60), labels = c( 'Unprotected (<24m)', 'Protected (>=24m)'), include.lowest = T, right=F),
+         agebands_bin8 = cut(AGE, breaks = c(4, 27, 60), labels = c( 'Unprotected', 'Protected'), include.lowest = T, right=F),
+         agebands_bin9 = cut(AGE, breaks = c(4, 30, 60), labels = c( 'Unprotected', 'Protected'), include.lowest = T, right=F),
+         agebands_bin10 = cut(AGE, breaks = c(4, 35, 60), labels = c( 'Unprotected (<35m)', 'Protected (>=35m)'), include.lowest = T, right=F),
+         agebands_bin11 = cut(AGE, breaks = c(4, 40, 60), labels = c( 'Unprotected', 'Protected'), include.lowest = T, right=F),
+         agebands_bin12 = cut(AGE, breaks = c(4, 45, 60), labels = c( 'Unprotected', 'Protected'), include.lowest = T, right=F),
+         agebands_bin13 = cut(AGE, breaks = c(4, 50, 60), labels = c( 'Unprotected', 'Protected'), include.lowest = T, right=F),
+         agebands_bin14 = cut(AGE, breaks = c(4, 55, 60), labels = c( 'Unprotected', 'Protected'), include.lowest = T, right=F))
+```
+
+## Plot RCD
+
+```{r echo=FALSE, results='hide', warning=FALSE,fig.align = "left", fig.height = 5, fig.width = 6, out.width = "6.5in"}
+
+agebands <- ggplot(sero_data2, aes(EU_all.sero_d1, colour = agebands_grp1, y = 1 - ..y..)) +
+  stat_ecdf(geom = "step", pad = FALSE) +
+  ggtitle("Reverse Cumulative Distribution Functions for STm IgG (all ages)")+
+  xlab("STm anti-OAg IgG Concentration (EU/ml)")+
+  ylab("Probability of disease")+
+  scale_x_log10() +
+  labs(colour = "Agegroups")+
+  #geom_text() +
+  annotate("text", label = "18 EU/ml", x = 5, y = 0.35, size = 4, colour = "blue")+
+  annotate("text", label = "PE = 0.728", x = 0.7, y = 0.77, size = 4, colour = "firebrick")+
+  annotate("text", label = "Unprotected", x = 1, y = 1.03, size = 4, colour = "blueviolet")+
+  annotate("text", label = "Protected", x = 1000, y = 1.03, size = 4, colour = "darkgoldenrod3")+
+  #scale_fill_discrete(name = "Agegroups")+
+  geom_hline(yintercept = 0.728, linetype = "dashed", color = "darkorange3", size = 0.5)+
+  geom_vline(xintercept = 18, linetype = "dashed", color = "darkorange3", size = 0.5)+
+  annotate('rect', xmin=0, xmax=21, ymin=0, ymax=1, alpha=.1, fill='blueviolet') +
+  annotate('rect', xmin=21, xmax=20000, ymin=0, ymax=1, alpha=.1, fill='darkgoldenrod1') +
+  theme_bw()+
+  theme(title = element_text(face = "bold", size=10),
+        axis.title = element_text(face= "plain" , size = 10),
+        axis.text = element_text(face = "plain", size = 10),
+        axis.text.x = element_text(face = "plain", size = 10, vjust = 0.5),
+        legend.text = element_text(face = "bold", size = 8))
+agebands
+#ggsave(here("Outputs", "COP", "RCF_agebands.tiff"), plot = agebands)
+
+agebands2 <- ggplot(sero_data2, aes(EU_all.sero_d1, colour = agebands_grp2, y = 1 - ..y..)) +
+  stat_ecdf(geom = "step", pad = FALSE) +
+  ggtitle("Reverse Cumulative Distribution Functions for STm IgG (all ages)")+
+  xlab("STm anti-OAg IgG Concentration (EU/ml)")+
+  ylab("Probability of disease")+
+  scale_x_log10() +
+  labs(colour = "Agegroups")+
+  #geom_text() +
+  annotate("text", label = "26 EU/ml", x = 8, y = 0.34, size = 4, colour = "blue")+
+  annotate("text", label = "PE = 0.649", x = 1, y = 0.68, size = 4, colour = "firebrick")+
+  annotate("text", label = "Unprotected", x = 1, y = 1.03, size = 4, colour = "blueviolet")+
+  annotate("text", label = "Protected", x = 1000, y = 1.03, size = 4, colour = "darkgoldenrod3")+
+  #scale_fill_discrete(name = "Agegroups")+
+  geom_hline(yintercept = 0.649, linetype = "dashed", color = "darkorange3", size = 0.5)+
+  geom_vline(xintercept = 26, linetype = "dashed", color = "darkorange3", size = 0.5)+
+  annotate('rect', xmin=0, xmax=24, ymin=0, ymax=1, alpha=.1, fill='blueviolet') +
+  annotate('rect', xmin=26, xmax=20000, ymin=0, ymax=1, alpha=.1, fill='darkgoldenrod1') +
+  theme_bw()+
+  theme(title = element_text(face = "bold", size=10),
+        axis.title = element_text(face= "plain" , size = 10),
+        axis.text = element_text(face = "plain", size = 10),
+        axis.text.x = element_text(face = "plain", size = 10, vjust = 0.5),
+        legend.text = element_text(face = "bold", size = 8))
+agebands2
+#ggsave(here("Outputs", "COP", "RCF_agebands2.tiff"), plot=agebands2)
+
+```
+
+Estimating protective thresholds for STm anti-OAg IgG using reverse cumulative distribution curve functions (RCD’s). To estimate a protective antibody threshold of IgG against iNTS, we assumed that all children with an antibody response above a specified level are protected. We estimated the PEth quantile of the RCD, (horizontal line at PEth percentile). The protective threshold is shown (vertical line), where PE (protective efficacy) is the protection against iNTS seen in a low-risk group (children \>35 months), relative to a high-risk group (children \<=35 months).
+
+## Different cut-offs excluding under 4 months
+
+```{r echo=FALSE, results='hide', warning=FALSE,fig.align = "left", fig.height = 5, fig.width = 6, out.width = "6.5in"}
+#| fig-cap: "Estimating protective thresholds for STm anti-OAg IgG using reverse cumulative distribution curve functions (RCD’s)"
+#| label: fig-RCDagebin
+#| 
+RCF_2agebands24 <- ggplot(sero_data2, aes(EU_all.sero_d1, colour = agebands_bin7, y = 1 - ..y..)) + 
+  stat_ecdf(geom = "step", pad = FALSE) + 
+  ggtitle("RCF for STm IgG (exclude <4m)")+ 
+  xlab("STm anti-OAg IgG Concentration (EU/ml)")+ 
+  ylab("Probability of disease")+ 
+  scale_x_log10() + labs(colour = "Agegroups")+ 
+  annotate("text", label = "18 EU/ml", x = 5, y = 0.35, size = 4, colour = "blue")+ 
+  annotate("text", label = "PE = 0.733", x = 0.7, y = 0.78, size = 4, colour = "firebrick")+ 
+  annotate("text", label = "Unprotected", x = 1, y = 1.03, size = 4, colour = "blueviolet")+ 
+  annotate("text", label = "Protected", x = 1000, y = 1.03, size = 4, colour = "darkgoldenrod3")+ 
+  scale_fill_discrete(name = "Agegroups")+ 
+  geom_hline(yintercept = 0.733, linetype = "dashed", color = "darkorange3", size = 0.5)+ 
+  geom_vline(xintercept = 18, linetype = "dashed", color = "darkorange3", size = 0.5)+ 
+  annotate('rect', xmin=0, xmax=21, ymin=0, ymax=1, alpha=.1, fill='blueviolet') + 
+  annotate('rect', xmin=21, xmax=20000, ymin=0, ymax=1, alpha=.1, fill='darkgoldenrod1') + 
+  theme_bw()+ 
+  theme(title = element_text(face = "bold", size=10), 
+        axis.title = element_text(face= "plain" , size = 10), 
+        axis.text = element_text(face = "plain", size = 10), 
+        axis.text.x = element_text(face = "plain", size = 10, vjust = 0.5), 
+        legend.text = element_text(face = "bold", size = 8))
+#ggsave(here("Outputs", "COP", "RCF_2agebands24.tiff"), plot = RCF_2agebands24)
+
+RCF_2agebands35 <- ggplot(sero_data2, aes(EU_all.sero_d1, colour = agebands_bin10, y = 1 - ..y..)) + 
+  stat_ecdf(geom = "step", pad = FALSE) + 
+  ggtitle("RCF curves for STm IgG (exclude <4m)")+ 
+  xlab("STm anti-OAg IgG Concentration (EU/ml)")+ 
+  ylab("Probability of disease")+ 
+  scale_x_log10() + 
+  labs(colour = "Agegroups")+ 
+  annotate("text", label = "25 EU/ml", x = 8, y = 0.34, size = 4, colour = "blue")+ 
+  annotate("text", label = "PE = 0.666", x = 1, y = 0.7, size = 4, colour = "firebrick")+ 
+  annotate("text", label = "Unprotected", x = 1, y = 1.03, size = 4, colour = "blueviolet")+ 
+  annotate("text", label = "Protected", x = 1000, y = 1.03, size = 4, colour = "darkgoldenrod3")+ 
+  scale_fill_discrete(name = "Agegroups")+ 
+  geom_hline(yintercept = 0.666, linetype = "dashed", color = "darkorange3", size = 0.5)+ 
+  geom_vline(xintercept = 25, linetype = "dashed", color = "darkorange3", size = 0.5)+ 
+  annotate('rect', xmin=0, xmax=24, ymin=0, ymax=1, alpha=.1, fill='blueviolet') + 
+  annotate('rect', xmin=24, xmax=20000, ymin=0, ymax=1, alpha=.1, fill='darkgoldenrod1') + 
+  theme_bw()+ theme(title = element_text(face = "bold", size=10), 
+                    axis.title = element_text(face= "plain" , size = 10), 
+                    axis.text = element_text(face = "plain", size = 10), 
+                    axis.text.x = element_text(face = "plain", size = 10, vjust = 0.5), 
+                    legend.text = element_text(face = "bold", size = 8))
+RCF_2agebands35
+#ggsave(here("Outputs", "COP", "RCF_2agebands35.tiff"), plot=RCF_2agebands35)
+
+```
+
+\newpage
+
+<!-- changing the orientation to landscape --------------------------------- -->
+
+```{=tex}
+\KOMAoptions{usegeometry, paper=landscape,pagesize}
+\recalctypearea
+```
+## Malaria Change Point Analysis
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.align = "centre", fig.width = 7, fig.height=4, out.width = "7.5in"}
+#| fig-cap: "Population Nadirs and Peaks of IgG to Salmonella Typhimurium in children 0-60 months across high and low malaria transmission areas in Southern Malawi; Change point model estimates"
+#| label: tbl-mal
+
+library(censReg) # for Tobin / censored regression models
+library(rms) # for spline terms
+library(boot) # to compute adjusted percentile method bootstrap CIs
+library(tidyverse)
+library(grid)
+library(gridExtra)
+library(here)
+library(rio)
+library(rlist)
+library(cowplot)
+library(flextable)
+library(scrutiny)
+
+peaksLowsTroughsMat_Mal <- import(here("data", "7_data", "Malaria", "peaksLowsTroughsMat_Malaria.csv")) %>% 
+  rename(peak2 = peak) %>% 
+  mutate(peak = ifelse(is.na(peak2),peak2,trough),
+         peak = as.numeric(peak),
+         low = as.numeric(low))
+
+maltab <- peaksLowsTroughsMat_Mal %>% 
+  rename(st = Group,
+         Trans = malaria_prev,
+         Group = malaria_HL)
+Cptbl <- maltab %>% 
+  select(c(Group, Trans, IgGTime0, low_age, IgGNadir, peak_age, IgGPeak, IgGTime60)) %>% 
+  arrange(Trans)
+
+Cptblft <- flextable(Cptbl)
+Cptblft %>% 
+      fontsize(size=8, part = "body") %>% 
+      fontsize(size=8, part = "header") %>% 
+      bold(i = 1, bold = TRUE, part = "header") %>%           
+      set_header_labels(
+        Group = "Group",
+        Trans = "Transmission %", 
+        IgGTime0 = "IgG age 0", 
+        low_age = "Nadir age", 
+        IgGNadir = "IgG nadir",
+        peak_age = "Peak age", 
+        IgGPeak = "IgG peak",
+        IgTime60 = "IgG age 60m"
+      ) %>% 
+      autofit()
+# lowage_L5 <- round(CpIgG$STm$STmL5$low_age,digits=1)
+# peakage_L5 <- CpIgG$STm$STmL5$peak_age
+# lowage_H5 <- round(CpIgG$STm$STmH5$low_age,digits=1)
+# peakage_H5 <- CpIgG$STm$STmH5$peak_age
+# IgGT0_L5 <- parsMatTmp_malaria$STmL5$IgGTime0
+# IgGNadir_L5 <- parsMatTmp_malaria$STmL5$IgGNadir
+# IgGPeak_L5 <- parsMatTmp_malaria$STmL5$IgGPeak
+# IgGT60_L5 <- parsMatTmp_malaria$STmL5$IgGTime60
+# IgGT0_H5 <- parsMatTmp_malaria$STmH5$IgGTime0
+# IgGNadir_H5 <- parsMatTmp_malaria$STmH5$IgGNadir
+# IgGPeak_H5 <- parsMatTmp_malaria$STmH5$IgGPeak
+# IgGT60_H5 <- parsMatTmp_malaria$STmH5$IgGTime60
+```
+
+\newpage
+
+<!-- changing the orientation to portrait --------------------------------- -->
+
+```{=tex}
+\KOMAoptions{usegeometry, paper=portrait,pagesize}
+\recalctypearea
+```

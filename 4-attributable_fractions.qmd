@@ -1,0 +1,1491 @@
+---
+title: "Population attributable fraction of non-typhoidal Salmonella invasive disease associated with HIV, malaria, anaemia, severe acute malnutrition and sickle cell disease: a systematic review and meta-analysis"
+format:    
+  pdf:
+    geometry:
+      - top=20mm
+      - bottom=20mm
+      - left=20mm
+      - right=20mm
+    toc: true
+    lof: true
+    lot: true
+    number-sections: true
+    colorlinks: true
+    include-in-header:
+      text: |
+        \usepackage{typearea}
+        \usepackage{geometry}
+        \usepackage{changepage}
+    cite-method: citeproc
+    bibliography: references.bib
+    csl: diabetologia.csl
+editor: visual
+---
+
+## Introduction
+
+Gram-negative bacteraemia is known to be associated with malaria ^3^, and severe acute malnutrition SAM ^4^. Several host factors have been associated with increased risk of iNTS disease in children including malaria ^5–7^, severe malarial anaemia ^8^, anaemia ~~(~~independent of malaria~~)~~ ^5,9^, sickle cell disease ^2,10^, severe acute malnutrition (SAM) ^7,11^, and HIV ^5^. In adults, 95% of ~~cases of~~ iNTS illnesses have been associated with HIV infection ^2,12^ and this proportion is diminishing with widespread ART coverage ^12,13^. There are also complex interactions between each of these host factors that are not fully understood. Few studies have simultaneously assessed multiple host factors, therefore robust multivariate modelling to account for interactions has been limited. It is critically important to understand the individual and collective contributions of alternative host factors to the odds of iNTS disease to define the limits of interventions aimed at controlling host factors, as well as defining the residual iNTS disease that is not attributable to known host factors. It is unlikely that host factors will be reduced in the short to medium term, and our understanding of the reservoir, source and mode of transmission is insufficient to target interventions at interrupting transmission of NTS strains associated with strains of NTS causing invasive disease. As a result, iNTS vaccines could potentially play a key role in iNTS disease control, including iNTS disease unattributed to host factors. The World Health Organisation has been evaluating iNTS vaccine development and its economic viability in view of the impoverished communities in sub-Saharan Africa most at risk, and lack of market power to attract pharmaceutical investment. Data on contributions of host factors to iNTS disease will be important in informing this evaluation.
+
+When using hospital controls, Berkson’s selection bias ^17,18^ can occur where both the exposure and outcome are associated with hospitalisation. For example, malaria is associated both with increased odds of both iNTS disease and with increased odds of hospitalisation. Symptom severity and multiple disease processes increase hospital attendance ^19^. Unexposed controls therefore could be underestimated, biasing the odds ratio (OR) to the null using the case control approach. Berkson ^17^ suggested selecting controls with a similar probability of hospitalisation will make the probability of selection comparable for all groups. Most studies comparing host factors for iNTS disease use case-control analysis define cases as participants with NTS isolated from a normally sterile site and controls as those with normally sterile site cultures without NTS, for example yielding another pathogen, or no growth. An alternative approach that may partially address the problem of Berkson’s bias is to use a case-disease analysis, using controls that have a similar disease severity such as a pathogen other than NTS isolated from a normally sterile site.. Krumkamp *et al.* ^18^ illustrated that a case-disease analysis reduced Berkson’s bias compared to a case-control design when investigating the association between malaria and iNTS disease, noted that the method ~~but~~ may still underestimate the effect size due to the association of gram negative bacteraemia with malaria, which increases apparent malaria prevalence in controls. Hence Krumkamp *et al.* carried out a bias analysis accounting for the proportion of gram negative bacteraemias and strength of this association with malaria.  
+
+The attributable fraction associated with each iNTS disease host risk factor has not been systematically reviewed nor subject to meta-analysis and so the proportion of iNTS disease not explained by recognised host risk factors has been unclear. A robust understanding of the proportion of iNTS disease attributable to each host fator will help assess the potential impact of a range of interventions to prevent iNTS disease and contribute to an understanding of the role of iNTS vaccines. Therefore, we sought to undertake a systematic review and meta-analysis to estimate the PAF of iNTS disease attributable to HIV, malaria, severe anaemia, severe acute malnutrition (SAM), and sickle cell disease. A secondary aim was to determine the proportion of deaths due to iNTS attributable to each of those host factors.
+
+## Methods
+
+### Search strategy and selection criteria
+
+Studies were eligible for inclusion if they provided data on iNTS disease defined as a positive microbiological culture of a normally sterile site e.g. blood or cerebrospinal fluid, yielding NTS in a person and on the host factors HIV, malaria, anaemia, sickle cell disease, or severe acute malnutrition sufficient to allow calculation of odds ratios and prevalence of the host factor in iNTS cases. Three peer-reviewed scientific databases PubMed, Scopus, and Web of Science were searched. The search strategy is shown in Appendix 1. No date or language restrictions were applied. This systematic review was done in accordance with the PRISMA ^20^ and GATHER ^21^ guidelines (Appendices 2 & 3), and the protocol was registered on PROSPERO (CRD42020175731). Searches were conducted in March 2020, and updated in November 2020 and May 2021. References of studies selected for inclusion were screened for additional relevant studies.
+
+All identified peer-reviewed publications were imported into Endnote (version X.9) for de-duplication. Titles and abstracts, if available, were transferred to Rayyan ^22^, for screening by three independent reviewers (HBD, CSM, JAC) for inclusion. Automated tools within Rayyan were used to help identify any studies that were not eligible as well as any additional duplicates that had not already been identified. Publications that were identified after the formal search stage from included study references were reviewed in full for eligibility by one team member (HBD), and articles to be included were confirmed by a senior team member (CSM, JAC). Data sources that were not in English were translated through Google Translate^23^ [\[](#_msocom_3)if a team member or contact was unable to make the translation. Data selection processes are documented in Appendix 4. Data was abstracted into a custom Google Form^24^ by HBD, CSM and JAC, and imported into RStudio for analysis.
+
+### Risk of bias assessment
+
+Study quality was assessed using the Newcastle-Ottawa assessment scale for case-control studies ^25^. Each study was assessed for selection bias, information and measurement bias and residual confounding, categorised as low, moderate or high risk, and visualised creating a traffic light plot using the ‘robvis’ R package. See Appendix 5 for further details.
+
+### Data synthesis and statistical analysis
+
+We used 1^st^ January 2005 as an arbitrary cut-off as the start of ART roll out in sub-Saharan Africa ^26,27^. Children were defined as those ≤15 years of age. Current malaria was defined as malarial parasites seen on blood film (BF) or malaria rapid diagnostic test (MRDT) positive. Where results are available for both BF and MRDT, recent malaria was defined as BF negative and MRDT positive. Severe anaemia was defined as haemoglobin \<7g/dL. SAM was defined as weight for height Z-score less than - 3 or Mid-Upper Arm Circumference (MUAC) less than 11.5cm or oedema both feet as per WHO criteria^28^.
+
+Raw data on numbers of cases and controls for each host factor were used to calculate ORs and PAFs separately for both analysis approaches; 1. Case-Disease (CD) where controls are culture positive (any pathogen other than NTS isolated) and 2. Case-Control (CC), where controls are culture positive or negative for all host factors. PAF was estimated for each study, each host factor, and each analysis approach CD and CC using Miettinen’s formula ^29,30^, where:
+
+PAF = prevalence among cases (P~c~) × \[(odds ratio − 1)/odds ratio\]
+
+P~c~ = Prevalence in cases = number of exposed cases/overall number of cases.
+
+Due to the association of malaria with gram negative bacteraemia^3^ and potential to lead to underestimation of the association of malaria with iNTS disease, we carried out a bias analysis^18^ on all CD analyses. We included a range of malaria bias adjusted odds ratios (OR~m~) (1.5 – 3.5), based on protection against different bacteraemias in children with the malaria-protective phenotype sickle-cell trait (HbAS), compared to children with normal hamoglobin phenotype ^3,18^.  We also considered possible range of prevalences of gram negative bacteraemias in the control group. The range of OR~m~ was combined with the range of likely prevalences of other gram-negative bacteraemia’s in the control group applied to the raw data to generate corrected selection proportions of the exposed control-disease group, to calculate bias corrected PAFs and 95% CIs (see appendix 6 for further details).
+
+If deemed to be from a study not at high risk of bias~~)~~, PAF~~’~~s were pooled using a random effects meta-analysis for each host factor. As we anticipated considerable between-study heterogeneity, a random-effects model was used to pool PAF effect sizes. Subgroup estimates were stratified by control analysis approach and examined for potential sources of heterogeneity. The DerSimonian-Laird estimator^31^ was used to calculate the heterogeneity variance τ^2^. To derive 95% confidence intervals (CIs) we used a parametric bootstrap procedure, simulating the prevalence of exposure for each host factor taking 10,000,000 samples using a binomial distribution. We used Knapp-Sidik-Jonkman adjustments^32,33^ to calculate the confidence interval around the pooled effect. Where there was a significant difference between the meta-analysis results both analytical approaches (CD & CC) were presented, where there was no difference between the approaches, the results were combined (All Controls (AC)). Sensitivity analysis was carried out on any studies that provided adjusted ORs to calculate PAFs. Statistical analysis was implemented in the R package meta using Rstudio (Rstudio 2023.12.1+402 ‘Ocean Storm’ Release 2024-01-28) (Appendix 6 for further details) .[\[](#_msocom_15)Code is available at <https://github.com/helda42/iNTS_attributable_risks>.
+
+Where data were~~as~~ available, the analysis was repeated without bloodstream infections with specific pathogens that have previously been found to be associated with host factors, such as increased risk of *M. tuberculosis* with HIV ^34^ , which will tend to lead to underestimation of the OR of HIV for iNTS. Similarly, the protective effect of HIV against *Salmonella* Typhi bloodstream infection ^35^, in the control groups will tend to overestimate OR of HIV for iNTS. Assumptions such as the approximation of odds ratios to risk ratios were tested by estimating the risk in each group and ensuring this was \<20% in each host factor group ^36^. We developed a Directed Acyclic Graph (DAG) to guide our assessment of potential confounding variables that could be adjusted for in multivariate analysis (Appendix, Figure 6A)
+
+## Results
+
+### Descriptive analysis
+
+Database searches identified 7,123 articles. After the removal of 2,002 duplicates and 1,392 records marked as ineligible by automation tools; title and abstract review was done on 5,121 articles (Figure 1). After title and abstract screening 5,048 articles were excluded and 74 full text articles were sought for retrieval; of these one was not retrieved, and 27 were excluded due to: no appropriate control group (n=12); data not extractable (n=11); within a subpopulation (n=3); case not clearly defined (n=1); and data from studies already included (n=1). Forty-five studies were included in the meta-analyses (see Appendix @tbl-AFincludedstud ).
+
+**Risk of bias analysis;** Most studies 31 (67.4%) had moderate risk of bias scores, and 15 (23.6%) with high risk of bias. See Figure 2 and 3 for host of bias domains and Appendix 8 for further details.
+
+**Characteristics of included studies**: Thirty-three studies (71.7%) collected data from 2005 through 2020 and 13 (28.3%) from 1984 through 2004, across 21 countries. Africa was the most common UN region of study location with 41 (89.1%), followed by 2 (6.5%) from Europe, and 2 (4.3%) from Asia. By sub-region, 25 (61.0%) of studies were from Eastern Africa with 6 countries represented and Kenya and Tanzania contributing 9 (19.6%) studies each (appendix 9). Eastern Asia and South-East Asian had one (2.2%) study each and Northern Europe 2 (4.4%). Data were available for 8,505 iNTS cases across the five separate host factor group analyses, with a total of 23,362 CD controls, and 499,733 CC controls. Host factor data were available for current malaria from 22 (30.6%) studies with a total of 3,288 iNTS bacteriamias (n~iNTS~); recent malaria from 3 (4.2%) studies (n~iNTS~=345), HIV from 28 (40.3%) studies (n~iNTS~=1,144), anaemia from 8 (11.1%) (n~iNTS~=1,535), SAM from 6 (8.3%) studies (n~iNTS~=842), and sickle cell disease from 4 (5.8%) studies (n~iNTS~=347) (Table 2). Most studies 32 (71%) only had data available for one host factor, 6 (13%) on two, 4 (9%) on three, 2 (4.4%) on four, and 0 (0%) on all five host factors.
+
+Of 46 studies, 24 (52.2%) were of children only, 15 (32.6%) were of adults only, and 7 (15.2%) were of mixed ages. Of studies, 36 (76.1%) recruited from inpatient facilities, 2 (4.3%) from outpatients, and 8 (17.4%) from both, and none recruiting only from the community. Thirty-five (76%) of studies recruited prospectively and 11 (24%) retrospectively. Participants were recruited through random or consecutive admissions in 35 (76.1%) of studies, were recruited consecutively but with some restrictions on time period or population; for example, during a particular season or within a clinical vaccine trial population in 8 (17.4%), and by unclear means in 3 (6.5%). Of studies, 36 (76.1%) recruited from inpatient healthcare facilities, 2 (4.3%) from outpatients, 8 (17.4%) from both, and 0 from the community only; of these 35 (76%) recruited prospectively and 11 (24%) retrospectively. Most studies 32 (71%) only had data available for one host factor, 6 (13%) on two, 4 (9%) on three, 2 (4.4%) on four, and 0 on all five host factors.
+
+### Population Attributable Fractions (PAF) for iNTS disease by host factor
+
+***Malaria***; The estimated PAF of iNTS attributable to malaria for all ages combined ranged from 17% (95% CI: 3 – 30%, I^2^:84%, τ^2^:0.026) without any malaria bias analysis correction (OR~m~ = 1) to 23% (10 – 36%, I^2^:87%, τ^2^:0.024) with a malaria bias correction of OR~m~=3 when using case-disease (CD) analysis (Table 3, Figure 4, Appendix table 9C). Across the individual studies, the lowest PAF estimate was -5% (95% CI:-38 – 13%) in a study carried out in Nigeria (2019) and the highest PAF estimate was 72% (95% CI: 47 – 98%) in a study from Burkina Faso (2014)^37^. When using a using case-control (CC) analysis the estimated PAF of iNTS attributable to malaria was -20% (95% CI:-38% to -2%, I^2^:88%, τ^2^:0.030)  (Appendix *9*). On sub-group analysis, for children only (17 studies, n~iNTS~:3201 ) the PAF was estimated at 20% (3 – 37%, I^2^:88%, τ^2^:0.030) for OR~m~ = 1, and at 27% (11 – 43%, I^2^:89%, τ^2^:0.025) for OR~m~ = 3 using CD analysis. For adults only there were data from one study yielding a PAF of 6% (-15 – 28%) (OR~m~ = 1) using CD analysis. For recent malaria there were data from two studies (CC), yielding an estimated PAF of 27% (-68% to 1.21, I^2^:79%, τ^2^:0.009) (OR~m~ = 1) by CC analysis.
+
+***HIV***; The combined PAF of iNTS attributable to HIV was estimated to be 80% (73 – 88%, I^2^:0%, τ^2^:0) for 10 studies conducted prior to the ART era~~e-2005~~, and 27% (95% CI: 11 – 44%, I^2^:93%, τ^2^:0.031) for 16 studies conducted during the ART era ~~in 2005 and later using~~ (AC analysis) (*Table 3, figure 5*). The lowest PAF estimates were -17% (-301 – 267%) from a study in Malawi (2000)^38^, and the highest was 89% (56 – 122%) from a study in Kenya (1993)^39^. On subgroup analysis, the estimated PAF for 14 studies (n~ints~ = 299) with data on adults only was 75% (67% - 83%, I^2^:0%, τ^2^:0) and for children it was 10% (-4% - 24%, I^2^:88%, τ^2^:0.010, 11 studies, n~INTS~ = 721) (AC) (*Appendix 9*).
+
+***Anaemia***; The combined PAF of iNTS disease attributable to severe anaemia was estimated at 36% (10 – 62%, I^2^:95%, τ^2^:0.066) in children from 7 studies (n~iNTS~ = 1535) (AC analysis) (*A~~(a~~ppendix 9).* The lowest PAF estimate was -11% (-41% - 19%) from a study recruiting in the Gambia (2006)^40^, and the highest estimate was 65% (59 – 71%) from a Mozambiquan study (2015)^41^. There was no data available stratified for adults only.
+
+***Severe Acute Malnutrition (SAM);*** The combined estimated PAF of iNTSattributable to SAM was 10% (-3 – 23%, I^2^:69%, τ^2^:0.041) from 6 studies in children (niNTS = 842) (AC analysis). The lowest estimated PAF was from a study in The Gambia (2006)^40^ at -8% (-23 – 7%), and the highest was 26% (8 – 45%) in South Africa (1984)^42^.
+
+***Sickle Cell Disease;***The combined estimated PAF of iNTSattributable to sickle cell disease was 14% of iNTS (-6 – 34%, I^2^:80%, τ^2^:0.083) from two studies in children (n~iNTS~ = 219) and two studies of mixed ages (n~iNTS~ = 128) (AC analysis). The lowest PAF was 3% (-1 – 8%) from a study in Kenya (2009)^43^, and the highest from a UK study (1994)^10^ of 32% (16 – 48%).
+
+#### **Population Attributable Fractions (PAF) for deaths due to iNTS disease**
+
+Data on deaths following NTS bacteraemias were extracted from two studies, one in Kenya (1990)^44^ and one in Tanzania (2012)^45^. Admission outcomes were recorded on discharge or death, via hospital death register^45,46^, or followed up within hospital, or readmission for up to three months after the end of the study^44^.  The proportion of iNTS deaths attributable to HIV ranged from -0.43 to 0.90, and 0.82 for *Salmonella* typhimurium alone (Appendix: *Table 9F*). The proportion of iNTS deaths attributable to malaria was 0.45.
+
+### Sensitivity analysis
+
+The PAF for HIV excluding *M. tuberculosis* bloodstream infections from the control group compared with inclusion of all pathogens included was available for three studies. The two studies of adults showed PAFs for excluding and including *M. tuberculosis* bloodstream infections of 60% (33 – 89%) versus 56% (24 – 88%)^47^; 84% (51 – 117%) versus 87% (51 – 125%)^48^ respectively. One study of mixed ages showed PAFs for excluding and including *M. tuberculosis* bloodstream infections of 81% (56 – 106%) versus 78% (48 – 107%) for CC analysis, and 76 (20 – 135%) verses 52% (-52 – 156%) for CD analysis, respectively (Supplementary Table 9E). The PAF for HIV excluding *Salmonella* Typhi bloodstream infections from the control group compared with inclusion of all pathogens was available for one study of on children yielding PAFs of 39% (26 – 51%) versus 38% (25 – 50%), respectively.
+
+Studies that provided adjusted odds ratios were compared with our estimated ORs and PAFs by host factor are shown in Supplementary Table 9F, and calculated risk of iNTS in the study populations is shown in Supplementary Table 9D. Adjusted ORs for malaria in children were provided by one study^6^; OR~unadj~ = 5.58 verses OR~adj~ = 4.13 after adjusting for Age, HIV, SAM, anaemia, and recent malaria. For HIV adjusted ORs were available for three studies in children^49–51^ ranging from OR~unadj~ = 4.1 verses OR~adj~ = 6.8 (adjusted for age, sex, location)  to OR~unadj~ = 4.5 verses OR~adj~ = 5.2 (adjusted for sex, HIV, malaria) and in adults OR~unadj~ = 27.5 verses OR~adj~ = 20.4 (adjusted for sex, HIV, malaria). For anaemia there were three studies from children^6,41,50^ with adjusted ORs ranging from OR~unadj~ = 2.4 verses OR~adj~ = 2.2 (adjusted for age, malaria, HIV and SAM), to OR~unadj~ = 5.8 verses OR~adj~ = 5.2 (adjusted for age, sex, location). For SAM there were two studies of children^6,51^ OR~unadj~ = 2.1 verses OR~adj~ = 2.0 (adjusted for age, malaria, HIV, anaemia and sickle cell disease), and OR~unadj~ = 2.2 verses OR~adj~ = 2.3 (adjusted for sex, malaria, HIV). The was one study of children with sickle cell disease^43^ with OR~adj~ = 35.5 (adjusted for age) compared with OR~unadj~ of 1.6.
+
+We found in most studies cases were \<10% of study population, however a few studies were higher than this. The assumption of incident cases the studies was only true for 75% of studies included in the analysis.
+
+```{r echo=FALSE, results='hide', message=FALSE, warning=FALSE, fig.align = "center", fig.height = 7, fig.width = 6.5, out.width = "6.5in"}
+#| echo: false
+###'#INTS Attributable risks meta-analysis
+###'Load packages
+library(tidyverse)
+library(janitor)
+library(tidyr)
+library(stringr)
+library(stats)
+library(boot)
+library(tidyr)
+library(meta)
+library(grid)
+library(rio)
+library(here)
+library(cowplot)
+library(gridExtra)
+library(ggpubr)
+library(forestplot)
+library(dplyr)
+library(Hmisc)
+library(purrr)
+library(gt)
+library(flextable)
+library(tidyr)
+library(webshot2)
+library(stringi)
+library(janitor)
+library(officer)
+library(officedown)
+library(gtsummary)
+library(robvis)
+library(ggplot2)
+library(PRISMA2020)
+
+source(here("scripts", "merge_function_diagnostics.R"))
+
+###'import data
+included <- import(here("data","4_data", "included_studies.csv"))
+datHIV_MTB <- import(here("data","4_data","data_abstraction_20231121.xlsx"), which = "MTB_dat")
+datHIV_typhi <- import(here("data", "4_data","data_abstraction_20231121.xlsx"), which = "Typhi")
+###############
+## Date Prep
+descrip_sum_tab <- included %>% 
+  mutate(
+    `Participant selection` = case_when(
+      str_detect(`Selection of cases`, "consecutive") ~ "Random or Consecutive Admissions", #str_detect(`Study design`, "Cohort") & 
+      str_detect(`Selection of cases`, "Random") ~ "Random or Consecutive Admissions", #str_detect(`Study design`, "Cohort") & 
+      str_detect(`Selection of cases`, regex("Unclear|Not clear", ignore_case = T)) ~ "Unclear", 
+      #str_detect(`Study design`, "Case control") ~ "Case-Control",
+      TRUE ~ "Consectutive admissions but some restrictions on time or population"),
+    `Publication Year` = cut(`Publication year`, breaks = c(1980,1990,2000,2005,2010,2015,2020), labels = c("1980-1989", "1990-1999", "2000-2004", "2005-2009", "2010-2014", "2015-2020"))) %>%
+  select(`Publication Year`,`UN region`,`African Sub-region`, `Inclusion age group`, `Study population`, `Identification of study participants`, `Participant selection`)
+set_gtsummary_theme(list(
+  "tbl_summary-fn:percent_fun" = scales::label_percent(accuracy = 0.1),
+  "tbl_summary-str:categorical_stat" = "{n} ({p})"
+))
+
+datMalCur <- included %>%
+  mutate_at(c(46:51), as.numeric) %>%
+  filter(`Is data extractable for malaria (current)?`=="Yes") %>%
+  rename(ExpCase = 46,
+         ExpCont_BCC = 47,
+         UnexpCase = 48,
+         UnexpCont_BCC = 49,
+         ExpCont_AC = 50,
+         UnexpCont_AC = 51,
+         Unadjusted_OR = contains("Unadjusted Odds ratio (OR)") & contains("Malaria") & contains("case-control"), 
+         Adjusted_OR = contains("Adjusted Odds ratio (OR)") & contains("Malaria") & contains("case-control") &!contains("Unadjusted"),  
+         Adjusted_for = contains("If adjusted analysis, what factors adjusted for?...61"),
+         Country = `Study country`,
+         Year = `Publication year`,
+         Study = `First author's last name`) %>%
+  select(c(studlab, 1:51, `Is data extractable for malaria (recent)?`, malaria_dx, exposure_prosp, Unadjusted_OR, Adjusted_OR, Adjusted_for)) %>% 
+  arrange(Year) %>% 
+  mutate(`Risk Factor` = "Malaria Current",
+         Adjusted_OR = as.numeric(str_extract(Adjusted_OR, "\\d+\\.*\\d*")),
+         Unadjusted_OR = as.numeric(str_extract(Unadjusted_OR, "\\d+\\.*\\d*")),
+         Adjusted_OR_bin = ifelse(!is.na(Adjusted_OR), "Adj", NA),
+         Unadjusted_OR_bin = ifelse(!is.na(Unadjusted_OR), "Unadj",NA),
+         Calculated_OR = stri_join(Adjusted_OR_bin, Unadjusted_OR_bin, sep = ",")) %>% 
+  unite(col = "Calculated_OR",  Adjusted_OR_bin, Unadjusted_OR_bin, na.rm=TRUE, sep = ", ")
+
+# Get rid of recent as only 2 studies and can's say they are recent as still presenting to hospital with fever
+datMalRec <- included %>%
+  mutate_at(c(70:75), as.numeric) %>%
+  filter(`Is data extractable for malaria (recent)?`=="Yes") %>%
+  rename(ExpCase = 70,
+         ExpCont_BCC = 71,
+         UnexpCase = 72,
+         UnexpCont_BCC = 73,
+         ExpCont_AC = 74,
+         UnexpCont_AC = 75,
+         Unadjusted_OR = contains("Unadjusted Odds ratio (OR)") & contains("Malaria") & contains("case-control"),  
+         Adjusted_OR = contains("Adjusted Odds ratio (OR)") & contains("Malaria") & contains("case-control") &!contains("Unadjusted"), 
+         Adjusted_for = contains("If adjusted analysis, what factors adjusted for?...85"),
+         Country = `Study country`,
+         Year = `Publication year`,
+         Study = `First author's last name`) %>%
+  select(c(studlab, 1:45, `Is data extractable for malaria (recent)?`, 70:75, malaria_dx, exposure_prosp, Unadjusted_OR, Adjusted_OR, Adjusted_for)) %>% 
+  arrange(Year) %>% 
+  mutate(`Risk Factor` = "Malaria Recent",
+         Adjusted_OR = as.numeric(str_extract(Adjusted_OR, "\\d+\\.*\\d*")),
+         Unadjusted_OR = as.numeric(str_extract(Unadjusted_OR, "\\d+\\.*\\d*")),
+         Adjusted_OR_bin = ifelse(!is.na(Adjusted_OR), "Adj", NA),
+         Unadjusted_OR_bin = ifelse(!is.na(Unadjusted_OR), "Unadj",NA)) %>% 
+  unite(col = "Calculated_OR",  Adjusted_OR_bin, Unadjusted_OR_bin, na.rm=TRUE, sep = ", ")
+
+
+RF_subsets <- function(dat, filtername, RF, filterno){  #
+#RF_subsets <- function(dat, filtername, RF, num1=NULL, num2=NULL, RF2=NULL){
+    dat %>% 
+    dplyr::filter(filtername=="Yes") %>% 
+    select(c(studlab,1:45, malaria_dx, contains(RF) & (contains("(A)") | contains("(B)") | contains("(C)") | contains("(D)") | contains("(E)") | contains("(F)")), exposure_prosp, (contains("Adjusted Odds ratio (OR)") & contains(RF) & contains("case-control")) |
+               (contains("Unadjusted Odds ratio (OR)") & contains(RF) & contains("case-control")) | contains(paste(sep="", "If adjusted analysis, what factors adjusted for?...", filterno)))) %>%
+    rename(ExpCase = contains(RF) & contains("(A)"),
+           ExpCont_BCC = contains(RF) & contains("(B)"),
+           UnexpCase = contains(RF) & contains("(C)"),
+           UnexpCont_BCC = contains(RF) & contains("(D)"),
+           ExpCont_AC = contains(RF) & contains("(E)"),
+           UnexpCont_AC = contains(RF) & contains("(F)"),
+           Unadjusted_OR = contains("Unadjusted Odds ratio (OR)") & contains(RF) & contains("case-control"),  #   contains(num1)  # RF2
+           Adjusted_OR = contains("Adjusted Odds ratio (OR)") & contains(RF) & contains("case-control") &!contains("Unadjusted"),  # RF2
+           Adjusted_for = contains("If adjusted analysis, what factors adjusted for?"),
+           # Unadjusted_OR = contains("Unadjusted Odds ratio (OR)") & contains(RF2) & contains("case-control") & contains(num1),  #   contains(num1)  # RF2
+           # Adjusted_OR = contains("Adjusted Odds ratio (OR)") & contains(RF2) & contains("case-control") &!contains("Unadjusted") & contains(num2),
+           Country = `Study country`,
+           Year = `Publication year`,
+           Study = `First author's last name`) %>%
+   # rename(ExpCase = matches("/(?=.*HIV)(?=.*A).*$/"))
+   mutate_at(c(49:54), as.numeric) %>% 
+   arrange(Year) %>% 
+   mutate(`Risk Factor` = RF,
+          Adjusted_OR = as.numeric(str_extract(Adjusted_OR, "\\d+\\.*\\d*")),
+          Unadjusted_OR = as.numeric(str_extract(Unadjusted_OR, "\\d+\\.*\\d*")),
+          Adjusted_OR_bin = ifelse(!is.na(Adjusted_OR), "Adj", NA),
+          Unadjusted_OR_bin = ifelse(!is.na(Unadjusted_OR), "Unadj",NA)) %>% 
+   unite(col = "Calculated_OR",  Adjusted_OR_bin, Unadjusted_OR_bin, na.rm=TRUE, sep = ", ")
+}
+
+datHIV<- RF_subsets(included, included$`Is data extractable for HIV?`, "HIV", 109)
+datHIV[which(datHIV$studlab=="Msemo 2019 (Tanzania)"),"ExpCase"] <- 1   # expCases = 0
+# datHIV %>% 
+#   select(c(Calculated_OR, Adjusted_OR, Adjusted_for))
+
+datAnaemia <- RF_subsets(included, included$`Is data extractable for anaemia?`, "Anaemia", 133)
+
+datSickle <- RF_subsets(included, included$`Is data extractable for sickle cell disease?`, "SCD", 181) 
+
+
+datMalaria <- bind_rows(datMalCur, datMalRec) 
+datMalaria_bias_15 <- datMalaria %>% 
+  mutate(ExpCont_BCC = round(ExpCont_BCC*0.82))
+datMalaria_bias_2 <- datMalaria %>% 
+  mutate(ExpCont_BCC = round(ExpCont_BCC*0.73))
+datMalaria_bias_25 <- datMalaria %>% 
+  mutate(ExpCont_BCC = round(ExpCont_BCC*0.68))
+datMalaria_bias_3 <- datMalaria %>% 
+  mutate(ExpCont_BCC = round(ExpCont_BCC*0.61))
+
+RF_subsets_maln <- function(dat, filtername, RF, num1=NULL, num2=NULL, RF2=NULL, filterno){
+  dat %>% 
+    dplyr::filter(filtername=="Yes") %>% 
+    select(c(studlab,1:45, malaria_dx, contains(RF) & (contains("(A)") | contains("(B)") | contains("(C)") | contains("(D)") | contains("(E)") | contains("(F)")), exposure_prosp, (contains("Adjusted Odds ratio (OR)") & contains(RF) & contains("case-control")) |
+               (contains("Unadjusted Odds ratio (OR)") & contains(RF) & contains("case-control")) | contains(paste(sep="", "If adjusted analysis, what factors adjusted for?...", filterno)))) %>%
+    rename(ExpCase = contains(RF) & contains("(A)"),
+           ExpCont_BCC = contains(RF) & contains("(B)"),
+           UnexpCase = contains(RF) & contains("(C)"),
+           UnexpCont_BCC = contains(RF) & contains("(D)"),
+           ExpCont_AC = contains(RF) & contains("(E)"),
+           UnexpCont_AC = contains(RF) & contains("(F)"),
+           Unadjusted_OR = contains("Unadjusted Odds ratio (OR)") & contains(RF2) & contains("case-control") & contains(num1),  #   contains(num1)  # RF2
+           Adjusted_OR = contains("Adjusted Odds ratio (OR)") & contains(RF2) & contains("case-control") &!contains("Unadjusted") & contains(num2),
+           Adjusted_for = contains("If adjusted analysis, what factors adjusted for?"),
+           Country = `Study country`,
+           Year = `Publication year`,
+           Study = `First author's last name`) %>%
+    mutate_at(c(48:53), as.numeric) %>% 
+    arrange(Year) %>% 
+    mutate(`Risk Factor` = RF,
+           Adjusted_OR = as.numeric(str_extract(Adjusted_OR, "\\d+\\.*\\d*")),
+           Unadjusted_OR = as.numeric(str_extract(Unadjusted_OR, "\\d+\\.*\\d*")),
+           Adjusted_OR_bin = ifelse(!is.na(Adjusted_OR), "Adj", NA),
+           Unadjusted_OR_bin = ifelse(!is.na(Unadjusted_OR), "Unadj",NA)) %>% 
+           #Calculated_OR = stri_join(Adjusted_OR_bin, Unadjusted_OR_bin, sep = ","))
+           #Calculated_OR = paste(Adjusted_OR_bin, Unadjusted_OR_bin, sep = ","))
+           #Calculated_OR = ifelse(!is.na(Adjusted_OR), "Adj", ifelse(!is.na(Unadjusted_OR), "Unadj", NA)))
+   unite(col = "Calculated_OR",  Adjusted_OR_bin, Unadjusted_OR_bin, na.rm=TRUE, sep = ", ")
+}
+
+datMaln <- RF_subsets_maln(included, included$`Is data extractable for acute malnutrition?`, "Maln", num1="153", num2="155", RF2="malnutrition", 157) %>%  # 
+  select(1:54, `Risk Factor`, exposure_prosp, Calculated_OR, Unadjusted_OR, Adjusted_OR, Adjusted_for) %>%    # Has created duplicates from additional RF section (but no data there - can remove)
+  rename_with(~ sub("1", "", .x), everything()) ## remove number 1 from the end of column name
+# datAnaemia_xt <- anaemia_dat_fun(included, included$`Is data extractable for anaemia?`, "Anaemia")
+# #atAnaemia_xt_tab <- data.frame(study = datAnaemia_xt$studlab, definition = datAnaemia_xt$`Anaemia definition`, data = datAnaemia_xt$`Additional comments...140`)
+# anaemia_dat_fun <- function(dat, filtername, RF){
+#   dat %>% 
+#     dplyr::filter(filtername=="Yes") %>% 
+#     select(c(studlab,1:45, malaria_dx, `Additional comments...140`, contains(RF) & (contains("(A)") | contains("(B)") | contains("(C)") | contains("(D)") | contains("(E)") | contains("(F)")))) %>% 
+#     rename(ExpCase = contains(RF) & contains("(A)"),
+#            ExpCont_BCC = contains(RF) & contains("(B)"),
+#            UnexpCase = contains(RF) & contains("(C)"),
+#            UnexpCont_BCC = contains(RF) & contains("(D)"),
+#            ExpCont_AC = contains(RF) & contains("(E)"),
+#            UnexpCont_AC = contains(RF) & contains("(F)"),
+#            Country = `Study country`,
+#            Year = `Publication year`,
+#            Study = `First author's last name`) %>%
+#     # rename(ExpCase = matches("/(?=.*HIV)(?=.*A).*$/"))
+#     mutate_at(c(49:54), as.numeric) %>% 
+#     arrange(Year)
+# }
+
+datAnaemia_vsevere <- import(here("data","4_data", "datAnaemia_xt_edits.xlsx")) %>%   # updated
+  rename(ExpCase = contains("A"),
+         ExpCont_BCC = contains("B"),
+         UnexpCase = contains("C"),
+         UnexpCont_BCC = contains("D"),
+         ExpCont_AC = contains("E"),
+         UnexpCont_AC = contains("F"),
+         Country = `Study country`,
+         Year = `Publication year`,
+         Study = `First author's last name`) %>% 
+  rename_with(~ str_remove(., "[0-9]$"), everything()) %>% 
+  mutate(studlab = paste(sep="", Study," ",Year," (",Country,")"))
+
+##################
+## Deaths
+deaths <- included %>% 
+  dplyr::select(studlab, `Which NTS serovar data available for?...35`, contains("deaths")) %>% 
+  filter_at(vars(c(3:46)), any_vars(!is.na(.))) %>% 
+  select(where(~!all(is.na(.x)))) %>% 
+  rename(Serovar = `Which NTS serovar data available for?...35`) %>% 
+  mutate_at(c(3:14), as.numeric) %>% 
+  pivot_longer(cols  = -studlab, names_to = c(".value", "name"), names_sep = "\\/ ") %>% 
+  mutate(RF = str_extract(name, "\\w+")) #%>% 
+
+death_sero <- deaths %>% 
+  subset(!is.na(Serovar), c(studlab, Serovar))
+
+deaths2 <- deaths %>% 
+  bind_rows(deaths[rep(6,1),], deaths[rep(7,1),], deaths[rep(17,1),], deaths[rep(18,1),]) %>% 
+  arrange(studlab, RF) %>% 
+  group_by(studlab, RF) %>% 
+  mutate(id = 1:n()) %>% 
+  ungroup() %>% 
+  mutate(id = ifelse(str_detect(name,"212")|(str_detect(name,"HIV+")&id==3),2, 
+                     ifelse(str_detect(name,"211")|(str_detect(name,"HIV-")&id==2),3, id))) %>% 
+  arrange(studlab, RF, id) %>% 
+  mutate(`NTS-` = ifelse(RF=="HIV"&id==1,NA, 
+                         ifelse(RF=="HIV"&id==3,NA,`NTS-`)),
+         `NTS+` = ifelse(RF=="HIV"&id==2,NA, 
+                         ifelse(RF=="HIV"&id==4,NA,`NTS+`))) %>% 
+  # mutate(id = ifelse(row_number() %in% c(21:24), rep(3:4, 2),id)) %>% 
+  pivot_wider(id_cols =c(studlab, RF, Serovar), names_from = id, values_from = c("NTS+", "NTS-")) %>% 
+  rename(
+    ExpCase = `NTS+_1`,
+    # ExpCont_BCC = `NTS-_2`,
+    UnexpCase = `NTS+_3`,
+    # UnexpCont_BCC = `NTS-_4`
+    ExpCont_AC = `NTS-_2`,
+    UnexpCont_AC = `NTS-_4`
+  ) %>% 
+  select(where(~!all(is.na(.x)))) %>% 
+  filter(!is.na(ExpCase)) 
+# mutate(across(c(3:6), ~ function(x) (gsub(0,1,x))))
+# replace(.,.value==0,0.5)))
+deaths2[deaths2==0]<-0.5
+
+deaths2 <- deaths2 %>% 
+  mutate(
+      ## prevalence of exposure in cases and controls
+      prevCase = ExpCase/(ExpCase + UnexpCase), # a/(a+c)
+      # prevCont_BCC = ExpCont_BCC/(ExpCont_BCC + UnexpCont_BCC),# b/(b+d)
+      prevCont_AC = ExpCont_AC/(ExpCont_AC + UnexpCont_AC), # b/(b+d)
+      
+      ## ORs
+      oddsExpCase=ExpCase/UnexpCase, # a/c
+      # oddsExpCont_BCC=ExpCont_BCC/UnexpCont_BCC, # b/d
+      # OR_BCC=oddsExpCase/oddsExpCont_BCC, ## OR = (a/c)/(b/d) = (a/b)/(c/d) = ad/bc
+      oddsExpCont_AC=ExpCont_AC/UnexpCont_AC, # b/d
+      OR_AC=oddsExpCase/oddsExpCont_AC, ## OR = (a/c)/(b/d) = (a/b)/(c/d) = ad/bc
+      
+      ## PAFs
+       # paf_miettinen_BCC=prevCase*(OR_BCC-1)/OR_BCC, # using OR as approx of RR
+       paf_miettinen_AC=prevCase*(OR_AC-1)/OR_AC, # using OR as approx of RR
+       # paf_levin_BCC=prevCont_BCC*(OR_BCC-1)/(1+prevCont_BCC*(OR_BCC-1))) # using OR as approx of RR; Levin formula also assumes population prevalence to be equal to prevalence in asymptomatics
+       paf_levin_AC=prevCont_AC*(OR_AC-1)/(1+prevCont_AC*(OR_AC-1))) %>% # using OR as approx of RR; Levin formula also assumes population prevalence to be equal to prevalence in asymptomatics
+     left_join(death_sero, by="studlab")
+
+add_info <- included %>% 
+  subset(str_detect(studlab, "Gilks")| str_detect(studlab, "Nadjm"), c(studlab, `Which NTS serovar data available for?...35`,`Is data extractable for malaria (current)?`, `Additional comments...68`, `Is data extractable for malaria (recent)?`, `Is data extractable for HIV?`, `Additional comments...116`, `Can additional case data by NTS serovar and individual risk factor be extracted?...214`))
+
+```
+
+![Prisma Flowchart of screening to data abstraction process](figures/4_images/Prisma_flowchart.png){#fig-prisma width="593"}
+
+```{=tex}
+\newpage
+\KOMAoptions{usegeometry, paper=landscape,pagesize}
+\recalctypearea
+\begin{addmargin}{-20mm}{-10mm}
+```
+```{r echo=FALSE, message=FALSE, results='hide',warning=FALSE, fig.align = "center", fig.height = 7, fig.width = 6.5, out.width = "6.5in"}
+# library(PRISMA2020)
+# library(here)
+# library(rio)
+# data <- import(here("data","4_data", "PRISMA_new.xlsx"))
+# # #PRISMA_read(here("data", "Prisma.csv"))
+# prisma_dat <- PRISMA_data(data)
+# flowch <- PRISMA_flowdiagram(prisma_dat, previous = FALSE, detail_databases = FALSE, detail_registers = FALSE, fontsize = 15)
+# PRISMA_save(flowch, filename = here("figures","4_images", "Prisma_flowchart.png"), filetype = "PNG", overwrite = T)
+
+```
+
+```{r echo=FALSE, results='hide', message=FALSE, warning=FALSE, fig.align = "center", fig.height = 10, fig.width = 8.5, out.width = "9in"}
+## Code to make ROB graphic for iNTS attributable risks publication
+# library(tidyverse)
+# library(here)
+# library(rio)
+# library(robvis)
+# library(ggplot2)
+# library(flextable)
+# source(here("scripts", "merge_function_diagnostics.R"))
+
+# impirt data
+included2 <- import(here("data","4_data", "included_studies.csv"))
+study_weights_df <- import(here("data","4_data", "study_weights.csv"))
+
+study_weights_sum <- study_weights_df %>% 
+  group_by(Study) %>% 
+  summarise(Weight = mean(w.random, na.rm=T))
+## Make datatable
+ROB_data <- included2 %>% 
+  rename(Study = studlab) %>% 
+  mutate(case_def = factor(case_def, levels = c(0,0.5,1), labels = c("High","Moderate", "Low")), # 0 = no description, 1 = yes, e.g. record linkage or based on self reports , 2 = yes, with independent validation
+         represent = factor(represent, levels = c(0,0.5,1), labels = c("High","Moderate", "Low")), # 0  potential for selection biases or not stated , 1= consecutive or obviously representative series of cases 
+         cont_selection = factor(cont_selection, levels = c(0,0.5,1), labels = c("High","Moderate", "Low")), # 0 no description, 0 = hospital controls, 2 = community controls/ incident
+         control_def = factor(control_def, levels = c(0,0.5,1), labels = c("High","Moderate", "Low")), # 2 = no history of disease (BC not NTS), 0= no description of source
+         comparability = factor(comparability, levels = c(0,1,2), labels = c("High","Moderate", "Low")),   # As all will have raw data for calculations, this is overall comment on study  - need to comment on this in discussion
+        # exposure_dx = factor(exposure_dx, levels = c(0,1,2), labels = c("High","Moderate", "Low")), 
+        # exposure_prosp = factor(exposure_prosp, levels = c(0,1), labels = c("High", "Low")),
+         exposure = factor(exposure, levels = c(0,0.5,1), labels = c("High","Moderate", "Low")),  
+         ascertain_case_contrl = factor(ascertain_case_contrl, levels = c(0,0.5,1), labels = c("High","Moderate", "Low")), # cases controls ascertained in same way =1
+         non_response = factor(non_response, levels = c(0,0.5,1), labels = c("High","Moderate", "Low")))  %>% # 0= differential 1=not recorded, 2=reported/ same
+  select(c(Study, studlab2, case_def, represent, cont_selection, control_def, comparability, exposure, ascertain_case_contrl, non_response, Overall, Overall_noE,
+          case_def2, represent2, cont_selection2, control_def2, comparability2, exposure_dx2, exposure_prosp2, exposure2, ascertain_case_contrl2, non_response2, Overall2,
+          `Malaria diagnosis`,`Anaemia measurement`, `Acute Malnutrition definition...40`, `HIV diagnostic method`, `Sickle cell testing method`,
+           exposure_dx, exposure_prosp, exposure_malaria, exposure_HIV, exposure_anaemia, exposure_SCD, exposure_malnutrition))
+
+ROB_data_comb <- ROB_data %>% 
+  full_join_track(study_weights_sum, by="Study", .merge = T)
+
+ROB_data_rf <- ROB_data %>% 
+  full_join_track(study_weights_df, by="Study", .merge = T) %>% 
+  rename(Weight = w.random)
+
+ROB_df <- included %>%
+  count(Overall) %>%
+  mutate(Percentage = round(prop.table(n) * 100, digits=2)) %>% 
+  arrange(desc(as.numeric(Overall)))
+
+ft_ROB <- flextable(ROB_df) %>% 
+  fontsize(i = 1, size = 12, part = "header") %>%   # adjust font size of header
+  bold(i = 1, bold = TRUE, part = "header") %>%    # adjust bold face of header
+  set_header_labels(         # Rename the columns in original header row
+     Overall="ROB Score", 
+     n="Number",
+     Percentage = "Percentage")
+ft_ROB
+
+ROB_dataFun <- function(df, rf) {
+  df  %>% 
+  dplyr::select(c(Study, studlab2, rf, case_def2, represent2, cont_selection2, control_def2, comparability2, exposure_dx2, exposure_prosp2, exposure2, ascertain_case_contrl2, non_response2, Overall2, Overall_noE, Weight,  
+                   exposure_dx2, exposure_prosp2, exposure_malaria, exposure_HIV, exposure_anaemia, exposure_SCD, exposure_malnutrition)) %>% 
+  rename_all(~gsub('[[:digit:]]+', "", .)) %>% 
+  mutate(case_def = factor(case_def, levels = c(0,0.5,1), labels = c("High","Moderate", "Low")), # 0 = no description, 1 = yes, e.g. record linkage or based on self reports , 2 = yes, with independent validation
+         represent = factor(represent, levels = c(0,0.5,1), labels = c("High","Moderate", "Low")), # 0  potential for selection biases or not stated , 1= consecutive or obviously representative series of cases 
+         cont_selection = factor(cont_selection, levels = c(0,0.5,1), labels = c("High","Moderate", "Low")), # 0 no description, 0 = hospital controls, 2 = community controls/ incident
+         control_def = factor(control_def, levels = c(0,0.5,1), labels = c("High","Moderate", "Low")), # 2 = no history of disease (BC not NTS), 0= no description of source
+         comparability = factor(comparability, levels = c(0,1,2), labels = c("High","Moderate", "Low")),   # As all will have raw data for calculations, this is overall comment on study  - need to comment on this in discussion
+        # exposure_dx = factor(exposure_dx, levels = c(0,1,2), labels = c("High","Moderate", "Low")), 
+        # exposure_prosp = factor(exposure_prosp, levels = c(0,1), labels = c("High", "Low")),
+         exposure = factor(exposure, levels = c(0,0.5,1), labels = c("High","Moderate", "Low")),  
+         ascertain_case_contrl = factor(ascertain_case_contrl, levels = c(0,0.5,1), labels = c("High","Moderate", "Low")), # cases controls ascertained in same way =1
+         non_response = factor(non_response, levels = c(0,0.5,1), labels = c("High","Moderate", "Low")))  %>% # 0= differential 1=not recorded, 2=reported/ same
+  rename(studlab2 = studlab) 
+}
+
+ROB_dataMain <- ROB_dataFun(ROB_data_comb, rf=NULL)
+ROB_dataRF <- ROB_dataFun(ROB_data_rf, rf="risk_factor")
+
+## split into 2 datasets
+ROB_data_main <- ROB_dataRF %>%
+  select(Study, studlab2, risk_factor, case_def, represent, cont_selection, control_def, comparability, exposure, ascertain_case_contrl, non_response, Overall_noE, Overall, Weight,
+         #`Malaria diagnosis`,`Anaemia measurement`, `Acute Malnutrition definition...40`, `HIV diagnostic method`, `Sickle cell testing method`,
+          exposure_dx, exposure_prosp, exposure_malaria, exposure_HIV, exposure_anaemia, exposure_SCD, exposure_malnutrition)
+
+ROB_data_main_sum <- ROB_data_main %>% 
+  select(Study, studlab2, case_def, represent, cont_selection, control_def, comparability, exposure, ascertain_case_contrl, non_response, Overall, Weight) %>%
+  rename("Case definition: adequate and independent validation" = case_def,
+         "Cases representative: consecutive or random selection" = represent,
+         "Selection of controls: community" = cont_selection,
+         "Definition of controls: confirm not case" = control_def,
+         "Comparability of cases and controls; matching or adjustment" = comparability,
+         "Ascertainment of exposure: reliable" = exposure,
+         "Ascertainment of cases same as controls" = ascertain_case_contrl,
+         "Non-response rate same in cases and controls" = non_response) %>%
+  mutate(Overall = cut(as.numeric(Overall), breaks = c(0,5,7,9), labels = c("High","Moderate", "Low"))) %>% 
+  # filter(str_detect(Study, "Feasey", negate=T) | str_detect(Study, "Berkley", negate=T))
+  filter(!grepl("Feasey", Study) & !grepl("Berkley", Study)) #
+
+rob_sum_plot <-  ROB_data_main_sum %>%
+  select(-studlab2) %>% 
+  rob_summary("ROB1", overall=T)+
+  ggtitle("Risk of Bias: all studies and risk factors")+
+  theme(title = element_text(size=16, face = "bold"))
+rob_sum_plot
+```
+
+```{=tex}
+\end{addmargin}
+\newpage
+```
+<!-- changing the orientation to portrait --------------------------------- -->
+
+```{=tex}
+\KOMAoptions{usegeometry, paper=portrait,pagesize}
+\recalctypearea
+```
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.align = "center", fig.height = 7, fig.width = 6.5, out.width = "6.5in"}
+#| tbl-cap: Summary of included studies
+#| label: tbl-AFsum
+
+gtsummary::tbl_summary(descrip_sum_tab, digits = all_continuous() ~ 1) %>% 
+  as_gt()
+
+stud_name <- included %>%
+  select(studlab, `First author's last name`) %>% 
+  group_by(studlab) %>% 
+  slice_head(n=1)
+
+descript_tab_base <- bind_rows(datMalCur, datMalRec, datHIV, datMaln, datAnaemia, datSickle) %>% 
+  mutate(`N (Cases + Blood Culture Controls)` = ExpCase+UnexpCase+ExpCont_BCC+UnexpCont_BCC,
+         `N (Cases + All Controls)` = ExpCase+UnexpCase+ExpCont_AC+UnexpCont_AC,
+         `N (iNTS Cases)` = ExpCase+UnexpCase) %>% 
+  left_join(stud_name) %>% 
+  mutate(`Study Design` = ifelse(exposure_prosp==1, "Prospective", ifelse(exposure_prosp==0, "Retrospective", NA))) %>% 
+  rename(Author = `First author's last name`,
+         Setting = `Study setting 2`,
+         `Calculated OR` = Calculated_OR) %>%
+  arrange(Author, Year) %>% 
+  mutate(`Risk Factor` = ifelse(`Risk Factor`=="Maln", "SAM", `Risk Factor`),
+         Year = as.character(Year),
+         `African Sub-region` = str_remove(`African Sub-region`, " Africa")
+)
+
+descript_tab <- descript_tab_base %>% 
+  select(c(Author,Year,Country,`UN region`, `African Sub-region`, Setting, `Inclusion age group`, `Study population`, `Study Design`, `Risk Factor`, `N (iNTS Cases)`, `N (Cases + Blood Culture Controls)`, `N (Cases + All Controls)`, `Calculated OR`))  
+
+descript_tab_ORs <- descript_tab_base %>% 
+  select(c(Author,Year,Country, `Inclusion age group`, `Risk Factor`, `N (iNTS Cases)`, `N (Cases + Blood Culture Controls)`, `N (Cases + All Controls)`, Unadjusted_OR, Adjusted_OR, studlab)) %>% 
+  arrange(`Risk Factor`, Year) %>% 
+  filter(!is.na(Unadjusted_OR)|!is.na(Adjusted_OR))
+```
+
+```{=tex}
+\newpage
+\KOMAoptions{usegeometry, paper=landscape,pagesize}
+\recalctypearea
+```
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.align = "center", fig.height = 7, fig.width = 6.5, out.width = "6.5in"}
+#| tbl-cap: Odds ratios where provided by included studies
+#| label: tbl-ORprov
+#| 
+ft_desc_tab_ORs <- flextable(descript_tab_ORs) %>% 
+  fontsize(i = 1, size = 8, part = "header") %>%   # adjust font size of header
+  bold(i = 1, bold = TRUE, part = "header") %>%    # adjust bold face of header
+  fontsize(size = 8, part = "body")  # adjust font size of header
+
+#autofit()
+#ft_desc_tab_ORs
+
+descript_tab2 <- descript_tab %>% 
+  mutate(`Calculated OR` = ifelse(Author=="Feasey"&Year=="2014"& `Risk Factor`=="HIV", "Unadj, Adj RR", `Calculated OR`))
+
+# ft_desc_tab <- flextable(descript_tab2) %>% 
+#   fontsize(i = 1, size = 12, part = "header") %>%   # adjust font size of header
+#   bold(i = 1, bold = TRUE, part = "header")# %>%    # adjust bold face of header
+  #autofit()
+export(descript_tab2, here("data", "9_data", "descript_tab2.csv"))
+#ft_desc_tab
+
+RF_num <- descript_tab_base %>% 
+  tabyl(`Risk Factor`) %>% 
+  adorn_pct_formatting(digits = 1) %>% 
+  adorn_totals("row")
+```
+
+```{r echo=FALSE, message=FALSE, fig.align = "center", fig.height = 7, fig.width = 6.5, out.width = "6.5in"}
+#| tbl-cap: Host factor data
+#| 
+## Meta_analysisdata prep
+RF_summary <- descript_tab %>% 
+  group_by(`Risk Factor`) %>% 
+  summarise(`Total N (iNTS Cases)` = sum(`N (iNTS Cases)`, na.rm=T),
+            `Total N (Cases + Blood Culture Controls)` =sum(`N (Cases + Blood Culture Controls)`,na.rm=T),
+            `Total N (Cases + All Controls)` = sum(`N (Cases + All Controls)`, na.rm=T)
+            ) %>% 
+  #mutate(Total = rowSums(across(where(is.numeric)))) %>% 
+  adorn_totals("row") %>% 
+  bind_cols(RF_num) %>% 
+  dplyr::select(-`Risk Factor...5`) %>% 
+  rename(`Number of Studies` = n,
+         `Percent of Studies` = percent,
+         `Host Factor` = `Risk Factor...1`)
+#RF_summary <- cbind(RF_summary, total = rowSums(RF_summary))
+RF_summary_tab <- flextable(RF_summary) %>% 
+  fontsize(i = 1, size = 8, part = "header") %>%   # adjust font size of header
+  bold(i = 1, bold = TRUE, part = "header") %>%    # adjust bold face of header
+  bold(i = 7, bold = TRUE, part = "body") %>%    # adjust bold face of header
+  fontsize(size = 8, part = "body") %>%   # adjust font size of header
+  autofit() 
+RF_summary_tab
+
+RF_per_stud <- descript_tab_base %>% 
+  filter(`Risk Factor`!="Malaria Recent") %>% 
+  group_by(studlab) %>% 
+  summarise(count = n()) %>% 
+  tabyl(count)
+#RF_per_stud
+
+RF_summary_sub <- descript_tab %>% 
+  group_by(`Risk Factor`, `Inclusion age group`) %>% 
+  summarise(`Total N (iNTS Cases)` = sum(`N (iNTS Cases)`, na.rm=T),
+            `Total N (Cases + Blood Culture Controls)` =sum(`N (Cases + Blood Culture Controls)`,na.rm=T),
+            `Total N (Cases + All Controls)` = sum(`N (Cases + All Controls)`, na.rm=T)
+  ) %>% 
+  #mutate(Total = rowSums(across(where(is.numeric)))) %>% 
+  adorn_totals("row") 
+#RF_summary <- cbind(RF_summary, total = rowSums(RF_summary))
+#RF_summary_sub  
+
+RF_num_sub <- table(descript_tab_base$`Risk Factor`, descript_tab_base$`Inclusion age group`)
+#RF_num_sub
+```
+
+```{r echo=FALSE, results='hide', message=FALSE, warning=FALSE, fig.align = "center", fig.height = 7, fig.width = 6.5, out.width = "6.5in"}
+calcFun<-function(dat){
+  # set-up
+  dat$prevCase <- NA    # prevalamce of exposure in cases can be estimated using a/(a+c)
+  dat$prevCont_BCC<-NA    # prevalance of exposure in controls ?can be estimated the same way???? b/(b+d)
+  dat$prevCont_AC<-NA    # prevalance of exposure in controls ?can be estimated the same way???? b/(b+d)
+  dat$prevExp_BCC<-NA
+  dat$prevExp_AC<-NA
+  dat$prevUnexp_BCC<-NA
+  dat$prevUnexp_AC<-NA
+  dat$oddsExpCase<-NA
+  dat$oddsExpCont_BCC<-NA
+  dat$oddsExpCont_AC<-NA
+  dat$OR_BCC<-NA
+  dat$OR_AC<-NA
+  dat$OR_seLog_BCC<-NA
+  dat$OR_seLog_AC<-NA
+  dat$paf_miettinen_BCC<-NA # using Miettinen's formula using prevalence in cases and relative risk
+  dat$paf_miettinen_AC<-NA # using Miettinen's formula using prevalence in cases and relative risk
+  dat$paf_levin_BCC<-NA # using Levin's formula using overall population prevalence and relative risk (we approximate population prevalence by the asymptomatic prevalence)
+  dat$paf_levin_AC<-NA # using Levin's formula using overall population prevalence and relative risk (we approximate population prevalence by the asymptomatic prevalence)
+  dat$paf_se_BCC<-NA
+  dat$paf_se_AC<-NA
+  dat$paf_CIlow_BCC<-NA
+  dat$paf_CIlow_AC<-NA
+  dat$paf_CIhigh_BCC<-NA
+  dat$paf_CIhigh_AC<-NA
+  dat$prevCase_v_BCC <-NA
+  dat$prevCase_v_AC <-NA
+  dat$prevAll_BCC <- NA
+  dat$prevAll_AC <- NA
+  
+  # correction for records with zero cell counts (to avoid dividing by 0 etc)
+  idxCorrection<-which(as.numeric(dat$ExpCont_BCC)*as.numeric(dat$UnexpCont_BCC)*as.numeric(dat$ExpCase)*as.numeric(dat$UnexpCase)==0)
+  dat$ExpCont_BCC[idxCorrection]<-dat$ExpCont_BCC[idxCorrection]+0.5 # b
+  dat$UnexpCont_BCC[idxCorrection]<-dat$UnexpCont_BCC[idxCorrection]+0.5 # d
+  dat$ExpCase[idxCorrection]<-dat$ExpCase[idxCorrection]+0.5 # a
+  dat$UnexpCase[idxCorrection]<-dat$UnexpCase[idxCorrection]+0.5 # c
+  
+  idxCorrection<-which(as.numeric(dat$ExpCont_AC)*as.numeric(dat$UnexpCont_AC)*as.numeric(dat$ExpCase)*as.numeric(dat$UnexpCase)==0)
+  dat$ExpCont_AC[idxCorrection]<-dat$ExpCont_AC[idxCorrection]+0.5 # e/ b2
+  dat$UnexpCont_AC[idxCorrection]<-dat$UnexpCont_AC[idxCorrection]+0.5 # f/ d2
+  
+  ## prevalence of exposure in cases and controls
+  dat$prevCase <- dat$ExpCase/(dat$ExpCase + dat$UnexpCase) # a/(a+c)
+  dat$prevCont_BCC <- dat$ExpCont_BCC/(dat$ExpCont_BCC + dat$UnexpCont_BCC) # b/(b+d)
+  dat$prevCont_AC <- dat$ExpCont_AC/(dat$ExpCont_AC + dat$UnexpCont_AC) # b/(b+d)
+  
+  # case prevalence in exposed
+  dat$prevExp_BCC<-dat$ExpCase/(dat$ExpCase+dat$ExpCont_BCC) # a/(a+b)
+  dat$prevExp_AC<-dat$ExpCase/(dat$ExpCase+dat$ExpCont_AC) # a/(a+b)
+  
+  # case prevalence in unexposed
+  dat$prevUnexp_BCC<-dat$UnexpCase/(dat$UnexpCase+dat$UnexpCont_BCC) # c/(c+d)
+  dat$prevUnexp_AC<-dat$UnexpCase/(dat$UnexpCase+dat$UnexpCont_AC) # c/(c+d)
+  
+  # Prev cases vs controls
+  dat$prevCase_v_BCC <- (dat$ExpCase+dat$UnexpCase)/(dat$ExpCont_BCC+dat$UnexpCont_BCC)
+  dat$prevCase_v_AC <- (dat$ExpCase+dat$UnexpCase)/(dat$ExpCont_AC+dat$UnexpCont_AC)
+  dat$prevAll_BCC <- (dat$ExpCase+dat$UnexpCase)/ (dat$ExpCont_BCC+dat$UnexpCont_BCC) #(A+C/ B+D) 
+  dat$prevAll_AC <- (dat$ExpCase+dat$UnexpCase)/ (dat$ExpCont_AC+dat$UnexpCont_AC)
+  
+  # OR as approximation to the relative risk of cirrhosis/HCC in HDV exposed vs. unexposed; need to use OR since numbers of cases & asymptomatics are fixed as in a case-control study
+  # OR approx. for RR valid as iNTS is rare condition - but is it in these populations? Can it be estimated?
+  dat$oddsExpCase<-dat$ExpCase/dat$UnexpCase # a/c
+  dat$oddsExpCont_BCC<-dat$ExpCont_BCC/dat$UnexpCont_BCC # b/d
+  dat$OR_BCC<-dat$oddsExpCase/dat$oddsExpCont_BCC ## OR = (a/c)/(b/d) = (a/b)/(c/d) = ad/bc
+  
+  dat$oddsExpCont_AC<-dat$ExpCont_AC/dat$UnexpCont_AC # b/d
+  dat$OR_AC<-dat$oddsExpCase/dat$oddsExpCont_AC ## OR = (a/c)/(b/d) = (a/b)/(c/d) = ad/bc
+  
+  
+  # SE of the log OR estimate
+  dat$OR_seLog_BCC<-sqrt(dat$ExpCase + dat$ExpCont_BCC + dat$UnexpCase + dat$UnexpCont_BCC) # sqrt(1/a+1/b+1/c+1/d)
+  dat$OR_seLog_AC<-sqrt(dat$ExpCase + dat$ExpCont_AC + dat$UnexpCase + dat$UnexpCont_AC) # sqrt(1/a+1/b+1/c+1/d)
+  
+  # PAF estimate
+  dat$paf_miettinen_BCC<-dat$prevCase*(dat$OR_BCC-1)/dat$OR_BCC # using OR as approx of RR
+  dat$paf_miettinen_AC<-dat$prevCase*(dat$OR_AC-1)/dat$OR_AC # using OR as approx of RR
+  dat$paf_levin_BCC<-dat$prevCont_BCC*(dat$OR_BCC-1)/(1+dat$prevCont_BCC*(dat$OR_BCC-1)) # using OR as approx of RR; Levin formula also assumes population prevalence to be equal to prevalence in asymptomatics
+  dat$paf_levin_AC<-dat$prevCont_AC*(dat$OR_AC-1)/(1+dat$prevCont_AC*(dat$OR_AC-1)) # using OR as approx of RR; Levin formula also assumes population prevalence to be equal to prevalence in asymptomatics
+  
+
+  return(dat)
+}
+
+data_group_BCC <- list(datMalaria, datMalCur, datMalRec, datHIV, datHIV_MTB, datHIV_typhi, datMaln, datAnaemia, datAnaemia_vsevere, datSickle, datMalaria_bias_15, datMalaria_bias_2, datMalaria_bias_25, datMalaria_bias_3)  # make a list containing all dataasets
+names(data_group_BCC) <- c("datMalaria", "datMalCur", "datMalRec", "datHIV", "datHIV_MTB", "datHIV_typhi", "datMaln", "datAnaemia", "datAnaemia_vsevere","datSickle", "datMalaria_bias_15", "datMalaria_bias_2","datMalaria_bias_25","datMalaria_bias_3") # assign names for datasets
+
+data_group_AC <- list(datMalaria, datMalCur, datMalRec, datHIV, datHIV_MTB, datMaln, datAnaemia, datAnaemia_vsevere, datSickle)  # make a list containing all dataasets
+names(data_group_AC) <- c("datMalaria", "datMalCur", "datMalRec", "datHIV", "datHIV_MTB", "datMaln", "datAnaemia", "datAnaemia_vsevere", "datSickle") # assign names for datasets
+
+data_group_calc_BCC <- lapply(data_group_BCC, calcFun)  # use lapply to carry out calculation function on all items in list
+data_group_calc_AC <- lapply(data_group_AC, calcFun)  # use lapply to carry out calculation function on all items in list
+
+## AC/ BCC only dataset for the bootstrapping function
+BCC_only <- function(dat){
+  select(dat, !ends_with("_AC")) %>% 
+  drop_na(ExpCont_BCC) %>%   #Remove Na's as affects next function
+  rename_with(~ sub("_BCC", "", .x), everything()) ## remove BCC  from the end of column name to run function for bootstrapping 
+}
+
+AC_only <- function(dat){
+  select(dat, !ends_with("_BCC")) %>% 
+    drop_na(ExpCont_AC) %>%   #Remove Na's as affects next function
+    rename_with(~ sub("_AC", "", .x), everything()) ## remove BCC  from the end of column name to run function for bootstrapping 
+}
+
+data_group_BCC <- lapply(data_group_calc_BCC, BCC_only)  # use lapply to carry out subsetting function on all items in list
+data_group_AC <- lapply(data_group_calc_AC, AC_only)  # use lapply to carry out subsetting function on all items in list
+data_group_BCCs <- data_group_BCC[-c(5,6,9,11:14)]
+data_group_ACs <- data_group_AC[-c(5,8)]
+# names(data_group_BCCs)
+# names(data_group_ACs)
+
+data_group_spec_BCC <- data_group_BCC[-c(5,6)]
+data_group_spec_AC <- data_group_AC[-c(5)]
+# Merge datasets with the same names
+merged_data <- list()
+filtered_data <- list()
+
+for (d in names(data_group_BCCs)) {
+  dataset_BCC <- data_group_BCCs[[d]] # Extract datasets from both lists
+  dataset_AC <- data_group_AC[[d]]
+  dataset_BCC$control_type <- "BCC"    # Add a new variable indicating the source list (BCC or AC)
+  dataset_AC$control_type <- "AC"
+  merged_data[[d]] <- rbind(dataset_BCC, dataset_AC)  # Merge datasets and append to merged_data list
+}
+
+## Check prevalence of outcome <1% in each risk factor grp
+risk_list <- list()
+for (d in names(merged_data)) {
+  #prevalance_iNTS <- round(merged_data[[d]]$prevAll,2)*100
+  prevalance_exp <- round(merged_data[[d]]$prevExp,2)*100
+  prevalance_unexp <- round(merged_data[[d]]$prevUnexp,2)*100
+  Control_type <- merged_data[[d]]$control_type
+  risk_list[[d]] <- data.frame(Exposed = prevalance_exp,
+                               Unexposed = prevalance_unexp,
+                               Control_type = Control_type)
+}
+
+risk_df <- bind_rows(risk_list, .id = "Risk Factor") %>% 
+  # select(-Control_type) %>% 
+  filter(`Risk Factor`!="datAnaemia_vsevere" & `Risk Factor`!="datHIV_MTB" & `Risk Factor`!="datMalaria") %>% 
+  mutate(`Risk Factor` = case_when(
+    `Risk Factor`=="datAnaemia" ~ "Anaemia",
+    `Risk Factor`=="datHIV" ~ "HIV",
+    `Risk Factor`=="datMalCur" ~ "Malaria Current",
+    `Risk Factor`=="datMalRec" ~ "Malaria Recent",
+    `Risk Factor`=="datMaln" ~ "Malnutrition",
+    `Risk Factor`=="datSickle" ~ "Sickle Cell Disease"),
+    Control_type = ifelse(Control_type=="BCC", "Case-Disease", "Case-Control")) %>% 
+  arrange(Control_type)
+risk_tab <- risk_df %>% 
+  group_by(`Risk Factor`, Control_type) %>% 
+  get_summary_stats() %>% 
+  ungroup() %>% 
+  arrange(Control_type)
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.align = "center", fig.height = 7, fig.width = 6.5, out.width = "6.5in"}
+#| tbl-cap: Case and control data available for each risk factor
+ft_risk_tab <- flextable(risk_tab) %>% 
+  fontsize(i = 1, size = 8, part = "header") %>%   # adjust font size of header
+  bold(i = 1, bold = TRUE, part = "header") %>%    # adjust bold face of header
+  fontsize(size = 8, part = "body") %>%  # adjust font size of header
+  add_header_row(top = T,
+                 values = c("", "", "", "", "Risk (%)", "", "", "", "", "", "","", "", "", "")) %>% 
+  set_header_labels(         # Rename the columns in original header row
+    `Risk Factor` = "Host Factor",
+    Control_type = "Analysis",
+    variable = "Control Group",
+    n = "N Studies"
+  )
+#ft_risk_tab
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.align = "center", fig.height = 7, fig.width = 6.5, out.width = "6.5in"}
+#| tbl-cap: Prevalance
+
+filtered_data <- lapply(merged_data, function(df){
+  df %>% 
+  group_by(studlab, Year, `Inclusion age group`) %>%
+  # filter(if ("AC" %in% control_type) control_type == "AC" else TRUE) %>%
+  arrange(control_type) %>% 
+  slice_head(n=1) %>%   # Take only the first row for each study name AC alphabetically first - so prioritizes AC over BCC
+  ungroup() %>% 
+  arrange(Year)
+})
+
+prev_list <- list()
+## Check prevalence of exposure in cases <1%
+for (d in names(merged_data)) {
+  prevalance <- round(merged_data[[d]]$prevAll,2)*100
+  Control_type <- merged_data[[d]]$control_type
+  prev_list[[d]] <- data.frame(Prevalance = prevalance,
+                               Control_type = Control_type)
+}
+
+prev_df <- bind_rows(prev_list, .id = "Risk Factor") %>% 
+  # select(-Control_type) %>% 
+  filter(`Risk Factor`!="datAnaemia_vsevere" & `Risk Factor`!="datHIV_MTB" & `Risk Factor`!="datMalaria") %>% 
+  mutate(`Risk Factor` = case_when(
+    `Risk Factor`=="datAnaemia" ~ "Anaemia",
+    `Risk Factor`=="datHIV" ~ "HIV",
+    `Risk Factor`=="datMalCur" ~ "Malaria Current",
+    `Risk Factor`=="datMalRec" ~ "Malaria Recent",
+    `Risk Factor`=="datMaln" ~ "Malnutrition",
+    `Risk Factor`=="datSickle" ~ "Sickle Cell Disease"),
+    Control_type = ifelse(Control_type=="BCC", "Case-Disease", "Case-Control")) %>% 
+  arrange(Control_type)
+
+prev_tab <- prev_df %>% 
+  group_by(`Risk Factor`, Control_type) %>% 
+  get_summary_stats() %>% 
+  ungroup() %>% 
+  arrange(Control_type) %>% 
+  select(-variable)
+ft_prev_tab <- flextable(prev_tab) %>% 
+  fontsize(i = 1, size = 8, part = "header") %>%   # adjust font size of header
+  bold(i = 1, bold = TRUE, part = "header") %>%    # adjust bold face of header
+  fontsize(size = 8, part = "body") %>%  # adjust font size of header
+  add_header_row(top = T,
+                 values = c("", "", "", "", "Risk (%)", "", "", "", "", "", "","", "", "")) %>% 
+  set_header_labels(         # Rename the columns in original header row
+    `Risk Factor` = "Host Factor",
+    Control_type = "Analysis",
+    variable = "Control Group",
+    n = "N Studies"
+  )
+#ft_prev_tab
+```
+
+```{r echo=FALSE, results='hide', message=FALSE, warning=FALSE, fig.align = "center", fig.height = 7, fig.width = 6.5, out.width = "6.5in"}
+## bootstrapping
+hiv_merge <- merged_data[["datHIV"]]
+# table(hiv_merge$studlab, hiv_merge$OR)
+# Msemo <- hiv_merge %>% 
+#   subset(grepl("Msemo",studlab), c(ExpCase: control_type))
+hiv_merge <- filtered_data[["datHIV"]]  # check this has worked
+hiv_preART <- hiv_merge %>% 
+  filter(Year<2005)
+hiv_postART <- hiv_merge %>% 
+  filter(Year>=2005)
+hiv_adult <- hiv_merge %>% 
+  filter(str_detect(`Inclusion age group`, "Adult"))
+hiv_child <- hiv_merge %>% 
+  filter(str_detect(`Inclusion age group`, "Child"))
+datHIV_sub <- list(hiv_preART, hiv_postART, hiv_adult, hiv_child)
+names(datHIV_sub) <- c("HIV PreART", "HIV PostART", "HIV Adults", "HIV Children")
+
+malaria_BCC <- data_group_BCC[["datMalaria"]]
+malaria_current <- data_group_BCC[["datMalCur"]]
+malaria_recent <- data_group_BCC[["datMalRec"]]
+malaria_child_BCC <- malaria_BCC %>% 
+  filter(str_detect(`Inclusion age group`, "Child"))
+malaria_adult_BCC <- malaria_BCC %>% 
+  filter(str_detect(`Inclusion age group`, "Adult"))
+malaria_mixedage_BCC <- malaria_BCC %>% 
+  filter(str_detect(`Inclusion age group`, "Mixed"))
+Malaria_bias_15 <- data_group_BCC[["datMalaria_bias_15"]]
+Malaria_bias_2 <- data_group_BCC[["datMalaria_bias_2"]]
+Malaria_bias_25 <- data_group_BCC[["datMalaria_bias_25"]]
+Malaria_bias_3 <- data_group_BCC[["datMalaria_bias_3"]]
+Malaria_bias_15_child <- Malaria_bias_15 %>% 
+  filter(str_detect(`Inclusion age group`, "Child"))
+Malaria_bias_2_child <- Malaria_bias_2 %>% 
+  filter(str_detect(`Inclusion age group`, "Child"))
+Malaria_bias_25_child <- Malaria_bias_25 %>% 
+  filter(str_detect(`Inclusion age group`, "Child"))
+Malaria_bias_3_child <- Malaria_bias_3 %>% 
+  filter(str_detect(`Inclusion age group`, "Child"))
+datMalaria_sub <- list(malaria_BCC, malaria_current, malaria_recent, malaria_child_BCC, malaria_adult_BCC, malaria_mixedage_BCC, Malaria_bias_15, Malaria_bias_2, Malaria_bias_25, Malaria_bias_3, Malaria_bias_15_child, Malaria_bias_2_child, Malaria_bias_25_child, Malaria_bias_3_child)
+names(datMalaria_sub) <- c("Malaria (all ages)","Malaria Current (all ages)", "Malaria Recent (all ages)", "Malaria Children", "Malaria Adult", "Malaria Mixed Ages", "Malaria Bias Analysis (OR 1.5)", "Malaria Analysis Bias (OR 2)","Malaria Bias Analysis (OR 2.5)","Malaria Bias Analysis (all ages) (OR 3)",
+                          "Malaria Children Bias Analysis (OR 1.5)", "Malaria Children Bias Analysis (OR 2)","Malaria Children Bias Analysis (OR 2.5)","Malaria Children Bias Analysis (OR 3)")
+
+
+# describe(datAnaemia$`Inclusion age group`)
+# datAnaemia %>%
+#   subset(`Inclusion age group`=="Mixed", studlab)
+# filtered_data[["datAnaemia"]] %>% 
+#   select(c(studlab, `Inclusion age group`, Calculated_OR,ExpCase,ExpCont, UnexpCase, UnexpCont,Unadjusted_OR, Adjusted_OR))  # all included meta-analysis studies are children only. Adults we have calculated OR
+# 
+# describe(datMaln$`Inclusion age group`)  ## All children so can label as such
+# filtered_data[["datMaln"]] %>% 
+#   select(c(studlab, `Inclusion age group`, Calculated_OR,ExpCase,ExpCont, UnexpCase, UnexpCont))
+
+# describe(datSickle$`Inclusion age group`)
+# datSickle %>%
+#   subset(`Inclusion age group`=="Mixed", studlab)
+# filtered_data[["datSickle"]] %>% 
+#   select(c(studlab, `Inclusion age group`, Calculated_OR,ExpCase,ExpCont, UnexpCase, UnexpCont,Unadjusted_OR, Adjusted_OR))
+
+sickle_child <- filtered_data[["datSickle"]] %>%
+  filter(str_detect(`Inclusion age group`, "Child"))
+sickle_mixed <- filtered_data[["datSickle"]] %>%
+  filter(str_detect(`Inclusion age group`, "Mixed"))
+
+datsickle_sub <- list(sickle_child, sickle_mixed)
+names(datsickle_sub) <- c("Sickle Child", "Sickle Mixed")
+
+## SEs and CIs for the PAFs via parametric bootstrap - we simulate the numbers of HDV infected for cases and asymptomatics and derive all the rest from there; we keep the study totals of cases and asymptomatics fixed
+B<-1e6 #number of simulations -> increase to 1e6
+
+parametricBootstrap<-function(dat,B){
+  for(i in 1:nrow(dat)){
+    seed<-round(10*rnorm(1,mean=1e3,sd=10))
+    set.seed(seed)
+    
+    bootObj<-list(
+      seed=seed,
+      prevCasesSim=NA,
+      ExpCaseSim=rbinom(B,size=dat$ExpCase[i]+dat$UnexpCase[i],prob=dat$prevCase[i]),
+      UnexpCaseSim=NA,
+      prevContSim=NA,
+      ExpContSim=rbinom(B,size=dat$ExpCont[i]+dat$UnexpCont[i],prob=dat$prevCont[i]),
+      UnexpContSim=NA,
+      orSim=NA,
+      t0=dat$paf_miettinen[i],
+      t=NA,
+      R=B,
+      sim="parametric"
+    )
+    
+    bootObj$UnexpCaseSim<-dat$ExpCase[i]+dat$UnexpCase[i]-bootObj$ExpCaseSim
+    bootObj$UnexpContSim<-dat$ExpCont[i]+dat$UnexpCont[i]-bootObj$ExpContSim
+
+    idxCorrection<-which(as.numeric(bootObj$ExpContSim)*as.numeric(bootObj$UnexpContSim)*as.numeric(bootObj$ExpCaseSim)*as.numeric(bootObj$UnexpCaseSim)==0)
+    bootObj$ExpContSim[idxCorrection]<-bootObj$ExpContSim[idxCorrection]+0.5 # b
+    bootObj$UnexpContSim[idxCorrection]<-bootObj$UnexpContSim[idxCorrection]+0.5 # d
+    bootObj$ExpCaseSim[idxCorrection]<-bootObj$ExpCaseSim[idxCorrection]+0.5 # a
+    bootObj$UnexpCaseSim[idxCorrection]<-bootObj$UnexpCaseSim[idxCorrection]+0.5 # c
+    
+    bootObj$prevContSim<-bootObj$ExpContSim/(bootObj$ExpContSim+bootObj$UnexpContSim)
+    bootObj$prevCasesSim<-bootObj$ExpCaseSim/(bootObj$ExpCaseSim+bootObj$UnexpCaseSim)
+    
+    bootObj$prevExpSim<-bootObj$ExpCaseSim/(bootObj$ExpCaseSim+bootObj$ExpContSim)
+    bootObj$prevUnexpSim<-bootObj$UnexpCaseSim/(bootObj$UnexpCaseSim+bootObj$UnexpContSim)
+    
+    bootObj$oddsExpCaseSim<-bootObj$ExpCaseSim/bootObj$UnexpCaseSim # a/c
+    bootObj$oddsExpContSim<-bootObj$ExpContSim/bootObj$UnexpContSim # b/d
+
+    bootObj$orSim<-bootObj$oddsExpCaseSim/bootObj$oddsExpContSim ## OR = (a/c)/(b/d) = (a/b)/(c/d) = ad/bc
+
+    bootObj$t<-matrix(ncol=1,bootObj$prevCasesSim*(bootObj$orSim-1)/bootObj$orSim)
+
+    dat$paf_se[i]<-sqrt( (1/(B-1)) * sum( (bootObj$t0-bootObj$t)^2 ) )
+
+    pafCI<-boot.ci(bootObj,type="perc",conf=0.95)$perc[4:5] # bca method would be preferable, but not computable for parametric simulation
+    dat$paf_CIlow[i]<-pafCI[1]
+    dat$paf_CIhigh[i]<-pafCI[2]
+    dat$pafCI[i]<-paste(sep="","[",format(round(pafCI[1], 2), nsmall = 2),", ",format(round(pafCI[2], 2), nsmall = 2),"]")
+  }
+  
+  return(list(dat=dat,bootObj=bootObj))
+}
+
+datGrpObj_BCC <- lapply(data_group_BCC, parametricBootstrap, B=B)  # use lapply to carry out bootstrapping function on all items in list
+datGrpObj_AC <- lapply(data_group_AC, parametricBootstrap, B=B)  # use lapply to carry out bootstrapping function on all items in list
+datGrpObj_merge <- lapply(filtered_data, parametricBootstrap, B=B)  # use lapply to carry out bootstrapping function on all items in list
+datGrpObj_HIVsub <- lapply(datHIV_sub, parametricBootstrap, B=B)  # use lapply to carry out bootstrapping function on all items in list
+datGrpObj_Malariasub <- lapply(datMalaria_sub, parametricBootstrap, B=B)  # use lapply to carry out bootstrapping function on all items in list
+datGrpObj_Sicklesub <- lapply(datsickle_sub, parametricBootstrap, B=B)  # use lapply to carry out bootstrapping function on all items in list
+datGrpObj_spec_BCC <- lapply(data_group_spec_BCC, parametricBootstrap, B=B)  # use lapply to carry out bootstrapping function on all items in list
+datGrpObj_spec_AC <- lapply(data_group_spec_AC, parametricBootstrap, B=B) 
+
+meta_DSL<-function(df){
+        metagen(TE=dat$paf_miettinen, seTE=dat$paf_se, data=df, studlab=paste(sep="",dat$Study," ",dat$Year," (",dat$Country,")"), comb.fixed=F, comb.random=T, method.tau="DL", hakn=T, sm="PAF")
+              
+}
+
+meta_DSL_BCC <- lapply(datGrpObj_BCC, meta_DSL)  # use lapply to carry out bootstrapping function on all items in list
+meta_DSL_AC <- lapply(datGrpObj_AC, meta_DSL)  # use lapply to carry out bootstrapping function on all items in list
+meta_DSL_merge <- lapply(datGrpObj_merge, meta_DSL)  # use lapply to carry out bootstrapping function on all items in list
+meta_DSL_HIV <- lapply(datGrpObj_HIVsub, meta_DSL)  # use lapply to carry out bootstrapping function on all items in list
+meta_DSL_Malaria <- lapply(datGrpObj_Malariasub, meta_DSL)  # use lapply to carry out bootstrapping function on all items in list
+meta_DSL_Sickle <- lapply(datGrpObj_Sicklesub, meta_DSL)  # use lapply to carry out bootstrapping function on all items in list
+
+
+names(meta_DSL_BCC) <- c("Malaria","Malaria Current", "Malaria Recent",  "HIV", "HIV_MTB", "HIV_typhi", "Malnutrition", "Anaemia", "datAnaemia_vsevere", "Sickle Cell Disease", "Malaria Bias (OR 1.5)", "Malaria Bias (OR 2)","Malaria Bias (OR 2.5)","Malaria Bias (OR 3)")
+names(meta_DSL_AC) <- c("Malaria","Malaria Current", "Malaria Recent", "HIV", "HIV_MTB", "Malnutrition", "Anaemia", "Anaemia_vsevere", "Sickle Cell Disease")
+names(meta_DSL_merge) <- c("Malaria", "Malaria Current", "Malaria Recent", "HIV", "Malnutrition", "Anaemia", "Sickle Cell Disease") #"HIV_MTB", Anaemia_vsevere",
+names(meta_DSL_HIV) <- c("HIV PreART", "HIV PostART", "HIV Adults", "HIV Children")
+names(meta_DSL_Malaria) <- c("Malaria (all ages)","Malaria Current (all ages)", "Malaria Recent (all ages)", "Malaria Children", "Malaria Adult", "Malaria Mixed Ages", "Malaria Bias Analysis (OR 1.5)", "Malaria Analysis Bias (OR 2)","Malaria Bias Analysis (OR 2.5)","Malaria Bias Analysis (all ages) (OR 3)",
+                             "Malaria Children Bias Analysis (OR 1.5)", "Malaria Children Bias Analysis (OR 2)","Malaria Children Bias Analysis (OR 2.5)","Malaria Children Bias Analysis (OR 3)")
+names(meta_DSL_Sickle) <- c("Sickle Child", "Sickle Mixed")
+
+data_group_BCC_names <- names(meta_DSL_BCC) 
+data_group_AC_names <- names(meta_DSL_AC) 
+data_group_merge_names <- names(meta_DSL_merge) 
+data_group_hiv_names <- names(meta_DSL_HIV) 
+data_group_malaria_names <- names(meta_DSL_Malaria) 
+data_group_sickle_names <- names(meta_DSL_Sickle) 
+
+# forest plots
+plotfunc <- function(df, prevCase, OR, seTE){
+  print(meta::forest(df,leftcols=c("studlab","prevCase", "OR"),leftlabs=c("Study", "Prev. cases", "OR"),rightcols=c("effect","ci","seTE","w.random"),rightlabs=c("PAF","95% CI","SE","Weight"),sei=seTE, digits.se=2,col.diamond="steelblue",just="right",just.addcols="right"))
+}
+
+plotfunc_malaria <- function(df, prevCase, OR, seTE, malaria_dx){
+  print(meta::forest(df,leftcols=c("studlab","malaria_dx", "prevCase", "OR"),leftlabs=c("Study", "Malaria test", "Prev. cases", "OR"),rightcols=c("effect","ci","seTE","w.random"),rightlabs=c("PAF","95% CI","SE","Weight"),sei=seTE, digits.se=2,col.diamond="steelblue",just="right",just.addcols="right"))
+}
+
+```
+
+<!-- changing the orientation to landscape --------------------------------- -->
+
+```{=tex}
+\newpage
+\KOMAoptions{usegeometry, paper=landscape,pagesize}
+\recalctypearea
+\begin{addmargin}{10mm}{10mm}
+```
+```{r echo=FALSE, results='hide', message=FALSE, warning=FALSE, fig.align = "left", fig.height = 6, fig.width = 9.5, out.width = "10in"}
+#| fig-cap: "Meta-analysis: Estimated population attributable fractions of iNTS due to HIV"
+#| label: fig-metaHIV
+
+plotls_hiv <- list()
+
+for(d in data_group_hiv_names){
+  meta_DSL_HIV[[d]]$OR <- meta_DSL_HIV[[d]]$data$dat$OR
+  meta_DSL_HIV[[d]]$prevCase <- meta_DSL_HIV[[d]]$data$dat$prevCase
+  # png(here("outputs", "HIV", paste(sep="","PAF_iNTS",d,"_hivsub.png")), width = 3200, height = 1800, res = 300)
+  plotls_hiv[[d]] <- plotfunc(meta_DSL_HIV[[d]], meta_DSL_HIV[[d]]$prevCase, meta_DSL_HIV[[d]]$OR, meta_DSL_HIV[[d]]$seTE)
+  plotls_hiv[[d]] <- grid.text(paste(sep="",d), .5, .9, gp=gpar(cex=1.5, fontface = "bold"))
+  # dev.off()
+  # panel1 <- do.call("plot_grid", c(plotls_hiv[[d]], ncol=2))
+  # print(panel1)
+}
+```
+
+```{r echo=FALSE, results='hide', message=FALSE, fig.align = "left", fig.height = 6, fig.width = 10, out.width = "10.5in"}
+#| fig-cap: "Meta-analysis: Estimated population attributable fractions of iNTS due to Malaria"
+#| label: fig-metaMalaria
+
+plotls_malaria <- list()
+meta_DSL_Malaria2 <- list()
+meta_DSL_Malaria2[["Malaria (all ages)"]] <- meta_DSL_Malaria[["Malaria (all ages)"]]
+meta_DSL_Malaria2[["Malaria Children"]] <- meta_DSL_Malaria[["Malaria Children"]]
+meta_DSL_Malaria2[["Malaria Bias Analysis (all ages) (OR 3)"]] <- meta_DSL_Malaria[["Malaria Bias Analysis (all ages) (OR 3)"]]
+meta_DSL_Malaria2[["Malaria Children Bias Analysis (OR 3)"]] <- meta_DSL_Malaria[["Malaria Children Bias Analysis (OR 3)"]]
+
+
+for(d in names(meta_DSL_Malaria2)){
+  meta_DSL_Malaria2[[d]]$OR <- meta_DSL_Malaria2[[d]]$data$dat$OR
+  meta_DSL_Malaria2[[d]]$prevCase <- meta_DSL_Malaria2[[d]]$data$dat$prevCase
+  meta_DSL_Malaria2[[d]]$malaria_dx <- meta_DSL_Malaria2[[d]]$data$dat$malaria_dx
+  # png(here("outputs", "malaria", paste(sep="","PAF_iNTS",d,"_malariasub.png")), width = 3200, height = 1700, res = 300)
+  plotls_malaria[[d]] <- plotfunc_malaria(meta_DSL_Malaria2[[d]], meta_DSL_Malaria2[[d]]$prevCase, meta_DSL_Malaria2[[d]]$OR, meta_DSL_Malaria2[[d]]$seTE)
+  plotls_malaria[[d]] <- grid.text(paste(sep="",d, ": Case-Disease"), .5, .9, gp=gpar(cex=1.5, fontface = "bold"))
+  # dev.off()
+  # panel1 <- do.call("plot_grid", c(plotls_malaria[[d]], ncol=2))
+  # print(panel1)
+}
+```
+
+```{r echo=FALSE, results='hide', message=FALSE, fig.align = "center", fig.height = 5, fig.width = 9, out.width = "9.5in"}
+#| fig-cap: "Meta-analysis: Estimated population attributable fractions of iNTS due to Sickle Cell Disease, Malnutrition and Anaemia"
+#| label: fig-metaother
+
+data_group_merge_names_new <- c("Malnutrition", "Anaemia", "Sickle Cell Disease")
+plotls <- list()
+for(d in data_group_merge_names_new){
+  meta_DSL_merge[[d]]$OR <- meta_DSL_merge[[d]]$data$dat$OR
+  meta_DSL_merge[[d]]$prevCase <- meta_DSL_merge[[d]]$data$dat$prevCase
+  # png(here("outputs", "merged_controls", paste(sep="","PAF_iNTS",d,"_merge.png")), width = 3200, height = 1700, res = 300)
+  plotls[[d]] <- plotfunc(meta_DSL_merge[[d]], meta_DSL_merge[[d]]$prevCase, meta_DSL_merge[[d]]$OR, meta_DSL_merge[[d]]$seTE)
+  plotls[[d]] <- grid.text(paste(sep="",d, " (any control)"), .5, .9, gp=gpar(cex=1.5, fontface = "bold"))
+  # dev.off()
+  # panel1 <- do.call("plot_grid", c(plotls[[d]], ncol=2))
+  # print(panel1)
+}
+```
+
+```{r echo=FALSE, message=FALSE, fig.align = "center", fig.height = 6, fig.width = 6.5, out.width = "6.5in"}
+#| tbl-cap: "Odds ratios and adjusted odds ratios provided by study"
+#| label: tbl-OR
+
+meta_DSL_BCC2 <- meta_DSL_BCC[names(meta_DSL_BCC) !="datAnaemia_vsevere"]
+meta_DSL_AC2 <- meta_DSL_BCC[names(meta_DSL_AC) !="Anaemia_vsevere"]
+meta_DSL_merge2 <- meta_DSL_BCC[names(meta_DSL_merge) !="Anaemia_vsevere"]
+meta_DSL_BCC4 <- meta_DSL_BCC[c(4:6)]
+meta_DSL_AC4 <- meta_DSL_AC[c(4,5)]
+data_group_BCC_names2 <-  c("Malaria","Malaria Current", "Malaria Recent",  "HIV", "Malnutrition", "Anaemia", "Sickle Cell Disease", "Malaria bias 1.5", "Malaria bias 2","Malaria bias 2.5","Malaria bias 3")
+data_group_AC_names2 <- c("Malaria","Malaria Current", "Malaria Recent", "HIV", "Malnutrition", "Anaemia", "Sickle Cell Disease")
+data_group_merge_names2 <- c("Malaria", "Malaria Current", "Malaria Recent", "HIV", "Malnutrition", "Anaemia", "Sickle Cell Disease")
+data_group_BCC_names3<-  c("Malaria","Malaria Current", "Malaria Recent",  "HIV", "Malnutrition", "Anaemia", "Sickle Cell Disease")
+data_group_BCC_names4<-  c("HIV", "HIV_MTB", "HIV_typhi")
+data_group_AC_names4 <- c("HIV","HIV_MTB")
+
+meta_extract_indiv <- function(df, names) {
+  list <- list()
+  for(d in names){
+    studlab <- df[[d]]$data$dat$studlab
+    ExpCase <- df[[d]]$data$dat$ExpCase
+    ExpCont <- df[[d]]$data$dat$ExpCont
+    UnexpCase <- df[[d]]$data$dat$UnexpCase
+    UnexpCont <- df[[d]]$data$dat$UnexpCont
+    OR <- round(as.numeric(df[[d]]$data$dat$OR),3)
+    # OR <- round(OR,3)
+    Adjusted_for <- df[[d]]$data$dat$Adjusted_for
+    #OR <- round(df[[d]]$data$dat$OR,3)
+    PAF <- round(as.numeric(df[[d]]$TE),3) # Extract PAF
+    PAF_lower <- round(as.numeric(df[[d]]$lower),3)
+    PAF_upper <- round(as.numeric(df[[d]]$upper),3)
+    host_factor <- paste(sep = "", d)
+    age_grp <- df[[d]]$data$dat$`Inclusion age group`
+    list[[d]] <- data.frame(studlab = studlab,
+                            host_factor = host_factor,
+                            age_grp = age_grp,
+                            ExpCase = ExpCase,
+                            ExpCont = ExpCont,
+                            UnexpCase = UnexpCase,
+                            UnexpCont = UnexpCont,
+                            Adjusted_for = Adjusted_for,
+                            OR = OR,
+                            PAF = PAF,
+                            PAF_lower = PAF_lower,
+                            PAF_upper = PAF_upper) # Combine study names and w.random values into a dataframe
+  }
+  return(list)
+}
+
+meta_extract_merge_OR_ls <- meta_extract_indiv(meta_DSL_merge, data_group_merge_names2)
+meta_extract_AC_OR_ls <- meta_extract_indiv(meta_DSL_AC, data_group_AC_names2)
+meta_extract_BCC_OR_ls <- meta_extract_indiv(meta_DSL_BCC2, data_group_BCC_names3)
+meta_extract_indiv2 <- function(df, names) {
+  list <- list()
+  for(d in names){
+    studlab <- df[[d]]$data$dat$studlab
+    ExpCase <- df[[d]]$data$dat$ExpCase
+    ExpCont <- df[[d]]$data$dat$ExpCont
+    UnexpCase <- df[[d]]$data$dat$UnexpCase
+    UnexpCont <- df[[d]]$data$dat$UnexpCont
+    OR <- round(as.numeric(df[[d]]$data$dat$OR),3)
+    # OR <- round(OR,3)
+    #Adjusted_for <- df[[d]]$data$dat$Adjusted_for
+    #OR <- round(df[[d]]$data$dat$OR,3)
+    PAF <- round(as.numeric(df[[d]]$TE),3) # Extract PAF
+    PAF_lower <- round(as.numeric(df[[d]]$lower),3)
+    PAF_upper <- round(as.numeric(df[[d]]$upper),3)
+    host_factor <- paste(sep = "", d)
+    age_grp <- df[[d]]$data$dat$`Inclusion age group`
+    list[[d]] <- data.frame(studlab = studlab,
+                            host_factor = host_factor,
+                            age_grp = age_grp,
+                            ExpCase = ExpCase,
+                            ExpCont = ExpCont,
+                            UnexpCase = UnexpCase,
+                            UnexpCont = UnexpCont,
+                            #Adjusted_for = Adjusted_for,
+                            OR = OR,
+                            PAF = PAF,
+                            PAF_lower = PAF_lower,
+                            PAF_upper = PAF_upper) # Combine study names and w.random values into a dataframe
+  }
+  return(list)
+}
+
+meta_extract_BCC_OR_spec_ls <- meta_extract_indiv2(meta_DSL_BCC4, names(meta_DSL_BCC4))
+meta_extract_AC_OR_spec_ls <- meta_extract_indiv2(meta_DSL_AC4, names(meta_DSL_AC4))
+
+# datHIV %>% 
+#   subset(studlab=="Muthumbi 2015 (Kenya)", c(studlab, `Risk Factor`, Adjusted_for, `Inclusion age group`))
+
+# Missing raw data so not captured above....
+ext1 <- datHIV %>% 
+  subset(studlab=="Berkley 2005 (Kenya)", c(studlab, `Risk Factor`, Adjusted_for, `Inclusion age group`)) #Adjusted_OR
+
+ext2 <- datMaln %>% 
+  subset(studlab=="Berkley 2005 (Kenya)", c(studlab, `Risk Factor`, Adjusted_for, `Inclusion age group`)) %>% #Adjusted_OR
+  mutate(`Risk Factor` = ifelse(`Risk Factor`=="Maln", "SAM", `Risk Factor`))
+
+meta_extract_ORFun <- function(df, control){
+  df_OR <- bind_rows(df) %>% 
+    mutate(CI = paste(PAF_lower, PAF_upper, sep=", "),
+           PAF = paste(PAF, " (", CI, ")", sep="")) %>% 
+    select(-c(CI, PAF_lower, PAF_upper)) %>% 
+    rename_with(~ paste(., control, sep = "_"), c(5,7:9)) %>% 
+    rename(`Host Factor` = host_factor,
+           `Inclusion age group` = age_grp)
+}
+meta_extract_OR_merge <- meta_extract_ORFun(meta_extract_merge_OR_ls, "merge") %>% 
+  bind_rows(ext1, ext2) %>% 
+  mutate(`Host Factor` = ifelse(`Host Factor`=="Malnutrition", "SAM", `Host Factor`),
+         `Host Factor` = ifelse(`Host Factor`=="Sickle Cell Disease", "SCD", `Host Factor`))
+
+meta_extract_OR_AC <- meta_extract_ORFun(meta_extract_AC_OR_ls, "AC")
+meta_extract_OR_BCC <- meta_extract_ORFun(meta_extract_BCC_OR_ls, "BCC")
+meta_extract_OR_BCC_spec <- meta_extract_ORFun(meta_extract_BCC_OR_spec_ls, "BCC") %>% 
+  mutate(studlab = ifelse(str_detect(studlab, "Archibald"), "Archibald 1998 (Tanzania)", studlab)) %>% 
+  get_dupes(studlab) %>% select(-dupe_count)
+meta_extract_OR_AC_spec <- meta_extract_ORFun(meta_extract_AC_OR_spec_ls, "AC") %>%
+  mutate(studlab = ifelse(str_detect(studlab, "Archibald"), "Archibald 1998 (Tanzania)", studlab)) %>% 
+  get_dupes(studlab) %>% select(-dupe_count)
+
+meta_extractOR_all <- meta_extract_OR_merge %>% 
+  full_join_track(meta_extract_OR_AC, by = join_by(studlab, `Host Factor`, `Inclusion age group`), suffix = c("", "_AC")) %>% 
+  full_join_track(meta_extract_OR_BCC, by = join_by(studlab, `Host Factor`, `Inclusion age group`), suffix = c("", "_BCC")) #%>%  
+  # rename(Adjusted_for.merge = Adjusted_for.x,
+  #        Adjusted_for.z = Adjusted_for) %>%
+  # select(-c(Adjusted_for.y, Adjusted_for.z)) %>%
+  # rename(Adjusted_for = Adjusted_for.merge)
+
+meta_extractOR_all_spec <- meta_extract_OR_BCC_spec %>% 
+  full_join_track(meta_extract_OR_AC_spec, by=join_by(studlab, `Host Factor`, `Inclusion age group`, ExpCase, UnexpCase), suffix=c("_BCC", "_AC")) %>% 
+  mutate(Controls = case_when(
+    `Host Factor`=="HIV" ~ "All",
+    `Host Factor`=="HIV_MTB" ~ "Without MTB",
+    `Host Factor`=="HIV_typhi" ~ "Without S.Typhi"
+  )) %>% 
+  select(studlab, `Inclusion age group`, Controls, ExpCase, UnexpCase, ExpCont_BCC, UnexpCont_BCC, OR_BCC, PAF_BCC, ExpCont_AC, UnexpCont_AC, OR_AC, PAF_AC) %>% 
+  mutate(Controls = ifelse(OR_BCC==9.118, "All", Controls)) %>% 
+  filter(str_detect(studlab, "Muthumbi", negate=T))
+
+OR_comparison <- descript_tab_ORs %>%
+  rename(`Host Factor` = `Risk Factor`) %>% 
+  full_join_track(meta_extractOR_all, by=c("studlab", "Host Factor", "Inclusion age group"), .merge=T) %>% 
+  # mutate(Adjusted_for = ifelse(!is.na(Adjusted_for.x), Adjusted_for.x, Adjusted_for.y),
+  #        Adjusted_OR = ifelse(!is.na(Adjusted_OR.x), Adjusted_OR.x, Adjusted_OR.y)) %>% 
+  select(-c(Author, Year, Country)) %>% 
+  # select(-c(Author, Year, Country, Adjusted_for.x, Adjusted_for.y, Adjusted_OR.x, Adjusted_OR.y)) %>% 
+  rename(`Age Group` = `Inclusion age group`, 
+        # `Host Factor` = `Risk Factor`,
+         Study = studlab) %>% 
+  relocate(Study, .before = "Age Group") %>% 
+  filter(.merge!="right_only") %>% 
+  select(-.merge)
+
+OR_comparison2 <- OR_comparison %>% 
+  # select(-c(OR_BCC, OR_AC, PAF_BCC, PAF_AC, ExpCase_AC, ExpCase_BCC, UnexpCase_AC,UnexpCase_BCC, UnexpCont_BCC, `Risk Factor`, Adjusted_for, ExpCont_BCC, ExpCont_AC, UnexpCont_AC, UnexpCont_BCC, Adjusted_for_AC, Adjusted_for_BCC)) %>%
+  select(c(Study, `Age Group`, `Host Factor`, `N (iNTS Cases)`, `N (Cases + All Controls)`, `N (Cases + Blood Culture Controls)`, Unadjusted_OR, Adjusted_OR, PAF, Adjusted_for_merge, OR_merge)) %>% 
+  rename(Adjusted_for = Adjusted_for_merge) %>% 
+  mutate(Adjusted_for = str_replace_all(Adjusted_for, ", Clinical features - - not clear if all variables presented are in the same model", ""),
+         Adjusted_for = str_replace_all(Adjusted_for, "Protein-energy Malnutrition", ""),
+         Adjusted_for = str_replace_all(Adjusted_for, "(PEM)", "SAM"),
+         Adjusted_for = gsub("\\(|)","",Adjusted_for),  # replace parentheses
+         Adjusted_for = gsub("?","",Adjusted_for, fixed=T), # replace ? with blank
+         Adjusted_for = gsub("\\s+"," ",Adjusted_for)) # remove multiple spaces and replace with 1
+#OR_comparison
+OR_comparison_tab <- flextable(OR_comparison2) %>%
+  fontsize(i = 1, size = 8, part = "header") %>%   # adjust font size of header
+  bold(i = 1, bold = TRUE, part = "header") %>%    # adjust bold face of header
+  fontsize(size = 8, part = "body")  %>% # adjust font size of header
+  # add_header_row(
+  #   top = TRUE,                # New header goes on top of existing header row
+  #   values = c("", "", "", "", "", "", "", "", "Combined", "", "Case Control", "", "Case Disease", "")) %>%      # Header values for each column below
+  add_header_row(
+    top = TRUE,                # New header goes on top of existing header row
+    values = c("", "", "", "", "", "", "Abstracted", "", "", "Calculated", "")) %>%      # Header values for each column below
+  set_header_labels(         # Rename the columns in original header row
+    Unadjusted_OR  = "Unadjusted OR",
+    Adjusted_OR  = "Adjusted OR ",
+    PAF = "PAF",
+    Adjusted_for_merge = "Adjusted Variables",
+    OR_merge = "OR")
+OR_comparison_tab
+
+OR_spec_tab <- flextable(meta_extractOR_all_spec) %>% 
+  fontsize(i = 1, size = 8, part = "header") %>%   # adjust font size of header
+  bold(i = 1, bold = TRUE, part = "header") %>%    # adjust bold face of header
+  fontsize(size = 8, part = "body") %>%  # adjust font size of header
+  add_header_row(
+    top = TRUE,                # New header goes on top of existing header row
+    values = c("", "", "","", "", "Case-Disease","", "", "", "Case-Control", "","", "")) %>%      # Header values for each column below
+  set_header_labels(         # Rename the columns in original header row
+    studlab = "Study",
+    `Inclusion age group` = "Age Group",
+    PAF_BCC = "PAF",
+    OR_BCC = "OR",
+    PAF_AC = "PAF",
+    OR_AC = "OR",
+    ExpCont_BCC = "ExpCont",
+    UnexpCont_BCC = "UnexpCont",
+    ExpCont_AC = "ExpCont",
+    UnexpCont_AC = "UnexpCont"
+    )
+#OR_spec_tab
+```
+
+```{=tex}
+\end{addmargin}
+\newpage
+```
+<!-- changing the orientation to portrait --------------------------------- -->
+
+```{=tex}
+\KOMAoptions{usegeometry, paper=portrait,pagesize}
+\recalctypearea
+```
+```{r echo=FALSE, results='show', warning=FALSE, message=FALSE, fig.align = "center", fig.height = 6, fig.width = 6.5, out.width = "6.5in"}
+#| tbl-cap: "Studies providing data on death"
+#| label: tbl-death
+
+death_tab_ft <- deaths2 %>% 
+  select(c(studlab, RF, Serovar.y, OR_AC, paf_miettinen_AC)) %>% 
+  mutate(OR_AC = round(as.numeric(OR_AC),2),
+         paf_miettinen_AC = round(as.numeric(paf_miettinen_AC),2),
+         Serovar.y = ifelse(RF=="RF", "Salmonella typhimurium", Serovar.y),
+         RF = ifelse(RF=="RF", "HIV", RF)) %>% 
+  flextable() %>% 
+   fontsize(i = 1, size = 8, part = "header") %>%   # adjust font size of header
+    bold(i = 1, bold = TRUE, part = "header") %>%    # adjust bold face of header
+    fontsize(size = 8, part = "body") %>%  # adjust font size of header
+    set_header_labels(         # Rename the columns in original header row
+      OR_AC = "Odds Ratio",
+      paf_miettinen_AC = "PAF",
+      studlab = "Study",
+      RF = "Host Factor ",
+      Serovar.y = "Serovar"
+    )
+death_tab_ft
+```
+
+## **Discussion**
+
+We showed in children malaria (23 – 27%), severe anaemia (36%) account for the largest attributable fraction of iNTS disease; with sickle cell disease (SCD) (14%), HIV (10%), and severe acute malnutrition (10%) attributing smaller proportions. We have demonstrated the changing epidemiology of host factor contribution to iNTS over time highlighting a substantial decline in the population attributable fractions of iNTS from 80% in the pre-ART era to 27% in the ART era. [\[](#_msocom_1)This is consistent with prior literature on iNTS epidemiology, showing adult iNTS disease associated with HIV, and children having a wider range of contributing host factors including malaria, SAM, and anaemia ^2,5,8,9^.
+
+A substantial contribution of iNTS disease was attributable to SCD. However, the eligible SCD studies mostly used a retrospective case-control design to be able to reach adequate numbers of patients with SCD. Therefore, the underlying prevalence of SCD may be overestimated in these populations and may be artificially inflating our PAF estimate. Studies designed using prevalence data on SCD in the general population would be required to obtain a more accurate PAF estimate. To our knowledge, ours is the first systematic review and meta-analysis that estimates the population attributable fractions for the contribution of each host factor to the overall burden of iNTS disease.  
+
+**Limitations**
+
+The major limitation of this analysis is the study design of identified articles. To estimate PAF robustly, studies should be population-based with case and control status ascertained at the household, to allow calculation of relative risk of iNTS disease by host factor, and to more accurate estimate the prevalence of host factors to inform PAF estimates. However, all included studies identified cases at health facilities, all except one study identified controls through health facilities, either through prospective or retrospective data collection, and limited our analysis to estimation of PAFs using OR.
+
+Healthcare facility-based studies are subject to Berkson’s bias since presentation to hospital with both iNTS and one or more of the host factors to be more likely than presentation with a single condition, or none of the conditions. This biases the estimate of the OR downwards due to a higher prevalence among hospital controls of host factors than would be found in the community and leads to underestimation of the PAF. We addressed this concern by utilising two methodological approaches; restricting analysis to controls with a similar disease severity (bacteraemia with another pathogen) case-disease analysis, in attempt to reduce selection bias in host risk factors at presentation to hospital in cases vs controls. Comparing the case-disease approach of Krumpkamp *et al* ^18^ in our meta-analysis for malaria, we found a substantially higher PAF in children with the case-disease approach with bias analysis, compared with a protective effect of malaria on iNTS when using a traditional case-control analysis. A protective impact of malaria is not consistent with our understanding of iNTS epidemiology and clinical experience. However, this effect was not seen when applying each alternative analysis approaches to the other host factors, although for anaemia (8 studies), SCD (5 studies) and SAM (5 studies), we had limited ability to explore this furtherdue to insufficient numbers of studies. More data from more and larger studies is required, ideally with data from both cases and controls identified at community level in a cohort design, which would allow detection of both milder and more severe illness that doesn’t reach health facility assessment. However, this type of study would require large studies due to the low prevalence of iNTS in the community.
+
+Another considerable limitation was that no studies had abstractable stratified data in sufficient numbers on multiple host factors, to permit multivariable analysis to model the numerous complex interactions that undoubtedly exist between host factors, as set out in Supplementary figure 6A.  By failing to account for multiple host factors simultaneously, the sum of individual risk factors can be greater than one, erroneously implying that more than 100% of cases are preventable by modification of host factors ^52^. Among the few studies that provided adjusted ORs, the variables that were adjusted varied considerably between studies, and did not use causal diagrams to inform the strategy for adjustment, further limiting the interpretation of these results. Large studies simultaneously assessing all host factors with sufficient numbers in each host factor stratum would be required to resolve this issue and allow calculation of sequential PAFs ^52^, and interactions between factors ^53^. All meta-analyses had high I^2^ values indicating significant heterogeneity, likely resulting from small study sizes and differences in study design and settings.
+
+It was not possible to fully explore the difference of effect between recent malaria and current malaria, the former of which has been suggested by several authors to be more strongly associated with iNTS ^54^. However, the challenge is differentiating between recent and current malaria, as few studies had this information. Three studies ^5,6,37^ tested for malaria using both MRDT and blood film and stratified data into each combination of test results, defining current malaria as blood film positive, and recent malaria as MRDT positive but blood film negative. However, studies using MRDT only are at risk of combining results for both current and recent malaria, which will likely reduce the accuracy of our comparisons. Our estimate of the PAF for recent malaria showed a trend towards a higher PAF compared to current malaria. However, there were few data and the confidence intervals were wide. Another consideration is the impact of seasonality of host factors such as malaria, or malnutrition prevalence, that may have temporal or seasonal effects that vary in the population. This may not be a concern if the association between host factor and outcome does vary by season, but we were unable to explore this within our analysis. Further investigation into this with larger datasets is needed to explore the period most at risk following malaria infection which could inform control measures.
+
+Other limitations of this analysis include the underlying assumptions made for our calculations. For example, our assumption of the OR approaching RR depends on the prevalence of the outcome in the underlying population to be uncommon. This is very likely to be the case in the general population. However, patients recruited from healthcare facilities have a much higher prevalence of both disease and host factor and this may impact on our estimates.
+
+Consideration of the association of pathogens other than NTS that may be in the control group such as *Salmonella* Typhi and *Mycobacterium tuberculosis* is also needed to minimize the bias of the estimates. However, based on few studies with data there did not appear to be significant differences in the PAFs for HIV when excluding either *Mycobacterium tuberculosis* or *Salmonella* Typhi from the control group, using case-control analysis, but a trend towards overestimation of the PAF of HIV for Salmonella Typhi was seen in the case-disease analysis where the proportions of Salmonella typhi in the control group was larger.
+
+**Conclusion**
+
+We found that the host factors of malaria and severe anaemia in children were associated with the highest population attributable fractions of iNTS disease, with smaller proportions attributable to severe acute malnutrition, sickle cell disease, and HIV in children, and HIV had the highest PAF in adults. It is likely that there are significant interactions between host factors for example malaria and anaemia that was not able to be accounted for, suggesting there could be a considerable burden of iNTS disease not associated with the host factors analysed. This suggests that while addressing host risk factors is likely to reduce iNTS incidence, vaccine development could play a key role when these host factors are unlikely to be eliminated in the short to medium term, and for disease not associated with a host factor. Large population based studies with case and control status ascertained at the community level data collected across all host factors for the same individual are needed improve PAF estimates to guide both non-vaccine prevention and vaccine policy for iNTS disease.
+
+## References
+
+ 1.        Marchello, C. S. *et al.* Complications and mortality of non-typhoidal salmonella invasive disease: a global systematic review and meta-analysis. *The Lancet Infectious Diseases* (2022) doi:10.1016/s1473-3099(21)00615-0.
+
+2.         Feasey, N. A., Dougan, G., Kingsley, R. A., Heyderman, R. S. & Gordon, M. A. Invasive non-typhoidal salmonella disease: an emerging and neglected tropical disease in Africa. *The Lancet* **379**, 2489–2499 (2012).
+
+3.         Scott, J. A. G. *et al.* Relation between falciparum malaria and bacteraemia in Kenyan children: a population-based, case-control study and a longitudinal study. *The Lancet* **378**, 1316–1323 (2011).
+
+4.         Babirekere-Iriso, E., Musoke, P. & Kekitiinwa, A. Bacteraemia in severely malnourished children in an HIV-endemic setting. *Ann Trop Paediatr* **26**, 319–328 (2006).
+
+5.         Brent, A. J. et al. Salmonella Bacteremia in Kenyan Children. *The Pediatric Infectious Disease Journal* **25**, 230–236 (2006).
+
+6.         Biggs, H. M. *et al.* Invasive Salmonella Infections in Areas of High and Low Malaria Transmission Intensity in Tanzania. *Clinical Infectious Diseases* **58**, 638–647 (2014).
+
+7.         Feasey, N. A. *et al.* Modelling the Contributions of Malaria, HIV, Malnutrition and Rainfall to the Decline in Paediatric Invasive Non-typhoidal Salmonella Disease in Malawi. *PLOS Neglected Tropical Diseases* **9**, e0003979 (2015).
+
+8.         Takem, E. N., Roca, A. & Cunnington, A. The association between malaria and non-typhoid Salmonella bacteraemia in children in sub-Saharan Africa: a literature review. *Malaria journal* **13**, 400 (2014).
+
+9.         Walsh, A. L. et al. Bacteremia in febrile Malawian children: clinical and microbiologic features. *The Pediatric Infectious Disease Journal* **19**, 312–318 (2000).
+
+10.       Workman, M. R., Philpott-Howard, J. N., Casewell, M. W. & Bellingham, A. J. Salmonella bacteraemia in sickle cell disease at King’s College Hospital: 1976–1991. **27**, 195–199 (1994).
+
+11.       Were, T. *et al.* Bacteremia in Kenyan Children Presenting with Malaria. **49**, 671–676 (2011).
+
+12.       Stanaway, J. D. *et al.* The global burden of non-typhoidal salmonella invasive disease: a systematic analysis for the Global Burden of Disease Study 2017. *The Lancet Infectious Diseases* **19**, 1312–1324 (2019).
+
+13.       Keddy, K. H. *et al.* An association between decreasing incidence of invasive non-typhoidal salmonellosis and increased use of antiretroviral therapy, Gauteng Province, South Africa, 2003–2013. *PLOS ONE* **12**, e0173091 (2017).
+
+14.       Mackenzie, G. *et al.* A decline in the incidence of invasive non-typhoidal Salmonella infection in The Gambia temporally associated with a decline in malaria infection. *PLOS ONE* **5**, e10568–e10568 (2010).
+
+15.       Mtove, G. *et al.* Decreasing incidence of severe malaria and community-acquired bacteraemia among hospitalized children in Muheza, north-eastern Tanzania, 2006-2010. **10**, 320 (2011).
+
+16.       Tack, B. *et al.* Direct association between rainfall and non-typhoidal Salmonella bloodstream infections in hospital-admitted children in the Democratic Republic of Congo. *Scientific Reports* **11**, (2021).
+
+17.       Berkson, J. Limitations of the application of fourfold table analysis to hospital data. *Biometrics* **2**, 47–53 (1946).
+
+18.       Krumkamp, R. *et al.* Association Between Malaria and Invasive NontyphoidalSalmonellaInfection in a Hospital Study: Accounting for Berkson’s Bias. *Clinical Infectious Diseases* **62**, S83–S89 (2016).
+
+19.       Westreich, D. Berkson’s bias, selection bias, and missing data. *Epidemiology* **23**, 159–164 (2012).
+
+20.       PRISMA statement. *PRISMA statement* https://www.prisma-statement.org.
+
+21.       Stevens, G. A. *et al.* Guidelines for Accurate and Transparent Health Estimates Reporting: the GATHER statement. *The Lancet* **388**, e19–e23 (2016).
+
+22.       Ouzzani, M., Hammady, H., Fedorowicz, Z. & Elmagarmid, A. Rayyan—a web and mobile app for systematic reviews. *Systematic Reviews* **5**, 210 (2016).
+
+23.       Google Translate. https://translate.google.com/?sl=auto&tl=en&op=translate.
+
+24.       Google Forms: Online form creator \| Google Workspace. https://www.facebook.com/GoogleDocs/.
+
+25.       Wells, G. A. *et al.* The newcastle-ottawa scale (NOS) for assessing the quality of nonrandomised studies in meta-analyses. in (2014).
+
+26.       Harries, A. D., Schouten, E. J. & Libamba, E. Scaling up antiretroviral treatment in resource-poor settings. *The Lancet* **367**, 1870–1872 (2006).
+
+27.       Kiragga, A. N., Mubiru, F., Kambugu, A. D., Kamya, M. R. & Castelnuovo, B. A decade of antiretroviral therapy in Uganda: what are the emerging causes of death? *BMC Infect Dis* **19**, 77 (2019).
+
+28.       World Health Organisation. Integrated Management of Childhood Illness. (2014).
+
+29.       Mansournia, M. A. & Altman, D. G. Population attributable fraction. *BMJ* **360**, (2018).
+
+30.       Miettinen, O. S. Proportion of disease caused or prevented by a given exposure, trait or intervention. *Am J Epidemiol* **99**, 325–332 (1974).
+
+31.       DerSimonian, R. & Laird, N. Meta-analysis in clinical trials. *Control Clin Trials* **7**, 177–188 (1986).
+
+32.       Knapp, G. & Hartung, J. Improved tests for a random effects meta-regression with a single covariate. *Stat Med* **22**, 2693–2710 (2003).
+
+33.       Sidik, K. & Jonkman, J. N. A simple confidence interval for meta-analysis. *Stat Med* **21**, 3153–3159 (2002).
+
+34.       Corbett, E. L. *et al.* The Growing Burden of Tuberculosis: Global Trends and Interactions With the HIV Epidemic. *Archives of Internal Medicine* **163**, 1009–1021 (2003).
+
+35.       Crump, J. A. *et al.* Invasive bacterial and fungal infections among hospitalized HIV-infected and HIV-uninfected adults and adolescents in northern Tanzania. *Clin Infect Dis* **52**, 341–8 (2011).
+
+36.       Davies, H. T., Crombie, I. K. & Tavakoli, M. When can odds ratios mislead? *BMJ* **316**, 989–991 (1998).
+
+37.       Maltha, J. *et al.* Frequency of Severe Malaria and Invasive Bacterial Infections among Children Admitted to a Rural Hospital in Burkina Faso. *PLoS ONE* **9**, e89103 (2014).
+
+38.       Gordon, M. A. *et al.* Bacteraemia and Mortality Among Adult Medical Admissions in Malawi – Predominance of Non-typhi Salmonellae andStreptococcus pneumoniae. *Journal of Infection* **42**, 44–49 (2001).
+
+39.       Brindle, R. J. *et al.* Infection and morbidity in patients with tuberculosis in Nairobi, Kenya. **7**, 1469–1474 (1993).
+
+40.       Enwere, G. *et al.* Epidemiologic and Clinical Characteristics of Community-Acquired Invasive Bacterial Infections in Children Aged 2???29 Months in The Gambia. **25**, 700–705 (2006).
+
+41.       Mandomando, I. *et al.* Invasive Salmonella Infections Among Children From Rural Mozambique, 2001–2014. **61**, S339–S345 (2015).
+
+42.       Berkowitz, F. E. Bacteremia in hospitalized black South African children. A one-year study emphasizing nosocomial bacteremia and bacteremia in severely malnourished children. *Am J Dis Child* **138**, 551–6 (1984).
+
+43.       Williams, T. N. *et al.* Bacteraemia in Kenyan children with sickle-cell anaemia: a retrospective cohort and case–control study. **374**, 1364–1370 (2009).
+
+44.       Gilks, C. F. *et al.* Life-threatening bacteraemia in HIV-1 seropositive adults admitted to hospital in Nairobi, Kenya. *Lancet* **336**, 545–9 (1990).
+
+45.       Nadjm, B. *et al.* Severe febrile illness in adult hospital admissions in Tanzania: a prospective study in an area of high malaria transmission. *Transactions of the Royal Society of Tropical Medicine and Hygiene* **106**, 688–695 (2012).
+
+46.       Nadjm, B. *et al.* WHO guidelines for antimicrobial treatment in children admitted to hospital in an area of intense Plasmodium falciparum transmission: prospective study. **340**, c1350–c1350 (2010).
+
+47.       Archibald, L. K., Dulk, M. O. D., Pallangyo, K. J. & Reller, L. B. Fatal Mycobacterium tuberculosis Bloodstream Infections in Febrile Hospitalized Adults in Dar es Salaam, Tanzania. **26**, 290–296 (1998).
+
+48.       Vugia, D. J. *et al.* Pathogens and Predictors of Fatal Septicemia Associated with Human Immunodeficiency Virus Infection in Ivory Coast, West Africa. **168**, 564–570 (1993).
+
+49.       Berkley, J. A. *et al.* HIV infection, malnutrition, and invasive bacterial infection among children with severe malaria. *Clin Infect Dis* **49**, 336–343 (2009).
+
+50.       Onchiri, F. M. *et al.* Low Bacteremia Prevalence Among Febrile Children in Areas of Differing Malaria Transmission in Rural Kenya: A Cross-Sectional Study. *Journal of the Pediatric Infectious Diseases Society* **5**, 385–394 (2016).
+
+51.       Muthumbi, E. *et al.* Invasive Salmonellosis in Kilifi, Kenya. *Clinical Infectious Diseases* **61**, S290–S301 (2015).
+
+52.       Rowe, A. K., Powell, K. E. & Flanders, W. D. Why population attributable fractions can sum to more than one. *Am J Prev Med* **26**, 243–249 (2004).
+
+53.       Bruzzi, P., Green, S. B., Byar, D. P., Brinton, L. A. & Schairer, C. ESTIMATING THE POPULATION ATTRIBUTABLE RISK FOR MULTIPLE RISK FACTORS USING CASE-CONTROL DATA. *American Journal of Epidemiology* **122**, 904–914 (1985).
+
+54.       Nyirenda, T. S. *et al.* Loss of Humoral and Cellular Immunity to Invasive Nontyphoidal Salmonella during Current or Convalescent Plasmodium falciparum Infection in Malawian Children. *Clinical and Vaccine Immunology* **24**, CVI.00057-17 (2017).
