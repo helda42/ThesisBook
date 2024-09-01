@@ -19,25 +19,27 @@ format:
 editor: visual
 ---
 
-## Introduction 
+## Introduction
 
-Children exposed to enteric nontyphoidal *Salmonella* (eNTS) develop effective natural immunity against invasive disease [@nyirenda_sequential_2014, @maclennan_neglected_2008], which can inform understanding of windows in immune susceptibility to inform approaches to developing vaccine derived immunity. Understanding the age-stratified natural acquisition of immunity in relation to age-stratified asymptomatic eNTS infections and invasive disease incidence in different settings can contribute to understanding of possible correlates of protection (COP) and inform vaccine impact and implementation. It is particularly important to understand the role that naturally acquired immunity plays in protection against invasive disease as this will be important when considering the impact that vaccination may play on both asymptomatic or sub-clinical enteric NTS infections and invasive NTS disease. As naturally acquired immunity appears to be effective protection against invasive disease (as explored in chapter 1), it is important to understand how vaccine-derived immunity may impact this, for example reduce enteric NTS infections, or fecal shedding durtation and therefore may impact the force of infection of NTS from enteric infections and may reduce natural immunity. Vaccine strategy will need to understand the impacts of this to ensure that the most at risk groups are protected, whilst continuing to allow children to boost natural immunity from asymptomatic eNTS events.
+Children exposed to enteric nontyphoidal *Salmonella* (eNTS) develop effective natural immunity against invasive disease [@nyirenda_sequential_2014, @maclennan_neglected_2008], which can inform understanding of windows in immune susceptibility to inform approaches to developing vaccine derived immunity. Understanding the age-stratified natural acquisition of immunity in relation to age-stratified asymptomatic eNTS infections and invasive disease incidence in different settings can contribute to understanding of possible correlates of protection (COP) and inform vaccine impact and implementation. High forces of infection with invasive serovars may result in incidence of invasive disease in younger age groups, compared to populations with a lower force of infection. However, cross-protection from non-invasive NTS serovars may result in protective immunity earlier in life, so that when children are exposed to an invasive strain, they have already developed robust immunity against invasive disease. Understanding these dynamics between force of infection, natural immunity and susceptibility to invasive disease is key to identifying correlates of protection for vaccine studies. It is particularly important to understand the role that naturally acquired immunity plays in protection against invasive disease as this will be important when considering the impact that vaccination may play on both asymptomatic or sub-clinical enteric NTS infections and invasive NTS disease. As naturally acquired immunity appears to be effective protection against invasive disease (as explored in chapter 1), it is important to understand how vaccine-derived immunity may impact this, for example reduce enteric NTS infections, or fecal shedding durtation and therefore may impact the force of infection of NTS from enteric infections and may reduce natural immunity. Vaccine strategy will need to understand the impacts of this to ensure that the most at risk groups are protected, whilst continuing to allow children to boost natural immunity from asymptomatic eNTS events.
 
-Serocatalytic models have been used to understand the mechanisms behind the age-stratified serological responses to a wide range of infectious diseases including dengue[@cox_estimating_2022], malaria [@yman_antibody_2016] and pneumococcus [@lourenco_determinants_2019].
+Serocatalytic models have been used to understand the mechanisms behind the age-stratified serological responses to a wide range of infectious diseases including dengue[@cox_estimating_2022], malaria [@yman_antibody_2016] and pneumococcus [@lourenco_determinants_2019]. Antibody acquisition models have been used for improving the precision of serological surveillance of malaria transmission intensity with small sample sizes \[ @yman_antibody_2016\].
+
+Modelling the number of enteric exposures leading to effective immunity could be important in understanding how to induce effective vaccine-derived immunity. Having better understanding of the mechanisms behind acquistion of immunity at a population level can inform understanding of the impacts of vaccine-derived immunity on the population.
 
 ## Methods
 
-Serum from healthy children recruited in the community was tested for O-Ag immunoglobulin G (IgG) to *Salmonella* Typhimurium using an ELISA assay developed by GVGH [@aruta_characterization_2023], as part of the VacciNTS consortium as described in chapters 1 and 2. Samples were analysed at the Kamuzu University of Health Sciences (KUHES) laboratory, Blantyre, Malawi as described in chapter 2.
+Serum from healthy children recruited in the community was tested for O-Ag immunoglobulin G (IgG) to *Salmonella* Typhimurium (STm) using an ELISA assay developed by GVGH [@aruta_characterization_2023], as part of the VacciNTS consortium as described in chapters 1 and 2. Samples were analysed at the Kamuzu University of Health Sciences (KUHES) laboratory, Blantyre, Malawi as described in chapter 2. The relationship between age in months and geometric mean concentrations (GMC) of anti-O-Ag STm IgGm for each 1 month age group was modeled using a serocatalytic model to the observed data.
 
 ### Modeling approach
 
-A serotype-specific catalytic serological model was designed assuming an exponential decay of maternal antibodies with age from birth, and exposure to eNTS leading to induction of immunity (anti-O-Ag (O4) IgG) through a Gompertz function relationship by age. Two models were compared; model 1 assumed a constant force of infection (FOI) throughout ages from birth to 60 months, model 2 assumed FOI changed with age in a sigmoidal relationship with age. Both models were fitted to the serological data per age-bin using a Markov-chain Monte-Carlo (MCMC) approach, and models were compared by Pareto smoothed importance sampling (PSIS) and Widely applicable information criterion (WAIC).
+A serotype-specific catalytic serological model was designed assuming an exponential decay of maternal antibodies with age from birth, and exposure to enteric non-typhoidal salmonella infections lead to the induction of immunity (anti-O-Ag STm IgG) through a Gompertz function relationship by age. Gompertz functions are used widely in modeling biological processes including cell growth in tumors \[ref\].
 
 ### Hypotheses to be tested by model
 
 ![Adaptation to serological catalytic model developed by Lourenco et al [@lourenco_determinants_2019]](figures/6_images/model_diag.png){#fig-serocatalytic width="599"}
 
-### Model equations
+### Model 1: Constant force of infection (lambda)
 
 $$GMC(a, t)  =  mAB(a)  +  \Phi(\theta(a,t))  $$
 
@@ -51,7 +53,7 @@ $$GMC(a, t)  =  mAB(a)  +  \Phi(\theta(a,t))  $$
 
 -   $\Phi(\theta(a,t))$ = Relationship between number of estimated number of exposures and antibody response
 
-Conceptually remove time from equation if assume $\lambda(t)$ exposure over time is constant
+Assumptions: Time was removed from equation if assume $\lambda(t)$ exposure over time is constant
 
 Assume age (a) = time e.g. at 1 month of age child has been in model for 1 month of time
 
@@ -108,7 +110,7 @@ Two parameters that will be fitted to the data:
 
 k = growth rate i = number of exposures above which the antibody response will enter the growth function?
 
-### Calculate Ab by natural exposure
+### Modeling acquisition of antibodies following natural exposure
 
 Using Gompertz function for growth, which exhibits exponential decay of relative growth rate:
 
@@ -137,9 +139,9 @@ k = growth rate i = number of exposures above which the antibody response will e
 
 ### Fitting to model using Markov-Chain Monte-Carlo (MCMC)
 
-### Changing force of infection
+### Model 2: Changing force of infection
 
-#### Changing lambda with age (linear exposure does not fit the model well)
+In the second model, lambda was allowed to change with age, using a second gompertz curve to model a sigmoidal relationship between age and force of infection (eNTS) events.
 
 $$ f(ns) = m_xe^{-we^{-rt}}$$ Where mx = upper limit of new infections (cumulative) by age 60 months = 40 if 1 infection every 6 weeks on average across cohort - may need to adjust for age distribution $$ lim_{t \to \infty} ke^{-ce^{-rt}} = ke^{0} = k $$\
 e = Euler's constant = 2.71828 = the base of natural logarithms
@@ -148,19 +150,15 @@ w = age in months before before enter exponential phase (x-axis displacement) - 
 
 r = exponential phase/ growth rate high feco-oral transmission at weaning/ crawling age
 
+The modeled relationship between age and enteric NTS infections were compared to the observed distribution of observed eNTS events (NTS PCR and microbiological culture positive stool samples), from the same cross-sectional sample of children.
+
 ### Model comparison and diagnostics
 
-Model comparison and diagnostics were run using widely applicable information criteria (WAIC) and Pareto smoothed importance sampling (PSIS)
-
-## Results
-
-### Descriptive analysis
-
-Cross-sectional samples were analysed for `{r} total` Malawian children 0-60 months recruited in the SAiNTS study, recruited between 9th January 2021 and 30th May 2022. Antibody responses to *Salmonella* typhimurium O-antigen IgG were used to fit the model.
+Two models were compared; model 1 assumed a constant force of infection (FOI) throughout ages from birth to 60 months, model 2 assumed FOI changed with age in a sigmoidal relationship with age. Both models were fitted to the serological data per age-bin using a Bayesian Markov-chain Monte-Carlo (MCMC) approach, and models were compared by Pareto smoothed importance sampling (PSIS) and Widely applicable information criterion (WAIC).
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results='show', ft.align = "centre", ft.width = 5, out.width = "5.5in"}
-#| fig-cap: Summary of serological data (IgG against O-antigen of Salmonella Typhimiruim) used for the serocatalytic model by 3 month age groups. GMC = Geometric mean concentration IgG for each agegroup.SD = Standard Deviation IgG. STm = S. Typhimurium. N.B. 1 month age groups were used for the model.
-#| label: fig-serodatsum
+#| tbl-cap: Summary of serological data (IgG against O-antigen of Salmonella Typhimiruim) used for the serocatalytic model by 3 month age groups. GMC = Geometric mean concentration IgG for each agegroup.SD = Standard Deviation IgG. STm = S. Typhimurium. N.B. 1 month age groups were used for the model.
+#| label: tbl-serodatsum
 #| 
 require(tidyverse)
 require(ggplot2)
@@ -168,15 +166,46 @@ require(cowplot)
 require(rio)
 require(here)
 library(flextable)
+library(gt)
+library(pacman)
+pacman::p_load("ape", "bayesplot", "brms", "broom", "dagitty", "devtools", "flextable", "GGally", "ggdag", "ggdark", "ggmcmc", "ggrepel", "ggthemes", "ggtree", "ghibli", "gtools", 
+               "invgamma", "loo", "patchwork", "posterior", "psych", "rcartocolor", "Rcpp", "remotes", "rstan", "santoku", "StanHeaders", "statebins", "tidybayes", "tidyverse", 
+               "viridis", "viridisLite", "wesanderson")
+p_load(dutchmasters, ggpomological,ggtree,urbnmapr,gganimate)
+library(magrittr)
+library(dplyr)
+library(purrr)
+library(forcats)
+library(tidyr)
+library(modelr)
+library(ggdist)
+library(tidybayes)
+library(ggplot2)
+library(cowplot)
+library(rstan)
+library(brms)
+library(ggrepel)
+library(RColorBrewer)
+library(posterior)
+library(distributional)
+#remotes::install_github("michael-franke/aida-package")
+library(aida)
+library(rethinking)
 
 ##load data
-data <- import(here("data","6_data", "sero_data_agegroup_mth.csv"))   ## serology data
+#data <- import(here("data","6_data", "sero_data_agegroup_mth.csv"))   ## serology data
+data <- import(here("data","6_data", "Malawi_STmIgG_master.csv")) %>%
+  mutate(AGEGROUP_mth = cut(age_calc_months, breaks = seq(0,60,1)),
+         AGE = age_calc_months) 
+#rename(EU_all.sero = EU_all.sero)## serology data
+# dataK <- import(here("Data","VacciNTS", "kenya_STmIgG_master.csv"))   ## serology data
+# dataB <- import(here("Data","VacciNTS", "BF_STmIgG_master.csv"))   ## serology data
 dataS <- data %>% 
   group_by(AGEGROUP_mth) %>%
   summarise(N=n(),
             MIDAGE=mean(AGE, na.rm = T), ##keep the actual mean age of the groups
-            LPS_ME=mean(log(EU_all.sero_d1),na.rm=T),
-            LPS_SD=sd(log(EU_all.sero_d1),na.rm=T)) %>% 
+            LPS_ME=mean(log(EU_all.sero),na.rm=T),
+            LPS_SD=sd(log(EU_all.sero),na.rm=T)) %>% 
   ungroup() %>% 
   arrange(MIDAGE)
 
@@ -184,8 +213,8 @@ data3 <- data %>%
   group_by(AGEGROUP_3mth) %>%
   summarise(N=n(),
             MIDAGE=mean(AGE, na.rm = T), ##keep the actual mean age of the groups
-            LPS_ME=mean(log(EU_all.sero_d1),na.rm=T),
-            LPS_SD=sd(log(EU_all.sero_d1),na.rm=T)) %>% 
+            LPS_ME=mean(log(EU_all.sero),na.rm=T),
+            LPS_SD=sd(log(EU_all.sero),na.rm=T)) %>% 
   ungroup() %>% 
   arrange(MIDAGE)
 
@@ -206,565 +235,305 @@ total <- dataS %>%
   summarise(n())
 ```
 
+## Results
+
+### Descriptive analysis
+
+Cross-sectional samples were analysed for `{r} total` Malawian children 0-60 months recruited in the SAiNTS study, recruited between 9th January 2021 and 30th May 2022. Antibody responses to *Salmonella* typhimurium (STm) O-antigen IgG were used to fit the model. The geometric mean concentration (GMC) of STm OAg IgG for each 3 month age group is shown in @tbl-serodatsum. The model was fitted to GMC for 1 month age groups (0 - 60 months), allowing the model to find the values of i, k and mab that best fit the observed data. The priors for i, k, mab were based on informative priors estimated from previous data [@nyirenda_sequential_2014]?? For some level of restricted prior.
+
 ### Model 1: Constant force of infection
 
-```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, ft.align = "centre", ft.width = 5, out.width = "5.5in"}
-#| fig-cap: Model 1 outputs using Markov Chain Monte Carlo (MCMC) to estimate model parameters, osterior chains and posterior distributions of parameters i, k, and mab
+Model fitting to the observed antibody data is shown in @fig-chains1, tbl-sumM1 @fig-fit1. The posterior chains are shown in panel A @fig-chains1.
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, fig.align = "centre",fig.height=7, fig.width = 5.5, out.width = "6in"}
+#| fig-cap: Model 1 outputs using Markov Chain Monte Carlo (MCMC) to estimate model parameters, posterior chains and posterior distributions of parameters i, k, and mab
 #| label: fig-chains1
 
-# Set up MCMC 
-sampleDist<- function(mean, sd, min, max){
-	repeat{
-		point= rnorm(1,mean=mean,sd=sd)
-		if(point>=min & point<=max) break;
-	}
-	return(point)
-}
+## Set fixed parameters
+dataS$mx=1  # upper limit of new infections (cumulative) by age 60 months = 40 if 1 infection every 6 weeks on average across cohort - may need to adjust for age dist
+dataS$r=0.2 # exponential phase where enter high feco-oral transmission at weaning/ crawling age  
+dataS$w=3   # age in months before before enter exponential phase (x-axis displacement) - weaning 
+dataS$phi0<- max(log(data$EU_all.sero),na.rm=T) ##prior:: the max you may get from the data
+dataS$beta0<- 0.5 ##pri
+dataS$lambda0<- 0.11 ##pri
 
-calcLikelihood<- function(model_points, data_points){
-  probs<- dnorm(model_points, mean=data_points$LPS_ME, sd=data_points$LPS_SD)
-	loglikelihood<- sum(log(probs))
-	return(loglikelihood)
-}
+## Set priors - these are from previous iterations of the model to get more informative priors - tuning the chains
+prior1 <- prior(normal(2.75,0.5), nlpar = "i") +
+  prior(normal(1,0.5), nlpar = "k") +
+  prior(normal(5,1), nlpar = "mab0")
 
-##using "_0" for everything you assume is set at the start
-model<- function(mab, i, k){
-  ninf<- lambda_0 * dataS$MIDAGE
-	phi<- phi_0 * exp(-i * exp(-k*ninf))
-  mab<- mab*exp(-beta_0*dataS$MIDAGE)
-  m<- phi + mab
-	return(m)
-}
+# Fit model using brms
+fit1 <- brms::brm(bf(LPS_ME ~ mab0*exp(-beta0*MIDAGE) + phi0*exp(-i*exp(-k*MIDAGE*lambda0)),
+               mab0 ~ 1,
+               i ~ 1,
+               k ~ 1,
+               nl = TRUE),
+            data = dataS, prior = prior1)
 
+# Extract fitted dataset + predict model compements using fitted parameters
+c_eff_midage1 <- as.data.frame(conditional_effects(fit1)$MIDAGE)
+posteriorSum1 <- tidybayes::tidy_draws(fit1) %>%  
+  dplyr::select(starts_with("b_")) %>% 
+  pivot_longer(cols = everything()) %>% 
+  group_by(name) %>% 
+  reframe(aida::summarize_sample_vector(value)[-1])
 
-##define some parameters
+posteriorSum1wide <- posteriorSum1 %>% 
+  pivot_wider(names_from = name, values_from = c(2:4))
 
-    ##constants
-    lambda_0<- 0.11 ##prior:: no idea what this should be! literature, dont forget it has to be per month
-    phi_0<- max(log(data$EU_all.sero_d1),na.rm=T) ##prior:: the max you may get from the data
-    # MAb_0<- mean(log(data$LPS[which(data$AGE==0)])) ##prior:: assume that AGE==0 is ~~ to MAB at birth
-    beta_0<- 0.5 ##prior:: has to be decided according to how long you think mab last for
+dataSn1 <- bind_cols(dataS, posteriorSum1wide) %>% 
+  mutate(mab_MEAN = mean_b_mab0_Intercept*exp(-beta0*MIDAGE),
+         mab_lo = `95%|_b_mab0_Intercept`*exp(-beta0*MIDAGE),
+         mab_hi = `|95%_b_mab0_Intercept`*exp(-beta0*MIDAGE),
+         phi_MEAN = phi0*exp(-mean_b_i_Intercept*exp(-mean_b_k_Intercept*mx*exp(-w*exp(-r*MIDAGE))*lambda0)),
+         phi_lo = phi0*exp(-`95%|_b_i_Intercept`*exp(-`95%|_b_k_Intercept`*mx*exp(-w*exp(-r*MIDAGE))*lambda0)),
+         phi_hi = phi0*exp(-`|95%_b_i_Intercept`*exp(-`|95%_b_k_Intercept`*mx*exp(-w*exp(-r*MIDAGE))*lambda0)),
+         ninf_MEAN = mx*exp(-w*exp(-r*MIDAGE))*lambda0,
+         ninf_lo = mx*exp(-w*exp(-r*MIDAGE))*lambda0,
+         ninf_hi = mx*exp(-w*exp(-r*MIDAGE))*lambda0)
 
-		##the ones you will 'fit'
-		p_i<- 3 ##starting value of i   ##5
-		p_k<- 0.25 ##starting value of k   ##1
-		p_mab<- 4 ##starting value of mab   ##1
-		c_i<- p_i ##starting value of i
-		c_k<- p_k ##starting value of k
-    c_mab<- p_mab ##starting value of mab
+theme_set(
+  theme_base(base_size = 12) +
+    theme(text = element_text(family = "Times"),
+          axis.text = element_text(family = "Times"),
+          axis.ticks = element_line(linewidth = 0.25),
+          axis.ticks.length = unit(0.1, "cm"),
+          panel.background = element_rect(linewidth = 0.1),
+          plot.background = element_blank(),
+    )
+)
+# Summary of posterior distributions
+plot(fit1)
 
-    # ##can try to run model
-    # test<- data.frame(age=dataS$MIDAGE, LPS_model=model(c_i,c_k), LPS_data=dataS$LPS_ME)
-    # ggplot(test) + geom_point(aes(x=age, y=LPS_model, col="LPS_model")) + geom_point(aes(x=age, y=LPS_data, col="LPS_data"))
-    #
-    # ##this is how mab will behave, good? or change?
-    # mabts<- data.frame(mab= MAb_0*exp(-beta_0*(0:24)), age=0:24)
-    # ggplot(mabts) + geom_point(aes(x=age, y=mab))
+i_mean <- round(posteriorSum1wide$mean_b_i_Intercept, digits=2)
+i_95CI <- paste0(sep="","(", round(posteriorSum1wide$`95%|_b_i_Intercept`,digits=2)," - ", round(posteriorSum1wide$`|95%_b_i_Intercept`,digits=2),")")
+k_mean <- round(posteriorSum1wide$mean_b_k_Intercept, digits=2)
+k_95CI <-  paste0(sep="","(", round(posteriorSum1wide$`95%|_b_k_Intercept`,digits=2)," - ", round(posteriorSum1wide$`|95%_b_k_Intercept`,digits=2),")")
+mab_mean <- round(posteriorSum1wide$mean_b_mab0_Intercept, digits=2)
+mab_95CI <-paste0(sep="","(", round(posteriorSum1wide$`95%|_b_mab0_Intercept`,digits=2)," - ", round(posteriorSum1wide$`|95%_b_mab0_Intercept`,digits=2),")")
 
-		mcmc_steps<- 100000 ##how many steps the MCMC tries (sample of i and k)
-		p_likelihood<- 0 ##the first likelihood, assumed to be zero
-		accepted_i<- rep(NA, mcmc_steps) ##we will save the accepted i here
-		accepted_k<- rep(NA, mcmc_steps) ##we will save the accepted i here
-		accepted_mab<- rep(NA, mcmc_steps) ##we will save the accepted i here
-
-		step<- 1
-		repeat{
-
-			model_sol<- model(mab=c_mab, i=c_i, k=c_k)
-			c_likelihood<- calcLikelihood(model_points=model_sol, data_points=dataS)
-			alpha<- exp(c_likelihood - p_likelihood)
-
-			if(step==1){
-				accept<- TRUE ##assume c_i and c_k accepted
-			}else{
-				accept<- FALSE ##assume c_i and c_k not accepted
-				if(runif(1)<alpha){ ##test if accepted
-					accept<- TRUE ##mark as accepted to make other decisions below
-				}
-			}
-
-			if(accept){
-
-				accepted_i[step]<- c_i
-				accepted_k[step]<- c_k
-				accepted_mab[step]<- c_mab
-
-				##change previous values to current ones
-				p_i<- c_i
-				p_k<- c_k
-				p_mab<- c_mab
-				p_likelihood<- c_likelihood
-
-				c_i<- sampleDist(mean=c_i, sd=0.01, min=0, max=100)
-				c_k<- sampleDist(mean=c_k, sd=0.01, min=0, max=100)
-				c_mab<- sampleDist(mean=c_mab, sd=0.05, min=0, max=100)
-
-			}else{
-
-				accepted_i[step]<- p_i
-				accepted_k[step]<- p_k
-				accepted_mab[step]<- p_mab
-
-				##change previous values to current ones
-				p_i<- p_i
-				p_k<- p_k
-				p_mab<- p_mab
-				p_likelihood<- p_likelihood
-
-				c_i<- sampleDist(mean=p_i, sd=0.01, min=0, max=100)
-				c_k<- sampleDist(mean=p_k, sd=0.01, min=0, max=100)
-				c_mab<- sampleDist(mean=p_mab, sd=0.05, min=0, max=100)
-			}
-
-			if(step>= mcmc_steps) break; ##(*)
-			step<- step+1
-
-      if(step %% 1000 ==0) print(paste("MCMC at",round(100*step/mcmc_steps),"%"))
-
-}
-
-##################################
-
-chains<- data.frame(step=1:mcmc_steps, i=accepted_i, k=accepted_k, mab=accepted_mab)
-
-##these are good if they converge to a 'plateau' (always with noise)
-# ggplot(chains) +
-#     geom_line(aes(x=step, y=i), col="red") +
-#     geom_line(aes(x=step, y=k), col="blue") +
-#     geom_line(aes(x=step, y=mab), col="green")
-
-##################################
-
-burnin<- 1/4 * mcmc_steps ##we will burnin this amount of the chain
-posteriors<- chains[burnin:mcmc_steps,]
-
-gg_chain<- ggplot(posteriors) +
-          geom_line(aes(x=step, y=i), col='red') +
-          geom_line(aes(x=step, y=k), col='blue') +
-          geom_line(aes(x=step, y=mab), col='green') +
-          theme_bw() +
-          ggtitle("Posterior Chains") +
-          theme(axis.text=element_text(size=10),
-                axis.title=element_text(size=10,face="bold"),
-                plot.title = element_text(size=10))
-
-gg_i_den<- ggplot(posteriors) + geom_density(aes(x=i), col='red') + theme_bw() +
-            ggtitle("Density Distribution of i") +
-            theme(axis.text=element_text(size=10),
-                  axis.title=element_text(size=10,face="bold"),
-                  plot.title = element_text(size=10))
-            
-gg_k_den<- ggplot(posteriors) + geom_density(aes(x=k), col='blue') + theme_bw() +
-          ggtitle("Density Distribution of k") +
-          theme(axis.text=element_text(size=10),
-                axis.title=element_text(size=10,face="bold"),
-                plot.title = element_text(size=10))
-
-gg_mab_den<- ggplot(posteriors) + geom_density(aes(x=mab), col='green') + theme_bw() +
-              ggtitle("Density Distribution of mab") +
-              theme(axis.text=element_text(size=10),
-                    axis.title=element_text(size=10,face="bold"),
-                    plot.title = element_text(size=10))
-
-##these are good if they appear as constant with noise
-##and distributions do not look bimodal
-plot_grid(gg_chain, gg_i_den, gg_k_den,gg_mab_den,  ncol=2, labels = "AUTO")
-# ggsave(file=here("Outputs", "LPS_Ab", "Posteriors_model1.png"), width=9, height=6)
-
-#################################
-
-##to see how the model looks vs data, we need to run the model N times
-##with the values of i and k from our posteriors, we can do this
-##by brute force sampling i and k posteriors, then running the model for each
-##then calculating mean and sd
-
-sample_N<- 1000
-samples<- sample(1:nrow(posteriors), sample_N)
-sample_posteriors<- posteriors[samples,]
-
-all_model_sol<- matrix(0, ncol=nrow(dataS), nrow=sample_N)
-all_ninf_sol<- matrix(0, ncol=nrow(dataS), nrow=sample_N)
-all_phi_sol<- matrix(0, ncol=nrow(dataS), nrow=sample_N)
-all_mab_sol<- matrix(0, ncol=nrow(dataS), nrow=sample_N)
-for(ss in 1:sample_N){
-  sample_i<- sample_posteriors$i[ss]
-  sample_k<- sample_posteriors$k[ss]
-  sample_mab<- sample_posteriors$mab[ss]
-  model_sol<- model(mab=sample_mab, i=sample_i, k=sample_k)
-  ninf<- lambda_0 * dataS$MIDAGE
-  phi<- phi_0 * exp(-sample_i * exp(-sample_k*ninf))
-  mab<- sample_mab*exp(-beta_0*dataS$MIDAGE)
-  all_model_sol[ss,]<- model_sol
-  all_ninf_sol[ss,]<- ninf
-  all_phi_sol[ss,]<- phi
-  all_mab_sol[ss,]<- mab
-}
-
-model_me<- apply(all_model_sol, MARG=2, FUN=mean)
-model_sd<- apply(all_model_sol, MARG=2, FUN=sd)
-ninf_me<- apply(all_ninf_sol, MARG=2, FUN=mean)
-ninf_sd<- apply(all_ninf_sol, MARG=2, FUN=sd)
-mab_me<- apply(all_mab_sol, MARG=2, FUN=mean)
-mab_sd<- apply(all_mab_sol, MARG=2, FUN=sd)
-phi_me<- apply(all_phi_sol, MARG=2, FUN=mean)
-phi_sd<- apply(all_phi_sol, MARG=2, FUN=sd)
-
-model_vs_data<- rbind(
-                data.frame(MIDAGE=dataS$MIDAGE, MEAN=model_me, SD=model_sd, ninf_MEAN=ninf_me, ninf_SD=ninf_sd, mab_MEAN=mab_me, mab_SD=mab_sd, phi_MEAN=phi_me, phi_SD=phi_sd, type='model'),
-                data.frame(MIDAGE=dataS$MIDAGE, MEAN=dataS$LPS_ME, SD=dataS$LPS_SD, ninf_MEAN=NA, ninf_SD=NA, mab_MEAN=NA, mab_SD=NA, phi_MEAN=NA, phi_SD=NA, type='data')
-                )
-# ggsave(file=here("Outputs", "LPS_Ab", "LPS_Ab_fit.png"), height = 7, width = 12)
 ```
+
+The posterior distributions were i, k and mab are shown in @fig-chains1 panels B-D; the mean for i was `{r} i_mean`, with 95% credible intervals (CI) `{r} i_95CI`, k mean was `{r} k_mean` & 95% CI `{r} k_95CI`, and mab mean was `{r} mab_mean` & sd`{r} mab_95CI`. The model fit for the individual model components mab (maternal antibody decay) and phi (acquisition of natural immunity following eNTS exposure) are shown in @fig-fit1
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, ft.align = "centre", ft.width = 5, out.width = "5.5in"}
 #| fig-cap: Model 1 fit for model components mab and theta
 #| label: fig-phi1
 #| 
-gg_mab_phi<- ggplot(model_vs_data %>% filter(type=="model")) +
-      geom_ribbon(aes(x=MIDAGE, ymin=mab_MEAN-mab_SD, ymax=mab_MEAN+mab_SD), col='pink', alpha=0.3) +
-      geom_point(aes(x=MIDAGE, y=mab_MEAN), col='pink') +
-      geom_ribbon(aes(x=MIDAGE, ymin=phi_MEAN-phi_SD, ymax=phi_MEAN+phi_SD), col='gold', alpha=0.3) +
-      geom_point(aes(x=MIDAGE, y=phi_MEAN), col='gold') +
-      theme_bw() +
-      xlab("Mid-age in months") +
-      ylab("Anti-STm LPS IgG titers (log)") +
-      ggtitle("Mab and Theta (θ) by age") +
-      scale_x_continuous(breaks = c(seq(0,60,5))) +
-      theme(axis.text=element_text(size=10),
-            axis.title=element_text(size=10,face="bold"),
-            plot.title = element_text(size=10))
-
-gg_mab_phi
+gg_mab_phi1<- ggplot(dataSn1) +
+  geom_ribbon(aes(x=MIDAGE, ymin=exp(mab_lo), ymax=exp(mab_hi)), col='pink', alpha=0.3) +
+  geom_point(aes(x=MIDAGE, y=exp(mab_MEAN)), col='pink') +
+  geom_ribbon(aes(x=MIDAGE, ymin=exp(phi_lo), ymax=exp(phi_hi)), col='gold', alpha=0.3) +
+  geom_point(aes(x=MIDAGE, y=exp(phi_MEAN)), col='gold') +
+  theme_bw() +
+  xlab("Mid-age in months") +
+  ylab("Anti-STm LPS IgG titers (log)") +
+  scale_y_log10(labels = prettyNum) +
+  ggtitle("Mab and Theta (θ) by age") +
+  scale_x_continuous(breaks = c(seq(0,60,5))) +
+  theme(axis.text=element_text(size=10),
+        axis.title=element_text(size=10,face="bold"),
+        plot.title = element_text(size=10))
+#gg_mab_phi1
 ```
 
-```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, ft.align = "centre", ft.width = 5, out.width = "5.5in"}
-#| fig-cap: Model 1 fit for number of infections by age
-#| label: fig-ninf1
-gg_ninf<- ggplot(model_vs_data %>% filter(type=="model")) +
-      geom_ribbon(aes(x=MIDAGE, ymin=ninf_MEAN-ninf_SD, ymax=ninf_MEAN+ninf_SD), alpha=0.3) +
-      geom_point(aes(x=MIDAGE, y=ninf_MEAN)) +
-      theme_bw() +
-      xlab("Mid-age in months") +
-      ylab("Number of infections") +
-      ggtitle("Number of infections by age") +
-      scale_x_continuous(breaks = c(seq(0,60,5))) +
-      theme(axis.text=element_text(size=10),
-            axis.title=element_text(size=10,face="bold"),
-            plot.title = element_text(size=10))
 
-gg_ninf
+```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, ft.align = "centre", ft.width = 5, out.width = "5.5in"}
+#| tbl-cap: Model 1 outputs; Average number of infections resulting in STm IgG response
+#| label: tbl-sumM1
+
+ninfM1 <- dataSn1 %>% 
+  #subset(type="model", c(MIDAGE, ninf_MEAN)) %>% 
+  mutate(age1y = cut(MIDAGE, breaks =c(0,12,24,36,48,60))) %>% 
+  group_by(age1y) %>% 
+  summarise(mean = round(mean(ninf_MEAN, na.rm=T), digits=2)) %>% 
+  ungroup() %>% 
+  flextable()
+ninfM1
+# ninfM1ft <- flextable(ninfM1)
+# ninfM1ft
+
+gg_ninf1<- ggplot(dataSn1) +
+  geom_ribbon(aes(x=MIDAGE, ymin=ninf_lo, ymax=ninf_hi), alpha=0.3, fill="goldenrod") +
+  geom_point(aes(x=MIDAGE, y=ninf_MEAN), colour="goldenrod3") +
+  theme_bw() +
+  xlab("Mid-age in months") +
+  ylab("Number of infections") +
+  ggtitle("Percentage of children with eNTS in each age group") +
+  scale_x_continuous(breaks = c(seq(0,60,5))) +
+  theme(axis.text=element_text(size=10),
+        axis.title=element_text(size=10,face="bold"),
+        plot.title = element_text(size=10))
+#gg_ninf1
+
+gg_cum_ninf1<- ggplot(dataSn1) +
+  geom_ribbon(aes(x=MIDAGE, ymin=ninf_lo*MIDAGE, ymax=ninf_hi*MIDAGE), alpha=0.3, fill="goldenrod") +
+  geom_point(aes(x=MIDAGE, y=ninf_MEAN*MIDAGE), colour="goldenrod3") +
+  theme_bw() +
+  xlab("Mid-age in months") +
+  ylab("Number of infections") +
+  ggtitle("Number of infections by age") +
+  scale_x_continuous(breaks = c(seq(0,60,5))) +
+  theme(axis.text=element_text(size=10),
+        axis.title=element_text(size=10,face="bold"),
+        plot.title = element_text(size=10))
+#gg_cum_ninf1
 ```
 
-```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, ft.align = "centre", ft.width = 5, out.width = "5.5in"}
-#| fig-cap: D. Model 1 fit, blue points are fitted GMC by age band, blue shaded area are 95% prediction intervals, pink points are observed GMC, pink shaded area are 95% prediction intervals.
+\newpage
 
-gg_fit_orig<- ggplot(model_vs_data) +
-      geom_ribbon(aes(x=MIDAGE, ymin=MEAN-SD, ymax=MEAN+SD, fill=type), alpha=0.3) +
-      geom_point(aes(x=MIDAGE, y=MEAN, col=type)) +
-      theme_bw() +
-      xlab("Mid-age in months") +
-      ylab("Anti-STm LPS IgG titers (log)") +
-      ggtitle("LPS IgG titres by age: model vs data") +
-      scale_x_continuous(breaks = c(seq(0,60,5))) +
-      theme(axis.text=element_text(size=10),
-            axis.title=element_text(size=10,face="bold"),
-            plot.title = element_text(size=10))
+<!-- changing the orientation to landscape --------------------------------- -->
 
-gg_fit_orig
-# row1<- plot_grid(gg_chain, gg_i_den, gg_k_den, gg_mab_den, ncol=2)
-# p <- print(plot_grid(row1, gg_mab_phi, gg_ninf, gg_fit_orig, nrow=4) )
-# jpeg("~/work/PhD/VacciNTS/Analysis/Modelling/NTS_COP_modeling/Outputs/LPS_Ab/LPS_Ab.jpeg", width=1200,height=900)
-# print(p)
-# dev.off()
+```{=tex}
+\KOMAoptions{usegeometry, paper=landscape,pagesize}
+\recalctypearea
+```
+```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, fig.align = "centre", fig.height=7, fig.width = 8, out.width = "8.5in"}
+#| fig-cap: Model 1 fit, blue points are fitted GMC by age band, blue shaded area are 95% prediction intervals, pink points are observed GMC, pink shaded area are 95% prediction intervals.
 
-# print(plot_grid(gg_mab_phi, gg_ninf, gg_fit_orig, nrow=3))
+gg_fit1<- ggplot() +
+  geom_ribbon(aes(x=MIDAGE, ymin=exp(LPS_ME-LPS_SD), ymax=exp(LPS_ME+LPS_SD)), alpha=0.3, fill="red",data=dataS) +
+  geom_ribbon(aes(x=MIDAGE, ymin=exp(lower__), ymax=exp(upper__)), alpha=0.3, fill='blue', data=c_eff_midage1) +
+  #geom_point(aes(x=MIDAGE, y=estimate__),fill="blue", data=c_eff_midage) +
+  geom_point(aes(x=MIDAGE, y=exp(LPS_ME)),colour="blue", data=dataS) +
+  theme_bw() +
+  xlab("Age (months)") +
+  ylab("Anti-STm IgG EU/ml") +
+  scale_y_log10(labels = prettyNum) +
+  ggtitle("LPS IgG titres by age: model vs data - changing FOI") +
+  scale_x_continuous(breaks = c(seq(0,60,5))) +
+  theme(axis.text=element_text(size=10),
+        axis.title=element_text(size=10,face="bold"),
+        plot.title = element_text(size=10))
+#gg_fit
 
+plot1 <- plot_grid(gg_mab_phi1, gg_ninf1,gg_cum_ninf1, nrow=1)
+print(plot_grid(plot1, gg_fit1, nrow=2, labels="AUTO", rel_heights=c(1,2)))
+
+```
+
+\newpage
+
+<!-- changing the orientation to portrait --------------------------------- -->
+
+```{=tex}
+\KOMAoptions{usegeometry, paper=portrait,pagesize}
+\recalctypearea
 ```
 
 ### Model 2: Changing force of infection with age
 
-```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, ft.align = "centre", ft.width = 5, out.width = "5.5in"}
+```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, fig.align = "centre", fig.height=5, fig.width = 5, out.width = "5.5in"}
 #| fig-cap: Model 2 outputs using Markov Chain Monte Carlo (MCMC) to estimate model parameters; posterior chains and posterior distributions of parameters i, k, and mab
 #| label: fig-chains2
 
-sampleDist<- function(mean, sd, min, max){
-  repeat{
-    point= rnorm(1,mean=mean,sd=sd)
-    if(point>=min & point<=max) break;
-  }
-  return(point)
-}
+prior2 <- prior(normal(1.1, 4.95), nlpar = "i") +
+  prior(normal(8.61,5.1), nlpar = "k") +
+  prior(normal(6.27,1.76), nlpar = "mab0") +
+  prior(normal(8.36,1.49), nlpar = "lambdaB")
 
-calcLikelihood<- function(model_points, data_points){
-  probs<- dnorm(model_points, mean=data_points$LPS_ME, sd=data_points$LPS_SD)
-  loglikelihood<- sum(log(probs))
-  return(loglikelihood)
-}
+fit2 <- brm(bf(LPS_ME ~ mab0*exp(-beta0*MIDAGE) + phi0*exp(-i*exp(-k*mx*exp(-w*exp(-r*MIDAGE))*lambdaB)), 
+               mab0 ~ 1,
+               lambdaB ~ 1,
+               i ~ 1,
+               k ~ 1,
+               nl = TRUE),
+            data = dataS, prior = prior2)
+c_eff_midage2 <- as.data.frame(conditional_effects(fit2)$MIDAGE)
+posteriorSum2 <- tidybayes::tidy_draws(fit2) %>%  
+  dplyr::select(starts_with("b_")) %>% 
+  pivot_longer(cols = everything()) %>% 
+  group_by(name) %>% 
+  reframe(aida::summarize_sample_vector(value)[-1])
 
-##using "_0" for everything you assume is set at the start
-model<- function(mab_0, i, k, lambda_b){
-  ninf <- mx*exp(-w*exp(-r*dataS$MIDAGE))*lambda_b ## cumulative number of infections by each age bin, lambda is gompertz curve by function of age(i.e. 0.667 infections per month) = probability total = 1, multiply by av. lambda / av_duration of infection
-  cum_ninf <- mx*exp(-w*exp(-r*dataS$MIDAGE))*lambda_b*dataS$MIDAGE
-  phi<- phi_0 * exp(-i * exp(-k*ninf))
-  mab<- mab_0*exp(-beta_0*dataS$MIDAGE)
-  m<- phi + mab
-  return(m)
-}
+posteriorSum2wide <- posteriorSum2 %>% 
+  pivot_wider(names_from = name, values_from = c(2:4))
 
-##define some parameters
-##constants
-## Number of infections over time: mx/r/w will be updated/ informed by analysis of PCR and stool culture data in the SAINTS cohort - currently based on gompertz formula
-mx=1  # upper limit of new infections (cumulative) by age 60 months = 40 if 1 infection every 6 weeks on average across cohort - may need to adjust for age dist
-r=0.2 # exponential phase where enter high feco-oral transmission at weaning/ crawling age  
-w=3   # age in months before before enter exponential phase (x-axis displacement) - weaning 
-#av_dur = 0.25 # average duration of exposures/ infection in months average 1.11 weeks - based on our cohort (might be less as didn't do less than 1 weekly sampling)
-#me = 0.667 #average monthly exposure rate if 1 infection every 6 weeks on average (based on 16% point prevalence and 1 week duration of infection from our cohort) - might be overestimate??
+dataSn2 <- bind_cols(dataS, posteriorSum2wide) %>% 
+  mutate(mab_MEAN = mean_b_mab0_Intercept*exp(-beta0*MIDAGE),
+         mab_lo = `95%|_b_mab0_Intercept`*exp(-beta0*MIDAGE),
+         mab_hi = `|95%_b_mab0_Intercept`*exp(-beta0*MIDAGE),
+         phi_MEAN = phi0*exp(-mean_b_i_Intercept*exp(-mean_b_k_Intercept*mx*exp(-w*exp(-r*MIDAGE))*mean_b_lambdaB_Intercept)),
+         phi_lo = phi0*exp(-`95%|_b_i_Intercept`*exp(-`95%|_b_k_Intercept`*mx*exp(-w*exp(-r*MIDAGE))*`95%|_b_lambdaB_Intercept`)),
+         phi_hi = phi0*exp(-`|95%_b_i_Intercept`*exp(-`|95%_b_k_Intercept`*mx*exp(-w*exp(-r*MIDAGE))*`|95%_b_lambdaB_Intercept`)),
+         ninf_MEAN = mx*exp(-w*exp(-r*MIDAGE))*mean_b_lambdaB_Intercept,
+         ninf_lo = mx*exp(-w*exp(-r*MIDAGE))*`95%|_b_lambdaB_Intercept`,
+         ninf_hi = mx*exp(-w*exp(-r*MIDAGE))*`|95%_b_lambdaB_Intercept`)
 
-#lambda_0<- 0.11 ##prior:: no idea what this should be! literature, dont forget it has to be per month # Lambda now defined by gompertz relationship
+# plot posteriors
+plot(fit2)
 
-phi_0<- max(log(data$EU_all.sero_d1),na.rm=T) ##prior:: the max you may get from the data
-#MAb_0<- mean(log(data$LPS[which(data$AGE==0)])) ##prior:: assume that AGE==0 is ~~ to MAB at birth
-beta_0<- 0.5 ##prior:: has to be decided according to how long you think mab last for
-
-##the ones you will 'fit'
-p_i<- 3 ##starting value of i
-p_k<- 0.25 ##starting value of k
-p_mab_0<- 4 ##starting value of mab_0
-p_lambda_b <- 0.25##starting value of baseline lambda
-c_i<- p_i ##starting value of i
-c_k<- p_k ##starting value of k
-c_mab_0<- p_mab_0 ##starting value of mab_0
-c_lambda_b <- p_lambda_b ##starting value of baseline lambda
-
-
-# ##can try to run model
-# test<- data.frame(age=dataS$MIDAGE, LPS_model=model(c_i,c_k), LPS_data=dataS$LPS_ME)
-# ggplot(test) + geom_point(aes(x=age, y=LPS_model, col="LPS_model")) + geom_point(aes(x=age, y=LPS_data, col="LPS_data"))
-#
-# ##this is how mab_0 will behave, good? or change?
-# mabts<- data.frame(mab= MAb_0*exp(-beta_0*(0:24)), age=0:24)
-# ggplot(mabts) + geom_point(aes(x=age, y=mab))
-
-mcmc_steps<- 100000 ##how many steps the MCMC tries (sample of i and k)
-p_likelihood<- 0 ##the first likelihood, assumed to be zero
-accepted_i<- rep(NA, mcmc_steps) ##we will save the accepted i here
-accepted_k<- rep(NA, mcmc_steps) ##we will save the accepted i here
-accepted_mab_0<- rep(NA, mcmc_steps) ##we will save the accepted i here
-accepted_lambda_b<- rep(NA, mcmc_steps) ##we will save the accepted i here
-
-
-step<- 1
-repeat{
-  
-  model_sol<- model(mab_0=c_mab_0, i=c_i, k=c_k, lambda_b=c_lambda_b)
-  c_likelihood<- calcLikelihood(model_points=model_sol, data_points=dataS)
-  alpha<- exp(c_likelihood - p_likelihood)
-  
-  if(step==1){
-    accept<- TRUE ##assume c_i and c_k accepted
-  }else{
-    accept<- FALSE ##assume c_i and c_k not accepted
-    if(runif(1)<alpha){ ##test if accepted
-      accept<- TRUE ##mark as accepted to make other decisions below
-    }
-  }
-  
-  if(accept){
-    
-    accepted_i[step]<- c_i
-    accepted_k[step]<- c_k
-    accepted_mab_0[step]<- c_mab_0
-    accepted_lambda_b[step]<- c_lambda_b
-    
-    ##change previous values to current ones
-    p_i<- c_i
-    p_k<- c_k
-    p_mab_0<- c_mab_0
-    p_lambda_b<- c_lambda_b
-    p_likelihood<- c_likelihood
-    
-    c_i<- sampleDist(mean=c_i, sd=0.01, min=0, max=100)
-    c_k<- sampleDist(mean=c_k, sd=0.01, min=0, max=100)
-    c_mab_0<- sampleDist(mean=c_mab_0, sd=0.05, min=0, max=100)
-    c_lambda_b<- sampleDist(mean=c_lambda_b, sd=0.025, min=0, max=100)
-    
-    
-  }else{
-    
-    accepted_i[step]<- p_i
-    accepted_k[step]<- p_k
-    accepted_mab_0[step]<- p_mab_0
-    accepted_lambda_b[step]<- p_lambda_b
-    
-    ##change previous values to current ones
-    p_i<- p_i
-    p_k<- p_k
-    p_mab_0<- p_mab_0
-    p_lambda_b<- p_lambda_b
-    p_likelihood<- p_likelihood
-    
-    c_i<- sampleDist(mean=p_i, sd=0.01, min=0, max=100)
-    c_k<- sampleDist(mean=p_k, sd=0.01, min=0, max=100)
-    c_mab_0<- sampleDist(mean=p_mab_0, sd=0.05, min=0, max=100)
-    c_lambda_b<- sampleDist(mean=p_lambda_b, sd=0.01, min=0, max=100)
-  }
-  
-  if(step>= mcmc_steps) break; ##(*)
-  step<- step+1
-  
-  if(step %% 1000 ==0) print(paste("MCMC at",round(100*step/mcmc_steps),"%"))
-  
-}
-
-##################################
-
-chains<- data.frame(step=1:mcmc_steps, i=accepted_i, k=accepted_k, mab_0=accepted_mab_0, lambda_b=accepted_lambda_b)
-
-##these are good if they converge to a 'plateau' (always with noise)
-# ggplot(chains) +
-#   geom_line(aes(x=step, y=i), col="red") +
-#   geom_line(aes(x=step, y=k), col="blue") +
-#   geom_line(aes(x=step, y=mab_0), col="green")+
-#   geom_line(aes(x=step, y=lambda_b), col="purple")
-
-
-##################################
-
-burnin<- 1/4 * mcmc_steps ##we will burnin this amount of the chain
-posteriors<- chains[burnin:mcmc_steps,]
-
-gg_chain<- ggplot(posteriors) +
-  geom_line(aes(x=step, y=i), col='red') +
-  geom_line(aes(x=step, y=k), col='blue') +
-  geom_line(aes(x=step, y=mab_0), col='green') +
-  geom_line(aes(x=step, y=lambda_b), col='purple') +
-  theme_bw() +
-  ggtitle("Posterior Chains") +
-  theme(axis.text=element_text(size=10),
-        axis.title=element_text(size=10,face="bold"),
-        plot.title = element_text(size=10))
-
-gg_i_den<- ggplot(posteriors) + geom_density(aes(x=i), col='red') + theme_bw() +
-  ggtitle("Density Distribution of i") +
-  theme(axis.text=element_text(size=10),
-        axis.title=element_text(size=10,face="bold"),
-        plot.title = element_text(size=10))
-
-gg_k_den<- ggplot(posteriors) + geom_density(aes(x=k), col='blue') + theme_bw() +
-  ggtitle("Density Distribution of k") +
-  theme(axis.text=element_text(size=10),
-        axis.title=element_text(size=10,face="bold"),
-        plot.title = element_text(size=10))
-
-gg_mab_0_den<- ggplot(posteriors) + geom_density(aes(x=mab_0), col='green') + theme_bw() +
-  ggtitle("Density Distribution of mab_0") +
-  theme(axis.text=element_text(size=10),
-        axis.title=element_text(size=10,face="bold"),
-        plot.title = element_text(size=10))
-
-gg_lambda_b_den<- ggplot(posteriors) + geom_density(aes(x=lambda_b), col='purple') + theme_bw() +
-  ggtitle("Density Distribution of lambda_b") +
-  theme(axis.text=element_text(size=10),
-        axis.title=element_text(size=10,face="bold"),
-        plot.title = element_text(size=10))
-
-##these are good if they appear as constant with noise
-##and distributions do not look bimodal
-plot_grid(gg_chain, gg_i_den, gg_k_den,gg_mab_0_den,gg_lambda_b_den, ncol=2)
-# ggsave(file=here("Outputs", "LPS_Ab", "Posteriors_model2.png"), width=9, height=6)
-#mean(posteriors$lambda_b)*60
-#################################
-
-##to see how the model looks vs data, we need to run the model N times
-##with the values of i and k from our posteriors, we can do this
-##by brute force sampling i and k posteriors, then running the model for each
-##then calculating mean and sd
-
-sample_N<- 1000
-samples<- sample(1:nrow(posteriors), sample_N)
-sample_posteriors<- posteriors[samples,]
-
-all_model_sol<- matrix(0, ncol=nrow(dataS), nrow=sample_N)
-all_ninf_sol<- matrix(0, ncol=nrow(dataS), nrow=sample_N)
-all_phi_sol<- matrix(0, ncol=nrow(dataS), nrow=sample_N)
-all_mab_0_sol<- matrix(0, ncol=nrow(dataS), nrow=sample_N)
-
-for(ss in 1:sample_N){
-  sample_i<- sample_posteriors$i[ss]
-  sample_k<- sample_posteriors$k[ss]
-  sample_mab_0<- sample_posteriors$mab_0[ss]
-  sample_lambda_b<- sample_posteriors$lambda_b[ss]
-  model_sol<- model(mab_0=sample_mab_0, i=sample_i, k=sample_k, lambda_b=sample_lambda_b)
-  ninf<- mx*exp(-w*exp(-r*dataS$MIDAGE))*sample_lambda_b
-  phi<- phi_0 * exp(-sample_i * exp(-sample_k*ninf))
-  mab_0<- sample_mab_0*exp(-beta_0*dataS$MIDAGE)
-  all_model_sol[ss,]<- model_sol
-  all_ninf_sol[ss,]<- ninf
-  all_phi_sol[ss,]<- phi
-  all_mab_0_sol[ss,]<- mab_0
-}
-
-model_me<- apply(all_model_sol, MARG=2, FUN=mean)
-model_sd<- apply(all_model_sol, MARG=2, FUN=sd)
-ninf_me<- apply(all_ninf_sol, MARG=2, FUN=mean)
-ninf_sd<- apply(all_ninf_sol, MARG=2, FUN=sd)
-mab_0_me<- apply(all_mab_0_sol, MARG=2, FUN=mean)
-mab_0_sd<- apply(all_mab_0_sol, MARG=2, FUN=sd)
-phi_me<- apply(all_phi_sol, MARG=2, FUN=mean)
-phi_sd<- apply(all_phi_sol, MARG=2, FUN=sd)
-
-model_vs_data<- rbind(
-  data.frame(MIDAGE=dataS$MIDAGE, MEAN=model_me, SD=model_sd, ninf_MEAN=ninf_me, ninf_SD=ninf_sd, mab_0_MEAN=mab_0_me, mab_0_SD=mab_0_sd, phi_MEAN=phi_me, phi_SD=phi_sd, type='model'),
-  data.frame(MIDAGE=dataS$MIDAGE, MEAN=dataS$LPS_ME, SD=dataS$LPS_SD, ninf_MEAN=NA, ninf_SD=NA, mab_0_MEAN=NA, mab_0_SD=NA, phi_MEAN=NA, phi_SD=NA, type='data')
-)
 ```
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, ft.align = "centre", ft.width = 5, out.width = "5.5in"}
 #| fig-cap: Model 2 fit for model components mab and theta
 #| label: fig-phi2
-gg_mab_0_phi<- ggplot(model_vs_data %>% filter(type=="model")) +
-  geom_ribbon(aes(x=MIDAGE, ymin=mab_0_MEAN-mab_0_SD, ymax=mab_0_MEAN+mab_0_SD), col='pink', alpha=0.3) +
-  geom_point(aes(x=MIDAGE, y=mab_0_MEAN), col='pink') +
-  geom_ribbon(aes(x=MIDAGE, ymin=phi_MEAN-phi_SD, ymax=phi_MEAN+phi_SD), col='gold', alpha=0.3) +
+#| 
+gg_mab_phi2<- ggplot(dataSn2) +
+  geom_ribbon(aes(x=MIDAGE, ymin=mab_lo, ymax=mab_hi), col='pink', alpha=0.3) +
+  geom_point(aes(x=MIDAGE, y=mab_MEAN), col='pink') +
+  geom_ribbon(aes(x=MIDAGE, ymin=phi_lo, ymax=phi_hi), col='gold', alpha=0.3) +
   geom_point(aes(x=MIDAGE, y=phi_MEAN), col='gold') +
   theme_bw() +
   xlab("Mid-age in months") +
   ylab("Anti-STm LPS IgG titers (log)") +
-  ggtitle("mab_0 and Theta (θ) by age") +
+  ggtitle("Mab and Theta (θ) by age") +
   scale_x_continuous(breaks = c(seq(0,60,5))) +
   theme(axis.text=element_text(size=10),
         axis.title=element_text(size=10,face="bold"),
         plot.title = element_text(size=10))
-
-gg_mab_0_phi
+# gg_mab_phi2
 ```
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, ft.align = "centre", ft.width = 5, out.width = "5.5in"}
 #| fig-cap: Model 2 fit for number of infections by age
-#| label: fig-ninf2
+#| label: tbl-ninf2
 
-gg_ninf<- ggplot(model_vs_data %>% filter(type=="model")) +
-  geom_ribbon(aes(x=MIDAGE, ymin=ninf_MEAN-ninf_SD, ymax=ninf_MEAN+ninf_SD), alpha=0.3) +
-  geom_point(aes(x=MIDAGE, y=ninf_MEAN)) +
+ninfM2 <- dataSn2 %>% 
+  #subset(type="model", c(MIDAGE, ninf_MEAN)) %>% 
+  mutate(age1y = cut(MIDAGE, breaks =c(0,12,24,36,48,60))) %>% 
+  group_by(age1y) %>% 
+  summarise(mean = round(mean(ninf_MEAN, na.rm=T), digits=2)) %>% 
+  ungroup() %>% 
+  flextable()
+ninfM2
+
+gg_ninf2<- ggplot(dataSn2) +
+  geom_ribbon(aes(x=MIDAGE, ymin=ninf_lo, ymax=ninf_hi), alpha=0.3, fill="goldenrod") +
+  geom_point(aes(x=MIDAGE, y=ninf_MEAN), colour="goldenrod3") +
   theme_bw() +
   xlab("Mid-age in months") +
   ylab("Number of infections") +
-  ggtitle("C: Number of infections by age") +
+  ggtitle("Percentage of children with eNTS in each age group") +
   scale_x_continuous(breaks = c(seq(0,60,5))) +
   theme(axis.text=element_text(size=10),
         axis.title=element_text(size=10,face="bold"),
         plot.title = element_text(size=10))
+# gg_ninf2
 
-gg_ninf
+gg_cum_ninf2<- ggplot(dataSn2) +
+  geom_ribbon(aes(x=MIDAGE, ymin=ninf_lo*MIDAGE, ymax=ninf_hi*MIDAGE), alpha=0.3, fill="goldenrod") +
+  geom_point(aes(x=MIDAGE, y=ninf_MEAN*MIDAGE), colour="goldenrod3") +
+  theme_bw() +
+  xlab("Mid-age in months") +
+  ylab("Number of infections") +
+  ggtitle("Number of infections by age") +
+  scale_x_continuous(breaks = c(seq(0,60,5))) +
+  theme(axis.text=element_text(size=10),
+        axis.title=element_text(size=10,face="bold"),
+        plot.title = element_text(size=10))
+# gg_cum_ninf2
 ```
 
-```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, ft.align = "centre", ft.width = 5, out.width = "5.5in"}
+```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, fig.align = "centre", fig.height=6, fig.width = 5, out.width = "5.5in"}
 #| fig-cap: Model fit, blue points are fitted GMC by age band, blue shaded area are 95% prediction intervals, pink points are observed GMC, pink shaded area are 95% prediction intervals.
 #| label: fig-fit2
 
-gg_fit<- ggplot(model_vs_data) +
-  geom_ribbon(aes(x=MIDAGE, ymin=MEAN-SD, ymax=MEAN+SD, fill=type), alpha=0.3) +
-  geom_point(aes(x=MIDAGE, y=MEAN, col=type)) +
+gg_fit2<- ggplot() +
+  geom_ribbon(aes(x=MIDAGE, ymin=LPS_ME-LPS_SD, ymax=LPS_ME+LPS_SD), alpha=0.3, fill="red",data=dataS) +
+  geom_ribbon(aes(x=MIDAGE, ymin=lower__, ymax=upper__), alpha=0.3, fill='blue', data=c_eff_midage2) +
+  #geom_point(aes(x=MIDAGE, y=estimate__),fill="blue", data=c_eff_midage) +
+  geom_point(aes(x=MIDAGE, y=LPS_ME),colour="blue", data=dataS) +
   theme_bw() +
   xlab("Mid-age in months") +
   ylab("Anti-STm LPS IgG titers (log)") +
@@ -773,13 +542,77 @@ gg_fit<- ggplot(model_vs_data) +
   theme(axis.text=element_text(size=10),
         axis.title=element_text(size=10,face="bold"),
         plot.title = element_text(size=10))
+#gg_fit
 
-gg_fit
-# ggsave(file=here("Outputs", "LPS_Ab", "LPS_Ab_fit_change_FOI_fit_lambda.png"), height = 7, width = 12)
+plot2 <- plot_grid(gg_mab_phi2, gg_ninf2, gg_cum_ninf2, nrow=1)
+print(plot_grid(plot2, gg_fit2, nrow=2, labels="AUTO", rel_heights=c(1,2)))
+```
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, fig.align = "centre", fig.height=6, fig.width = 5, out.width = "5.5in"}
+#| fig-cap: Model comparison using leave one out
+#| label: fig-loo
+
+# loo <- loo(fit1, fit2) 
+# loo_tab <- as.data.frame(round(loo$diffs, digits = 2))
+# loo_tab %>% gt()
+
+fit1 <- add_criterion(fit1, "waic")
+fit2 <- add_criterion(fit2, "waic")
+# compare both models
+loo_tab <- as.data.frame(round(loo_compare(fit1, fit2, criterion = "waic"),digits=2)) %>% 
+  rownames_to_column()
+loo_tab %>% gt()
+
+```
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, fig.align = "centre", fig.height=7, fig.width = 5, out.width = "5.5in"}
+#| fig-cap: Model fit across three sub-Saharan African sites
+#| label: fig-fitSites
+# malawi_modelfit <- import(here("data", "6_data", "Malawi_model_vs_datam2.csv"))
+# kenya_modelfit <- import(here("data", "6_data", "Kenya_model_vs_datam2.csv"))
+# BF_modelfit <- import(here("data", "6_data", "BF_model_vs_datam1.csv"))
+# 
+# gg_fitKen<- ggplot(kenya_modelfit) +
+#   geom_ribbon(aes(x=MIDAGE, ymin=MEAN-SD, ymax=MEAN+SD, fill=type), alpha=0.3) +
+#   geom_point(aes(x=MIDAGE, y=MEAN, col=type)) +
+#   theme_bw() +
+#   xlab("Mid-age in months") +
+#   ylab("Anti-STm LPS IgG titers (log)") +
+#   ggtitle("Kenya: LPS IgG titres by age (Model 2)") +
+#   scale_x_continuous(breaks = c(seq(0,60,5))) +
+#   theme(axis.text=element_text(size=10),
+#         axis.title=element_text(size=10,face="bold"),
+#         plot.title = element_text(size=10))
+# 
+# gg_fitBF<- ggplot(BF_modelfit) +
+#   geom_ribbon(aes(x=MIDAGE, ymin=MEAN-SD, ymax=MEAN+SD, fill=type), alpha=0.3) +
+#   geom_point(aes(x=MIDAGE, y=MEAN, col=type)) +
+#   theme_bw() +
+#   xlab("Mid-age in months") +
+#   ylab("Anti-STm LPS IgG titers (log)") +
+#   ggtitle("BF: LPS IgG titres by age (Model 2)") +
+#   scale_x_continuous(breaks = c(seq(0,60,5))) +
+#   theme(axis.text=element_text(size=10),
+#         axis.title=element_text(size=10,face="bold"),
+#         plot.title = element_text(size=10))
+# 
+# #gg_fit
+# # ggsave(file=here("Outputs", "LPS_Ab", "LPS_Ab_fit_change_FOI_fit_lambda.png"), height = 7, width = 12)
+# print(plot_grid(gg_fit2, gg_fitKen, gg_fitBF, nrow=3, labels="AUTO"))
+```
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, fig.align = "centre", fig.width = 5, out.width = "5.5in"}
+#| tbl-cap: Model diagnostics
+#| label: fig-diagn
+# comp_all <- import(here("data", "6_data", "comp_all.csv")) 
+# comp_all %>% 
+#   gt()
 
 ```
 
 Model 2 was selected as the best fit model, supporting the hypothesis that the relationship of exposure to eNTS is consistent with a changing (sigmoidal) FOI with age, as reflected in O4 OAg IgG responses in children. This model estimated that on average at birth children were experiencing 0.2 (0.18 – 0.22) eNTS average infections capable of inducing a serotype specific serological response, increasing to 2 (95% CI 1.1 to 3.0) by 6 months of age and 4 (95% CI 2.1 to 5.7) by 12 months of age, plateauing at 5 (95% CI 2.2 to 7.1) eNTS infections cumulatively by age 20 - 60 months.
+
+## Models for other sites
 
 ## Discussion
 
@@ -787,6 +620,12 @@ Model fit was improved assuming FOI increased around age of weaning (4-6 months)
 
 Data from Kenya indicates asymptomatic exposures
 
-\*\* Could try fitting other vaccints sites to predict exposure?? Malaria??
+\*\* Could try fitting other vaccints sites to predict exposure?? understand how exposure impacts on age-patterns of disease. Make inferences about FOI in different settings/ acquisition of immunity Malaria??
+
+Can infer O4 positivecross-protection? Not enough data...can compare in the groups we do have data for?
+
+Limitations
+
+Does not explicitly model time/ changes in FOI with time
 
 ## Conclusions
