@@ -96,7 +96,23 @@ Studies that provided adjusted odds ratios were compared with our estimated ORs 
 We found in most studies cases were \<10% of study population, however a few studies were higher than this. The assumption of incident cases the studies was only true for 75% of studies included in the analysis.
 
 ```{r echo=FALSE, results='hide', message=FALSE, warning=FALSE, fig.align = "center", fig.height = 7, fig.width = 6.5, out.width = "6.5in"}
-#| echo: false
+if(knitr::is_html_output()) {
+  size_list <- list(
+    legend_text = 7,
+    legend_title = 11,
+    legend_space = 0.5,
+    fig_height = 6,
+    fig_width = 8
+  )
+} else if (knitr::is_latex_output()) {
+  size_list <- list(
+    legend_text = 7,
+    legend_title = 10,
+    legend_space = 0.3,
+    fig_height = 6,
+    fig_width = 8
+  )
+}
 ###'#INTS Attributable risks meta-analysis
 ###'Load packages
 library(tidyverse)
@@ -398,7 +414,8 @@ add_info <- included %>%
 \recalctypearea
 \begin{addmargin}{-20mm}{-10mm}
 ```
-```{r echo=FALSE, message=FALSE, results='hide',warning=FALSE, fig.align = "center", fig.height = 7, fig.width = 6.5, out.width = "6.5in"}
+```{r echo=FALSE, message=FALSE, results='hide',warning=FALSE, fig.align = "center"}
+
 # library(PRISMA2020)
 # library(here)
 # library(rio)
@@ -411,6 +428,10 @@ add_info <- included %>%
 ```
 
 ```{r echo=FALSE, results='hide', message=FALSE, warning=FALSE, fig.align = "center", fig.height = 10, fig.width = 8.5, out.width = "9in"}
+#| fig-height: !expr size_list$fig_height
+#| fig-width: !expr size_list$fig_width
+#| tbl-cap: Risk of bias summary
+#| label: tbl-RoB
 ## Code to make ROB graphic for iNTS attributable risks publication
 # library(tidyverse)
 # library(here)
@@ -529,7 +550,8 @@ rob_sum_plot
 #| tbl-cap: Summary of included studies
 #| label: tbl-AFsum
 
-gtsummary::tbl_summary(descrip_sum_tab, digits = all_continuous() ~ 1) %>% 
+descrip_sum_tab %>% 
+  gtsummary::tbl_summary(digits = all_continuous() ~ 1) %>% 
   as_gt()
 
 stud_name <- included %>%
@@ -1073,9 +1095,12 @@ for(d in data_group_hiv_names){
 }
 ```
 
-```{r echo=FALSE, results='hide', message=FALSE, fig.align = "left", fig.height = 6, fig.width = 10, out.width = "10.5in"}
+```{r echo=FALSE, results='hide', message=FALSE, fig.align = "left"}
+# fig.height = 6, fig.width = 10, out.width = "10.5in"
 #| fig-cap: "Meta-analysis: Estimated population attributable fractions of iNTS due to Malaria"
 #| label: fig-metaMalaria
+#| fig-height: !expr size_list$fig_height
+#| fig-width: !expr size_list$fig_width
 
 plotls_malaria <- list()
 meta_DSL_Malaria2 <- list()

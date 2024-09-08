@@ -26,27 +26,17 @@ editor: visual
 
 Malawi is situated in Southern Africa, a land-locked country bordered by Mozambique, Zambia, and Tanzania. The country's estimated population is 20.41 million (2022) with an annual growth rate of 2.6%. projected increase of 82% to 37.16 million by 2050 [@world_health_organisation_malawi_nodate]. Healthcare expenditure is 7.41% (2021) of Gross Domestic Product (GDP) [@world_health_organisation_malawi_nodate]. Life expectancy at birth (years) has improved by 17.8 years from 44.7 years in 2000 to 62.5 years in 2021 [@world_health_organisation_malawi_nodate]. Malawi remains one of the poorest countries in the world despite making significant economic and structural reforms to sustain economic growth. Over 80% of the population are employed in agriculture, which is highly vulnerable to external shocks, particularly climatic change (world bank).
 
-### Epidemiology of iNTS in Malawi
-
-Previous data from Malawi has shown that iNTS disease peaked in Malawi in 2002 reaching epidemic incidence of 242 cases per 100,000 population [@feasey_three_2015], and has been steadiliy declining to 6.9 per 100,000 in 2019 [@wilson_incidence_2022].
-
-### NTS clinical studies in Malawi
-
-Pull out from systematic review. Gordon
-
 ### Chikwawa
 
 Chikwawa district is in the southern region on Malawi and covers an area of 4,755 km^2^. Based on the recent census carried out in 2018, the district has a population of 564,684. This rural area has a high burden of disease, mostly infections. Conditions particular to this area including high seasonal rainfall, relative humidity, low altitude, high relative temperature and the presence of numerous water bodies make the district favourable for diseases such as malaria, pneumonia and enteric disease. The majority of the population rely on subsistence farming for their livelihoods, live in mud houses with thatched roofs and over half of households have food insecurity. Data from the Fiebre study collecting blood cultures in Chikwawa, and carriage studies, suggests that there is a significant burden of iNTS disease. Furthermore, significant risk factors within the population, such as malaria and food shortage make it a suitable candidate site for studying iNTS and a good candidate site for a vaccine trial.
 
 ### Queen Elizabeth Central Hospital (QECH)
 
-QECH is the largest government hospital in Malawi, with 1350 beds officially, but frequently operating over capacity, recieving secondary referrals from health centres serving population of 1.3 million across Blantyre District, including Urban and Rural areas. QECH also accepts tertiary referrals from regional district hospitals in the southern region of Malawi, and as far away as Northern Malawi and Mozambique. There are separate adult and paediatric emergency departments with over 30,000 patients attending and 13,000 paediatric admissions annually, including surgical, oncological and orthopaedic patients \[Harris\].
-
-A fourbed intensive care unit is shared by adults and children but has a limited capability to care for infants. Patients can self-refer but, apart from those who live locally, transport to hospital often depends on a group of patients being transferred together which is a major contributor to delayed presentation. Investigations available for paediatric patient
+QECH is the largest government hospital in Malawi, with 1350 beds officially, but frequently operating over capacity, receiving secondary referrals from health centres serving population of 1.3 million across Blantyre District, including Urban and Rural areas. QECH also accepts tertiary referrals from regional district hospitals in the Southern region of Malawi, and as far away as Northern Malawi and Mozambique. There are separate adult and paediatric emergency departments with 13,000 children admitted and over 30,000 patients treated without admisssion annually, including surgical, oncological and orthopaedic patients [@harris2019]. A fourbed intensive care unit is shared by adults and children and there is an additional 6 bed paediatric intensive care in the neighbouring Mercy James hospital.[@raising], which primarily serves the paediatric surgical unit, but also accepts medical referrals for children with potentially reversible conditions such as sepsis. There is often delay in presentation due to transport from other facilities waiting to transfer multiple patients together, and difficulties with access to transport for patients self-referring [@harris2019].
 
 ### Malawi-Liverpool-Wellcome (MLW) Clinical Research Program
 
-The Malawi-Liverpool-Wellcome (MLW) Clinical Research Program is a prominent research institution based in Blantyre, Malawi. It is a collaboration between the University of Malawi College of Medicine, the University of Liverpool, and the Wellcome Trust, aiming to conduct high-quality research to improve health outcomes in Malawi and the wider Sub-Saharan region. Established in 1995, MLW focuses on major public health challenges such as infectious diseases, including malaria, HIV, and tuberculosis, as well as non-communicable diseases and maternal and child health. The institution is renowned for its extensive fieldwork, laboratory research, and clinical trials. Additionally, MLW plays a vital role in capacity building by training local scientists and healthcare professionals, thereby strengthening the health research infrastructure in Malawi. Through its rigorous research and community engagement, MLW contributes significantly to global health knowledge and the development of effective health interventions.
+The Malawi-Liverpool-Wellcome (MLW) Clinical Research Program [@malawil] is a prominent research institution based in Blantyre, Malawi. It is a collaboration between the University of Malawi College of Medicine, the University of Liverpool, and the Wellcome Trust, aiming to conduct high-quality research to improve health outcomes in Malawi and the wider Sub-Saharan region. Established in 1995, MLW focuses on major public health challenges such as infectious diseases, including malaria, HIV, and tuberculosis, as well as non-communicable diseases and maternal and child health. The institution is renowned for its extensive fieldwork, laboratory research, and clinical trials. Additionally, MLW plays a vital role in capacity building by training local scientists and healthcare professionals, thereby strengthening the health research infrastructure in Malawi. Through its rigorous research and community engagement, MLW contributes significantly to global health knowledge and the development of effective health interventions.
 
 The Queen Elizabeth Central Hospital (QECH)/ Malawi-Liverpool Wellcome (MLW) Research Program has been collecting blood culture data since 1996. It has one of the largest blood culture databases in sub-Saharan Africa.
 
@@ -55,6 +45,14 @@ The Queen Elizabeth Central Hospital (QECH)/ Malawi-Liverpool Wellcome (MLW) Res
 Kamuzu University of Health Sciences (KUHeS), located in Blantyre, Malawi, is a leading institution dedicated to health education and research in the region. Established to advance medical and health sciences education, KUHeS offers a wide range of undergraduate and postgraduate programs in fields such as medicine, nursing, pharmacy, and public health. The university is known for its strong emphasis on research, particularly in areas relevant to public health challenges in Malawi and Sub-Saharan Africa, including infectious diseases, maternal and child health, and non-communicable diseases. KUHeS collaborates with numerous international institutions and organizations, enhancing its research capabilities and educational outreach. Through its comprehensive programs and initiatives, KUHeS plays a crucial role in addressing the healthcare needs of the local population and contributing to global health knowledge.
 
 Dr Tonney Nyirenda has expertise in NTS immunology and runs immunology and microbiology laboratories at KUHES, where samples for this study were processed.
+
+### Epidemiology of iNTS in Malawi
+
+Previous data from Malawi has shown that iNTS disease peaked in Malawi in 2002 reaching epidemic incidence of 242 cases per 100,000 population [@feasey_three_2015], and has been steadily declining to 6.9 per 100,000 in 2019 [@wilson_incidence_2022].
+
+### NTS clinical studies in Malawi
+
+Pull out from systematic review. Gordon
 
 ## VacciNTS seroepidemiology sites
 
@@ -110,35 +108,25 @@ KATH is the second largest teaching hospital in Ghana with about 1000-bed capaci
 
 MCHC is centrally located in the Sub-Metro within the Kumasi Metropolis. It has a catchment population of about 244,431 representing 11.75% of the population in Kumasi. The first half-year report (January – June) for 2019 showed a hospital attendance of 20,988 with children less than 5 years constituting 11,258 (53%) patients. The total hospital deliveries has risen from 979 in 2017 to 1,379 by June of 2019. The Hospital has an active unit for immunization of newborns and could thus provide the needed numbers for this iNTS study.
 
-## Incidence of iNTS in children 0-5 years in Blantyre, Malawi (2010-2023)
+## Incidence of iNTS in children 0-5 years in Blantyre, Malawi (1996-2024)
 
 ### Data sources
 
 #### **Population Denominators**
 
-For the Blantyre district were interpolated from national population census data collected in 1998, 2008, and 2018 (NSO). Neonatal denominators\*\* back-calculated using national estimates on neonatal death rates?
+For the Blantyre district were interpolated from national population census data collected in 1998, 2008, and 2018 as reported by the national census office [@national_statistical_office_zomba_population_nodate] .
 
 #### **Blood Culture Data**
 
-Since 1998, the Malawi Liverpool Wellcome (MLW) Trust Programme has provided a standard, routine blood culture service to patients presenting with febrile illness at the largest tertiary health care facility, Queen Elizabeth Central Hospital (QECH), in Blantyre, Malawi. Enhanced community blood culture surveillance is also ongoing in two sites for the TyVAC) clinical trial (13) within Blantyre. Non-typhoidal salmonella blood and CSF (cerebrospinal fluid) culture surveillance at QECH continued uninterrupted through all four waves of COVID-19, however, blood culture activities in the TyVAC study were suspended during the first wave (14). We utilised the electronic records of all paediatric (0-14 years) blood cultures collected between January 1996 - May 2024 to obtain all salmonella positive blood cultures and total cultures collected, using the Laboratory Information Management Systems (LIMS) platform at QECH/ MLW. Data on location of collection of blood culture was patchy and not reliable.
+Since 1998, the Malawi Liverpool Wellcome (MLW) Research Programme has provided a standard, routine blood culture service to patients presenting with febrile illness at the largest tertiary health care facility, Queen Elizabeth Central Hospital (QECH), in Blantyre, Malawi. Blood cultures are collected for adults with suspected sepsis or an axillary temperature \>37.5^o^C. Paediatric blood cultures are taken from febile children who have no parasitaemia on thick blood films or negative rapid diagnostic test, or from children with severe malaria and suspected secondary bacterial sepsis, or suspected sepsis regardless of fever or malaria diagnostic test result. Enhanced community blood culture surveillance was carried out during the STRATAA [@meiring_burden_2021] , and TyVAC clinical trial [@patel_safety_2021, @patel2024] within Blantyre. Non-typhoidal salmonella blood and CSF (cerebrospinal fluid) culture surveillance at QECH continued uninterrupted through all four waves of COVID-19, however, blood culture activities in the TyVAC study were suspended during the first wave [@patel2024].
 
 #### **Laboratory Methods**
 
-Antimicrobial susceptibility testing was performed by disc diffusion using ampicillin, chloramphenicol, cotrimoxazole, cefpodoxime, and ciprofloxacin discs according to British Society of Antimicrobial Chemotherapy methods and breakpoints. Since 2009, isolates found to be resistant to ciprofloxacin or ceftriaxone by disc testing have had Etests (bioMérieux) performed \[17\]. Diminished ciprofloxacin susceptibility was classified on the basis of a minimum inhibitory concentration (MIC) between 0.06 mg/L and 1 mg/L) \[17\]. Isolates were described as “fully susceptible” if susceptible to these 5 antimicrobials and multidrug resistant (MDR) if resistant to ampicillin, cotrimoxazole, and chloramphenicol. Prior to October 2010, these data were entered into ledgers, then double-entered into a validated database. Since then, they have been directly entered into an electronic laboratory information management system. Resistance to first-line anti-microbials: Phenotypic MDR to three first-line antimicrobials (cotrimoxazole, ampicillin and chloramphenicol). Resistance to fluoroquinolones and third generation cephalosporins (3GC).
+Diagnostic microbiology was carried out at the MLW laboratories in Blanytre, Malawi, according to standard microbiological techniques [@cowanan1993]. Blood cultures were collected into adult aerobic and paediatric anaerobic bottles (BACT/ALERT, Biomerieux), and analysed using automated systems. Cerebrospinal fluid (CSF) was cultured at 37.5^o^C on sheep blood (Oxoid, Category number: CMOO55) and chocolate agar (Oxoid, Category number: CMOO55) for 48 hours in a carbon dioxide incubator (LEEC incubator; Make/Model: GA 2000/2010). Gram-negative colonies were subcultured onto MacConkey (Oxoid, Category number: CM0007) and sheep blood agar. Biochemical profiles using API 20E or 10S were used to identify Salmonella, and serotyping was carried out using the White-Kauffman classification using polyvalent O and H, O4, O6, O7, O9, Hd, Hg, Hm and Vi antisera (Pro-Lab Diagnostics).
 
-Isolates were described as ‘fully susceptible’ if susceptible to these 5 antimicrobials (cotrimoxazole, ampicillin, chloramphenicol, cefpodoxime, ciprofloxacin) and multidrug resistant (MDR) if resistant to ampicillin, cotrimoxazole, and chloramphenicol. Laboratory data were routinely entered by the diagnostic microbiology service using the Prelink (Prelink V3.0.2429.0), laboratory information management system and data were stored on a secure Microsoft SQL Server database
+Disc diffusion using ampicillin, chloramphenicol, cotrimoxazole, cefpodoxime, and ciprofloxacin was used to determine antimicrobial susceptibility as described in [@wilson_incidence_2022, @feasey_three_2015]. Since 2009, isolates found to be resistant to ciprofloxacin or ceftriaxone by disc testing have had Etests (bioMérieux) performed. Fully susceptible isolates were defined as susceptiblity to ampicillin, chloramphenicol, cotrimoxazole, cefpodoxime, and ciprofloxacin and multidrug resistant (MDR) if resistant to ampicillin, cotrimoxazole, and chloramphenicol.
 
-### Statistical Analysis 
-
-Data analysis was conducted in the r statistical environment (15). Incidence was calculated using the sum of NTS positive blood and CSF cultures for a given year over the mid-year population estimate for that year.
-
-To estimate incidence for children under 5 years, we selected a negative binomial distribution to account for overdispersion, to model monthly counts of NTS cases as a function of age, with b-splines fitted for smoothing.
-
-Model 1:
-
-$$ log(cases) = ~ \alpha + \beta_{2}*bspline(age, df=8) + log(population) $$
-
-Data smoothing using B-splines was implemented for the
+Before October 2010, blood culture resulted were recorded by hand, then double-entered into a validated database. Following 2010, results have been directly entered into Prelink (Prelink V3.0.2429.0), laboratory information management system, and data were stored on a secure Microsoft SQL Server database.
 
 ## Systematic review of population attributable fractions (PAF) of host factors for iNTS disease
 
@@ -151,7 +139,7 @@ We searched for data relating to blood culture confirmed invasive non-typhoidal 
 Keywords are noted in regular type, ‘MESH’ (Medical subject heading) terms in bold.
 
 |     | **Search 1: Non-typhoidal Salmonella**                                                                                                                                                                  |     |
-|-----|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|
+|--------|--------------------------------------------------------|--------|
 |     | salmonella\* OR salmonellosis OR typhimurium OR enteritidis OR nontyph\* OR non-typh\* OR "Salmonella newport" OR "Salmonella heidelberg" OR NTS OR iNTS                                                |     |
 |     | **Search 2: Invasive disease**                                                                                                                                                                          |     |
 |     | bacteraemi\* OR bacteremi\* OR septicaemi\* OR septicemi\* OR septic OR sepsis OR blood isolate OR bloodstream OR invasive                                                                              |     |
@@ -165,7 +153,7 @@ Keywords are noted in regular type, ‘MESH’ (Medical subject heading) terms i
 **Scopus search strategy**
 
 |     | TITLE-ABS-KEY                                                                                                                                                                                        |     |
-|-----|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|
+|--------|--------------------------------------------------------|--------|
 |     | **Search 1: Non-typhoidal Salmonella**                                                                                                                                                               |     |
 |     | salmonella\* OR salmonellosis OR typhimurium OR enteritidis OR nontyph\* OR non-typh\* OR "Salmonella newport" OR "Salmonella heidelberg" OR NTS OR iNTS                                             |     |
 |     | **Search 2: Invasive disease**                                                                                                                                                                       |     |
@@ -180,7 +168,7 @@ Keywords are noted in regular type, ‘MESH’ (Medical subject heading) terms i
 **Web of science search strategy**
 
 |     | **Search 1: Non-typhoidal Salmonella**                                                                                                                                                                  |     |
-|-----|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|
+|--------|--------------------------------------------------------|--------|
 |     | salmonella\* OR salmonellosis OR typhimurium OR enteritidis OR nontyph\* OR non-typh\* OR "Salmonella newport" OR "Salmonella heidelberg" OR NTS OR iNTS                                                |     |
 |     | **Search 2: Invasive disease**                                                                                                                                                                          |     |
 |     | bacteraemi\* OR bacteremi\* OR septicaemi\* OR septicemi\* OR septic OR sepsis OR blood isolate OR bloodstream OR invasive                                                                              |     |
@@ -218,7 +206,7 @@ The quality of individual studies was assessed using the modified Newcastle-Otta
 Odds ratios (OR) for odds of iNTS for each host factor group were calculated from 2 by 2 tables, as was the prevalence of exposure in cases and controls, using the formula OR = A x D/ B X C.
 
 |     | **Exposure**             |     | **iNTS Positive** |     | **iNTS Negative** |     |
-|-----|--------------------------|-----|-------------------|-----|-------------------|-----|
+|----------|--------------|----------|----------|----------|----------|----------|
 |     | **Host factor Positive** |     | A                 |     | B                 |     |
 |     | **Host factor Negative** |     | C                 |     | D                 |     |
 
