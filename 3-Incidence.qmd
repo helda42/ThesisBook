@@ -502,12 +502,40 @@ redist_func <- function(df){
 
 redist_funcyr <- function(df){
  df %>% 
+    group_by(YearBand3, agemth_rnd) %>% 
+    mutate(count_distributed = case_when(
+      agemth_rnd %in% c(24, 36, 48, 60) ~ count / 13,  # Distribute counts evenly
+      agemth_rnd ==12 & YearBand3=="1996-2000" ~ count / 22,  
+      agemth_rnd ==12 & YearBand3=="2001-2005" ~ count / 20,  
+      agemth_rnd ==12 & YearBand3=="2006-2010" ~ count / 18,  
+      agemth_rnd ==12 & YearBand3=="2011-2015" ~ count / 16,  
+      agemth_rnd ==12 & YearBand3=="2016-2020" ~ count / 15,  
+      agemth_rnd ==12 & YearBand3=="2021-2024" ~ count / 13,  
+      TRUE ~ NA
+    )) %>%
+    ungroup() %>% 
+  fill(count_distributed, .direction="down") %>% #fill = list(count_distributed = 0)
+  mutate(count_new = case_when(
+    !agemth_rnd %in% c(12, 24, 36, 48, 60) ~ count + count_distributed,
+    agemth_rnd %in% c(24, 36, 48, 60) ~ 2*count_distributed,
+    agemth_rnd == 12 & YearBand3=="1996-2000" ~ 11*count_distributed,
+    agemth_rnd == 12 & YearBand3=="2001-2005" ~ 9*count_distributed,
+    agemth_rnd == 12 & YearBand3=="2006-2010" ~ 7*count_distributed,
+    agemth_rnd == 12 & YearBand3=="2011-2015" ~ 5*count_distributed,
+    agemth_rnd == 12 & YearBand3=="2016-2020" ~ 4*count_distributed,
+    agemth_rnd == 12 & YearBand3=="2021-2024" ~ 2*count_distributed),
+    count_new = ifelse(agemth_rnd <12, count, count_new)
+  )
+}
+
+redist_funcyr2 <- function(df){
+ df %>% 
     group_by(YearBand, agemth_rnd) %>% 
     mutate(count_distributed = case_when(
-      agemth_rnd %in% c(24, 36, 48, 60) ~ round(count / 13,digits=0),  # Distribute counts evenly
-      agemth_rnd ==12 & YearBand=="1996-2004" ~ round(count / 22,digits=0),  
-      agemth_rnd ==12 & YearBand=="2005-2014" ~ round(count / 16,digits=0),  
-      agemth_rnd ==12 & YearBand=="2015-2024" ~ round(count / 15,digits=0),  
+      agemth_rnd %in% c(24, 36, 48, 60) ~ count / 13,  # Distribute counts evenly
+      agemth_rnd ==12 & YearBand=="1996-2004" ~ count / 22,  
+      agemth_rnd ==12 & YearBand=="2005-2014" ~ count / 16,  
+      agemth_rnd ==12 & YearBand=="2015-2024" ~ count / 15,  
       TRUE ~ NA
     )) %>%
     ungroup() %>% 
@@ -553,16 +581,16 @@ iNTS_U5_1996_2024_sum <- iNTS_all_U5_redis %>%
   #           count = n()) %>% 
   # ungroup() %>% 
   mutate(pop = 2401,
-         risk = count_new/pop*10000)
+         risk = count_new/pop*10000) 
   
 iNTS_U5_1996_2024_sumYr <- iNTS_all_U5 %>% 
   group_by(YearBand3, agemth_rnd) %>% 
   summarise(midage = mean(Age_months),
             count = n())%>% 
   ungroup() %>% 
- # redist_func() %>% 
+  redist_funcyr() %>% 
   left_join(BTpop_u5) %>% 
-  mutate(risk = count/pop*100000)
+  mutate(risk = count_new/pop*100000)
 
 iNTS_U5_1996_2024_sumYr2 <- iNTS_all_U5 %>% 
   mutate(agemth_rnd = round(Age_months, digits=0)) %>% 
@@ -570,7 +598,7 @@ iNTS_U5_1996_2024_sumYr2 <- iNTS_all_U5 %>%
   summarise(midage = mean(Age_months),
             count = n())%>% 
   ungroup() %>% 
-  redist_funcyr() %>% 
+  redist_funcyr2() %>% 
   left_join(BTpop_u52) %>% 
   mutate(risk = count_new/(pop/12)*100000,
          ageyrs = agemth_rnd/12)
@@ -639,7 +667,7 @@ allageYrB3 <- iNTS_U5_1996_2024_sumYr2 %>%
 
 ### Fit risk
 risk_predict <- function(df, name ){ #Switch, grp
-  spline_risk <-glm.nb(count ~ bs((midage), df=5)+ offset(log(pop)), df) 
+  spline_risk <-glm.nb(count_new ~ bs((midage), df=5)+ offset(log(pop)), df) 
   pred_obj <- predict(spline_risk, type="link", data=df, se.fit=T)
   df2 <- df %>%
   mutate(case_pred=exp(pred_obj$fit),
@@ -656,7 +684,7 @@ risk_predict <- function(df, name ){ #Switch, grp
          )*100000,
          cases_se=pred_obj$se.fit,
          cases_link=pred_obj$fit,
-         sd=(risk_high-risk_low/3.92)*sqrt(count),
+         sd=(risk_high-risk_low/3.92)*sqrt(count_new),
          cumulative_risk = cumsum(risk_pred),
          cum_risk_low = cumsum(risk_low),
          cum_risk_high = cumsum(risk_high),
@@ -671,7 +699,7 @@ risk_predict <- function(df, name ){ #Switch, grp
 
 risk_predict(iNTS_U5_1996_2024_sum, "All")
 risk_predict(iNTS_U5_1996_2024_sumYr, "Yr")
-risk_predict(iNTS_U5_1996_2024_sumOrg, "Org")
+#risk_predict(iNTS_U5_1996_2024_sumOrg, "Org")
 
 subgrp <- function(df,grp,name,lab){
   df2 <- df %>% 
@@ -708,12 +736,12 @@ plotfunc <- function(df,grp,name){
 #| fig-height: !expr size_list$fig_height
 #| fig-width: !expr size_list$fig_width
 
-# Subgroup by organism
-STmRisk <- subgrp(iNTS_U5_1996_2024_sumOrg,iNTS_U5_1996_2024_sumOrg$Organism,"Typhimurium","STm")
-SEnRisk <- subgrp(iNTS_U5_1996_2024_sumOrg,iNTS_U5_1996_2024_sumOrg$Organism,"Enteritidis","SEn")
-SppRisk <- subgrp(iNTS_U5_1996_2024_sumOrg,iNTS_U5_1996_2024_sumOrg$Organism,"species","Spp")
-
-SalmAllOrgs <- bind_rows(STmRisk, SEnRisk, SppRisk)
+# # Subgroup by organism
+# STmRisk <- subgrp(iNTS_U5_1996_2024_sumOrg,iNTS_U5_1996_2024_sumOrg$Organism,"Typhimurium","STm")
+# SEnRisk <- subgrp(iNTS_U5_1996_2024_sumOrg,iNTS_U5_1996_2024_sumOrg$Organism,"Enteritidis","SEn")
+# SppRisk <- subgrp(iNTS_U5_1996_2024_sumOrg,iNTS_U5_1996_2024_sumOrg$Organism,"species","Spp")
+# 
+# SalmAllOrgs <- bind_rows(STmRisk, SEnRisk, SppRisk)
 #plotfunc(SalmAllOrgs,SalmAllOrgs$Organism,"Org")
 ```
 
