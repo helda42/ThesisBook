@@ -290,7 +290,7 @@ tot_missAge <- alliNTSAge %>%
 \recalctypearea
 ```
 ```{r echo=FALSE, warning=FALSE, ft.align = "centre", ft.width = 7, out.width = "7.5in"}
-#| label: tbl-subtab
+#| label: tbl-sumtab
 #| tbl-cap: Non-Typhoidal Salmonella blood culture isolates from Queen Elizabeth Central Hospital (QECH), 1996-2024
 
 inc_tab_long3 <- inc_tab_long2 %>%
@@ -356,13 +356,12 @@ doc <- body_add_flextable(doc, value = inc_tab_longFT, align = "left")
 ```
 ## Results
 
-Data on NTS blood and CSF cultures was available from `{r} print(stdate)` to `{r} print(endate)`. During this period there were `{r} print(prettyNum(as.integer(sum_stats$total), big.mark=","))` cases of iNTS, including `{r} print(prettyNum(sum_stats$salmonella_typhimurium,big.mark=","))` S.typhimurium, `{r}print(prettyNum(sum_stats$salmonella_enteritidis,big.mark=","))` S.enteritidis, and `{r} sum_stats$salmonella_species` S.species (@tbl-flextable). Data was missing for a total of `{r} tot_missAge` NTS isolates. Data was available on total number of blood cultures collected from 1998-01-01 to 2022-05-01. The total Blantyre population was `{r} print(prettyNum(as.integer(startpop),big.mark=","))` in `{r} print(startyr)` and `{r} print(prettyNum(as.integer(endpop),big.mark=","))` in `{r} print(endyr)`. During this period, the minimum incidence of blood culture confirmed iNTS ranged from `{r} print(lowinc)` in `{r} print(lowyr$Year)` to `{r} print(hiinc)` in `{r} print(hiyr$Year)` per 100,000 population (@tbl-sumtab, @fig-NoPeriod).
+Data on NTS blood and CSF cultures was available from `{r} print(stdate)` to `{r} print(endate)`. During this period there were `{r} print(prettyNum(as.integer(sum_stats$total), big.mark=","))` cases of iNTS, including `{r} print(prettyNum(sum_stats$salmonella_typhimurium,big.mark=","))` S.typhimurium, `{r} print(prettyNum(sum_stats$salmonella_enteritidis,big.mark=","))` S.enteritidis, and `{r} sum_stats$salmonella_species` S.species (@tbl-sumtab). Data was missing for a total of `{r} tot_missAge` NTS isolates. Data was available on total number of blood cultures collected from 1998-01-01 to 2022-05-01. The total Blantyre population was `{r} print(prettyNum(as.integer(startpop),big.mark=","))` in `{r} print(startyr)` and `{r} print(prettyNum(as.integer(endpop),big.mark=","))` in `{r} print(endyr)`. During this period, the minimum incidence of blood culture confirmed iNTS ranged from `{r} print(lowinc)` in `{r} print(lowyr$Year)` to `{r} print(hiinc)` in `{r} print(hiyr$Year)` per 100,000 population (@tbl-sumtab, @fig-NoPeriod).
 
 ```{r echo=FALSE, results='hide', warning=FALSE, message=FALSE, fig.align = "left"}
 # fig.height = 5, fig.width = 5.5, out.width = "6in"
 #| fig-height: !expr size_list$fig_height
 #| fig-width: !expr size_list$fig_width
-##### Age Band stratification
 ##### Age Band stratification
 alliNTSAgeYrFT <- flextable(alliNTSAgeYr)
 alliNTSAgeYrFT <- set_table_properties(alliNTSAgeYrFT, layout = "autofit") %>% 
@@ -476,13 +475,59 @@ ggplot(inc_agband_long, aes(x=Year, y=Incidence, group=Ageband, colour = Ageband
 ```{r echo=FALSE, results='hide', warning=FALSE, message=FALSE, fig.align = "left"}
 #| fig-height: !expr size_list$fig_height
 #| fig-width: !expr size_list$fig_width
-#
+#| 
 ### Incidence graphs in U5
 #### U5
 iNTS_all_U5 <- age_gp %>% 
-  filter(Age_months<=60)
+  filter(Age_months<=60) %>% 
+  mutate(agemth_rnd = round(Age_months, digits=0)) %>% 
+  group_by(agemth_rnd)
 
-mean(Pop_wideAgeband$x00_04_pop)
+redist_func <- function(df){
+ df %>% 
+    mutate(count_distributed = case_when(
+      agemth_rnd %in% c(24, 36, 48, 60) ~ round(count / 13,digits=0),  # Distribute counts evenly
+      agemth_rnd %in% c(12) ~ round(count / 17,digits=0),  # peak incidence is artifically low for 12 months, impating age distribution, weight according to 11 and 13 months trends
+      TRUE ~ NA
+    )) %>%
+  ungroup() %>% 
+  fill(count_distributed, .direction="down") %>% #fill = list(count_distributed = 0)
+  mutate(count_new = case_when(
+    !agemth_rnd %in% c(12, 24, 36, 48, 60) ~ count + count_distributed,
+    agemth_rnd %in% c(24, 36, 48, 60) ~ 2*count_distributed,
+    agemth_rnd == 12 ~ 5*count_distributed),
+    count_new = ifelse(agemth_rnd <12, count, count_new)
+  )
+}
+
+redist_funcyr <- function(df){
+ df %>% 
+    group_by(YearBand, agemth_rnd) %>% 
+    mutate(count_distributed = case_when(
+      agemth_rnd %in% c(24, 36, 48, 60) ~ round(count / 13,digits=0),  # Distribute counts evenly
+      agemth_rnd ==12 & YearBand=="1996-2004" ~ round(count / 22,digits=0),  
+      agemth_rnd ==12 & YearBand=="2005-2014" ~ round(count / 16,digits=0),  
+      agemth_rnd ==12 & YearBand=="2015-2024" ~ round(count / 15,digits=0),  
+      TRUE ~ NA
+    )) %>%
+    ungroup() %>% 
+  fill(count_distributed, .direction="down") %>% #fill = list(count_distributed = 0)
+  mutate(count_new = case_when(
+    !agemth_rnd %in% c(12, 24, 36, 48, 60) ~ count + count_distributed,
+    agemth_rnd %in% c(24, 36, 48, 60) ~ 2*count_distributed,
+    agemth_rnd == 12 & YearBand=="1996-2004" ~ 10*count_distributed,
+    agemth_rnd == 12 & YearBand=="2005-2014" ~ 4*count_distributed,
+    agemth_rnd == 12 & YearBand=="2015-2024" ~ 3*count_distributed),
+    count_new = ifelse(agemth_rnd <12, count, count_new)
+  )
+}
+
+iNTS_all_U5_redis <- iNTS_all_U5 %>% 
+  summarise(midage = mean(Age_months),
+            count = n()) %>% 
+  redist_func()
+
+#mean(Pop_wideAgeband$x00_04_pop)
 BTpop_u5 <- Pop_10yr %>% 
   dplyr::select(c(1,3)) %>% 
   mutate(YearBand3 = cut(Year, breaks = c(seq(1995,2025,5)), labels = c("1996-2000","2001-2005","2006-2010","2011-2015","2016-2020","2021-2024"))) %>% 
@@ -497,52 +542,50 @@ BTpop_u52 <- Pop_10yr %>%
   summarise(pop = mean(x00_04_pop)) %>% 
   ungroup()
 
-iNTS_all_U5 <- age_gp %>% 
-  filter(Age_months<=60)
-
 iNTS_allage_sumyr <- CensYrBand %>% 
   full_join_track(alliNTSAgey) %>% 
   mutate(min_inc = Total_iNTS/pop)
 
-iNTS_U5_1996_2024_sum <- iNTS_all_U5 %>% 
-  mutate(agemth_rnd = round(Age_months, digits=0)) %>% 
-  group_by(agemth_rnd) %>% 
-  summarise(midage = mean(Age_months),
-            count = n()) %>% 
-  ungroup() %>% 
+iNTS_U5_1996_2024_sum <- iNTS_all_U5_redis %>% 
+  # mutate(agemth_rnd = round(Age_months, digits=0)) %>% 
+  # group_by(agemth_rnd) %>% 
+  # summarise(midage = mean(Age_months),
+  #           count = n()) %>% 
+  # ungroup() %>% 
   mutate(pop = 2401,
-         risk = count/pop*10000)
+         risk = count_new/pop*10000)
   
 iNTS_U5_1996_2024_sumYr <- iNTS_all_U5 %>% 
-  mutate(agemth_rnd = round(Age_months, digits=0)) %>% 
-  group_by(agemth_rnd, YearBand3) %>% 
+  group_by(YearBand3, agemth_rnd) %>% 
   summarise(midage = mean(Age_months),
             count = n())%>% 
   ungroup() %>% 
+ # redist_func() %>% 
   left_join(BTpop_u5) %>% 
   mutate(risk = count/pop*100000)
 
 iNTS_U5_1996_2024_sumYr2 <- iNTS_all_U5 %>% 
   mutate(agemth_rnd = round(Age_months, digits=0)) %>% 
-  group_by(agemth_rnd, YearBand) %>% 
+  group_by(YearBand, agemth_rnd) %>% 
   summarise(midage = mean(Age_months),
             count = n())%>% 
   ungroup() %>% 
+  redist_funcyr() %>% 
   left_join(BTpop_u52) %>% 
-  mutate(risk = count/(pop/12)*100000,
+  mutate(risk = count_new/(pop/12)*100000,
          ageyrs = agemth_rnd/12)
 
 ### Distribute ages evenly >1yr
 ### Distribute ages across ages months >1yr
-iNTS_U5_1996_2024_sumYr2 <- iNTS_U5_1996_2024_sumYr2 %>% 
-  mutate(
-    count_add = ifelse(ageyrs==as.integer(ageyrs),count/13,NA),  ## Split into 13 groups so can have 2 in first group as will be adding in extra from those with data to other groups
-    count_adj = ifelse(ageyrs==as.integer(ageyrs),(count/13)*2,count)) %>% 
-  group_by(YearBand) %>% 
-  fill(count_add) %>% 
-  mutate(count_adj = count_add + count_adj,
-         count_adj = ifelse(ageyrs<1, count, count_adj),
-         risk = count_adj/(pop/12)*100000)
+# iNTS_U5_1996_2024_sumYr2 <- iNTS_U5_1996_2024_sumYr2 %>% 
+#   mutate(
+#     count_add = ifelse(ageyrs==as.integer(ageyrs),count/13,NA),  ## Split into 13 groups so can have 2 in first group as will be adding in extra from those with data to other groups
+#     count_adj = ifelse(ageyrs==as.integer(ageyrs),(count/13)*2,count)) %>% 
+#   group_by(YearBand) %>% 
+#   fill(count_add) %>% 
+#   mutate(count_adj = count_add + count_adj,
+#          count_adj = ifelse(ageyrs<1, count, count_adj),
+#          risk = count_adj/(pop/12)*100000)
 
 # ggplot(iNTS_U5_1996_2024_sumYr2, aes(x=ageyrs, y=risk, group=YearBand, colour = YearBand))+
 #   geom_line()+
@@ -665,7 +708,6 @@ plotfunc <- function(df,grp,name){
 #| fig-height: !expr size_list$fig_height
 #| fig-width: !expr size_list$fig_width
 
-#| 
 # Subgroup by organism
 STmRisk <- subgrp(iNTS_U5_1996_2024_sumOrg,iNTS_U5_1996_2024_sumOrg$Organism,"Typhimurium","STm")
 SEnRisk <- subgrp(iNTS_U5_1996_2024_sumOrg,iNTS_U5_1996_2024_sumOrg$Organism,"Enteritidis","SEn")
@@ -673,8 +715,6 @@ SppRisk <- subgrp(iNTS_U5_1996_2024_sumOrg,iNTS_U5_1996_2024_sumOrg$Organism,"sp
 
 SalmAllOrgs <- bind_rows(STmRisk, SEnRisk, SppRisk)
 #plotfunc(SalmAllOrgs,SalmAllOrgs$Organism,"Org")
-
-
 ```
 
 ```{r echo=FALSE, results='hide', warning=FALSE, message=FALSE, fig.align = "left"}
@@ -703,7 +743,7 @@ SalmAllYr <- bind_rows(Risk1996_2000, Risk2001_2005, Risk2006_2010,Risk2011_2015
 \KOMAoptions{usegeometry, paper=landscape,pagesize}
 \recalctypearea
 ```
-```{r echo=FALSE, warning=FALSE, ft.align = "centre", ft.width = 7, out.width = "7.5in"}
+```{r echo=FALSE, warning=FALSE, message=FALSE, results='hide', ft.align = "centre", ft.width = 7, out.width = "7.5in"}
 #| fig-height: !expr size_list$fig_height
 #| fig-width: !expr size_list$fig_width
 #| label: fig-splineInc
