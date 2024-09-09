@@ -164,9 +164,13 @@ descrip_sum_tab <- included %>%
       TRUE ~ "Consectutive admissions but some restrictions on time or population"),
     `Publication Year` = cut(`Publication year`, breaks = c(1980,1990,2000,2005,2010,2015,2020), labels = c("1980-1989", "1990-1999", "2000-2004", "2005-2009", "2010-2014", "2015-2020"))) %>%
   select(`Publication Year`,`UN region`,`African Sub-region`, `Inclusion age group`, `Study population`, `Identification of study participants`, `Participant selection`)
+### Error!
+# set_gtsummary_theme(list(
+#   `tbl_summary-fn:percent_fun` = scales::label_percent(accuracy = 0.1),
+#   `tbl_summary-str:categorical_stat` = "{n} ({p})"
+# ))
 set_gtsummary_theme(list(
-  "tbl_summary-fn:percent_fun" = scales::label_percent(accuracy = 0.1),
-  "tbl_summary-str:categorical_stat" = "{n} ({p})"
+  `tbl_summary-fn:percent_fun` = function(x) sprintf("%.1f", x * 100)
 ))
 
 datMalCur <- included %>%
@@ -1095,12 +1099,11 @@ for(d in data_group_hiv_names){
 }
 ```
 
-```{r echo=FALSE, results='hide', message=FALSE, fig.align = "left"}
+```{r echo=FALSE, results='hide', message=FALSE, fig.align = "left", fig.height = 7, fig.width = 10, out.width = "10.5in"}
 # fig.height = 6, fig.width = 10, out.width = "10.5in"
 #| fig-cap: "Meta-analysis: Estimated population attributable fractions of iNTS due to Malaria"
 #| label: fig-metaMalaria
-#| fig-height: !expr size_list$fig_height
-#| fig-width: !expr size_list$fig_width
+
 
 plotls_malaria <- list()
 meta_DSL_Malaria2 <- list()

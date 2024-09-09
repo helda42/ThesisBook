@@ -53,13 +53,25 @@ Disc diffusion using ampicillin, chloramphenicol, cotrimoxazole, cefpodoxime, an
 
 ### Statistical methods
 
+#### Incidence of invasive non-typhoidal salmonella
+
 Data analysis was conducted in the r statistical environment [@r_core_team_r_2018]. Incidence was calculated using the sum of NTS positive blood and CSF cultures for a given year over the mid-year population estimate for that year.
 
 To estimate incidence for children under 5 years, we selected a negative binomial distribution to account for overdispersion, to model monthly counts of NTS cases as a function of age, with b-splines fitted for smoothing.
 
-Model 1:
+Interrupted Time-Series Model:
 
-$$ log(cases) = ~ \alpha + \beta_{2}*bspline(age, df=8) + log(population) $$ Due to reporting bias for childrens ages (more likely to be reported nearest to the closest whole year), and the required granularity of data for incidence in the under 5 years, numbers for each year above the age of 12 months were redistributed equally across the 12 month age groups between each whole year of age.
+$$ log(iNTS cases) = ~ \alpha + \beta_{2}*bspline(age, df=8) + log(population) $$Due to reporting bias for childrens ages (more likely to be reported nearest to the closest whole year), and the required granularity of data for incidence in the under 5 years, numbers for each year above the age of 12 months were redistributed equally across the 12 month age groups between each whole year of age.
+
+#### Blood culture collection rates in Queen Elizabeth Hospital pre and post COVID pandemic in Malawi
+
+An interrupted time-series analysis was conducted to measure the impact of COVID-19 on rates of blood culture collection. A state of emergency was declared by the Malawian government and COVID-19 preventive measures were put in place. It was assumed that the measures taken in response to the pandemic would cause both an immediate “step change” change in blood culture collection numbers, and a “slope change” that may lead to a different monthly pattern of blood culture numbers compared to pre-COVID. These same assumptions were used for both the blood culture collection and health care attendance models. A negative binomial distribution was used to account for overdispersion, to model monthly counts of paediatric blood cultures taken as a function of month, COVID-19, and month-given-COVID (Model 1). Data from January 2016 onwards was used to gain the best estimate of baseline blood collection rates pre-COVID-19. Due to non-linear patterns in blood collections by season, to improve model fit models were generated with harmonic terms to account for seasonal peaks. Model selection was based on Akaike information criterion (AIC) using the AICcmodavg r package [@mazerolle_mj_aiccmodavg_2023]. Autocorrelation plots of residuals were plotted to assess residual seasonal patterns unaccounted for by the model.
+
+Interrupted Time-Series Model (single step-change following onset of COVID in Malawi
+
+$$ log(BCcount) = ~ \alpha + \beta_{2}*harmonics(month_n,1,12) + log(population) $$
+
+Where *BCcount* = expected numbers of blood cultures collected per month, 𝜶 = intercept, *covid* = indicator variable for period before or after introduction of COVID restrictions (before or after 1st April 2020), *month* = indicator for month from Jan 2016, and *population* = estimated monthly population denominator for Blantyre District.
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 
@@ -101,6 +113,7 @@ library(MASS)
 library(dplyr) # load after due to select clashing
 library(splines)
 library(splines2)
+library(cowplot)
 
 source(here("scripts", "merge_function_diagnostics.R"))
 source(here("scripts", "facet_coord_adjust.R")) ###https://www.zachburchill.ml/ggplot_facets/
@@ -277,9 +290,9 @@ hiyr <- inc_tab_long2 %>%
 tot_missAge <- alliNTSAge %>% 
   filter(is.na(agebands_3)) %>% 
   summarise(n())
+totBC <- sum(inc_tab_long2$`Blood Cultures Collected`, na.rm=T)
+totBC
 ```
-
-<!-- (`r run_reference(id = "tbl-flextable")`.)  -->
 
 \newpage
 
@@ -340,12 +353,6 @@ doc <- body_add_flextable(doc, value = inc_tab_longFT, align = "left")
 # print(doc, target = here("outputs", "iNTS_byYrSerovar.docx"),  pr_section = sect_properties)
 ```
 
-<!-- {#tab-1} -->
-
-<!-- As described in @tab-1 -->
-
-<!-- table 1 @ref(tab:incidencetab1) -->
-
 \newpage
 
 <!-- % changing the orientation to portrait again -------------------------- -->
@@ -356,12 +363,23 @@ doc <- body_add_flextable(doc, value = inc_tab_longFT, align = "left")
 ```
 ## Results
 
-Data on NTS blood and CSF cultures was available from `{r} print(stdate)` to `{r} print(endate)`. During this period there were `{r} print(prettyNum(as.integer(sum_stats$total), big.mark=","))` cases of iNTS, including `{r} print(prettyNum(sum_stats$salmonella_typhimurium,big.mark=","))` S.typhimurium, `{r} print(prettyNum(sum_stats$salmonella_enteritidis,big.mark=","))` S.enteritidis, and `{r} sum_stats$salmonella_species` S.species (@tbl-sumtab). Data was missing for a total of `{r} tot_missAge` NTS isolates. Data was available on total number of blood cultures collected from 1998-01-01 to 2022-05-01. The total Blantyre population was `{r} print(prettyNum(as.integer(startpop),big.mark=","))` in `{r} print(startyr)` and `{r} print(prettyNum(as.integer(endpop),big.mark=","))` in `{r} print(endyr)`. During this period, the minimum incidence of blood culture confirmed iNTS ranged from `{r} print(lowinc)` in `{r} print(lowyr$Year)` to `{r} print(hiinc)` in `{r} print(hiyr$Year)` per 100,000 population (@tbl-sumtab, @fig-NoPeriod).
+### Overall incidence
 
+Data on NTS blood and CSF cultures was available from `{r} print(stdate)` to `{r} print(endate)`. During this period there were `{r} print(prettyNum(as.integer(sum_stats$total), big.mark=","))` cases of iNTS, including `{r} print(prettyNum(sum_stats$salmonella_typhimurium,big.mark=","))` S.typhimurium, `{r} print(prettyNum(sum_stats$salmonella_enteritidis,big.mark=","))` S.enteritidis, and `{r} sum_stats$salmonella_species` S.species (@tbl-sumtab). Data for age was missing for a total of `{r} print(tot_missAge)` NTS isolates; the distribution of age categories and missing ages by year are shown in @fig-NoPeriod. Data was available on total number of blood cultures collected from 1998-01-01 to 2022-05-01; with a total of `{r} print(prettyNum(totBC))` [@tbl-sumtab]. The total Blantyre population was `{r} print(prettyNum(as.integer(startpop),big.mark=","))` in `{r} print(startyr)` and `{r} print(prettyNum(as.integer(endpop),big.mark=","))` in `{r} print(endyr)`. During this period, the minimum incidence of blood culture confirmed iNTS ranged from `{r} print(lowinc)` in `{r} print(lowyr$Year)` to `{r} print(hiinc)` in `{r} print(hiyr$Year)` per 100,000 population (@tbl-sumtab, @fig-NoPeriod).
+
+\newpage
+
+<!-- changing the orientation to landscape --------------------------------- -->
+
+```{=tex}
+\KOMAoptions{usegeometry, paper=landscape,pagesize}
+\recalctypearea
+```
 ```{r echo=FALSE, results='hide', warning=FALSE, message=FALSE, fig.align = "left"}
 # fig.height = 5, fig.width = 5.5, out.width = "6in"
 #| fig-height: !expr size_list$fig_height
 #| fig-width: !expr size_list$fig_width
+#| fig-cap: Number of Non-Typhoidal Salmonella blood culture isolates by time period and by serovar at Queen Elizabeth Central Hospital (QECH), 1996-2024
 ##### Age Band stratification
 alliNTSAgeYrFT <- flextable(alliNTSAgeYr)
 alliNTSAgeYrFT <- set_table_properties(alliNTSAgeYrFT, layout = "autofit") %>% 
@@ -371,13 +389,20 @@ alliNTSAgeYrFT <- set_table_properties(alliNTSAgeYrFT, layout = "autofit") %>%
 doc <- read_docx()
 doc <- body_add_flextable(doc, value = alliNTSAgeYrFT, align = "left")
 # print(doc, target = here("outputs", "iNTS_byYrAgbinSerovar.docx"),  pr_section = sect_properties)
+
+# ggplot(inc_tab_long2, aes(x=Year, y=`Minimum Incidence`))+
+#   geom_line()+
+#   # ggtitle("Minimum Incidence iNTS (BC) by age, QECH, Blanytre")+
+#   ylab("Incidence per 100,000 population")+
+#   theme_bw() +
+#   theme(axis.text.x = element_text(size=6,angle = 45))
 ```
 
 ```{r echo=FALSE, results='hide', warning=FALSE, message=FALSE, fig.align = "left"}
 #| fig-height: !expr size_list$fig_height
 #| fig-width: !expr size_list$fig_width
 #| label: fig-NoPeriod
-#| fig-cap: Number of Non-Typhoidal Salmonella blood culture isolates by time period and by serovar at Queen Elizabeth Central Hospital (QECH), 1996-2024
+#| fig-cap: Number of Non-Typhoidal Salmonella blood culture isolates by time period and by serovar at Queen Elizabeth Central Hospital (QECH), 1996-2024; A
 #| 
 p96_15 <- age_gp %>% 
   filter(Year<2016) %>% 
@@ -447,9 +472,18 @@ pAge <- ggplot(alliNTSAge, aes(x=Year, y = Total_iNTS, fill = agebands_3))+
         axis.text.x = element_text(face = "plain", size = 6, vjust = 0.5),
         legend.text = element_text(face = "plain", size = 6),
         legend.title = element_text(face = "bold", size = 8))
-cowplot::plot_grid(pAge, p96_15,p10_24,porg)
+
+cowplot::plot_grid(p96_15,p10_24,pAge,porg, labels = "AUTO")
 ```
 
+\newpage
+
+<!-- changing the orientation to portrait --------------------------------- -->
+
+```{=tex}
+\KOMAoptions{usegeometry, paper=portrait,pagesize}
+\recalctypearea
+```
 ```{r echo=FALSE, results='hide', warning=FALSE, message=FALSE, fig.align = "left"}
 #| fig-height: !expr size_list$fig_height
 #| fig-width: !expr size_list$fig_width
@@ -462,26 +496,45 @@ inc_agband_long <- alliNTSAgeYr %>%
   mutate(Ageband = factor(Ageband, levels = c("Inc00_04", "Inc05_09", "Inc10_14", "Inc15_30", "Inc30_50", "Inc50_90"),
          labels = c("0-4y", "5-9y", "10-14y", "15-30y","30-50y","50-90y")))
 
-ggplot(inc_agband_long, aes(x=Year, y=Incidence, group=Ageband, colour = Ageband))+
+incAge <- ggplot(inc_agband_long, aes(x=Year, y=Incidence, group=Ageband, colour = Ageband))+
   geom_line()+
   # ggtitle("Minimum Incidence iNTS (BC) by age, QECH, Blanytre")+
   ylab("Incidence per 100,000 population")+
   theme_bw() +
   theme(axis.text.x = element_text(size=6,angle = 45))
 # ggsave(here("outputs", "Incidence_agebands.png"))
-
+    
 ```
 
-```{r echo=FALSE, results='hide', warning=FALSE, message=FALSE, fig.align = "left"}
-#| fig-height: !expr size_list$fig_height
-#| fig-width: !expr size_list$fig_width
-#| 
+```{r echo=FALSE, results='hide', warning=FALSE, message=FALSE, fig.align = "left", fig.height=7, fig.width=5.5}
+#| label: fig-HistMiss
+#| fig-cap: Count of Non-Typhoidal Salmonella blood culture isolates by age group, Queen Elizabeth Central Hospital (QECH), 1996-2024
 ### Incidence graphs in U5
 #### U5
 iNTS_all_U5 <- age_gp %>% 
   filter(Age_months<=60) %>% 
-  mutate(agemth_rnd = round(Age_months, digits=0)) %>% 
-  group_by(agemth_rnd)
+  mutate(agemth_rnd = round(Age_months, digits=0),
+         agecat = cut(Age_months, breaks = c(0,12,24,36,48,60))) %>% 
+  group_by(Year, agecat) %>% 
+  summarise(midage = mean(Age_months, na.rm=T),
+            count = n())
+
+pAgeU5 <- ggplot(iNTS_all_U5, aes(x=Year, y = count, fill = agecat))+
+  geom_bar(stat="identity")+
+  ggtitle("1996-2024")+
+  labs(y="Total iNTS")+
+  guides(fill = guide_legend(title = "Age Band"),
+         colour = guide_legend(title = "Age Band"))+
+  theme_bw()+
+  theme(title = element_text(face = "bold", size=8),
+        axis.title = element_text(face= "bold" , size = 6),
+        axis.text = element_text(face = "plain", size = 6),
+        axis.text.x = element_text(face = "plain", size = 6, vjust = 0.5),
+        legend.text = element_text(face = "plain", size = 6),
+        legend.title = element_text(face = "bold", size = 8))
+
+cowplot::plot_grid(pAgeU5, incAge, nrow=2)
+
 
 redist_func <- function(df){
  df %>% 
@@ -550,12 +603,8 @@ redist_funcyr2 <- function(df){
   )
 }
 
-iNTS_all_U5_redis <- iNTS_all_U5 %>% 
-  summarise(midage = mean(Age_months),
-            count = n()) %>% 
-  redist_func()
-
 #mean(Pop_wideAgeband$x00_04_pop)
+## Population
 BTpop_u5 <- Pop_10yr %>% 
   dplyr::select(c(1,3)) %>% 
   mutate(YearBand3 = cut(Year, breaks = c(seq(1995,2025,5)), labels = c("1996-2000","2001-2005","2006-2010","2011-2015","2016-2020","2021-2024"))) %>% 
@@ -570,29 +619,37 @@ BTpop_u52 <- Pop_10yr %>%
   summarise(pop = mean(x00_04_pop)) %>% 
   ungroup()
 
+##### 
+iNTS_all_U5_all <- age_gp %>% 
+  filter(Age_months<=60 & Age_months>0) %>% 
+  mutate(agemth_rnd = round(Age_months, digits=0)) 
+
+NTS_all_U5_all_Stmen <- age_gp %>% 
+  filter(Age_months<=60 & Age_months>0 & str_detect(Organism, "species", negate=T)) %>% 
+  mutate(agemth_rnd = round(Age_months, digits=0)) 
+
 iNTS_allage_sumyr <- CensYrBand %>% 
   full_join_track(alliNTSAgey) %>% 
   mutate(min_inc = Total_iNTS/pop)
 
-iNTS_U5_1996_2024_sum <- iNTS_all_U5_redis %>% 
-  # mutate(agemth_rnd = round(Age_months, digits=0)) %>% 
-  # group_by(agemth_rnd) %>% 
-  # summarise(midage = mean(Age_months),
-  #           count = n()) %>% 
-  # ungroup() %>% 
+iNTS_U5_1996_2024_sum <- iNTS_all_U5_all %>% 
+  group_by(agemth_rnd) %>% 
+  summarise(midage = mean(Age_months),
+            count = n()) %>%
+  redist_func() %>% 
   mutate(pop = 2401,
-         risk = count_new/pop*10000) 
+         risk = (count_new/pop)*100000*12)
   
-iNTS_U5_1996_2024_sumYr <- iNTS_all_U5 %>% 
+iNTS_U5_1996_2024_sumYr <- iNTS_all_U5_all %>% 
   group_by(YearBand3, agemth_rnd) %>% 
   summarise(midage = mean(Age_months),
             count = n())%>% 
   ungroup() %>% 
   redist_funcyr() %>% 
   left_join(BTpop_u5) %>% 
-  mutate(risk = count_new/pop*100000)
+  mutate(risk = (count_new/pop)*100000*12)
 
-iNTS_U5_1996_2024_sumYr2 <- iNTS_all_U5 %>% 
+iNTS_U5_1996_2024_sumYr2 <- iNTS_all_U5_all %>% 
   mutate(agemth_rnd = round(Age_months, digits=0)) %>% 
   group_by(YearBand, agemth_rnd) %>% 
   summarise(midage = mean(Age_months),
@@ -600,9 +657,17 @@ iNTS_U5_1996_2024_sumYr2 <- iNTS_all_U5 %>%
   ungroup() %>% 
   redist_funcyr2() %>% 
   left_join(BTpop_u52) %>% 
-  mutate(risk = count_new/(pop/12)*100000,
+  mutate(risk = (count_new/pop)*100000*12,
          ageyrs = agemth_rnd/12)
 
+iNTS_U5_1996_2024_sumYra <- NTS_all_U5_all_Stmen %>% 
+  group_by(YearBand3, agemth_rnd) %>% 
+  summarise(midage = mean(Age_months),
+            count = n())%>% 
+  ungroup() %>% 
+  redist_funcyr() %>% 
+  left_join(BTpop_u5) %>% 
+  mutate(risk = (count_new/pop)*100000*12)
 ### Distribute ages evenly >1yr
 ### Distribute ages across ages months >1yr
 # iNTS_U5_1996_2024_sumYr2 <- iNTS_U5_1996_2024_sumYr2 %>% 
@@ -634,7 +699,7 @@ allageYrB3 <- iNTS_U5_1996_2024_sumYr2 %>%
 #   theme_bw() +
 #   theme(axis.text.x = element_text(size=6,angle = 45))
 
-iNTS_U5_1996_2024_sumOrg <- iNTS_all_U5 %>% 
+iNTS_U5_1996_2024_sumOrg <- iNTS_all_U5_all %>% 
   mutate(agemth_rnd = round(Age_months, digits=0)) %>% 
   group_by(agemth_rnd, Organism) %>% 
   summarise(midage = mean(Age_months),
@@ -673,15 +738,15 @@ risk_predict <- function(df, name ){ #Switch, grp
   mutate(case_pred=exp(pred_obj$fit),
          risk_pred=exp(
            pred_obj$fit - log(pop)
-         )*100000,
+         )*100000*12,
          cases_low=exp(pred_obj$fit - 1.96*pred_obj$se.fit),
          cases_high=exp(pred_obj$fit + 1.96*pred_obj$se.fit),
          risk_low=exp(
            (pred_obj$fit - 1.96*pred_obj$se.fit) - log(pop)
-         )*100000,
+         )*100000*12,
          risk_high=exp(
            (pred_obj$fit + 1.96*pred_obj$se.fit) - log(pop)
-         )*100000,
+         )*100000*12,
          cases_se=pred_obj$se.fit,
          cases_link=pred_obj$fit,
          sd=(risk_high-risk_low/3.92)*sqrt(count_new),
@@ -758,10 +823,17 @@ Risk2016_2020 <- subgrp(iNTS_U5_1996_2024_sumYr,iNTS_U5_1996_2024_sumYr$YearBand
 Risk2021_2024 <- subgrp(iNTS_U5_1996_2024_sumYr,iNTS_U5_1996_2024_sumYr$YearBand3,"2021-2024","_2021_2024")
 
 SalmAllYr <- bind_rows(Risk1996_2000, Risk2001_2005, Risk2006_2010,Risk2011_2015,Risk2016_2020,Risk2021_2024)
+
+Risk1996_2000a <- subgrp(iNTS_U5_1996_2024_sumYra,iNTS_U5_1996_2024_sumYra$YearBand3,"1996-2000","_1996_2000")
+Risk2001_2005a <- subgrp(iNTS_U5_1996_2024_sumYra,iNTS_U5_1996_2024_sumYra$YearBand3,"2001-2005","_2001_2005")
+Risk2006_2010a <- subgrp(iNTS_U5_1996_2024_sumYra,iNTS_U5_1996_2024_sumYra$YearBand3,"2006-2010","_2006_2010")
+Risk2011_2015a <- subgrp(iNTS_U5_1996_2024_sumYra,iNTS_U5_1996_2024_sumYra$YearBand3,"2011-2015","_2011_2015")
+Risk2016_2020a <- subgrp(iNTS_U5_1996_2024_sumYra,iNTS_U5_1996_2024_sumYra$YearBand3,"2016-2020","_2016_2020")
+Risk2021_2024a <- subgrp(iNTS_U5_1996_2024_sumYra,iNTS_U5_1996_2024_sumYra$YearBand3,"2021-2024","_2021_2024")
+
+SalmAllYra <- bind_rows(Risk1996_2000a, Risk2001_2005a, Risk2006_2010a,Risk2011_2015a,Risk2016_2020a,Risk2021_2024a)
 # plotfunc(SalmAllYr,SalmAllYr$YearBand3,"Yr")
 ```
-
-<!-- (`r run_reference(id = "tbl-flextable")`.)  -->
 
 \newpage
 
@@ -771,7 +843,7 @@ SalmAllYr <- bind_rows(Risk1996_2000, Risk2001_2005, Risk2006_2010,Risk2011_2015
 \KOMAoptions{usegeometry, paper=landscape,pagesize}
 \recalctypearea
 ```
-```{r echo=FALSE, warning=FALSE, message=FALSE, results='hide', ft.align = "centre", ft.width = 7, out.width = "7.5in"}
+```{r echo=FALSE, warning=FALSE, results='hide',ft.align = "centre", ft.width = 7, out.width = "7.5in"}
 #| fig-height: !expr size_list$fig_height
 #| fig-width: !expr size_list$fig_width
 #| label: fig-splineInc
@@ -808,6 +880,44 @@ SalmAllYr %>%
 
 ```
 
+```{r echo=FALSE, warning=FALSE, results='hide',ft.align = "centre", ft.width = 7, out.width = "7.5in"}
+#| fig-height: !expr size_list$fig_height
+#| fig-width: !expr size_list$fig_width
+#| label: fig-splineIncStmen
+#| fig-cap: Minimum Incidence of Non-Typhoidal Salmonella blood culture isolates in children aged 0-60 months by time period, Queen Elizabeth Central Hospital (QECH), 1996-2024 (STm and SEn only)
+#| 
+SalmAllYra %>%
+  ggplot() +
+  geom_line(aes(y=risk_pred, x=midage), colour="orchid2", size=0.5) +
+  geom_ribbon(aes(ymax=risk_high, ymin=risk_low, x=midage), fill="orchid4", alpha=0.3 ) +
+  geom_point(aes(y=risk, x=midage), size=0.5, shape=1, colour="orchid2") +
+  theme_bw() +
+  scale_x_continuous(breaks = c(seq(0,60,6))) +
+  xlab("Mid-age in months") +
+  ylab("Incidence per 100,000 population") +
+  # ggtitle("iNTS incidence in children 0-60 months Blantyre, Malawi (1996-2024)") +
+  coord_cartesian(xlim = c(0,60), ylim = c(0,1500))+
+  theme(title = element_text(face = "bold", size=6),
+        axis.title = element_text(face= "bold" , size = 6),
+        axis.text = element_text(face = "plain", size = 6),
+        axis.text.x = element_text(face = "plain", size = 6, vjust = 0.5),
+        # legend.title = element_text(face = "bold", size = 6), 
+        # legend.text = element_text(face = "plain", size = 6), 
+        strip.text.x = element_text(face="bold", size = 8))+
+  facet_wrap(~YearBand3, scales = "free") +
+  coord_panel_ranges(panel_ranges = list(
+    list(x=c(0,60), y=c(0,1500)), # Panel 1
+    list(x=c(0,60), y=c(0,1500)), # Panel 2
+    list(x=c(0,60), y=c(0,1500)), # Panel 3
+    list(x=c(0,60), y=c(0,600)),  # Panel 4
+    list(x=c(0,60), y=c(0,600)),  # Panel 5
+    list(x=c(0,60), y=c(0,600))  # Panel 6
+  ))
+# ggsave(here("outputs", "risk_iNTS_ageYr_facet.tiff"), height = 7, width = 12)
+
+
+```
+
 \newpage
 
 <!-- % changing the orientation to portrait again -------------------------- -->
@@ -816,6 +926,40 @@ SalmAllYr %>%
 \KOMAoptions{usegeometry, paper=portrait,pagesize}
 \recalctypearea
 ```
+```{r echo=FALSE, results='hide', warning=FALSE, message=FALSE, fig.width=5.5, fig.height=7, fig.align = "left"}
+#| label: fig-BCColAge
+#| fig-cap: Number of paediatric blood cultures collected through the Queen Elizabeth Hospital- Malawi-Liverpool Wellcome Reseach Program by age in years
+#| 
+CSF_BC <- import(here("data","3_data", "BC_CSF_all_neg_pos_2015_JUNE2022.xlsx")) %>% 
+  row_to_names(5) %>% 
+  clean_names() %>% 
+  mutate(sampledate = as.numeric(dsp), 
+         patient_age = as.numeric(patient_age),
+         sampledate = as.Date(sampledate, origin = "1899-12-30"),
+         year = year(sampledate),
+         age_months = ifelse(age_unit == 'Years', patient_age*12, 
+                            ifelse(age_unit == 'Months', patient_age,
+                                  ifelse(age_unit == 'Days', patient_age/30.25, patient_age))),
+         age_years = age_months/12)
+
+CSF_BC %>% 
+  filter(age_months<=1200) %>% 
+  ggplot()+
+  geom_histogram(aes(age_years), fill="deepskyblue")+
+  #ggtitle("Age-distribution of collected blood cultures")+
+  xlab("Age Years")+
+  theme_bw() +
+  facet_wrap(~ year) +
+  theme(axis.title = element_text(size = 6),
+        axis.text = element_text(size = 6),
+        strip.text = element_text(size=6))
+
+```
+
+![Segmented regression (interrupted time series analysis) of blood cultures collected pre and post COVID, at Queen Elizabeth Hospital, Blantyre, Malawi January 2016 - April 2022](figures/6_images/bc_harmonics.jpeg){#fig-ITS width="656"}
+
+\newpage
+
 ```{r echo=FALSE, results='hide', warning=FALSE, message=FALSE, fig.align = "left"}
 # fig.height = 5, fig.width = 5.5, out.width = "6in"
 #| fig-height: !expr size_list$fig_height
@@ -929,30 +1073,6 @@ cowplot::plot_grid(p1,p2,p3,p4, labels = "AUTO", label_size = 8)
 ```
 
 ```{r echo=FALSE, results='hide', warning=FALSE, message=FALSE, fig.align = "left"}
-CSF_BC <- import(here("data","3_data", "BC_CSF_all_neg_pos_2015_JUNE2022.xlsx")) %>% 
-  row_to_names(5) %>% 
-  clean_names() %>% 
-  mutate(sampledate = as.numeric(dsp), 
-         patient_age = as.numeric(patient_age),
-         sampledate = as.Date(sampledate, origin = "1899-12-30"),
-         year = year(sampledate),
-         age_months = ifelse(age_unit == 'Years', patient_age*12, 
-                            ifelse(age_unit == 'Months', patient_age,
-                                  ifelse(age_unit == 'Days', patient_age/30.25, patient_age))),
-         age_years = age_months/12)
-
-CSF_BC %>% 
-  filter(age_months<=1200) %>% 
-  ggplot()+
-  geom_histogram(aes(age_years), fill="deepskyblue")+
-  ggtitle("Age-distribution of collected blood cultures")+
-  xlab("Age Years")+
-  theme_bw() +
-  facet_wrap(~ year)
-
-```
-
-```{r echo=FALSE, results='hide', warning=FALSE, message=FALSE, fig.align = "left"}
 # fig.height = 5, fig.width = 5.5, out.width = "6in"
 #| fig-height: !expr size_list$fig_height
 #| fig-width: !expr size_list$fig_width
@@ -982,8 +1102,6 @@ CSF_BC %>%
 #           legend.text = element_text(size = 6),
 #           legend.title  = element_text(face = "bold", size = 8))
 ```
-
-![](images/clipboard-271940250.png)
 
 +------------------+------------------+--------+----------------------------+--------+----------------------------+--------+
 | Country          |                  |        | Crude incidence,           |        | Adjusted incidence         |        |

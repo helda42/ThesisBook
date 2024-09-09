@@ -139,7 +139,7 @@ We searched for data relating to blood culture confirmed invasive non-typhoidal 
 Keywords are noted in regular type, ‘MESH’ (Medical subject heading) terms in bold.
 
 |     | **Search 1: Non-typhoidal Salmonella**                                                                                                                                                                  |     |
-|--------|--------------------------------------------------------|--------|
+|-----|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|
 |     | salmonella\* OR salmonellosis OR typhimurium OR enteritidis OR nontyph\* OR non-typh\* OR "Salmonella newport" OR "Salmonella heidelberg" OR NTS OR iNTS                                                |     |
 |     | **Search 2: Invasive disease**                                                                                                                                                                          |     |
 |     | bacteraemi\* OR bacteremi\* OR septicaemi\* OR septicemi\* OR septic OR sepsis OR blood isolate OR bloodstream OR invasive                                                                              |     |
@@ -153,7 +153,7 @@ Keywords are noted in regular type, ‘MESH’ (Medical subject heading) terms i
 **Scopus search strategy**
 
 |     | TITLE-ABS-KEY                                                                                                                                                                                        |     |
-|--------|--------------------------------------------------------|--------|
+|-----|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|
 |     | **Search 1: Non-typhoidal Salmonella**                                                                                                                                                               |     |
 |     | salmonella\* OR salmonellosis OR typhimurium OR enteritidis OR nontyph\* OR non-typh\* OR "Salmonella newport" OR "Salmonella heidelberg" OR NTS OR iNTS                                             |     |
 |     | **Search 2: Invasive disease**                                                                                                                                                                       |     |
@@ -168,7 +168,7 @@ Keywords are noted in regular type, ‘MESH’ (Medical subject heading) terms i
 **Web of science search strategy**
 
 |     | **Search 1: Non-typhoidal Salmonella**                                                                                                                                                                  |     |
-|--------|--------------------------------------------------------|--------|
+|-----|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|
 |     | salmonella\* OR salmonellosis OR typhimurium OR enteritidis OR nontyph\* OR non-typh\* OR "Salmonella newport" OR "Salmonella heidelberg" OR NTS OR iNTS                                                |     |
 |     | **Search 2: Invasive disease**                                                                                                                                                                          |     |
 |     | bacteraemi\* OR bacteremi\* OR septicaemi\* OR septicemi\* OR septic OR sepsis OR blood isolate OR bloodstream OR invasive                                                                              |     |
@@ -206,7 +206,7 @@ The quality of individual studies was assessed using the modified Newcastle-Otta
 Odds ratios (OR) for odds of iNTS for each host factor group were calculated from 2 by 2 tables, as was the prevalence of exposure in cases and controls, using the formula OR = A x D/ B X C.
 
 |     | **Exposure**             |     | **iNTS Positive** |     | **iNTS Negative** |     |
-|----------|--------------|----------|----------|----------|----------|----------|
+|-----|--------------------------|-----|-------------------|-----|-------------------|-----|
 |     | **Host factor Positive** |     | A                 |     | B                 |     |
 |     | **Host factor Negative** |     | C                 |     | D                 |     |
 
