@@ -697,7 +697,7 @@ iNTS_allage_sumyr <- CensYrBand %>%
 
 iNTS_U5_1996_2024_sum <- iNTS_all_U5_all %>% 
   group_by(agemth_rnd) %>% 
-  summarise(midage = mean(Age_months),
+  summarise(midage = mean(Age_months, na.rm=T),
             count = n()) %>%
   redist_func() %>% 
   mutate(pop = 2401,
@@ -705,7 +705,7 @@ iNTS_U5_1996_2024_sum <- iNTS_all_U5_all %>%
   
 iNTS_U5_1996_2024_sumYr <- iNTS_all_U5_all %>% 
   group_by(YearBand3, agemth_rnd) %>% 
-  summarise(midage = mean(Age_months),
+  summarise(midage = mean(Age_months, na.rm=T),
             count = n())%>% 
   ungroup() %>% 
   redist_funcyr() %>% 
@@ -715,7 +715,7 @@ iNTS_U5_1996_2024_sumYr <- iNTS_all_U5_all %>%
 iNTS_U5_1996_2024_sumYr2 <- iNTS_all_U5_all %>% 
   mutate(agemth_rnd = round(Age_months, digits=0)) %>% 
   group_by(YearBand, agemth_rnd) %>% 
-  summarise(midage = mean(Age_months),
+  summarise(midage = mean(Age_months, na.rm=T),
             count = n())%>% 
   ungroup() %>% 
   redist_funcyr2() %>% 
@@ -725,7 +725,7 @@ iNTS_U5_1996_2024_sumYr2 <- iNTS_all_U5_all %>%
 
 iNTS_U5_1996_2024_sumYra <- NTS_all_U5_all_Stmen %>% 
   group_by(YearBand3, agemth_rnd) %>% 
-  summarise(midage = mean(Age_months),
+  summarise(midage = mean(Age_months, na.rm=T),
             count = n())%>% 
   ungroup() %>% 
   redist_funcyr() %>% 
@@ -765,7 +765,7 @@ allageYrB3 <- iNTS_U5_1996_2024_sumYr2 %>%
 iNTS_U5_1996_2024_sumOrg <- iNTS_all_U5_all %>% 
   mutate(agemth_rnd = round(Age_months, digits=0)) %>% 
   group_by(agemth_rnd, Organism) %>% 
-  summarise(midage = mean(Age_months),
+  summarise(midage = mean(Age_months, na.rm=T),
             count = n()) %>% 
   ungroup() %>% 
   mutate(pop = 2401,
@@ -889,7 +889,7 @@ SalmAllYra <- bind_rows(Risk1996_2000a, Risk2001_2005a, Risk2006_2010a,Risk2011_
 
 ## All serovars
 SalmAllYr <- SalmAllYr %>% mutate(across(where(is.numeric), round, 2))
-peakInc <- SalmAllYr %>% group_by(YearBand3) %>% slice_max(risk_pred) 
+peakInc <- SalmAllYr %>% group_by(YearBand3) %>% slice_max(risk_pred) %>% ungroup()
 meanPeakAge <- round(mean(peakInc$midage), digits=1)
 PeakAgeLow <- peakInc %>% slice_min(midage)
 PeakAgeHi <- peakInc %>% slice_max(midage)
@@ -902,7 +902,70 @@ NeoAgeLow <- neoInc %>% slice_min(midage)
 NeoAgeHi <- neoInc %>% slice_max(midage)
 NeoIncLow <- neoInc %>% slice_min(risk_pred)
 NeoIncHi <- neoInc %>% slice_max(risk_pred)
+
+troughInc <- SalmAllYr %>% group_by(YearBand3) %>% slice_max(risk_pred) %>% ungroup()
+meantroughAge <- round(mean(troughInc$midage), digits=1)
+troughAgeLow <- troughInc %>% slice_min(midage)
+troughAgeHi <- troughInc %>% slice_max(midage)
+troughIncLow <- troughInc %>% slice_min(risk_pred)
+troughIncHi <- troughInc %>% slice_max(risk_pred)
+
 ## Vaccine-Preventable
+SalmAllYra <- SalmAllYra %>% mutate(across(where(is.numeric), round, 2))
+peakInca <- SalmAllYra %>% group_by(YearBand3) %>% slice_max(risk_pred) %>% ungroup()
+meanPeakAgea <- round(mean(peakInca$midage), digits=1)
+PeakAgeLowa <- peakInca %>% slice_min(midage)
+PeakAgeHia <- peakInca %>% slice_max(midage)
+PeakIncLowa <- peakInca %>% slice_min(risk_pred)
+PeakIncHia <- peakInca %>% slice_max(risk_pred)
+
+neoInca <- SalmAllYra %>% filter(agemth_rnd==0) %>% mutate(midage = round(midage*30.25, digits=2))
+meanNeoAgea <- round(mean(neoInca$midage), digits=1)
+NeoAgeLowa <- neoInca %>% slice_min(midage)
+NeoAgeHia <- neoInca %>% slice_max(midage)
+NeoIncLowa <- neoInca %>% slice_min(risk_pred)
+NeoIncHia <- neoInca %>% slice_max(risk_pred)
+
+troughInca <- SalmAllYra %>% group_by(YearBand3) %>% slice_max(risk_pred) %>% ungroup()
+meantroughAgea <- round(mean(troughInca$midage), digits=1)
+troughAgeLowa <- troughInca %>% slice_min(midage)
+troughAgeHia <- troughInca %>% slice_max(midage)
+troughIncLowa <- troughInc %>% slice_min(risk_pred)
+troughIncHia <- troughInca %>% slice_max(risk_pred)
+
+## Total BC collected
+CSF_BC <- import(here("data","3_data", "BC_CSF_all_neg_pos_2015_JUNE2022.xlsx")) %>% 
+  row_to_names(5) %>% 
+  clean_names() %>% 
+  mutate(sampledate = as.numeric(dsp), 
+         patient_age = as.numeric(patient_age),
+         sampledate = as.Date(sampledate, origin = "1899-12-30"),
+         year = year(sampledate),
+         age_months = ifelse(age_unit == 'Years', patient_age*12, 
+                            ifelse(age_unit == 'Months', patient_age,
+                                  ifelse(age_unit == 'Days', patient_age/30.25, patient_age))),
+         age_years = age_months/12)
+
+CSF_BC_summ <- CSF_BC %>% 
+  filter(age_months<=60) %>% 
+  mutate(agebin = cut(age_months, breaks=seq(0,60,1))) %>% 
+  group_by(year, agebin) %>% 
+  summarise(total = n()) %>% 
+  ungroup()
+
+CSF_BC_sumyr <- CSF_BC %>% 
+  filter(age_months<=60) %>% 
+  mutate(agebin = cut(age_months, breaks=seq(0,60,12))) %>% 
+  group_by(year, agebin) %>% 
+  summarise(total = n()) %>% 
+  ungroup()
+
+peakBCLow <- CSF_BC_summ %>% slice_min(total)
+peakBCHi <- CSF_BC_summ %>% slice_max(total)
+peakBCLowY <- CSF_BC_sumyr %>% slice_min(total)
+peakBCHiY <- CSF_BC_sumyr %>% slice_max(total)
+lowBCLow <- CSF_BC_sumyr %>% slice_min(total)
+lowBCHi <- CSF_BC_sumyr %>% slice_max(total)
 ```
 
 \newpage
@@ -914,10 +977,22 @@ NeoIncHi <- neoInc %>% slice_max(risk_pred)
 \recalctypearea
 ```
 ### Age incidence in children under 5 years
+#### All non-typhoidal Salmonella serovars
 
-For children under 5 years of age, predicted incidence in the first month of life ranged from `{r} print(NeoIncLow$risk_pred)` per 100,000 child-years in `{r} print(NeoIncLow$YearBand3)` to `{r} print(NeoIncHi$risk_pred)` per 100,000 child-years in `{r} print(NeoIncHi$YearBand3)`, with a mean age of `{r} print(meanNeoAge)` days. The estimated peak of iNTS incidence was `{r} print(PeakAgeLow$risk_pred)` at age `{r} print(PeakAgeLow$midage)` in `{r} print(PeakAgeLow$YearBand3)` to `{r} print(PeakIncHi$risk_pred)` at age `{r} print(PeakIncHi$midage)` in `{r} print(PeakIncHi$YearBand3)`
+For children under 5 years of age, predicted incidence of iNTS due to any NTS serovar in the first month of life ranged from `{r} print(NeoIncLow$risk_pred)` (95% CI, `{r} print(NeoIncLow$risk_low)` - `{r} print(NeoIncLow$risk_high)`) per 100,000 child-years in `{r} print(NeoIncLow$YearBand3)` to `{r} print(NeoIncHi$risk_pred)` (95% CI, `{r} print(NeoIncHi$risk_low)` - `{r} print(NeoIncHi$risk_high)`) per 100,000 child-years in `{r} print(NeoIncHi$YearBand3)`, with a mean age of `{r} print(meanNeoAge)` days. The estimated peak of iNTS incidence was `{r} print(PeakAgeLow$risk_pred)` (95% CI,`{r} print(PeakAgeLow$risk_pred)` - `{r} print(PeakAgeLow$risk_pred)`) per  100,000 child-years at `{r} print(PeakAgeLow$midage)` months of age in `{r} print(PeakAgeLow$YearBand3)` to `{r} print(PeakIncHi$risk_pred)` (95% CI,`{r} print(PeakIncHi$risk_low)` - `{r} print(PeakIncHi$risk_high)`) at `{r} print(PeakIncHi$midage)` months of age in `{r} print(PeakIncHi$YearBand3)`. The estimated incidence of iNTS at 60 months of age was lowest at `{r} print(troughAgeLow$risk_pred)` (95% CI,`{r} print(troughAgeLow$risk_pred)` - `{r} print(troughAgeLow$risk_pred)`) per 100,000 child-years at `{r} print(troughAgeLow$midage)` months of age in `{r} print(troughAgeLow$YearBand3)` and highest estimated incidence was `{r} print(troughIncHi$risk_pred)` (95% CI,`{r} print(troughIncHi$risk_low)` - `{r} print(troughIncHi$risk_high)`) at `{r} print(troughIncHi$midage)` months of age in `{r} print(troughIncHi$YearBand3)` (@fig-splineInc).
 
-### Antimicrobial resistance
+#### Salmonella typhimurium and Salmonella enteriditis
+
+When restricted to S.typhimurium & S.enteritidis isolates only in children under 5 years, the predicted incidence in the first month of life ranged from `{r} print(NeoIncLowa$risk_pred)`  (95% CI, `{r} print(NeoIncLowa$risk_low)` - `{r} print(NeoIncLowa$risk_high)`) per 100,000 child-years in `{r} print(NeoIncLowa$YearBand3)` to `{r} print(NeoIncHia$risk_pred)` (95% CI, `{r} print(NeoIncHia$risk_low)` - `{r} print(NeoIncHia$risk_high)`)  per 100,000 child-years in `{r} print(NeoIncHia$YearBand3)`, with a mean age of `{r} print(meanNeoAgea)` days. The estimated peak incidence was `{r} print(PeakAgeLowa$risk_pred)`  per  100,000 child-years at `{r} print(PeakAgeLowa$midage)` months of age in `{r} print(PeakAgeLowa$YearBand3)` to `{r} print(PeakIncHia$risk_pred)` at `{r} print(PeakIncHia$midage)` months of age in `{r} print(PeakIncHia$YearBand3)`. The at 60 months of age was lowest at `{r} print(troughAgeLowa$risk_pred)` (95% CI,`{r} print(troughAgeLowa$risk_pred)` - `{r} print(troughAgeLowa$risk_pred)`) per 100,000 child-years at `{r} print(troughAgeLowa$midage)` months of age in `{r} print(troughAgeLowa$YearBand3)` and highest estimated incidence was `{r} print(troughIncHia$risk_pred)` (95% CI,`{r} print(troughIncHia$risk_low)` - `{r} print(troughIncHia$risk_high)`) at `{r} print(troughIncHia$midage)` months of age in `{r} print(troughIncHia$YearBand3)` (@fig-splineIncStmen).
+
+### Blood culture collection and impact of COVID
+
+Age distribution of all collected blood cultures at QECH data was available for 2010 to 2022 (fig-BCColAge). Numbers of blood cultures collected in children in the first year of life ranged from `{r} peakBCLowY$total` in `{r} peakBCLowY$year` to `{r} peakBCHiY$total`  in `{r} peakBCHiY$year`, with the highest numbers collected from neonates (in first 28 days of life) `{r} peakBCLow$total` in `{r} peakBCLow$year` to `{r} peakBCHi$total` in `{r} peakBCLow$year`. The age group with the lowest number of blood cultures collected was `{r} lowBCLow$total` in `{r} lowBCLow$year` to `{r} lowBCHi$total` in `{r} lowBCHi$year`. 
+
+Segmented regression, with harmonic terms to account for seasonal trends in blood culture collection, was useed to assess the impact of COVID-19 pandemic on blood culture collection at QECH-MLW, estimating hypothetical counterfactual blood culture collection numbers if there had been no COVID. Between 01 January 2016 and 01 June 2022, a total of 71,346 paediatric blood cultures were collected through the QECH/ MLW blood culture service. Prior to COVID-19 (Jan 2016 - March 2020) there were 50,990 paediatric blood cultures collected, with an increasing trend of 1.4% (1 to 1.7%) per month, peaking at 1785 cases (701.1 per 100,000) in October 2019 with a trough of 529 (218.6 per 100,000) in July 2017. A total of 9831 blood cultures were taken through TyVAC passive surveillance between March 2018 and June 2021, constituting on average 18% (Median 16.5% IQR: 10.5% 25.3% of all blood cultures collected through the QECH-MLW service during this period) with cessation of study activity during the first wave of covid April-August 2020. 	
+
+Following the onset of the COVID-19 pandemic in Malawi (1st April 2020) ¬there was an immediate decrease of 82.7% (95% CI 70.1 to 90%) in blood culture collection rates (figure 2). There was a change in rate of 1.4% (0.5 to 2.3%) per month, resulting in observed blood culture collections rates of 480 and 198 per 100,000 child-years in March and April 2020 respectively, compared to a predicted rates of 589 and 193 per 100,000 in March and April 2020 in the counterfactual scenario of no COVID-19. The case detection rates did not recover during the study period (up to 01 June 2021), with observed rates of 280 and 298 per 10,000 child-years in May and June 2021 respectively, compared to predicted rates of 596 and 570 respectively.
+
 
 \newpage
 
@@ -1010,26 +1085,17 @@ SalmAllYra %>%
 \KOMAoptions{usegeometry, paper=portrait,pagesize}
 \recalctypearea
 ```
+
+
 ```{r echo=FALSE, results='hide', warning=FALSE, message=FALSE, fig.width=5.5, fig.height=7, fig.align = "left"}
 #| label: fig-BCColAge
 #| fig-cap: Number of paediatric blood cultures collected through the Queen Elizabeth Hospital- Malawi-Liverpool Wellcome Reseach Program by age in years
 #| 
-CSF_BC <- import(here("data","3_data", "BC_CSF_all_neg_pos_2015_JUNE2022.xlsx")) %>% 
-  row_to_names(5) %>% 
-  clean_names() %>% 
-  mutate(sampledate = as.numeric(dsp), 
-         patient_age = as.numeric(patient_age),
-         sampledate = as.Date(sampledate, origin = "1899-12-30"),
-         year = year(sampledate),
-         age_months = ifelse(age_unit == 'Years', patient_age*12, 
-                            ifelse(age_unit == 'Months', patient_age,
-                                  ifelse(age_unit == 'Days', patient_age/30.25, patient_age))),
-         age_years = age_months/12)
 
-CSF_BC %>% 
+bc1 <- CSF_BC %>% 
   filter(age_months<=1200) %>% 
   ggplot()+
-  geom_histogram(aes(age_years), fill="deepskyblue")+
+  geom_histogram(aes(age_years), fill="deepskyblue", binwidth = 2)+
   #ggtitle("Age-distribution of collected blood cultures")+
   xlab("Age Years")+
   theme_bw() +
@@ -1038,17 +1104,24 @@ CSF_BC %>%
         axis.text = element_text(size = 6),
         strip.text = element_text(size=6))
 
+bc2 <- CSF_BC %>% 
+  filter(age_months<=60) %>% 
+  ggplot()+
+  geom_histogram(aes(age_years), fill="orchid", binwidth = 1)+
+  #ggtitle("Age-distribution of collected blood cultures")+
+  xlab("Age Years")+
+  theme_bw() +
+  facet_wrap(~ year) +
+  theme(axis.title = element_text(size = 6),
+        axis.text = element_text(size = 6),
+        strip.text = element_text(size=6))
+
+cowplot::plot_grid(bc1,bc2, labels = "AUTO", nrow=2)
 ```
 
 ![Segmented regression (interrupted time series analysis) of blood cultures collected pre and post COVID, at Queen Elizabeth Hospital, Blantyre, Malawi January 2016 - April 2022](figures/6_images/bc_harmonics.jpeg){#fig-ITS width="656"}
 
 ```{r echo=FALSE, results='hide', warning=FALSE, message=FALSE, fig.align = "left"}
-# fig.height = 5, fig.width = 5.5, out.width = "6in"
-#| fig-height: !expr size_list$fig_height
-#| fig-width: !expr size_list$fig_width
-#| label: fig-AMR
-#| fig-cap: Antimicrobial resistance in Non-Typhoidal Salmonella isolates in children at QECH, Blantyre. Isolates were described as ‘fully susceptible’ (S) if susceptible to these 5 antimicrobials (cotrimoxazole, ampicillin, chloramphenicol, cefpodoxime, ciprofloxacin) and resistant (R) if had resistance to 1 or 2 of these antimicrobials, and multidrug resistant (MDR) if resistant to ampicillin, cotrimoxazole, and chloramphenicol.
-
 ### AMR
 ### By Percent
 AMR_paeds_sumMDR_p <- AMR_paeds2 %>% 
@@ -1064,17 +1137,6 @@ AMR_paeds_sumMDR_long <- AMR_paeds_sumMDR_p %>%
   pivot_longer(cols = c(MDR, R,S), names_to = "AMR", values_to = "perc.")%>% 
   filter(!is.na(ageband))
 
-p1 <- ggplot(AMR_paeds_sumMDR_long, aes(x=ageband, y=perc., fill = AMR))+
-  geom_bar(position="stack", stat="identity")+
-  xlab("Age") +
-  ylab("Percentage") +
-  scale_fill_manual(values = c("firebrick2", "goldenrod2", "seagreen3"))+
-  theme_bw()+
-  theme(axis.title = element_text(face= "bold" , size = 6),
-        axis.text = element_text(face = "plain", size = 6),
-        axis.text.x = element_text(face = "plain", size = 6, vjust = 0.5, angle=45),
-        legend.text = element_text(size = 6),
-        legend.title  = element_text(face = "bold", size = 6))
 ## By counts
 AMR_paeds_sumMDR_n <- AMR_paeds2 %>% 
   group_by(ageband) %>% 
@@ -1088,19 +1150,6 @@ AMR_paeds_sumMDR_n <- AMR_paeds2 %>%
 AMR_paeds_sumMDR_long_n <- AMR_paeds_sumMDR_n %>% 
   pivot_longer(cols = c(MDR, R,S), names_to = "AMR", values_to = "Total")%>% 
   filter(!is.na(ageband))
-
-p2 <- ggplot(AMR_paeds_sumMDR_long_n, aes(x=ageband, y=Total, fill = AMR))+
-  geom_bar(position="stack", stat="identity")+
-  xlab("Age") +
-  ylab("Total isolates") +
-  scale_fill_manual(values = c("firebrick2", "goldenrod2", "seagreen3"))+
-  theme_bw()+
-  theme(axis.title = element_text(face= "bold" , size = 8),
-        axis.text = element_text(face = "plain", size = 6),
-        axis.text.x = element_text(face = "plain", size = 6, vjust = 0.5, angle=45),
-        legend.text = element_text(size = 6),
-        legend.title  = element_text(face = "bold", size = 8))
-
 
 ### Organism
 ### By Percent
@@ -1116,18 +1165,6 @@ AMR_paeds_sumOrg_p_long <- AMR_paeds_sumOrg_p %>%
   pivot_longer(cols = c(STm, SEn,Spp), names_to = "Serotype", values_to = "perc.")%>% 
   filter(!is.na(ageband))
 
-p3 <- ggplot(AMR_paeds_sumOrg_p_long, aes(x=ageband, y=perc., fill = Serotype))+
-  geom_bar(position="stack", stat="identity")+
-  xlab("Age") +
-  ylab("Percentage") +
-  scale_fill_manual(values = c("gold2","orchid", "mediumpurple2"))+
-  theme_bw()+
-  theme(axis.title = element_text(face= "bold" , size = 8),
-        axis.text = element_text(face = "plain", size = 6),
-        axis.text.x = element_text(face = "plain", size = 6, vjust = 0.5, angle=45),
-        legend.text = element_text(size = 6),
-        legend.title  = element_text(face = "bold", size = 8))
-
 AMR_paeds_sumOrg_n <- AMR_paeds2 %>% 
   group_by(ageband) %>% 
   summarise(total = n(), 
@@ -1140,6 +1177,57 @@ AMR_paeds_sumOrg_long_n <- AMR_paeds_sumOrg_n %>%
   pivot_longer(cols = c(STm, SEn, Spp), names_to = "Serotype", values_to = "Total") %>% 
   filter(!is.na(ageband))
 
+```
+### Antimicrobial resistance
+
+Non-typhoidal salmonella serotypes in children 0 - 10 years of age were `{r} print(AMR_paeds_sumOrg_n$STm)`
+
+```{r echo=FALSE, results='hide', warning=FALSE, message=FALSE, fig.align = "left"}
+# fig.height = 5, fig.width = 5.5, out.width = "6in"
+#| fig-height: !expr size_list$fig_height
+#| fig-width: !expr size_list$fig_width
+#| label: fig-AMR
+#| fig-cap: Antimicrobial resistance in Non-Typhoidal Salmonella isolates in children at QECH, Blantyre. Isolates were described as ‘fully susceptible’ (S) if susceptible to these 5 antimicrobials (cotrimoxazole, ampicillin, chloramphenicol, cefpodoxime, ciprofloxacin) and resistant (R) if had resistance to 1 or 2 of these antimicrobials, and multidrug resistant (MDR) if resistant to ampicillin, cotrimoxazole, and chloramphenicol.
+
+p1 <- ggplot(AMR_paeds_sumMDR_long, aes(x=ageband, y=perc., fill = AMR))+
+  geom_bar(position="stack", stat="identity")+
+  xlab("Age") +
+  ylab("Percentage") +
+  scale_fill_manual(values = c("firebrick2", "goldenrod2", "seagreen3"))+
+  theme_bw()+
+  theme(axis.title = element_text(face= "bold" , size = 6),
+        axis.text = element_text(face = "plain", size = 6),
+        axis.text.x = element_text(face = "plain", size = 6, vjust = 0.5, angle=45),
+        legend.text = element_text(size = 6),
+        legend.title  = element_text(face = "bold", size = 6))
+
+
+p2 <- ggplot(AMR_paeds_sumMDR_long_n, aes(x=ageband, y=Total, fill = AMR))+
+  geom_bar(position="stack", stat="identity")+
+  xlab("Age") +
+  ylab("Total isolates") +
+  scale_fill_manual(values = c("firebrick2", "goldenrod2", "seagreen3"))+
+  theme_bw()+
+  theme(axis.title = element_text(face= "bold" , size = 8),
+        axis.text = element_text(face = "plain", size = 6),
+        axis.text.x = element_text(face = "plain", size = 6, vjust = 0.5, angle=45),
+        legend.text = element_text(size = 6),
+        legend.title  = element_text(face = "bold", size = 8))
+
+
+p3 <- ggplot(AMR_paeds_sumOrg_p_long, aes(x=ageband, y=perc., fill = Serotype))+
+  geom_bar(position="stack", stat="identity")+
+  xlab("Age") +
+  ylab("Percentage") +
+  scale_fill_manual(values = c("gold2","orchid", "mediumpurple2"))+
+  theme_bw()+
+  theme(axis.title = element_text(face= "bold" , size = 8),
+        axis.text = element_text(face = "plain", size = 6),
+        axis.text.x = element_text(face = "plain", size = 6, vjust = 0.5, angle=45),
+        legend.text = element_text(size = 6),
+        legend.title  = element_text(face = "bold", size = 8))
+
+
 p4 <- ggplot(AMR_paeds_sumOrg_long_n, aes(x=ageband, y=Total, fill = Serotype))+
   geom_bar(position="stack", stat="identity")+
   xlab("Age") +
@@ -1151,6 +1239,7 @@ p4 <- ggplot(AMR_paeds_sumOrg_long_n, aes(x=ageband, y=Total, fill = Serotype))+
         axis.text.x = element_text(face = "plain", size = 6, vjust = 0.5, angle=45),
         legend.text = element_text(size = 6),
         legend.title  = element_text(face = "bold", size = 8))
+
 cowplot::plot_grid(p1,p2,p3,p4, labels = "AUTO", label_size = 8)
 
 # #### Plot trends over time
@@ -1178,6 +1267,17 @@ cowplot::plot_grid(p1,p2,p3,p4, labels = "AUTO", label_size = 8)
 #           legend.text = element_text(size = 6),
 #           legend.title  = element_text(face = "bold", size = 8))
 ```
+
+## Discussion
+
+The incidence of invasive non-typhoidal salmonella rose to an epidemic peak in 2002 has been declining since an
+
+There are differences between the methodologies used between sites in Malawi, Burkina Faso and Kenya on these field sites (explored in [@carey_surveillance_2020]), which make it difficult to directly compare these data, and adjusting crude data to give an adjusted incidence adds additional variability and has not yet been undertaken for the Malawi estimates. However, the most directly comparable data sets, on crude unadjusted incidence (see below) in the relevant age-bands, suggest that Malawi could have the highest age-linked incidences of iNTS.
+
+More granular data on incidence in children under 5 years is a key contribution to the literature, particularly to form vaccine development
+
+
+Put table in intro?
 
 +------------------+------------------+--------+----------------------------+--------+----------------------------+--------+
 | Country          |                  |        | Crude incidence,           |        | Adjusted incidence         |        |
@@ -1215,13 +1315,7 @@ Kenya [@verani2015]
 
 ![](figures/3_images/Kenya_iNTS_age.jpg){width="495"}
 
-## Discussion
 
-The incidence of invasive non-typhoidal salmonella rose to an epidemic peak in 2002 has been declining since an
-
-There are differences between the methodologies used between sites in Malawi, Burkina Faso and Kenya on these field sites (explored in [@carey_surveillance_2020]), which make it difficult to directly compare these data, and adjusting crude data to give an adjusted incidence adds additional variability and has not yet been undertaken for the Malawi estimates. However, the most directly comparable data sets, on crude unadjusted incidence (see below) in the relevant age-bands, suggest that Malawi could have the highest age-linked incidences of iNTS.
-
-More granular data on incidence in children under 5 years is a key contribution to the literature, particularly to form vaccine development
 
 ### Limitations
 
