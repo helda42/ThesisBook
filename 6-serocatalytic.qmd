@@ -80,11 +80,48 @@ $$y_{i}(a) = \sum \frac{\lambda^{i}a^{i}}{i!}  e^{-\lambda.a}$$ N.B. If we want 
 Using Gompertz function for growth, which exhibits exponential decay of relative growth rate:
 
 $$ f(t) = ce^{-ke^{-rt}}$$ Where c = upper asymptote (carrying capacity) of f(t) $$ lim_{t \to \infty} ke^{-ce^{-rt}} = ke^{0} = k $$\
+
+-   e = Euler's constant = 2.71828 = the base of natural logarithms
+
+-   k = sets displacement along the x-axis (translates graph to left or right).
+
+-   When c = log(2), f(0) = k/2, also called halfway point
+
+-   r = sets the growth rate (y scaling)
+
+-   t = time
+
+Using Gompertz function, can calculate $\Phi$
+
+$$ \Phi(\theta n_{s}(a)) = ce^{-i_{s}e^{-k_{s}n_{s}(a)}}$$ Where:
+
+-   ns = number of exposures
+
+-   c = will be set at constant as highest antibody titre measured in the population - if had an infinite number of exposures this would be the plateau of antibody response (upper asymptote/ carrying capacity of f(t))
+
+-   ks = growth rate (y scaling)
+
+-   is = number of exposures above which antibodies begins to increase (displacement along x-axis)
+
+-   e = Euler's constant
+
+-   a = age
+
+-   Two parameters that will be fitted to the data:
+
+-   k = growth rate i = number of exposures above which the antibody response will enter the growth function?
+
+    ### Modeling acquisition of antibodies following natural exposure
+
+Using Gompertz function for growth, which exhibits exponential decay of relative growth rate:
+
+$$ f(t) = ce^{-ke^{-rt}}$$\
+$$ lim_{t \to \infty} ke^{-ce^{-rt}} = ke^{0} = k $$\
 e = Euler's constant = 2.71828 = the base of natural logarithms
 
 k = sets displacement along the x-axis (translates graph to left or right).
 
-When c = log(2), f(0) = k/2, also called halfway point
+c = upper asymptote (carrying capacity) of f(t)
 
 r = sets the growth rate (y scaling)
 
@@ -94,48 +131,23 @@ Using Gompertz function, can calculate $\Phi$
 
 $$ \Phi(\theta n_{s}(a)) = ce^{-i_{s}e^{-k_{s}n_{s}(a)}}$$ Where:
 
-ns = number of exposures
+-   ns = number of exposures
 
-c = will be set at constant as highest antibody titre measured in the population - if had an infinite number of exposures this would be the plateau of antibody response (upper asymptote/ carrying capacity of f(t))
+-   c = will be set at constant as highest antibody titre measured in the population - if had an infinite number of exposures this would be the plateau of antibody response (upper asymptote/ carrying capacity of f(t))
 
-ks = growth rate (y scaling)
+-   ks = growth rate (y scaling)
 
-is = number of exposures above which antibodies begins to increase (displacement along x-axis)
+-   is = number of exposures above which antibodies begins to increase (displacement along x-axis)
 
-e = Euler's constant
+-   e = Euler's constant
 
-a = age
-
-Two parameters that will be fitted to the data:
-
-k = growth rate i = number of exposures above which the antibody response will enter the growth function?
-
-### Modeling acquisition of antibodies following natural exposure
-
-Using Gompertz function for growth, which exhibits exponential decay of relative growth rate:
-
-$$ f(t) = ce^{-ke^{-rt}}$$ Where c = upper asymptote (carrying capacity) of f(t) $$ lim_{t \to \infty} ke^{-ce^{-rt}} = ke^{0} = k $$\
-e = Euler's constant = 2.71828 = the base of natural logarithms k = sets displacement along the x-axis (translates graph to left or right). When c = log(2), f(0) = k/2, also called halfway point r = sets the growth rate (y scaling) t = time
-
-Using Gompertz function, can calculate $\Phi$
-
-$$ \Phi(\theta n_{s}(a)) = ce^{-i_{s}e^{-k_{s}n_{s}(a)}}$$ Where:
-
-ns = number of exposures
-
-c = will be set at constant as highest antibody titre measured in the population - if had an infinite number of exposures this would be the plateau of antibody response (upper asymptote/ carrying capacity of f(t))
-
-ks = growth rate (y scaling)
-
-is = number of exposures above which antibodies begins to increase (displacement along x-axis)
-
-e = Euler's constant
-
-a = age
+-   a = age
 
 Two parameters that will be fitted to the data:
 
-k = growth rate i = number of exposures above which the antibody response will enter the growth function?
+k = growth rate
+
+i = number of exposures above which the antibody response will enter the growth phase (exponential growth)
 
 ### Fitting to model using Markov-Chain Monte-Carlo (MCMC)
 
@@ -144,22 +156,22 @@ k = growth rate i = number of exposures above which the antibody response will e
 In the second model, lambda was allowed to change with age, using a second gompertz curve to model a sigmoidal relationship between age and force of infection (eNTS) events.
 
 $$ f(ns) = m_xe^{-we^{-rt}}$$ Where mx = upper limit of new infections (cumulative) by age 60 months = 40 if 1 infection every 6 weeks on average across cohort - may need to adjust for age distribution $$ lim_{t \to \infty} ke^{-ce^{-rt}} = ke^{0} = k $$\
-e = Euler's constant = 2.71828 = the base of natural logarithms
 
-w = age in months before before enter exponential phase (x-axis displacement) - weaning
+-   e = Euler's constant = 2.71828 = the base of natural logarithms
 
-r = exponential phase/ growth rate high feco-oral transmission at weaning/ crawling age
+-   w = age in months before before enter exponential phase (x-axis displacement) - weaning
+
+-   r = exponential phase/ growth rate high feco-oral transmission at weaning/ crawling age
 
 The modeled relationship between age and enteric NTS infections were compared to the observed distribution of observed eNTS events (NTS PCR and microbiological culture positive stool samples), from the same cross-sectional sample of children.
 
 ### Model comparison and diagnostics
 
-Two models were compared; model 1 assumed a constant force of infection (FOI) throughout ages from birth to 60 months, model 2 assumed FOI changed with age in a sigmoidal relationship with age. Both models were fitted to the serological data per age-bin using a Bayesian Markov-chain Monte-Carlo (MCMC) approach, and models were compared by Pareto smoothed importance sampling (PSIS) and Widely applicable information criterion (WAIC).
+Two models were compared; model 1 assumed a constant force of infection (FOI) throughout ages from birth to 60 months, model 2 assumed FOI changed with age in a sigmoidal relationship with age. Both models were fitted to the serological data per age-bin using a Hamiltonian Bayesian Markov-chain Monte-Carlo (HMCMC) approach, using 'brms' r package for model fitting as a Stan interface. Models were compared by Pareto smoothed importance sampling (PSIS) and Widely applicable information criterion (WAIC). Pairwise comparison of models was carried out using Theoretical Expected Log Pointwise predictive Density (ELPD) estimated by (Bayesian) leave-one out (LOO) cross-validation of model 1 and 2 was carried out using the "loo" r package.
 
-```{r echo=FALSE, warning=FALSE, message=FALSE, results='show', ft.align = "centre", ft.width = 5, out.width = "5.5in"}
-#| tbl-cap: Summary of serological data (IgG against O-antigen of Salmonella Typhimiruim) used for the serocatalytic model by 3 month age groups. GMC = Geometric mean concentration IgG for each agegroup.SD = Standard Deviation IgG. STm = S. Typhimurium. N.B. 1 month age groups were used for the model.
+```{r echo=FALSE, warning=FALSE, message=FALSE, results='show', ft.align = "left", ft.width = 4.5, out.width = "5in"}
+#| tbl-cap: Summary of serological data; Immunoglobulin-gamma to Salmonella Typhimurium used for the serocatalytic model by 3 month age groups.
 #| label: tbl-serodatsum
-#| 
 require(tidyverse)
 require(ggplot2)
 require(cowplot)
@@ -338,7 +350,7 @@ gg_fit_func <- function(dataS, c_eff_midage){
   xlab("Age (months)") +
   ylab("Anti-STm IgG (EU/ml)") +
   scale_y_log10(labels = prettyNum) +
-  ggtitle("LPS IgG titres by age: model vs data - changing FOI") +
+  ggtitle("IgG GMC model fit vs data") +
   scale_x_continuous(breaks = c(seq(0,60,5))) +
   theme(axis.text=element_text(size=10),
         axis.title=element_text(size=10,face="bold"),
@@ -354,7 +366,7 @@ gg_ninffuncum <- function(dataSn){
     ylab("Number of infections") +
     ggtitle("Number of infections by age") +
     scale_x_continuous(breaks = c(seq(0,60,5))) +
-    theme(axis.text=element_text(size=10),
+    theme(axis.text=element_text(size=6),
           axis.title=element_text(size=10,face="bold"),
           plot.title = element_text(size=10))
 }
@@ -368,7 +380,7 @@ gg_ninffunc <- function(dataSn){
     ylab("Number of infections") +
     ggtitle("Percentage of children with eNTS in each age group") +
     scale_x_continuous(breaks = c(seq(0,60,5))) +
-    theme(axis.text=element_text(size=10),
+    theme(axis.text=element_text(size=6),
           axis.title=element_text(size=10,face="bold"),
           plot.title = element_text(size=10))
 }
@@ -381,11 +393,11 @@ gg_mab_phi_fun<- function(dataSn){
     geom_point(aes(x=MIDAGE, y=exp(phi_MEAN)), col='gold') +
     theme_bw() +
     xlab("Mid-age in months") +
-    ylab("Anti-STm LPS IgG titers (log)") +
+    ylab("Anti-STm IgG (EU/ml)") +
     scale_y_log10(labels = prettyNum) +
     ggtitle("Mab and Theta (θ) by age") +
     scale_x_continuous(breaks = c(seq(0,60,5))) +
-    theme(axis.text=element_text(size=10),
+    theme(axis.text=element_text(size=6),
           axis.title=element_text(size=10,face="bold"),
           plot.title = element_text(size=10))
 }
@@ -414,14 +426,15 @@ for(n in no){
 #data <- import(here("data","6_data", "sero_data_agegroup_mth.csv"))   ## serology data
 data <- import(here("data","6_data", "Malawi_STmIgG_master.csv")) %>%
   mutate(AGEGROUP_mth = cut(age_calc_months, breaks = seq(0,60,1)),
-         AGE = age_calc_months) 
+         AGE = age_calc_months) %>% 
+  filter(AGE<=60)
 
 data3 <- data %>% 
   group_by(AGEGROUP_3mth) %>%
   summarise(N=n(),
             MIDAGE=mean(AGE, na.rm = T), ##keep the actual mean age of the groups
-            LPS_ME=mean(log(EU_all.sero),na.rm=T),
-            LPS_SD=sd(log(EU_all.sero),na.rm=T)) %>% 
+            LPS_ME=exp(mean(log(EU_all.sero),na.rm=T)),
+            LPS_SD=exp(sd(log(EU_all.sero),na.rm=T))) %>% 
   ungroup() %>% 
   arrange(MIDAGE)
 
@@ -429,29 +442,28 @@ flextable(data3) %>%
   fontsize(i = 1, size = 8, part = "header") %>%   # adjust font size of header
   bold(i = 1, bold = TRUE, part = "header") %>%    # adjust bold face of header
   fontsize(size = 8, part = "body") %>%  # adjust font size of header
+  fontsize(size = 4, part = "footer") %>%  # adjust font size of header
   set_header_labels(         # Rename the columns in original header row
-    AGEGROUP_3mth = "Age Group (month range)",
-    N = "Number of children",
-    MIDAGE = "Midage",
-    LPS_ME = "GMC anti-STm IgG",
-    LPS_SD = "SD anti-STm IgG"
+    AGEGROUP_3mth = "Age Group (months)",
+    N = "Number",
+    MIDAGE = "Mean Age (months)",
+    LPS_ME = "GMC anti-STm IgG (EU/ml)",
+    LPS_SD = "SD anti-STm IgG (EU/ml)"
   ) %>% 
-  autofit()
-
+  autofit() %>% 
+  footnote(i=1, j=4:5,
+           value = as_paragraph(
+             c(
+               "Geometric Mean Concentration (GMC) of immunoglobulin-gamma (IgG) to S. typhimurium (STm)",
+               "Standard Deviation (SD) of GMC"
+             )
+           ),
+           ref_symbols = c("a", "b"),
+           part = "header")
 total <- data %>% 
   summarise(n())
-```
 
-## Results
-
-### Descriptive analysis
-
-Cross-sectional samples were analysed for `{r} total` Malawian children 0-60 months recruited in the SAiNTS study, recruited between 9th January 2021 and 30th May 2022. Antibody responses to *Salmonella* typhimurium (STm) O-antigen IgG were used to fit the model. The geometric mean concentration (GMC) of STm OAg IgG for each 3 month age group is shown in @tbl-serodatsum. The model was fitted to GMC for 1 month age groups (0 - 60 months), allowing the model to find the values of i, k and mab that best fit the observed data. The priors for i, k, mab were based on informative priors estimated from previous data [@nyirenda_sequential_2014]?? For some level of restricted prior.
-
-```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, fig.align = "centre",fig.height=5, fig.width = 5.5, out.width = "6in"}
-#| fig-cap: Model 1 outputs using Markov Chain Monte Carlo (MCMC) to estimate model parameters, posterior chains and posterior distributions of parameters i, k, and mab
-#| label: fig-posteriors1
-
+####################################################
 theme_set(
   theme_base(base_size = 12) +
     theme(text = element_text(family = "Times"),
@@ -471,12 +483,17 @@ c_eff_midage2 <- modelLs$`2`$Malawi$c_eff_midage
 fit1 <- modelLs$`1`$Malawi$fit
 fit2 <- modelLs$`2`$Malawi$fit
 
-i_mean1 <- round(dataSn2$mean_b_i_Intercept, digits=2)[1] 
+i_mean1 <- round(dataSn1$mean_b_i_Intercept, digits=2)[1] 
 i_95CI1 <- paste0(sep="","(", round(dataSn1$`95%|_b_i_Intercept`,digits=2)," - ", round(dataSn1$`|95%_b_i_Intercept`,digits=2),")")[1]
 k_mean1 <- round(dataSn1$mean_b_k_Intercept, digits=2)[1]
 k_95CI1 <-  paste0(sep="","(", round(dataSn1$`95%|_b_k_Intercept`,digits=2)," - ", round(dataSn1$`|95%_b_k_Intercept`,digits=2),")")[1]
 mab_mean1 <- round(dataSn1$mean_b_mab0_Intercept, digits=2)[1]
 mab_95CI1 <-paste0(sep="","(", round(dataSn1$`95%|_b_mab0_Intercept`,digits=2)," - ", round(dataSn1$`|95%_b_mab0_Intercept`,digits=2),")")[1]
+ninf0_1 <- dataSn1 %>% filter(AGEGROUP_mth=="(0,1]")
+ninf06_1 <- dataSn1 %>% filter(AGEGROUP_mth=="(6,7]")
+ninf12_1 <- dataSn1 %>% filter(AGEGROUP_mth=="(12,13]")
+ninf24_1 <- dataSn1 %>% filter(AGEGROUP_mth=="(24,25]")
+ninf60_1 <- dataSn1 %>% filter(AGEGROUP_mth=="(59,60]")
 
 i_mean2 <- round(dataSn2$mean_b_i_Intercept, digits=2)[1]
 i_95CI2 <- paste0(sep="","(", round(dataSn2$`95%|_b_i_Intercept`,digits=2)," - ", round(dataSn2$`|95%_b_i_Intercept`,digits=2),")")[1]
@@ -484,10 +501,65 @@ k_mean2 <- round(dataSn2$mean_b_k_Intercept, digits=2)[1]
 k_95CI2 <-  paste0(sep="","(", round(dataSn2$`95%|_b_k_Intercept`,digits=2)," - ", round(dataSn2$`|95%_b_k_Intercept`,digits=2),")")[1]
 mab_mean2 <- round(dataSn2$mean_b_mab0_Intercept, digits=2)[1]
 mab_95CI2 <-paste0(sep="","(", round(dataSn2$`95%|_b_mab0_Intercept`,digits=2)," - ", round(dataSn2$`|95%_b_mab0_Intercept`,digits=2),")")[1]
+ninf0_2 <- dataSn2 %>% filter(AGEGROUP_mth=="(0,1]")
+ninf06_2 <- dataSn2 %>% filter(AGEGROUP_mth=="(6,7]")
+ninf12_2 <- dataSn2 %>% filter(AGEGROUP_mth=="(12,13]")
+ninf24_2 <- dataSn2 %>% filter(AGEGROUP_mth=="(24,25]")
+ninf60_2 <- dataSn2 %>% filter(AGEGROUP_mth=="(59,60]")
+
+## sites
+dataSnKen2 <- modelLs$`2`$Kenya$dataSn
+dataSnBF2 <- modelLs$`2`$BF$dataSn
+
+ninf0_Ken2 <- dataSnKen2 %>% filter(AGEGROUP_mth=="(0,1]")
+ninf06_Ken2 <- dataSnKen2 %>% filter(AGEGROUP_mth=="(6,7]")
+ninf12_Ken2 <- dataSnKen2 %>% filter(AGEGROUP_mth=="(12,13]")
+ninf24_Ken2 <- dataSnKen2 %>% filter(AGEGROUP_mth=="(24,25]")
+ninf60_Ken2 <- dataSnKen2 %>% filter(AGEGROUP_mth=="(59,60]")
+
+ninf0_BF2 <- dataSnBF2 %>% filter(AGEGROUP_mth=="(0,1]")
+ninf06_BF2 <- dataSnBF2 %>% filter(AGEGROUP_mth=="(6,7]")
+ninf12_BF2 <- dataSnBF2 %>% filter(AGEGROUP_mth=="(12,13]")
+ninf24_BF2 <- dataSnBF2 %>% filter(AGEGROUP_mth=="(24,25]")
+ninf60_BF2 <- dataSnBF2 %>% filter(AGEGROUP_mth=="(59,60]")
+
+#### loo
+loo_all <- import(here("data", "6_data","loo_all.csv"))
+loo_malawi1 <- loo_all %>% filter(Country=="Malawi" & rowname=="fit1")
+loo_malawi2 <- loo_all %>% filter(Country=="Malawi" & rowname=="fit2")
+loo_BF <- loo_all %>% filter(Country=="Burkina Faso")
+loo_kenya <- loo_all %>% filter(Country=="Kenya")
+```
+
+## Results
+
+### Descriptive analysis
+
+Cross-sectional samples were analysed for `{r} total` Malawian children 0-60 months recruited in the SAiNTS study, recruited between 9th January 2021 and 30th May 2022. Antibody responses to *Salmonella* typhimurium (STm) O-antigen IgG were used to fit the model. The geometric mean concentration (GMC) of STm OAg IgG for each 3 month age group is shown in @tbl-serodatsum. The model was fitted to GMC for 1 month age groups (0 - 60 months), allowing the model to find the values of i, k and mab that best fit the observed data. The priors for i, k, mab were based on informative priors estimated from previous data [@nyirenda_sequential_2014].
+
+### Model 1: Constant force of infection
+
+Model fitting to the observed antibody data is shown in @fig-fit1. The posterior chains are shown in @fig-posteriors1. The posterior distributions were i, k and mab are shown in @fig-posteriors1; the mean for the posterior distribution of i was `{r} i_mean1`, with 95% credible intervals (CI) `{r} i_95CI1`, the mean for k was `{r} k_mean1` & 95% CI `{r} k_95CI1`, and the mean for mab was `{r} mab_mean1` with 95% CI `{r} mab_95CI1`. The model fit for the individual model components mab (maternal antibody decay) and phi (acquisition of natural immunity following eNTS exposure) are shown in @fig-fit1. Model 1 estimated that the proportion of children who had a salmonella infection inducing serotype-specific IgG response at age 0 was `{r} print(round(ninf0_1$ninf_MEAN,digits = 2))`, rising to `{r} print(round(ninf06_1$ninf_MEAN,digits = 2))` at 6 months, `{r} print(round(ninf12_1$ninf_MEAN,digits = 2))` at 12 months, `{r} print(round(ninf24_1$ninf_MEAN,digits = 2))` at 24 months, and `{r} print(round(ninf60_1$ninf_MEAN,digits = 2))` at 60 months. This corresponds to estimated `{r} print(round(ninf0_1$ninf_MEAN*ninf0_1$MIDAGE,digits = 2))` , `{r} print(round(ninf06_1$ninf_MEAN*ninf06_1$MIDAGE,digits = 2))`, `{r} print(round(ninf12_1$ninf_MEAN*ninf12_1$MIDAGE,digits = 2))`, `{r} print(round(ninf24_1$ninf_MEAN*ninf24_1$MIDAGE,digits = 2))` and `{r} print(round(ninf60_1$ninf_MEAN*ninf60_1$MIDAGE,digits = 2))` cumulative salmonella infections inducing serotype-specific IgG response at age 0, 6, 12, 24 and 60 months respectively.
+
+### Model 2: Changing force of infection with age
+
+The posterior distributions were i, k and mab are shown in @fig-posteriors2; the mean for i was `{r} i_mean2`, with 95% credible intervals (CI) `{r} i_95CI2`, the mean for k was `{r} k_mean2` & 95% CI `{r} k_95CI2`, and the mean for mab was `{r} mab_mean2` & 95% CI `{r} mab_95CI2`. The model fit for the individual model components mab (maternal antibody decay) and phi (acquisition of natural immunity following eNTS exposure) are shown in @fig-fit2. Model 2 estimated that the proportion of children who had a salmonella infection inducing serotype-specific IgG response at age 0 was `{r} print(round(ninf0_2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf0_2$ninf_lo,digits = 2))` - `{r} print(round(ninf0_2$ninf_hi,digits = 2))`), rising to `{r} print(round(ninf06_2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf06_2$ninf_lo,digits = 2))` - `{r} print(round(ninf06_2$ninf_hi,digits = 2))`) at 6 months, `{r} print(round(ninf12_2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf12_2$ninf_lo,digits = 2))` - `{r} print(round(ninf12_2$ninf_hi,digits = 2))`) at 12 months, `{r} print(round(ninf24_2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf24_2$ninf_lo,digits = 2))` - `{r} print(round(ninf24_2$ninf_hi,digits = 2))`), at 24 months, and `{r} print(round(ninf60_2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf60_2$ninf_lo,digits = 2))` - `{r} print(round(ninf60_2$ninf_hi,digits = 2))`) at 60 months. This corresponds to estimated `{r} print(round(ninf0_2$ninf_MEAN*ninf0_2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf0_2$ninf_lo*ninf0_2$MIDAGE,digits = 2))` - `{r} print(round(ninf0_2$ninf_hi*ninf0_2$MIDAGE,digits = 2))`), `{r} print(round(ninf06_2$ninf_MEAN*ninf06_2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf06_2$ninf_lo*ninf06_2$MIDAGE,digits = 2))` - `{r} print(round(ninf06_2$ninf_hi*ninf06_2$MIDAGE,digits = 2))`), `{r} print(round(ninf12_2$ninf_MEAN*ninf12_2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf12_2$ninf_lo*ninf12_2$MIDAGE,digits = 2))` - `{r} print(round(ninf12_2$ninf_hi*ninf12_2$MIDAGE,digits = 2))`), `{r} print(round(ninf24_2$ninf_MEAN*ninf24_2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf24_2$ninf_lo*ninf24_2$MIDAGE,digits = 2))` - `{r} print(round(ninf24_2$ninf_hi*ninf24_2$MIDAGE,digits = 2))`) and `{r} print(round(ninf60_2$ninf_MEAN*ninf60_2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf60_2$ninf_lo*ninf60_2$MIDAGE,digits = 2))` - `{r} print(round(ninf60_2$ninf_hi*ninf60_2$MIDAGE,digits = 2))`) cumulative salmonella infections inducing serotype-specific IgG response at age 0, 6, 12, 24 and 60 months respectively.
+
+### Model comparison
+
+Model 2 was selected as the best fit model; model 1 had an ELPD difference of `{r} print(loo_malawi1$elpd_diff)` (SE: `{r} print(loo_malawi1$se_diff)`) relative to model 2, with a WAIC of `{r} print(loo_malawi1$waic)` `{r} print(loo_malawi1$se_waic)` compared to model 2 which had a WAIC of `{r} print(loo_malawi2$waic)` (SE`{r} print(loo_malawi2$se_waic)`) (@tbl-sites).
+
+## Models for other sites
+
+Both model 1 and 2 were run for each of the other VacciNTS sites; Burkina Faso and Kenya, model comparisons are shown in @tbl-sites. Model 2 was selected as best fit across all sites. In Kenya, model 2 estimated that the proportion of children who had a salmonella infection inducing serotype-specific IgG response at age 0 was `{r} print(round(ninf0_Ken2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf0_Ken2$ninf_lo,digits = 2))` - `{r} print(round(ninf0_Ken2$ninf_hi,digits = 2))`), rising to `{r} print(round(ninf06_Ken2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf06_Ken2$ninf_lo,digits = 2))` - `{r} print(round(ninf06_Ken2$ninf_hi,digits = 2))`) at 6 months, `{r} print(round(ninf12_Ken2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf12_Ken2$ninf_lo,digits = 2))` - `{r} print(round(ninf12_Ken2$ninf_hi,digits = 2))`) at 12 months, `{r} print(round(ninf24_Ken2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf24_Ken2$ninf_lo,digits = 2))` - `{r} print(round(ninf24_Ken2$ninf_hi,digits = 2))`), at 24 months, and `{r} print(round(ninf60_Ken2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf60_Ken2$ninf_lo,digits = 2))` - `{r} print(round(ninf60_Ken2$ninf_hi,digits = 2))`) at 60 months. This corresponds to estimated `{r} print(round(ninf0_Ken2$ninf_MEAN*ninf0_Ken2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf0_Ken2$ninf_lo*ninf0_Ken2$MIDAGE,digits = 2))` - `{r} print(round(ninf0_Ken2$ninf_hi*ninf0_Ken2$MIDAGE,digits = 2))`), `{r} print(round(ninf06_Ken2$ninf_MEAN*ninf06_Ken2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf06_Ken2$ninf_lo*ninf06_Ken2$MIDAGE,digits = 2))` - `{r} print(round(ninf06_Ken2$ninf_hi*ninf06_Ken2$MIDAGE,digits = 2))`), `{r} print(round(ninf12_Ken2$ninf_MEAN*ninf12_Ken2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf12_Ken2$ninf_lo*ninf12_Ken2$MIDAGE,digits = 2))` - `{r} print(round(ninf12_Ken2$ninf_hi*ninf12_Ken2$MIDAGE,digits = 2))`), `{r} print(round(ninf24_Ken2$ninf_MEAN*ninf24_Ken2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf24_Ken2$ninf_lo*ninf24_Ken2$MIDAGE,digits = 2))` - `{r} print(round(ninf24_Ken2$ninf_hi*ninf24_Ken2$MIDAGE,digits = 2))`) and `{r} print(round(ninf60_Ken2$ninf_MEAN*ninf60_Ken2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf60_Ken2$ninf_lo*ninf60_Ken2$MIDAGE,digits = 2))` - `{r} print(round(ninf60_Ken2$ninf_hi*ninf60_Ken2$MIDAGE,digits = 2))`) cumulative salmonella infections inducing serotype-specific IgG response at age 0, 6, 12, 24 and 60 months respectively. In Burkina Faso, model 2 estimated that the proportion of children who had a salmonella infection inducing serotype-specific IgG response at age 0 was `{r} print(round(ninf0_BF2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf0_BF2$ninf_lo,digits = 2))` - `{r} print(round(ninf0_BF2$ninf_hi,digits = 2))`), rising to `{r} print(round(ninf06_BF2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf06_BF2$ninf_lo,digits = 2))` - `{r} print(round(ninf06_BF2$ninf_hi,digits = 2))`) at 6 months, `{r} print(round(ninf12_BF2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf12_BF2$ninf_lo,digits = 2))` - `{r} print(round(ninf12_BF2$ninf_hi,digits = 2))`) at 12 months, `{r} print(round(ninf24_BF2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf24_BF2$ninf_lo,digits = 2))` - `{r} print(round(ninf24_BF2$ninf_hi,digits = 2))`), at 24 months, and `{r} print(round(ninf60_BF2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf60_BF2$ninf_lo,digits = 2))` - `{r} print(round(ninf60_BF2$ninf_hi,digits = 2))`) at 60 months. This corresponds to estimated `{r} print(round(ninf0_BF2$ninf_MEAN*ninf0_BF2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf0_BF2$ninf_lo*ninf0_BF2$MIDAGE,digits = 2))` - `{r} print(round(ninf0_BF2$ninf_hi*ninf0_BF2$MIDAGE,digits = 2))`), `{r} print(round(ninf06_BF2$ninf_MEAN*ninf06_BF2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf06_BF2$ninf_lo*ninf06_BF2$MIDAGE,digits = 2))` - `{r} print(round(ninf06_BF2$ninf_hi*ninf06_BF2$MIDAGE,digits = 2))`), `{r} print(round(ninf12_BF2$ninf_MEAN*ninf12_BF2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf12_BF2$ninf_lo*ninf12_BF2$MIDAGE,digits = 2))` - `{r} print(round(ninf12_BF2$ninf_hi*ninf12_BF2$MIDAGE,digits = 2))`), `{r} print(round(ninf24_BF2$ninf_MEAN*ninf24_BF2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf24_BF2$ninf_lo*ninf24_BF2$MIDAGE,digits = 2))` - `{r} print(round(ninf24_BF2$ninf_hi*ninf24_BF2$MIDAGE,digits = 2))`) and `{r} print(round(ninf60_BF2$ninf_MEAN*ninf60_BF2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf60_BF2$ninf_lo*ninf60_BF2$MIDAGE,digits = 2))` - `{r} print(round(ninf60_BF2$ninf_hi*ninf60_BF2$MIDAGE,digits = 2))`) cumulative salmonella infections inducing serotype-specific IgG response at age 0, 6, 12, 24 and 60 months respectively.
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, fig.align = "centre", fig.height=6, fig.width = 5, out.width = "5.5in"}
+#| fig-cap: Model 1 outputs using Markov Chain Monte Carlo (MCMC) to estimate model parameters, posterior chains and posterior distributions of parameters i, k, and mab
+#| label: fig-posteriors1
 
 summary(fit1$fit)
 postsum1 <- as.data.frame(fit1$fit) %>% ## posteriors
-  select(1:5) %>% 
+  select(1:4) %>% 
   pivot_longer(cols = everything(), names_to = "variable", values_to = "value")
 gg_hist <- ggplot(postsum1, aes(x=value))+
       geom_histogram(fill="lightblue",colour="black",lwd=0.2)+
@@ -496,25 +568,40 @@ gg_hist <- ggplot(postsum1, aes(x=value))+
 chains_plot <- as_draws_df(fit1$fit) %>% 
   mcmc_trace(pars = vars(b_mab0_Intercept:sigma), facet_args = list(ncol = 1, strip.position = "left"))+
   #scale_color_pomological() +
-  labs(title = "Trace plots")#+
+  labs(title = "Trace plots") +
+  theme(axis.text = element_text(size = 6))
   #theme_pomological_fancy(base_family = "Marck Script") 
 plot_grid(gg_hist, chains_plot,ncol=2)
 ```
 
-### Model 1: Constant force of infection
+```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, fig.align = "centre", fig.height=6, fig.width = 5, out.width = "5.5in"}
+#| fig-cap: Model 2 outputs using Markov Chain Monte Carlo (MCMC) to estimate model parameters; posterior chains and posterior distributions of parameters i, k, and mab
+#| label: fig-posteriors2
 
-Model fitting to the observed antibody data is shown in @fig-posteriors1 , @tbl-serodatsum, @fig-fit1. The posterior chains are shown in panel A @fig-posteriors1. The posterior distributions were i, k and mab are shown in @fig-chains1 panels B-D; the mean for i was `{r} i_mean1`, with 95% credible intervals (CI) `{r} i_95CI1`, k mean was `{r} k_mean1` & 95% CI `{r} k_95CI1`, and mab mean was `{r} mab_mean1` & sd`{r} mab_95CI1`. The model fit for the individual model components mab (maternal antibody decay) and phi (acquisition of natural immunity following eNTS exposure) are shown in @fig-fit1
-
-### Model 2: Changing force of infection with age
-
-The posterior distributions were i, k and mab are shown in @fig-posteriors2 panels B-D; the mean for i was `{r} i_mean2`, with 95% credible intervals (CI) `{r} i_95CI2`, k mean was `{r} k_mean2` & 95% CI `{r} k_95CI2`, and mab mean was `{r} mab_mean2` & sd`{r} mab_95CI2`. The model fit for the individual model components mab (maternal antibody decay) and phi (acquisition of natural immunity following eNTS exposure) are shown in @fig-fit2
+# plot posteriors
+summary(fit2$fit)
+postsum2 <- as.data.frame(fit2$fit) %>% ## posteriors
+  select(1:7) %>% 
+  pivot_longer(cols = everything(), names_to = "variable", values_to = "value")
+gg_hist <- ggplot(postsum2, aes(x=value))+
+      geom_histogram(fill="lightblue",colour="black",lwd=0.2)+
+      facet_wrap(~variable, nrow = 7, scales = "free") +
+      labs(x = "Value", y = "Count")
+chains_plot <- as_draws_df(fit2$fit) %>% 
+  mcmc_trace(pars = vars(b_mab0_Intercept:sigma), facet_args = list(ncol = 1, strip.position = "left"))+
+  #scale_color_pomological() +
+  labs(title = "Trace plots") +
+    theme(axis.text = element_text(size = 6))
+  #theme_pomological_fancy(base_family = "Marck Script") 
+plot_grid(gg_hist, chains_plot,ncol=2)
+```
 
 \newpage
 
 <!-- changing the orientation to landscape --------------------------------- -->
 
 ```{=tex}
-\KOMAoptions{usegeometry, paper=landscape,pagesize}
+\KOMAoptions{paper=landscape,pagesize}
 \recalctypearea
 ```
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, fig.align = "centre", fig.height=7, fig.width = 7.5, out.width = "8in"}
@@ -532,45 +619,8 @@ print(plot_grid(plot1, gg_fit1, nrow=2, labels="AUTO", rel_heights=c(1,2)))
 
 ```
 
-\newpage
-
-<!-- changing the orientation to portrait --------------------------------- -->
-
-```{=tex}
-\KOMAoptions{paper=portrait,pagesize}
-\recalctypearea
-```
-```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, fig.align = "centre", fig.height=6, fig.width = 5, out.width = "5.5in"}
-#| fig-cap: Model 2 outputs using Markov Chain Monte Carlo (MCMC) to estimate model parameters; posterior chains and posterior distributions of parameters i, k, and mab
-#| label: fig-posteriors2
-
-# plot posteriors
-summary(fit2$fit)
-postsum2 <- as.data.frame(fit2$fit) %>% ## posteriors
-  select(1:7) %>% 
-  pivot_longer(cols = everything(), names_to = "variable", values_to = "value")
-gg_hist <- ggplot(postsum2, aes(x=value))+
-      geom_histogram(fill="lightblue",colour="black",lwd=0.2)+
-      facet_wrap(~variable, nrow = 7, scales = "free") +
-      labs(x = "Value", y = "Count")
-chains_plot <- as_draws_df(fit2$fit) %>% 
-  mcmc_trace(pars = vars(b_mab0_Intercept:sigma), facet_args = list(ncol = 1, strip.position = "left"))+
-  #scale_color_pomological() +
-  labs(title = "Trace plots") #+
-  #theme_pomological_fancy(base_family = "Marck Script") 
-plot_grid(gg_hist, chains_plot,ncol=2)
-```
-
-\newpage
-
-<!-- changing the orientation to landscape --------------------------------- -->
-
-```{=tex}
-\KOMAoptions{paper=landscape,pagesize}
-\recalctypearea
-```
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, fig.align = "centre", fig.height=7, fig.width = 8, out.width = "8.5in"}
-#| fig-cap: Model fit, blue points are fitted GMC by age band, blue shaded area are 95% prediction intervals, pink points are observed GMC, pink shaded area are 95% prediction intervals.
+#| fig-cap: Model 2 fit, blue points are fitted GMC by age band, blue shaded area are 95% prediction intervals, pink points are observed GMC, pink shaded area are 95% prediction intervals.
 #| label: fig-fit2
 
 ninfM2 <- gg_ninffunc(dataSn2)
@@ -583,46 +633,46 @@ plot1 <- plot_grid(gg_mab_phi2, gg_ninf2,gg_cum_ninf2, nrow=1)
 print(plot_grid(plot1, gg_fit2, nrow=2, labels="AUTO", rel_heights=c(1,2)))
 ```
 
-\newpage
-
 ```{r echo=FALSE, warning=FALSE, message=FALSE, ft.align = "centre", ft.height=6, ft.width = 5, out.width = "5.5in"}
-#| tbl-cap: Model comparison using leave one out
-#| label: tbl-loo
-
-# loo <- loo(fit1, fit2) 
-# loo_tab <- as.data.frame(round(loo$diffs, digits = 2))
-# loo_tab %>% gt()
-# fit1 <- add_criterion(fit1$fit, "waic")
-# fit2 <- add_criterion(fit2, "waic")
-# 
-# # compare both models
-# loo_tab <- as.data.frame(round(loo_compare(fit1, fit2, criterion = "waic"),digits=2)) %>% 
-#   rownames_to_column()
-# loo_tab %>% flextable()
-```
-
-```{r echo=FALSE, warning=FALSE, message=FALSE, ft.align = "centre", ft.height=6, ft.width = 5, out.width = "5.5in"}
-#| tbl-cap: Model 3 fit for number of infections by age
-#| label: tbl-ninfall
-#| 
-# ninf_all <- ninfM1 %>% 
-#   left_join(ninfM2) %>% 
-#   gt()
-#ninf_all
-```
-
-```{r echo=FALSE, warning=FALSE, message=FALSE, ft.align = "centre", ft.height=6, ft.width = 5, out.width = "5.5in"}
-#| tbl-cap: Model comparison using leave one out
+#| tbl-cap: Model comparison
 #| label: tbl-sites
 ### Functions to run models and comparisons are in seromultilevel modelling project
-loo_all <- import(here("data", "6_data","loo_all.csv"))
-loo_all %>% flextable()
+loo_all %>% 
+  flextable() %>% 
+  fontsize(size=10, part = "body") %>% 
+  fontsize(size=10, part = "header") %>% 
+  fontsize(size=6, part = "footer") %>% 
+  bold(i = 1, bold = TRUE, part = "header") %>%   
+   set_header_labels(
+    rowname = "Model",
+    elpd_diff = "ELPD Difference",
+    se_diff = "SE difference",
+    elpd_waic = "ELPD WAIC", 
+    se_elpd_waic = "SE ELPD WAIC", 
+    p_waic = "P WAIC", 
+    se_p_waic = "SE P WAIC",
+    waic = "WAIC",
+    se_waic = "SE WAIC") %>% 
+  footnote(i=1, j=3:10,
+           value = as_paragraph(
+             c(
+               "Theoretical Expected Log Pointwise predictive Density (ELPD) estimated by (Bayesian) leave-one out (LOO) cross-validation, ELPD difference is the difference in LOO between two models",
+               "Standard Error of component-wise differences of ELPD LOO differences between two models",
+               "ELPD Widely Applicable Information Criterion (WAIC)",
+               "Standard Error of ELPD WAIC",
+               "Pareto K-value??",
+               "Standard error of Pareto K-value?",
+               "Widely Applicable Information Criterion (WAIC)",
+               "Standard Error of WAIC"
+             )
+           ),
+           ref_symbols = c("a", "b", "c", "d", "e", "f", "g", "h"),
+           part = "header")
 ```
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, fig.align = "centre", fig.height=7, fig.width = 8, out.width = "8.5in"}
-#| fig-cap: Model fit, blue points are fitted GMC by age band, blue shaded area are 95% prediction intervals, pink points are observed GMC, pink shaded area are 95% prediction intervals.
+#| fig-cap: Selected best model fit, blue points are fitted GMC by age band, blue shaded area are 95% prediction intervals, pink points are observed GMC, pink shaded area are 95% prediction intervals. A; Malawi (model 2), B; Kenya (model 2), C; Burkina Faso (model 2)
 #| label: fig-fitsites
-#plot_ls <- list()
 
 panel1 <- do.call("plot_grid", c(plotLs$`2`, ncol=2, labels="AUTO", label_size=8))
 print(panel1)
@@ -637,13 +687,15 @@ print(panel1)
 \KOMAoptions{paper=portrait,pagesize}
 \recalctypearea
 ```
-Model 2 was selected as the best fit model, supporting the hypothesis that the relationship of exposure to eNTS is consistent with a changing (sigmoidal) FOI with age, as reflected in O4 OAg IgG responses in children. This model estimated that on average at birth children were experiencing 0.2 (0.18 – 0.22) eNTS average infections capable of inducing a serotype specific serological response, increasing to 2 (95% CI 1.1 to 3.0) by 6 months of age and 4 (95% CI 2.1 to 5.7) by 12 months of age, plateauing at 5 (95% CI 2.2 to 7.1) eNTS infections cumulatively by age 20 - 60 months.
-
-## Models for other sites
-
 ## Discussion
 
-Model fit was improved assuming FOI increased around age of weaning (4-6 months); this is consistent with the observed age-stratified point prevalence of eNTS detected on stool microbiology in the same study cohort. Next steps include modeling age-stratified serological responses versus disease incidence, and cross-validation considering risk factors and epidemiological setting. Enteric NTS exposure events continue throughout childhood, however, anti-LPS IgG and SBA plateau, suggesting that these serological markers of immunity do not represent protection against enteric infections.
+This serocatalytic model using antibody data for non-typhoidal salmonella (NTS) from children living in endemic settings in sub-Saharan Africa, demonstrates how using cross-sectional age-stratified serological data can be used to understand the mechanisms between the relationship between NTS exposures in children and the aquisition of natural immunity. Different hypotheses could be tested by developing models with different underlying mechanisms serology data was improved assuming that the force of infection (lambda) increased around age of weaning (4-6 months). The hypothesis that children have a high exposure to enteric pathogens around the age of weaning, and that this increases exponentially as they become more mobile and able to explore their environment through oral contact is consistent with the observed age-stratified point prevalence of eNTS detected on stool microbiology in the SAiNTS study cohort in Malawi as demonstrated in chapter 5 (cross-ref stool diagram). However, the figure shown in chapter 5 shows exposure to all NTS.
+
+Fecal shedding/ duration of carriage/
+
+Enteric NTS exposure events continue throughout childhood, however, anti-LPS IgG and SBA plateau, suggesting that these serological markers of immunity do not represent protection against enteric infections.
+
+Model 2 was selected as the best fit model, supporting the hypothesis that the relationship of exposure to eNTS is consistent with a changing (sigmoidal) FOI with age, as reflected in anti-STm IgG responses in children.
 
 Data from Kenya indicates asymptomatic exposures
 
@@ -653,6 +705,8 @@ Can infer O4 positivecross-protection? Not enough data...can compare in the grou
 
 Limitations
 
-Does not explicitly model time/ changes in FOI with time
+Does not explicitly model time/ changes in FOI with time. Only cross-sectional data. Assumptions... lambda - no literature for this for NTS. Serotype specific? Or cross-protection
 
 ## Conclusions
+
+Next steps include modeling age-stratified serological responses versus disease incidence, and cross-validation considering risk factors and epidemiological setting.
