@@ -20,6 +20,78 @@ format:
 editor: visual
 ---
 
+## Incidence of invasive non-typhoidal salmonella
+
+### Age-stratified incidence for under 5 years of age
+
+```{r, echo=FALSE, results='show', warning=FALSE, message=FALSE}
+#| fig-cap: "Age Stratified incidence for all non-typhoidal salmonella serovars"
+#| label: tbl-AgeStratInc
+
+library(dplyr)
+library(ggplot2)
+library(flextable)
+library(tidyr)
+library(naniar)
+library(tidyverse)
+library(here)
+library(rio)
+
+SalmAllYr <- import(here("data", "3_data", "SalmAllYr.csv"))
+SalmAllYra <- import(here("data", "3_data", "SalmAllYr.csv"))
+
+sumtab_all <- SalmAllYr %>% 
+  mutate(ageyr = cut(agemth_rnd, seq(0,60,12))) %>% 
+  group_by(YearBand3, ageyr) %>% 
+  summarise(count = sum(count, na.rm=T),
+            risk = mean(risk, na.rm = T),
+            risk_pred = mean(risk_pred, na.rm = T),
+            risk_low = mean(risk_low, na.rm = T),
+            risk_high = mean(risk_high, na.rm = T)) %>% 
+  filter(!is.na(ageyr))
+
+sumtab_all %>% 
+  flextable() %>% 
+   set_header_labels(
+    YearBand3 = "Year Period",
+    count = "N",
+    ageyr = "Age in months",
+    risk = "Crude Incidence", 
+    risk_pred = "Crude incidence predicted", 
+    risk_low = "Lower 95% CI", 
+    risk_high = "Upper 95% CI")
+            
+```
+
+```{r, echo=FALSE, results='show', warning=FALSE, message=FALSE}
+#| fig-cap: "Age Stratified incidence for S. typhimurium and S. enteritis only"
+#| label: tbl-AgeStratInc2
+#| 
+SalmAllYra <- import(here("data", "3_data", "SalmAllYr.csv"))
+
+sumtab_vac <- SalmAllYra %>% 
+  mutate(ageyr = cut(agemth_rnd, seq(0,60,12))) %>% 
+  group_by(YearBand3, ageyr) %>% 
+  summarise(count = sum(count, na.rm=T),
+            risk = mean(risk, na.rm = T),
+            risk_pred = mean(risk_pred, na.rm = T),
+            risk_low = mean(risk_low, na.rm = T),
+            risk_high = mean(risk_high, na.rm = T)) %>% 
+  filter(!is.na(ageyr))
+
+sumtab_vac %>% 
+  flextable() %>% 
+   set_header_labels(
+    YearBand3 = "Year Period",
+    count = "N",
+    ageyr = "Age in months",
+    risk = "Crude Incidence", 
+    risk_pred = "Crude incidence predicted", 
+    risk_low = "Lower 95% CI", 
+    risk_high = "Upper 95% CI")
+            
+```
+
 ## Attributable Fractions
 
 ### Included studies
@@ -36,14 +108,6 @@ editor: visual
 #| fig-cap: "Details of included studies in attributable fractions analysis"
 #| label: tbl-AFincludedstud
 
-library(dplyr)
-library(ggplot2)
-library(flextable)
-library(tidyr)
-library(naniar)
-library(tidyverse)
-library(here)
-library(rio)
 descript_tab2 <- import(here("data", "9_data", "descript_tab2.csv"))
 ft_desc_tab <- flextable(descript_tab2) %>% 
   fontsize(i = 1, size = 12, part = "header") %>%   # adjust font size of header

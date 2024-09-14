@@ -448,7 +448,6 @@ total <- data %>%
 
 Cross-sectional samples were analysed for `{r} total` Malawian children 0-60 months recruited in the SAiNTS study, recruited between 9th January 2021 and 30th May 2022. Antibody responses to *Salmonella* typhimurium (STm) O-antigen IgG were used to fit the model. The geometric mean concentration (GMC) of STm OAg IgG for each 3 month age group is shown in @tbl-serodatsum. The model was fitted to GMC for 1 month age groups (0 - 60 months), allowing the model to find the values of i, k and mab that best fit the observed data. The priors for i, k, mab were based on informative priors estimated from previous data [@nyirenda_sequential_2014]?? For some level of restricted prior.
 
-
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, fig.align = "centre",fig.height=5, fig.width = 5.5, out.width = "6in"}
 #| fig-cap: Model 1 outputs using Markov Chain Monte Carlo (MCMC) to estimate model parameters, posterior chains and posterior distributions of parameters i, k, and mab
 #| label: fig-posteriors1
@@ -501,7 +500,6 @@ chains_plot <- as_draws_df(fit1$fit) %>%
   #theme_pomological_fancy(base_family = "Marck Script") 
 plot_grid(gg_hist, chains_plot,ncol=2)
 ```
-
 
 ### Model 1: Constant force of infection
 
@@ -603,7 +601,6 @@ print(plot_grid(plot1, gg_fit2, nrow=2, labels="AUTO", rel_heights=c(1,2)))
 # loo_tab %>% flextable()
 ```
 
-```
 ```{r echo=FALSE, warning=FALSE, message=FALSE, ft.align = "centre", ft.height=6, ft.width = 5, out.width = "5.5in"}
 #| tbl-cap: Model 3 fit for number of infections by age
 #| label: tbl-ninfall
@@ -613,7 +610,6 @@ print(plot_grid(plot1, gg_fit2, nrow=2, labels="AUTO", rel_heights=c(1,2)))
 #   gt()
 #ninf_all
 ```
-
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, ft.align = "centre", ft.height=6, ft.width = 5, out.width = "5.5in"}
 #| tbl-cap: Model comparison using leave one out
@@ -641,11 +637,9 @@ print(panel1)
 \KOMAoptions{paper=portrait,pagesize}
 \recalctypearea
 ```
-
 Model 2 was selected as the best fit model, supporting the hypothesis that the relationship of exposure to eNTS is consistent with a changing (sigmoidal) FOI with age, as reflected in O4 OAg IgG responses in children. This model estimated that on average at birth children were experiencing 0.2 (0.18 – 0.22) eNTS average infections capable of inducing a serotype specific serological response, increasing to 2 (95% CI 1.1 to 3.0) by 6 months of age and 4 (95% CI 2.1 to 5.7) by 12 months of age, plateauing at 5 (95% CI 2.2 to 7.1) eNTS infections cumulatively by age 20 - 60 months.
 
 ## Models for other sites
-
 
 ## Discussion
 

@@ -17,6 +17,11 @@ format:
         \usepackage{typearea}
         \usepackage{geometry}
         \usepackage{changepage}
+        \usepackage{siunitx}
+        
+        \sisetup{
+          output-decimal-marker={\cdot}
+        }
     cite-method: citeproc
     bibliography: references.bib
     csl: diabetologia.csl

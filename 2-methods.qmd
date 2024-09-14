@@ -46,14 +46,6 @@ Kamuzu University of Health Sciences (KUHeS), located in Blantyre, Malawi, is a 
 
 Dr Tonney Nyirenda has expertise in NTS immunology and runs immunology and microbiology laboratories at KUHES, where samples for this study were processed.
 
-### Epidemiology of iNTS in Malawi
-
-Previous data from Malawi has shown that iNTS disease peaked in Malawi in 2002 reaching epidemic incidence of 242 cases per 100,000 population [@feasey_three_2015], and has been steadily declining to 6.9 per 100,000 in 2019 [@wilson_incidence_2022].
-
-### NTS clinical studies in Malawi
-
-Pull out from systematic review. Gordon
-
 ## VacciNTS seroepidemiology sites
 
 ### Overview
@@ -66,7 +58,7 @@ Four field sites were chosen for the sero-epidemiological survey. Four thousand 
 
 The field site in Chiwawa, Southern Malawi has been described above.
 
-### Burkina Faso
+#### Burkina Faso
 
 The sero-survey in Burkina Faso included two sites, Polesgo and Nioko II in the Nongr-Massom health district, which are both part of the Ougadougou Health and Demographic Surveillance System (HDSS), and where passive fever surveillance for *Salmonella* infections started in 2011 and is ongoing. In this study area, social mobilization was be implemented and were be led by 5 main groups: community elders, religious leaders, teachers, parents and health professionals (including nurses and doctors).
 
@@ -98,7 +90,7 @@ Kilifi County, is a rural area three degrees south of the equator on the Indian 
 
 Individuals for sampling will be selected evenly across the three sites by age-stratified sampling. The sampling frame will be selected from the KHDSS for the Kilifi site, the population based surveillance census data for Lwak in Kisumu (population ca 250,000) and the most recent census data in Mukuru area, Nairobi (population ca 150,000).
 
-**Ghana**
+#### **Ghana**
 
 The study was be conducted at an urban and a rural site in Ghana. Rural Site: The rural site is the Asante Akim North Municipal district specifically at the Agogo Presbyterian Hospital (APH). APH is a secondary and the biggest referral hospital in the district. The hospital catchment population is approximately 170,000 (per profile presented by the hospital). Patient enrollment took place at the pediatric ward and outpatient department. The population in the Asante Akim Central District is characterized by both semi-urban and rural settlements and low population migration. The main economic activities within the capital Konongo are mining and trading. The catchment area of the participating health care facilities includes the population of Konongo, estimated at about 50,000. 
 
@@ -107,6 +99,58 @@ Urban Site: Kumasi metropolis is the second largest city in Ghana and its locate
 KATH is the second largest teaching hospital in Ghana with about 1000-bed capacity. It is affiliated to the College of Health Sciences, Kwame Nkrumah University of Science and Technology, Ghana. KATH serves as a referral hospital for the northern part of Ghana with a population of about 4,939,100. Subjects will be recruited from the Child Health Directorate of the Hospital. The Child Health directorate attends to children from birth up to 24 years. On the average, for every year, the out-patient department receives about 20,000 patients and in-patient unit attends to about 10,000.
 
 MCHC is centrally located in the Sub-Metro within the Kumasi Metropolis. It has a catchment population of about 244,431 representing 11.75% of the population in Kumasi. The first half-year report (January – June) for 2019 showed a hospital attendance of 20,988 with children less than 5 years constituting 11,258 (53%) patients. The total hospital deliveries has risen from 979 in 2017 to 1,379 by June of 2019. The Hospital has an active unit for immunization of newborns and could thus provide the needed numbers for this iNTS study.
+
+### **Incidence of iNTS disease at VacciNTS sites**
+
+Previous data from Malawi has estimated that iNTS defined by non-typhoidal salmonella (NTS) isolated from non-sterile sites, including blood and cerebrospinal fluid, collected in passive surveillance from QECH-MLW peaked in Malawi in 2002 reaching epidemic incidence of 242 cases per 100,000 person-years of observation (PYO) [@feasey_three_2015], and has been steadily declining to 6.9 per 100,000 PYO in 2019 [@wilson_incidence_2022]. In Kenya peak iNTS incidence has been estimated at 369.7 (291.1 - 457.9) per 100,000 in 2010 in Lwak, a rural region in Western Kenya [@verani2015] and 416.7 (256.9 - 613.8) per 100,000 PYO in 2009 in Siaya County, Kenya, falling to 59.8 (32.9 - 94.4) in 2014 [@oneko_emergence_2015] and 13.6 (0.2 - 41.6) in Kibera in 2014 [@marks_incidence_2017]. In Burkina Faso, estimates from 2012 were 37.6 (13.5 - 72.5) per 100,000 PYO in Nioko II (sub-urban) and 35.2 (3.0 - 93.6) in Polesgo (urban). Estimates from Asante Akim, Ghana 29.5 (12.0 - 54.0) (urban) and 46.8 (23.9 - 76.9) (rural) in 2010 [@marks_incidence_2017].
+
+Age-stratified iNTS incidence data for the VacciNTS sites is summarised in @tbl-siteInc. There are differences between the methodologies used between sites in Malawi, Burkina Faso and Kenya on these field sites (explored in [@carey_surveillance_2020]), which make it difficult to directly compare these data, and adjusting crude data to give an adjusted incidence adds additional variability and has not yet been undertaken for the Malawi estimates. However, the time periods of these estimates vary, with Kenyan estimates from 2009-2014, compared to the most recent estimates from the the STRATAA study in Malawi (2016 - 2018)[@meiring_burden_2021], and SETA study (2016 - 2021) [@park2019]. The limitations of these approaches are discussed further in chapter 3.
+
+::: {#tbl-siteInc}
++--------------------------------+------------------+--------+-----------------------------+--------+---------------------------------+--------+
+| Country                        |                  |        | Crude incidence,            |        | Adjusted incidence              |        |
+|                                |                  |        |                             |        |                                 |        |
+|                                |                  |        | iNTS cases per 100,000 PYO  |        | iNTS cases per 100,000 PYO      |        |
++================================+==================+========+=============================+========+=================================+========+
+| **Malawi (2016 - 2018)**       |                  |        |                             |        |                                 |        |
++--------------------------------+------------------+--------+-----------------------------+--------+---------------------------------+--------+
+|                                | Age 0-11 months  |        | 80 (22-205)                 |        | n/a                             |        |
++--------------------------------+------------------+--------+-----------------------------+--------+---------------------------------+--------+
+|                                | Age 12-23 months |        | 124 (45-269)                |        | n/a                             |        |
++--------------------------------+------------------+--------+-----------------------------+--------+---------------------------------+--------+
+|                                | Age 24-35 months |        | 41 (1-156)                  |        | n/a                             |        |
++--------------------------------+------------------+--------+-----------------------------+--------+---------------------------------+--------+
+|                                | Age 36-47 months |        | 18 (0-130)                  |        | n/a                             |        |
++--------------------------------+------------------+--------+-----------------------------+--------+---------------------------------+--------+
+| **Ghana (2016 - 2021)**        |                  |        |                             |        |                                 |        |
++--------------------------------+------------------+--------+-----------------------------+--------+---------------------------------+--------+
+|                                | Under 2 years    |        | 7.9                         |        | 82 (61 - 110)                   |        |
++--------------------------------+------------------+--------+-----------------------------+--------+---------------------------------+--------+
+|                                | 2-4 years        |        | 11.0                        |        | 167 (124 - 219)                 |        |
++--------------------------------+------------------+--------+-----------------------------+--------+---------------------------------+--------+
+| **Burkina Faso (2016 - 2021)** |                  |        |                             |        |                                 |        |
++--------------------------------+------------------+--------+-----------------------------+--------+---------------------------------+--------+
+|                                | Under 2 years    |        | 18.7                        |        | 339 (245 - 497)                 |        |
++--------------------------------+------------------+--------+-----------------------------+--------+---------------------------------+--------+
+|                                | 2-4 years        |        | 36.3                        |        | 605 (486 - 772)                 |        |
++--------------------------------+------------------+--------+-----------------------------+--------+---------------------------------+--------+
+| **Kenya (2009-2014)**          | Age 0-11 months  |        |                             |        | 2210 (urban) - 3533 (rural)     |        |
++--------------------------------+------------------+--------+-----------------------------+--------+---------------------------------+--------+
+|                                | Age 12-23 months |        |                             |        | 1483.3 (urban) - 6419.1 (rural) |        |
++--------------------------------+------------------+--------+-----------------------------+--------+---------------------------------+--------+
+|                                | Age 24-35 months |        |                             |        | 805.1 (urban) - 1888.3 (rural)  |        |
++--------------------------------+------------------+--------+-----------------------------+--------+---------------------------------+--------+
+|                                | Age 36-47 months |        |                             |        | 636.6 (urban) - 3771.7 (rural)  |        |
++--------------------------------+------------------+--------+-----------------------------+--------+---------------------------------+--------+
+|                                | Age 48-60 months |        |                             |        | 185.4 (urban) - 1788.9 (rural)  |        |
++--------------------------------+------------------+--------+-----------------------------+--------+---------------------------------+--------+
+|                                | 0-4 years        |        | 254.9 (192.1–338.2) (urban) |        | 735.2 (622.4–868.5) (urban)     |        |
+|                                |                  |        |                             |        |                                 |        |
+|                                |                  |        | 501.8 (411.6–611.6) (rural) |        | 2305.6 (2102.2–2528.7) (rural)  |        |
++--------------------------------+------------------+--------+-----------------------------+--------+---------------------------------+--------+
+
+: Crude and Adjusted incidence rates for iNTS disease in Malawi, Burkina Faso, and Kenya. The Malawi incidence was estimated from the community-based STRATAA study [@meiring_burden_2021]. The incidences from Ghana and Burkina Faso are estimated from the SETA study [@carey_surveillance_2020] (unpublished data, personal communication from investigators). The Kenya incidence data is from [@verani2015].
+:::
 
 ## Incidence of iNTS in children 0-5 years in Blantyre, Malawi (1996-2024)
 
@@ -138,46 +182,77 @@ We searched for data relating to blood culture confirmed invasive non-typhoidal 
 
 Keywords are noted in regular type, ‘MESH’ (Medical subject heading) terms in bold.
 
-|     | **Search 1: Non-typhoidal Salmonella**                                                                                                                                                                  |     |
-|-----|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|
-|     | salmonella\* OR salmonellosis OR typhimurium OR enteritidis OR nontyph\* OR non-typh\* OR "Salmonella newport" OR "Salmonella heidelberg" OR NTS OR iNTS                                                |     |
-|     | **Search 2: Invasive disease**                                                                                                                                                                          |     |
-|     | bacteraemi\* OR bacteremi\* OR septicaemi\* OR septicemi\* OR septic OR sepsis OR blood isolate OR bloodstream OR invasive                                                                              |     |
-|     | **Search 3: Epidemiology**                                                                                                                                                                              |     |
-|     | incidence OR prevalence OR host factors OR host OR “relative host” OR “host ratio” OR burden OR proportion OR attributable OR fraction OR mortality OR death OR fatality OR predictor OR determinant OR |     |
-|     | **Search 4: Host Factors**                                                                                                                                                                              |     |
-|     | HIV OR “human immunodeficiency virus” OR “acquired immunodeficiency syndrome” OR malaria OR anemia OR anaemia OR sickle cell OR hemoglobinopath\* OR malnourished OR malnutrition OR undernutrition     |     |
-|     | **Search 5: Humans**                                                                                                                                                                                    |     |
-|     | **Humans**                                                                                                                                                                                              |     |
++------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+
+|      | **Search 1: Non-typhoidal Salmonella**                                                                                                                                                                  |      |
++======+=========================================================================================================================================================================================================+======+
+|      | salmonella\* OR salmonellosis OR typhimurium OR enteritidis OR nontyph\* OR non-typh\* OR "Salmonella newport" OR "Salmonella heidelberg" OR NTS OR iNTS                                                |      |
++------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+
+|      | **Search 2: Invasive disease**                                                                                                                                                                          |      |
++------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+
+|      | bacteraemi\* OR bacteremi\* OR septicaemi\* OR septicemi\* OR septic OR sepsis OR blood isolate OR bloodstream OR invasive                                                                              |      |
++------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+
+|      | **Search 3: Epidemiology**                                                                                                                                                                              |      |
++------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+
+|      | incidence OR prevalence OR host factors OR host OR “relative host” OR “host ratio” OR burden OR proportion OR attributable OR fraction OR mortality OR death OR fatality OR predictor OR determinant OR |      |
++------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+
+|      | **Search 4: Host Factors**                                                                                                                                                                              |      |
++------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+
+|      | HIV OR “human immunodeficiency virus” OR “acquired immunodeficiency syndrome” OR malaria OR anemia OR anaemia OR sickle cell OR hemoglobinopath\* OR malnourished OR malnutrition OR undernutrition     |      |
++------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+
+|      | **Search 5: Humans**                                                                                                                                                                                    |      |
++------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+
+|      | **Humans**                                                                                                                                                                                              |      |
++------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+
 
 **Scopus search strategy**
 
-|     | TITLE-ABS-KEY                                                                                                                                                                                        |     |
-|-----|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|
-|     | **Search 1: Non-typhoidal Salmonella**                                                                                                                                                               |     |
-|     | salmonella\* OR salmonellosis OR typhimurium OR enteritidis OR nontyph\* OR non-typh\* OR "Salmonella newport" OR "Salmonella heidelberg" OR NTS OR iNTS                                             |     |
-|     | **Search 2: Invasive disease**                                                                                                                                                                       |     |
-|     | bacteraemi\* OR bacteremi\* OR septicaemi\* OR septicemi\* OR septic OR sepsis OR blood isolate OR bloodstream OR invasive                                                                           |     |
-|     | **Search 3: Epidemiology**                                                                                                                                                                           |     |
-|     | incidence OR prevalence OR host factors OR host OR “relative host” OR “host ratio” OR burden OR proportion OR attributable OR fraction OR mortality OR death OR fatality OR predictor OR determinant |     |
-|     | **Search 4: Host Factors**                                                                                                                                                                           |     |
-|     | HIV OR “human immunodeficiency virus” OR “acquired immunodeficiency syndrome” OR malaria OR anemia OR anaemia OR sickle cell OR hemoglobinopath\* OR malnourished OR malnutrition OR undernutrition  |     |
-|     | Additional restrictions                                                                                                                                                                              |     |
-|     | LIMIT-TO ( SUBJAREA,"MEDI" ) OR LIMIT-TO ( SUBJAREA,"IMMU" ) OR LIMIT-TO ( SUBJAREA,"BIOC" )                                                                                                         |     |
++------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+
+|      | TITLE-ABS-KEY                                                                                                                                                                                        |      |
++======+======================================================================================================================================================================================================+======+
+|      | **Search 1: Non-typhoidal Salmonella**                                                                                                                                                               |      |
++------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+
+|      | salmonella\* OR salmonellosis OR typhimurium OR enteritidis OR nontyph\* OR non-typh\* OR "Salmonella newport" OR "Salmonella heidelberg" OR NTS OR iNTS                                             |      |
++------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+
+|      | **Search 2: Invasive disease**                                                                                                                                                                       |      |
++------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+
+|      | bacteraemi\* OR bacteremi\* OR septicaemi\* OR septicemi\* OR septic OR sepsis OR blood isolate OR bloodstream OR invasive                                                                           |      |
++------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+
+|      | **Search 3: Epidemiology**                                                                                                                                                                           |      |
++------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+
+|      | incidence OR prevalence OR host factors OR host OR “relative host” OR “host ratio” OR burden OR proportion OR attributable OR fraction OR mortality OR death OR fatality OR predictor OR determinant |      |
++------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+
+|      | **Search 4: Host Factors**                                                                                                                                                                           |      |
++------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+
+|      | HIV OR “human immunodeficiency virus” OR “acquired immunodeficiency syndrome” OR malaria OR anemia OR anaemia OR sickle cell OR hemoglobinopath\* OR malnourished OR malnutrition OR undernutrition  |      |
++------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+
+|      | Additional restrictions                                                                                                                                                                              |      |
++------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+
+|      | LIMIT-TO ( SUBJAREA,"MEDI" ) OR LIMIT-TO ( SUBJAREA,"IMMU" ) OR LIMIT-TO ( SUBJAREA,"BIOC" )                                                                                                         |      |
++------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+
 
 **Web of science search strategy**
 
-|     | **Search 1: Non-typhoidal Salmonella**                                                                                                                                                                  |     |
-|-----|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|
-|     | salmonella\* OR salmonellosis OR typhimurium OR enteritidis OR nontyph\* OR non-typh\* OR "Salmonella newport" OR "Salmonella heidelberg" OR NTS OR iNTS                                                |     |
-|     | **Search 2: Invasive disease**                                                                                                                                                                          |     |
-|     | bacteraemi\* OR bacteremi\* OR septicaemi\* OR septicemi\* OR septic OR sepsis OR blood isolate OR bloodstream OR invasive                                                                              |     |
-|     | **Search 3: Epidemiology**                                                                                                                                                                              |     |
-|     | incidence OR prevalence OR host factors OR host OR “relative host” OR “host ratio” OR burden OR proportion OR attributable OR fraction OR mortality OR death OR fatality OR predictor OR determinant OR |     |
-|     | **Search 4: Host Factors**                                                                                                                                                                              |     |
-|     | HIV OR “human immunodeficiency virus” OR “acquired immunodeficiency syndrome” OR malaria OR anemia OR anaemia OR sickle cell OR hemoglobinopath\* OR malnourished OR malnutrition OR undernutrition     |     |
-|     | **Search 5: Humans**                                                                                                                                                                                    |     |
-|     | infant OR child OR children OR adolescent OR adult OR patient OR human OR community OR participant OR volunteer OR subject OR incidence OR hospital OR men OR women OR man OR woman                     |     |
++------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+
+|      | **Search 1: Non-typhoidal Salmonella**                                                                                                                                                                  |      |
++======+=========================================================================================================================================================================================================+======+
+|      | salmonella\* OR salmonellosis OR typhimurium OR enteritidis OR nontyph\* OR non-typh\* OR "Salmonella newport" OR "Salmonella heidelberg" OR NTS OR iNTS                                                |      |
++------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+
+|      | **Search 2: Invasive disease**                                                                                                                                                                          |      |
++------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+
+|      | bacteraemi\* OR bacteremi\* OR septicaemi\* OR septicemi\* OR septic OR sepsis OR blood isolate OR bloodstream OR invasive                                                                              |      |
++------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+
+|      | **Search 3: Epidemiology**                                                                                                                                                                              |      |
++------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+
+|      | incidence OR prevalence OR host factors OR host OR “relative host” OR “host ratio” OR burden OR proportion OR attributable OR fraction OR mortality OR death OR fatality OR predictor OR determinant OR |      |
++------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+
+|      | **Search 4: Host Factors**                                                                                                                                                                              |      |
++------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+
+|      | HIV OR “human immunodeficiency virus” OR “acquired immunodeficiency syndrome” OR malaria OR anemia OR anaemia OR sickle cell OR hemoglobinopath\* OR malnourished OR malnutrition OR undernutrition     |      |
++------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+
+|      | **Search 5: Humans**                                                                                                                                                                                    |      |
++------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+
+|      | infant OR child OR children OR adolescent OR adult OR patient OR human OR community OR participant OR volunteer OR subject OR incidence OR hospital OR men OR women OR man OR woman                     |      |
++------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+
 
 ### Data selection process and extraction
 
@@ -205,10 +280,13 @@ The quality of individual studies was assessed using the modified Newcastle-Otta
 
 Odds ratios (OR) for odds of iNTS for each host factor group were calculated from 2 by 2 tables, as was the prevalence of exposure in cases and controls, using the formula OR = A x D/ B X C.
 
-|     | **Exposure**             |     | **iNTS Positive** |     | **iNTS Negative** |     |
-|-----|--------------------------|-----|-------------------|-----|-------------------|-----|
-|     | **Host factor Positive** |     | A                 |     | B                 |     |
-|     | **Host factor Negative** |     | C                 |     | D                 |     |
++--------+--------------------------+--------+-------------------+--------+-------------------+--------+
+|        | **Exposure**             |        | **iNTS Positive** |        | **iNTS Negative** |        |
++========+==========================+========+===================+========+===================+========+
+|        | **Host factor Positive** |        | A                 |        | B                 |        |
++--------+--------------------------+--------+-------------------+--------+-------------------+--------+
+|        | **Host factor Negative** |        | C                 |        | D                 |        |
++--------+--------------------------+--------+-------------------+--------+-------------------+--------+
 
 *Example layout of 2 x2 table for data extraction of raw data for analysis*
 

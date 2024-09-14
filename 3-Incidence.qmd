@@ -49,23 +49,23 @@ Since 1998, the Malawi Liverpool Wellcome (MLW) Research Programme has provided 
 
 Diagnostic microbiology was carried out at the MLW laboratories in Blanytre, Malawi, according to standard microbiological techniques \[\@cowanan1993\]. Blood cultures were collected into adult aerobic and paediatric anaerobic bottles (BACT/ALERT, Biomerieux), and analysed using automated systems. Cerebrospinal fluid (CSF) was cultured at 37.5oC on sheep blood (Oxoid, Category number: CMOO55) and chocolate agar (Oxoid, Category number: CMOO55) for 48 hours in a carbon dioxide incubator (LEEC incubator; Make/Model: GA 2000/2010). Gram-negative colonies were subcultured onto MacConkey (Oxoid, Category number: CM0007) and sheep blood agar. Biochemical profiles using API 20E or 10S were used to identify Salmonella, and serotyping was carried out using the White-Kauffman classification using polyvalent O and H, O4, O6, O7, O9, Hd, Hg, Hm and Vi antisera (Pro-Lab Diagnostics).
 
-Disc diffusion using ampicillin, chloramphenicol, cotrimoxazole, cefpodoxime, and ciprofloxacin was used to determine antimicrobial susceptibility as described in \[\@wilson_incidence_2022, \@feasey_three_2015\]. Since 2009, isolates found to be resistant to ciprofloxacin or ceftriaxone by disc testing have had Etests (bioMérieux) performed. Fully susceptible isolates were defined as susceptiblity to ampicillin, chloramphenicol, cotrimoxazole, cefpodoxime, and ciprofloxacin and multidrug resistant (MDR) if resistant to ampicillin, cotrimoxazole, and chloramphenicol. Before October 2010, blood culture resulted were recorded by hand, then double-entered into a validated database. Following 2010, results have been directly entered into Prelink (Prelink V3.0.2429.0), laboratory information management system.
+Disc diffusion using ampicillin, chloramphenicol, cotrimoxazole, cefpodoxime, and ciprofloxacin was used to determine antimicrobial susceptibility as described in \[\@wilson_incidence_2022, \[\@feasey_three_2015\]. Since 2009, isolates found to be resistant to ciprofloxacin or ceftriaxone by disc testing have had Etests (bioMérieux) performed. Fully susceptible isolates were defined as susceptiblity to ampicillin, chloramphenicol, cotrimoxazole, cefpodoxime, and ciprofloxacin and multidrug resistant (MDR) if resistant to ampicillin, cotrimoxazole, and chloramphenicol. Before October 2010, blood culture resulted were recorded by hand, then double-entered into a validated database. Following 2010, results have been directly entered into Prelink (Prelink V3.0.2429.0), laboratory information management system (LIMS). For additional information on age granularity for children under 5 years, as ages above 1 year are only captured on LIMS in whole years, scanned paper blood culture submission forms were manually searched, and additional information on ages between whole years were extracted where available from 2015 onwards.
 
 ### Statistical methods
 
 #### Incidence of invasive non-typhoidal salmonella
 
-Data analysis was conducted in the r statistical environment [@r_core_team_r_2018]. Incidence was calculated using the sum of NTS positive blood and CSF cultures for a given year over the mid-year population estimate for that year.
+Data analysis was conducted in the r statistical environment [@r_core_team_r_2018]. Incidence was calculated using the sum of NTS positive blood and CSF cultures for a given year over the mid-year population estimate for that year. Due to reporting bias for childrens ages (more likely to be reported nearest to the closest whole year), and the required granularity of data for incidence in the under 5 years, numbers for each year above the age of 12 months were redistributed equally across the 12 month age groups between each whole year of age and added to the existing numbers already in those month categories and for the whole year months, double the shared value was given. For example the count in months 12 (and similarly for 24,36,48,60) was divided by 13 and the resultant value was added to the existing numbers in each of the subsequent 11 month categories, and remaining value for month 12 was multiplied by two to be comparable to the other months that had additional values to be added. In the case of month 12 only as this was around the expected peak of disease, the original count for month 12 divided by 13 and multiplied by 2 appeared artificially low, but appeared valid for the other months. As the age in months were reported well for months 1-11, the proportion of the overall count that was assigned to the 12 month category was adjusted to fit the predicted incidence from the subsequent months, to create a smooth fit.
 
 To estimate incidence for children under 5 years, we selected a negative binomial distribution to account for overdispersion, to model monthly counts of NTS cases as a function of age, with b-splines fitted for smoothing.
 
 Interrupted Time-Series Model:
 
-$$ log(iNTS cases) = ~ \alpha + \beta_{2}*bspline(age, df=8) + log(population) $$Due to reporting bias for childrens ages (more likely to be reported nearest to the closest whole year), and the required granularity of data for incidence in the under 5 years, numbers for each year above the age of 12 months were redistributed equally across the 12 month age groups between each whole year of age.
+$$ log(iNTS cases) = ~ \alpha + \beta_{2}*bspline(age, df=8) + log(population) $$
 
 #### Blood culture collection rates in Queen Elizabeth Hospital pre and post COVID pandemic in Malawi
 
-An interrupted time-series analysis was conducted to measure the impact of COVID-19 on rates of blood culture collection. A state of emergency was declared by the Malawian government and COVID-19 preventive measures were put in place. It was assumed that the measures taken in response to the pandemic would cause both an immediate “step change” change in blood culture collection numbers, and a “slope change” that may lead to a different monthly pattern of blood culture numbers compared to pre-COVID. These same assumptions were used for both the blood culture collection and health care attendance models. A negative binomial distribution was used to account for overdispersion, to model monthly counts of paediatric blood cultures taken as a function of month, COVID-19, and month-given-COVID (Model 1). Data from January 2016 onwards was used to gain the best estimate of baseline blood collection rates pre-COVID-19. Due to non-linear patterns in blood collections by season, to improve model fit models were generated with harmonic terms to account for seasonal peaks. Model selection was based on Akaike information criterion (AIC) using the AICcmodavg r package [@mazerolle_mj_aiccmodavg_2023]. Autocorrelation plots of residuals were plotted to assess residual seasonal patterns unaccounted for by the model.
+An interrupted time-series analysis was conducted to measure the impact of COVID-19 on rates of blood culture collection. A state of emergency was declared by the Malawian government and COVID-19 preventive measures were put in place. It was assumed that the measures taken in response to the pandemic would cause both an immediate “step change” change in blood culture collection numbers, and a “slope change” that may lead to a different monthly pattern of blood culture numbers compared to pre-COVID. These same assumptions were used for both the blood culture collection and health care attendance models. A negative binomial distribution was used to account for overdispersion, to model monthly counts of paediatric blood cultures taken as a function of month, COVID-19, and month-given-COVID (Model 1). Data from January 2016 onwards was used to gain the best estimate of baseline blood collection rates pre-COVID-19, and predict the counterfactual typhoid incidence estimates in the hypothetical scenario where COVID-19 had not occured. Due to non-linear patterns in blood collections by season, to improve model fit models were generated with harmonic terms to account for seasonal peaks. Model selection was based on Akaike information criterion (AIC) using the AICcmodavg r package [@mazerolle_mj_aiccmodavg_2023]. Autocorrelation plots of residuals were plotted to assess residual seasonal patterns unaccounted for by the model.
 
 Interrupted Time-Series Model (single step-change following onset of COVID in Malawi
 
@@ -75,7 +75,11 @@ Where *BCcount* = expected numbers of blood cultures collected per month, 𝜶 =
 
 #### Salmonella serovar subgroup analysis
 
-Due to high iNTS disease incidence reported from previous studies in children under 5 years, and as this age group is of key interest for vaccine development, subgroup analysis was carried out to estimate age-distributions of iNTS in children under 5 years of age. Analysis was carried out on all Salmonella serovars, and also restricted to the serovars (*S*. typhimurium and *S*. enteritidis) that are the predominant causes of invasive NTS disease globally [@marchello_incidence_2021], and are the serovars vaccines in current development are targeted against [@gvgh_advancing_2019] .
+Due to high iNTS disease incidence reported from previous studies in children and as this age group is of key interest for vaccine development, subgroup analysis was carried out to estimate age-distributions of iNTS in children under 5 years of age. Analysis was carried out on all Salmonella serovars, and also restricted to the serovars (*S*. typhimurium and *S*. enteritidis) that are the predominant causes of invasive NTS disease globally [@marchello_incidence_2021], and are the serovars vaccines in current development are targeted against [@gvgh_advancing_2019] .
+
+#### Antimicrobial resistance
+
+Antimicrobial resistance (AMR) was analysed for children under 10 years between 2010-2024 based on data availability. Antimicrobial resistance will be categorised as ‘fully susceptible’ (S) if susceptible to these 5 antimicrobials (cotrimoxazole, ampicillin, chloramphenicol, cefpodoxime, ciprofloxacin) and resistant (R) if had resistance to 1 or 2 of these antimicrobials, and multidrug resistant (MDR) if resistant to ampicillin, cotrimoxazole, and chloramphenicol.
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 
@@ -375,11 +379,11 @@ Spp04_per <- round((Spp04$Total_iNTS/S04_sum$total)*100,digits = 1)
 
 ### Overall incidence
 
-Data on NTS blood and CSF cultures was available from `{r} print(stdate)` to `{r} print(endate)`. During this period there were `{r} print(prettyNum(as.integer(sum_stats$total), big.mark=","))` cases of iNTS, including `{r} print(prettyNum(sum_stats$salmonella_typhimurium,big.mark=","))` S.typhimurium, `{r} print(prettyNum(sum_stats$salmonella_enteritidis,big.mark=","))` *S*.enteritidis, and `{r} sum_stats$salmonella_species` *S*.species (@tbl-sumtab). The total Blantyre population was `{r} print(prettyNum(as.integer(startpop),big.mark=","))` in `{r} print(startyr)` and `{r} print(prettyNum(as.integer(endpop),big.mark=","))` in `{r} print(endyr)`. During this period, the total numbers of NTS isolated from sterile sites ranged from `{r} print(initinc1996$Total)` with a corresponding minimum incidence of `{r} print(initinc1996$Min_inc)` per 100,000 person-years in `{r} print(initinc1996$Year)`, to `{r} print(hicount)` isolates corresponding to `{r} print(hiinc)` per 100,000 person-years minimum incidence in `{r} print(hiyr$Year)`, and to `{r} print(lowcount)` isolates corresponding to `{r} print(lowinc)` per 100,000 person-years minimum incidence in `{r} print(lowyr$Year)` (@tbl-sumtab, @fig-NoPeriod, @fig-HistInc A).
+Data on NTS blood and CSF cultures was available from `{r} print(stdate)` to `{r} print(endate)`. During this period there were `{r} print(prettyNum(as.integer(sum_stats$total), big.mark=","))` cases of iNTS, including `{r} print(prettyNum(sum_stats$salmonella_typhimurium,big.mark=","))` S.typhimurium, `{r} print(prettyNum(sum_stats$salmonella_enteritidis,big.mark=","))` *S*.enteritidis, and `{r} sum_stats$salmonella_species` *S*.species (@tbl-sumtab). The total Blantyre population was `{r} print(prettyNum(as.integer(startpop),big.mark=","))` in `{r} print(startyr)` and `{r} print(prettyNum(as.integer(endpop),big.mark=","))` in `{r} print(endyr)`. During this period, the total numbers of NTS isolated from sterile sites ranged from `{r} print(initinc1996$Total)` with a corresponding minimum incidence of `{r} print(initinc1996$Min_inc)` per 100,000 PYO observation (PYO) in `{r} print(initinc1996$Year)`, to `{r} print(hicount)` isolates corresponding to `{r} print(hiinc)` per 100,000 PYO minimum incidence in `{r} print(hiyr$Year)`, and to `{r} print(lowcount)` isolates corresponding to `{r} print(lowinc)` per 100,000 PYO minimum incidence in `{r} print(lowyr$Year)` (@tbl-sumtab, @fig-NoPeriod, @fig-HistInc A).
 
 ### Age-stratified incidence
 
-Stratifying by age group, there were `{r} print(prettyNum(count0_15$Total_iNTS,big.mark=","))` NTS blood and CSF isolates collected from children aged 0 - 15 years of age, of which `{r} print(prettyNum(count0_4$Total_iNTS,big.mark=","))` were from children under 5 years within the study period `{r} print(stdate)` to `{r} print(endate)`. There were `{r} print(prettyNum(count15_45$Total_iNTS,big.mark=","))` NTS isolates from adults 15 - 45 years, and `{r} print(count45_90$Total_iNTS)` from adults 45 - 90 years of age during the same period. Data for age was missing for a total of `{r} print(prettyNum(totmiss$tot_miss, big.mark=","))` NTS isolates. The distribution of age categories and missing ages by year are shown in @fig-NoPeriod, panel C. The year with the highest number of missing ages for isolates was `{r} print(NomissYrMax_n$Total_iNTSmis)` isolates (`{r} print(NomissYrMax_n$perc_miss)` %) in `{r} print(NomissYrMax$Year)` the year with the lowest number of missing age values was `{r} print(NomissYrMin_n$Total_iNTSmis)` (`{r} print(NomissYrMin_n$perc_miss)` %) isolates in `{r} print(NomissYrMin$Year)` (@fig-NoPeriod, C). Where data was available for age; there were `{r} print(Age04inc1996$x00_04_count)` NTS isolates with a minimum incidence of `{r} print(Age04inc1996$Inc00_04)` per 100,000 person-years for children aged 0 - 4 years in `{r} print(Age04inc1996$Year)`, rising to `{r} print(Age04incMax$x00_04_count)` NTS isolates and incidence of `{r} print(Age04incMax$Inc00_04)` in `{r} print(Age04incMax$Year)`, and `{r} print(Age04incMin$x00_04_count)` NTS isolates and incidence of `{r} print(Age04incMin$Inc00_04)` in `{r} print(Age04incMin$Year)`(@fig-HistInc B). Adults aged 30 - 50 years had `{r} print(Age3050inc1998$x30_50_count)` NTS isolates and incidence of `{r} print(Age3050inc1998$Inc30_50)` per 100,000 person-years in `{r} print(Age3050inc1998$Year)`, `{r} print(Age3050incMax$x30_50_count)` NTS isolates and incidence of `{r} print(Age3050incMax$Inc30_50)` per 100,000 person-years in `{r} print(Age3050incMax$Year)`, and `{r} print(Age3050incMin$x30_50_count)` NTS isolates and incidence of `{r} print(Age3050incMin$Inc30_50)` per 100,000 person-years in `{r} print(Age3050incMin$Year)`. Of all NTS isolates in the youngest age group (0 - 4 years); S.typhimurium accounted for `{r} print(STm04$Total_iNTS)` (`{r} print(STm04_per)`%), S.enteritidis for `{r} print(SEn04$Total_iNTS)` (`{r} print(SEn04_per)`%) and S.species for `{r} print(Spp04$Total_iNTS)` (`{r} print(Spp04_per)`%) (@fig-NoPeriod D).
+Stratifying by age group, there were `{r} print(prettyNum(count0_15$Total_iNTS,big.mark=","))` NTS blood and CSF isolates collected from children aged 0 - 15 years of age, of which `{r} print(prettyNum(count0_4$Total_iNTS,big.mark=","))` were from children under 5 years within the study period `{r} print(stdate)` to `{r} print(endate)`. There were `{r} print(prettyNum(count15_45$Total_iNTS,big.mark=","))` NTS isolates from adults 15 - 45 years, and `{r} print(count45_90$Total_iNTS)` from adults 45 - 90 years of age during the same period. Data for age was missing for a total of `{r} print(prettyNum(totmiss$tot_miss, big.mark=","))` NTS isolates. The distribution of age categories and missing ages by year are shown in @fig-NoPeriod, panel C. The year with the highest number of missing ages for isolates was `{r} print(NomissYrMax_n$Total_iNTSmis)` isolates (`{r} print(NomissYrMax_n$perc_miss)` %) in `{r} print(NomissYrMax$Year)` the year with the lowest number of missing age values was `{r} print(NomissYrMin_n$Total_iNTSmis)` (`{r} print(NomissYrMin_n$perc_miss)` %) isolates in `{r} print(NomissYrMin$Year)` (@fig-NoPeriod, C). Where data was available for age; there were `{r} print(Age04inc1996$x00_04_count)` NTS isolates with a minimum incidence of `{r} print(Age04inc1996$Inc00_04)` per 100,000 PYO for children aged 0 - 4 years in `{r} print(Age04inc1996$Year)`, rising to `{r} print(Age04incMax$x00_04_count)` NTS isolates and incidence of `{r} print(Age04incMax$Inc00_04)` in `{r} print(Age04incMax$Year)`, and `{r} print(Age04incMin$x00_04_count)` NTS isolates and incidence of `{r} print(Age04incMin$Inc00_04)` in `{r} print(Age04incMin$Year)`(@fig-HistInc B). Adults aged 30 - 50 years had `{r} print(Age3050inc1998$x30_50_count)` NTS isolates and incidence of `{r} print(Age3050inc1998$Inc30_50)` per 100,000 PYO in `{r} print(Age3050inc1998$Year)`, `{r} print(Age3050incMax$x30_50_count)` NTS isolates and incidence of `{r} print(Age3050incMax$Inc30_50)` per 100,000 PYO in `{r} print(Age3050incMax$Year)`, and `{r} print(Age3050incMin$x30_50_count)` NTS isolates and incidence of `{r} print(Age3050incMin$Inc30_50)` per 100,000 PYO in `{r} print(Age3050incMin$Year)`. Of all NTS isolates in the youngest age group (0 - 4 years); S.typhimurium accounted for `{r} print(STm04$Total_iNTS)` (`{r} print(STm04_per)`%), S.enteritidis for `{r} print(SEn04$Total_iNTS)` (`{r} print(SEn04_per)`%) and S.species for `{r} print(Spp04$Total_iNTS)` (`{r} print(Spp04_per)`%) (@fig-NoPeriod D).
 
 ```{r echo=FALSE, results='hide', warning=FALSE, message=FALSE, fig.align = "left"}
 #| fig-height: !expr size_list$fig_height
@@ -886,15 +890,37 @@ Risk2021_2024a <- subgrp(iNTS_U5_1996_2024_sumYra,iNTS_U5_1996_2024_sumYra$YearB
 
 SalmAllYra <- bind_rows(Risk1996_2000a, Risk2001_2005a, Risk2006_2010a,Risk2011_2015a,Risk2016_2020a,Risk2021_2024a)
 # plotfunc(SalmAllYr,SalmAllYr$YearBand3,"Yr")
+export(SalmAllYr, here("data", "3_data", "SalmAllYr.csv"))
+export(SalmAllYra, here("data", "3_data", "SalmAllYr.csv"))
+
+sumtab_all <- SalmAllYr %>% 
+  mutate(ageyr = cut(agemth_rnd, seq(0,60,12))) %>% 
+  group_by(YearBand3, ageyr) %>% 
+  summarise(count = sum(count, na.rm=T),
+            risk = mean(risk, na.rm = T),
+            risk_pred = mean(risk_pred, na.rm = T),
+            risk_low = mean(risk_low, na.rm = T),
+            risk_high = mean(risk_high, na.rm = T)) %>% 
+  ungroup()
+            
+sumtab_vac <- SalmAllYra %>% 
+  mutate(ageyr = cut(agemth_rnd, seq(0,60,12))) %>% 
+  group_by(YearBand3, ageyr) %>% 
+  summarise(count = sum(count, na.rm=T),
+            risk = mean(risk, na.rm = T),
+            risk_pred = mean(risk_pred, na.rm = T),
+            risk_low = mean(risk_low, na.rm = T),
+            risk_high = mean(risk_high, na.rm = T)) %>% 
+  ungroup()
 
 ## All serovars
 SalmAllYr <- SalmAllYr %>% mutate(across(where(is.numeric), round, 2))
-peakInc <- SalmAllYr %>% group_by(YearBand3) %>% slice_max(risk_pred) %>% ungroup()
-meanPeakAge <- round(mean(peakInc$midage), digits=1)
+peakInc <- SalmAllYr %>% group_by(YearBand3) %>% slice_max(risk_pred) %>% ungroup() %>% mutate(midage = ifelse(midage==0.25, NA, midage))
+meanPeakAge <- round(mean(peakInc$midage, na.rm=T), digits=1)
 PeakAgeLow <- peakInc %>% slice_min(midage)
 PeakAgeHi <- peakInc %>% slice_max(midage)
 PeakIncLow <- peakInc %>% slice_min(risk_pred)
-PeakIncHi <- peakInc %>% slice_max(risk_pred)
+PeakIncHi <- peakInc %>% slice_max(risk_pred, with_ties = FALSE)
 
 neoInc <- SalmAllYr %>% filter(agemth_rnd==0) %>% mutate(midage = round(midage*30.25, digits=2))
 meanNeoAge <- round(mean(neoInc$midage), digits=1)
@@ -914,12 +940,12 @@ troughIncHi <- troughInc %>% slice_max(risk_pred)
 SalmAllYra <- SalmAllYra %>% mutate(across(where(is.numeric), round, 2))
 peakInca <- SalmAllYra %>% group_by(YearBand3) %>% slice_max(risk_pred) %>% ungroup()
 meanPeakAgea <- round(mean(peakInca$midage), digits=1)
-PeakAgeLowa <- peakInca %>% slice_min(midage)
-PeakAgeHia <- peakInca %>% slice_max(midage)
-PeakIncLowa <- peakInca %>% slice_min(risk_pred)
-PeakIncHia <- peakInca %>% slice_max(risk_pred)
+PeakAgeLowa <- peakInca %>% slice_min(midage, with_ties = FALSE)
+PeakAgeHia <- peakInca %>% slice_max(midage, with_ties = FALSE)
+PeakIncLowa <- peakInca %>% slice_min(risk_pred, with_ties = FALSE)
+PeakIncHia <- peakInca %>% slice_max(risk_pred, with_ties = FALSE)
 
-neoInca <- SalmAllYra %>% filter(agemth_rnd==0) %>% mutate(midage = round(midage*30.25, digits=2))
+neoInca <- SalmAllYra %>% filter(agemth_rnd==0) %>% mutate(midage = round(midage*30.25, digits=2)) %>% ungroup()
 meanNeoAgea <- round(mean(neoInca$midage), digits=1)
 NeoAgeLowa <- neoInca %>% slice_min(midage)
 NeoAgeHia <- neoInca %>% slice_max(midage)
@@ -930,8 +956,19 @@ troughInca <- SalmAllYra %>% group_by(YearBand3) %>% slice_max(risk_pred) %>% un
 meantroughAgea <- round(mean(troughInca$midage), digits=1)
 troughAgeLowa <- troughInca %>% slice_min(midage)
 troughAgeHia <- troughInca %>% slice_max(midage)
-troughIncLowa <- troughInc %>% slice_min(risk_pred)
+troughIncLowa <- troughInc %>% slice_min(risk_pred, with_ties = FALSE)
 troughIncHia <- troughInca %>% slice_max(risk_pred)
+
+sumtab_all <- sumtab_all %>% mutate(across(where(is.numeric), round, 2))
+Inc012_all <- sumtab_all %>% filter(ageyr=="(0,12]")
+Inc012Low_all <- Inc012_all %>% slice_min(risk_pred)
+Inc012Hi_all <- Inc012_all %>% slice_max(risk_pred, with_ties = FALSE)
+
+sumtab_vac <- sumtab_vac %>% mutate(across(where(is.numeric), round, 2))
+Inc012_vac <- sumtab_vac %>% filter(ageyr=="(0,12]")
+Inc012Low_vac <- Inc012_vac %>% slice_min(risk_pred)
+Inc012Hi_vac <- Inc012_vac %>% slice_max(risk_pred, with_ties = FALSE)
+
 
 ## Total BC collected
 CSF_BC <- import(here("data","3_data", "BC_CSF_all_neg_pos_2015_JUNE2022.xlsx")) %>% 
@@ -960,7 +997,7 @@ CSF_BC_sumyr <- CSF_BC %>%
   summarise(total = n()) %>% 
   ungroup()
 
-peakBCLow <- CSF_BC_summ %>% slice_min(total)
+peakBCLow <- CSF_BC_summ %>% slice_min(total, with_ties = F)
 peakBCHi <- CSF_BC_summ %>% slice_max(total)
 peakBCLowY <- CSF_BC_sumyr %>% slice_min(total)
 peakBCHiY <- CSF_BC_sumyr %>% slice_max(total)
@@ -976,23 +1013,65 @@ lowBCHi <- CSF_BC_sumyr %>% slice_max(total)
 \KOMAoptions{usegeometry, paper=portrait,pagesize}
 \recalctypearea
 ```
+```{r echo=FALSE, warning=FALSE, ft.align = "centre", ft.width = 7, out.width = "7.5in"}
+#| label: tbl-Inc012all
+#| tbl-cap: Non-typhoidal salmonella incidence in children 0-12 months from blood culture isolates from Queen Elizabeth Central Hospital (QECH), 1996-2024, raw incidence and model fitted predictions (smoothed splines by age) for all salmonella serovars
+
+Inc012_all %>% 
+  flextable() %>% 
+  fontsize(size=8, part = "body") %>% 
+  fontsize(size=8, part = "header") %>% 
+  bold(i = 1, bold = TRUE, part = "header") %>%        
+  set_header_labels(
+    YearBand3 = "Year Period",
+    count = "N",
+    ageyr = "Age in months",
+    risk = "Crude Incidence", 
+    risk_pred = "Crude incidence predicted", 
+    risk_low = "Lower 95% CI", 
+    risk_high = "Upper 95% CI")
+
+```
+
+```{r echo=FALSE, warning=FALSE, ft.align = "centre", ft.width = 7, out.width = "7.5in"}
+#| label: tbl-Inc012vac
+#| tbl-cap: Non-typhoidal salmonella incidence in children 0-12 months from blood culture isolates from Queen Elizabeth Central Hospital (QECH), 1996-2024, raw incidence and model fitted predictions (smoothed splines by age) for all salmonella serovars
+
+Inc012_vac %>% 
+  flextable() %>% 
+  fontsize(size=8, part = "body") %>% 
+  fontsize(size=8, part = "header") %>% 
+  bold(i = 1, bold = TRUE, part = "header") %>%   
+   set_header_labels(
+    YearBand3 = "Year Period",
+    count = "N",
+    ageyr = "Age in months",
+    risk = "Crude Incidence", 
+    risk_pred = "Crude incidence predicted", 
+    risk_low = "Lower 95% CI", 
+    risk_high = "Upper 95% CI")
+
+```
+
 ### Age incidence in children under 5 years
+
 #### All non-typhoidal Salmonella serovars
 
-For children under 5 years of age, predicted incidence of iNTS due to any NTS serovar in the first month of life ranged from `{r} print(NeoIncLow$risk_pred)` (95% CI, `{r} print(NeoIncLow$risk_low)` - `{r} print(NeoIncLow$risk_high)`) per 100,000 child-years in `{r} print(NeoIncLow$YearBand3)` to `{r} print(NeoIncHi$risk_pred)` (95% CI, `{r} print(NeoIncHi$risk_low)` - `{r} print(NeoIncHi$risk_high)`) per 100,000 child-years in `{r} print(NeoIncHi$YearBand3)`, with a mean age of `{r} print(meanNeoAge)` days. The estimated peak of iNTS incidence was `{r} print(PeakAgeLow$risk_pred)` (95% CI,`{r} print(PeakAgeLow$risk_pred)` - `{r} print(PeakAgeLow$risk_pred)`) per  100,000 child-years at `{r} print(PeakAgeLow$midage)` months of age in `{r} print(PeakAgeLow$YearBand3)` to `{r} print(PeakIncHi$risk_pred)` (95% CI,`{r} print(PeakIncHi$risk_low)` - `{r} print(PeakIncHi$risk_high)`) at `{r} print(PeakIncHi$midage)` months of age in `{r} print(PeakIncHi$YearBand3)`. The estimated incidence of iNTS at 60 months of age was lowest at `{r} print(troughAgeLow$risk_pred)` (95% CI,`{r} print(troughAgeLow$risk_pred)` - `{r} print(troughAgeLow$risk_pred)`) per 100,000 child-years at `{r} print(troughAgeLow$midage)` months of age in `{r} print(troughAgeLow$YearBand3)` and highest estimated incidence was `{r} print(troughIncHi$risk_pred)` (95% CI,`{r} print(troughIncHi$risk_low)` - `{r} print(troughIncHi$risk_high)`) at `{r} print(troughIncHi$midage)` months of age in `{r} print(troughIncHi$YearBand3)` (@fig-splineInc).
+For children under 5 years of age, predicted incidence of iNTS due to any NTS serovar in the first month of life ranged from `{r} print(NeoIncLow$risk_pred)` (95% CI, `{r} print(NeoIncLow$risk_low)` - `{r} print(NeoIncLow$risk_high)`) per 100,000 child-years observation (CYO) in `{r} print(NeoIncLow$YearBand3)` to `{r} print(NeoIncHi$risk_pred)` (95% CI, `{r} print(NeoIncHi$risk_low)` - `{r} print(NeoIncHi$risk_high)`) per 100,000 CYO in `{r} print(NeoIncHi$YearBand3)`, with a mean age of `{r} print(meanNeoAge)` (`{r} print(NeoAgeLow$midage)` - `{r} print(NeoAgeHi$midage)`) days. The estimated peak of iNTS incidence was `{r} print(PeakAgeLow$risk_pred)` (95% CI,`{r} print(PeakAgeLow$risk_low)` - `{r} print(PeakAgeLow$risk_high)`) per 100,000 CYO in `{r} print(PeakAgeLow$YearBand3)` to `{r} print(PeakIncHi$risk_pred)` (95% CI,`{r} print(PeakIncHi$risk_low)` - `{r} print(PeakIncHi$risk_high)`) in `{r} print(PeakIncHi$YearBand3)`, with a mean age of `{r} print(meanPeakAge)` (`{r} print(PeakAgeLow$midage)` - `{r} print(PeakAgeHi$midage)`). The estimated incidence of iNTS at 60 months of age was lowest at `{r} print(troughAgeLow$risk_pred)` (95% CI,`{r} print(troughAgeLow$risk_low)` - `{r} print(troughAgeLow$risk_high)`) per 100,000 CYO in `{r} print(troughAgeLow$YearBand3)` and highest estimated incidence was `{r} print(troughIncHi$risk_pred)` (95% CI,`{r} print(troughIncHi$risk_low)` - `{r} print(troughIncHi$risk_high)`) in `{r} print(troughIncHi$YearBand3)` (@fig-splineInc). Raw and predicted incidence stratified by 1 year age bands is shown in @tbl-AgeStratInc. For the highest incidence age group children 0 - 12 months the fitted crude incidence was at `{r} print(Inc012Low_all$risk_pred)` (95% CI; `{r} print(Inc012Low_all$risk_low)` - `{r} print(Inc012Low_all$risk_high)`) per 100,000 CYO in `{r} print(Inc012Low_all$YearBand3)`, and lowest `{r} print(Inc012Hi_all$risk_pred)` (95% CI; `{r} print(Inc012Hi_all$risk_low)` - `{r} print(Inc012Hi_all$risk_high)`) per 100,000 CYO in `{r} print(Inc012Hi_all$YearBand3)` [@tbl-Inc012all].
 
-#### Salmonella typhimurium and Salmonella enteriditis
+#### Vaccine targeted serovars: *Salmonella* typhimurium and *Salmonella* enteriditis
 
-When restricted to S.typhimurium & S.enteritidis isolates only in children under 5 years, the predicted incidence in the first month of life ranged from `{r} print(NeoIncLowa$risk_pred)`  (95% CI, `{r} print(NeoIncLowa$risk_low)` - `{r} print(NeoIncLowa$risk_high)`) per 100,000 child-years in `{r} print(NeoIncLowa$YearBand3)` to `{r} print(NeoIncHia$risk_pred)` (95% CI, `{r} print(NeoIncHia$risk_low)` - `{r} print(NeoIncHia$risk_high)`)  per 100,000 child-years in `{r} print(NeoIncHia$YearBand3)`, with a mean age of `{r} print(meanNeoAgea)` days. The estimated peak incidence was `{r} print(PeakAgeLowa$risk_pred)`  per  100,000 child-years at `{r} print(PeakAgeLowa$midage)` months of age in `{r} print(PeakAgeLowa$YearBand3)` to `{r} print(PeakIncHia$risk_pred)` at `{r} print(PeakIncHia$midage)` months of age in `{r} print(PeakIncHia$YearBand3)`. The at 60 months of age was lowest at `{r} print(troughAgeLowa$risk_pred)` (95% CI,`{r} print(troughAgeLowa$risk_pred)` - `{r} print(troughAgeLowa$risk_pred)`) per 100,000 child-years at `{r} print(troughAgeLowa$midage)` months of age in `{r} print(troughAgeLowa$YearBand3)` and highest estimated incidence was `{r} print(troughIncHia$risk_pred)` (95% CI,`{r} print(troughIncHia$risk_low)` - `{r} print(troughIncHia$risk_high)`) at `{r} print(troughIncHia$midage)` months of age in `{r} print(troughIncHia$YearBand3)` (@fig-splineIncStmen).
+When restricted to S.typhimurium & S.enteritidis isolates only in children under 5 years, the predicted incidence in the first month of life ranged from `{r} print(NeoIncLowa$risk_pred)` (95% CI, `{r} print(NeoIncLowa$risk_low)` - `{r} print(NeoIncLowa$risk_high)`) per 100,000 CYO in `{r} print(NeoIncLowa$YearBand3)` to `{r} print(NeoIncHia$risk_pred)` (95% CI, `{r} print(NeoIncHia$risk_low)` - `{r} print(NeoIncHia$risk_high)`) per 100,000 CYO in `{r} print(NeoIncHia$YearBand3)`, with a mean age of `{r} print(meanNeoAgea)` (`{r} print(NeoAgeLowa$midage)` - `{r} print(NeoAgeHia$midage)`) days. The estimated peak incidence was `{r} print(PeakAgeLowa$risk_pred)` (95% CI,`{r} print(PeakAgeLowa$risk_low)` - `{r} print(PeakAgeLowa$risk_high)`) per 100,000 CYO in `{r} print(PeakAgeLowa$YearBand3)` to `{r} print(PeakIncHia$risk_pred)` (95% CI,`{r} print(PeakIncHia$risk_low)` - `{r} print(PeakIncHia$risk_high)`) in `{r} print(PeakIncHia$YearBand3)`, with a mean age of `{r} print(meanPeakAgea)` (`{r} print(PeakAgeLowa$midage)` - `{r} print(PeakAgeHia$midage)`). The at 60 months of age was lowest at `{r} print(troughAgeLowa$risk_pred)` (95% CI,`{r} print(troughAgeLowa$risk_low)` - `{r} print(troughAgeLowa$risk_high)`) per 100,000 CYO in `{r} print(troughAgeLowa$YearBand3)` and highest estimated incidence was `{r} print(troughIncHia$risk_pred)` (95% CI,`{r} print(troughIncHia$risk_low)` - `{r} print(troughIncHia$risk_high)`) in `{r} print(troughIncHia$YearBand3)` (@fig-splineIncStmen). Raw and predicted incidence stratified by 1 year age bands is shown in @tbl-AgeStratInc2. For the highest incidence age group children 0 - 12 months the fitted crude incidence was at `{r} print(Inc012Low_vac$risk_pred)` (95% CI; `{r} print(Inc012Low_vac$risk_low)` - `{r} print(Inc012Low_vac$risk_high)` per 100,000 CYO in `{r} print(Inc012Low_vac$YearBand3)`, and lowest `{r} print(Inc012Hi_vac$risk_pred)` (95% CI; `{r} print(Inc012Hi_vac$risk_low)` - `{r} print(Inc012Hi_vac$risk_high)` per 100,000 CYO in `{r} print(Inc012Hi_vac$YearBand3)` [@tbl-Inc012vac].
 
 ### Blood culture collection and impact of COVID
 
-Age distribution of all collected blood cultures at QECH data was available for 2010 to 2022 (fig-BCColAge). Numbers of blood cultures collected in children in the first year of life ranged from `{r} peakBCLowY$total` in `{r} peakBCLowY$year` to `{r} peakBCHiY$total`  in `{r} peakBCHiY$year`, with the highest numbers collected from neonates (in first 28 days of life) `{r} peakBCLow$total` in `{r} peakBCLow$year` to `{r} peakBCHi$total` in `{r} peakBCLow$year`. The age group with the lowest number of blood cultures collected was `{r} lowBCLow$total` in `{r} lowBCLow$year` to `{r} lowBCHi$total` in `{r} lowBCHi$year`. 
+Age distribution of all collected blood cultures at QECH data was available for 2010 to 2022 (@fig-BCColAge). Numbers of blood cultures collected in children in the first year of life ranged from `{r} peakBCLowY$total` in `{r} peakBCLowY$year` to `{r} peakBCHiY$total` in `{r} peakBCHiY$year`, with the highest numbers collected from neonates (in first 28 days of life) `{r} peakBCLow$total` in `{r} peakBCLow$year` to `{r} peakBCHi$total` in `{r} peakBCLow$year`. The age group with the lowest number of blood cultures collected was `{r} lowBCLow$total` in `{r} lowBCLow$year` to `{r} lowBCHi$total` in `{r} lowBCHi$year`.
 
-Segmented regression, with harmonic terms to account for seasonal trends in blood culture collection, was useed to assess the impact of COVID-19 pandemic on blood culture collection at QECH-MLW, estimating hypothetical counterfactual blood culture collection numbers if there had been no COVID. Between 01 January 2016 and 01 June 2022, a total of 71,346 paediatric blood cultures were collected through the QECH/ MLW blood culture service. Prior to COVID-19 (Jan 2016 - March 2020) there were 50,990 paediatric blood cultures collected, with an increasing trend of 1.4% (1 to 1.7%) per month, peaking at 1785 cases (701.1 per 100,000) in October 2019 with a trough of 529 (218.6 per 100,000) in July 2017. A total of 9831 blood cultures were taken through TyVAC passive surveillance between March 2018 and June 2021, constituting on average 18% (Median 16.5% IQR: 10.5% 25.3% of all blood cultures collected through the QECH-MLW service during this period) with cessation of study activity during the first wave of covid April-August 2020. 	
+A total of 71,346 paediatric blood cultures were collected through the QECH-MLW blood culture service (01 January 2016 - 01 June 2022). Prior to COVID-19 (Jan 2016 - March 2020) there were 50,990 paediatric blood cultures collected, with an increasing rate of 1.4% (1 to 1.7%) per month, peaking at 1785 cases (701.1 per 100,000 PYO) in October 2019 and falling to 529 (218.6 per 100,000 PYO) in July 2017. A total of 9831 blood cultures were taken through TyVAC passive surveillance between March 2018 and June 2021, constituting on average 18% (Median 16.5% IQR: 10.5% 25.3% of all blood cultures collected through the QECH-MLW service during this period) with cessation of study activity during the first wave of COVID-19 April-August 2020.
 
-Following the onset of the COVID-19 pandemic in Malawi (1st April 2020) ¬there was an immediate decrease of 82.7% (95% CI 70.1 to 90%) in blood culture collection rates (figure 2). There was a change in rate of 1.4% (0.5 to 2.3%) per month, resulting in observed blood culture collections rates of 480 and 198 per 100,000 child-years in March and April 2020 respectively, compared to a predicted rates of 589 and 193 per 100,000 in March and April 2020 in the counterfactual scenario of no COVID-19. The case detection rates did not recover during the study period (up to 01 June 2021), with observed rates of 280 and 298 per 10,000 child-years in May and June 2021 respectively, compared to predicted rates of 596 and 570 respectively.
+There was an immediate reduction of 82.7% (95% CI 70.1 to 90%) in blood culture collection rates, from 1st April 2020 (onset of COVID-19 pandemic in Malawi) (@fig-ITS), with a corresponding change in rate of 1.4% (0.5 to 2.3%) per month. Blood culture collections rates of 480 and 198 per 100,000 CYO were observed in March and April 2020 respectively, compared to a predicted rates of 589 and 193 per 100,000 in March and April 2020 in the counterfactual scenario of no COVID-19. The blood culture detection rates did not recover during the study period (up to 01 June 2021), with observed rates of 280 and 298 per 10,000 CYO in May and June 2021 respectively, compared to predicted rates of 596 and 570 respectively.
 
+Between April 2020 and June 2022, there were a total of 20,356 paediatric blood cultures collected, equivalent to an average monthly rate of 286 per 100,000 PYO. Under the counterfactual scenario of no COVID, the model predicts that there would have been 47,194 (45,793 to 48,595) blood cultures collected (equivalent to an average monthly rate of 663 per 10,000 PYO). Therefore, we estimate that 26,838 (25,437 to 28,239) paediatric blood cultures were missed during this period, representing a decrease of 56.9% (95% CI 55.6 to 58.1%) since the onset of COVID (@fig-ITS).
 
 \newpage
 
@@ -1085,8 +1164,6 @@ SalmAllYra %>%
 \KOMAoptions{usegeometry, paper=portrait,pagesize}
 \recalctypearea
 ```
-
-
 ```{r echo=FALSE, results='hide', warning=FALSE, message=FALSE, fig.width=5.5, fig.height=7, fig.align = "left"}
 #| label: fig-BCColAge
 #| fig-cap: Number of paediatric blood cultures collected through the Queen Elizabeth Hospital- Malawi-Liverpool Wellcome Reseach Program by age in years
@@ -1137,6 +1214,17 @@ AMR_paeds_sumMDR_long <- AMR_paeds_sumMDR_p %>%
   pivot_longer(cols = c(MDR, R,S), names_to = "AMR", values_to = "perc.")%>% 
   filter(!is.na(ageband))
 
+ AMR_paeds_sumMDR_longa <- AMR_paeds_sumMDR_long %>% 
+  mutate(across(where(is.numeric), round, 1))
+
+AMR_neoMDR <- AMR_paeds_sumMDR_longa %>% filter(ageband=="<=28d" & AMR=="MDR")
+AMR_neoR <- AMR_paeds_sumMDR_longa %>% filter(ageband=="<=28d" & AMR=="R")
+AMR_neoS <- AMR_paeds_sumMDR_longa %>% filter(ageband=="<=28d" & AMR=="S")
+
+AMR_infMDR <- AMR_paeds_sumMDR_longa %>% filter(ageband=="1-11m" & AMR=="MDR")
+AMR_infR <- AMR_paeds_sumMDR_longa %>% filter(ageband=="1-11m" & AMR=="R")
+AMR_infS <- AMR_paeds_sumMDR_longa %>% filter(ageband=="1-11m" & AMR=="S")
+
 ## By counts
 AMR_paeds_sumMDR_n <- AMR_paeds2 %>% 
   group_by(ageband) %>% 
@@ -1150,6 +1238,14 @@ AMR_paeds_sumMDR_n <- AMR_paeds2 %>%
 AMR_paeds_sumMDR_long_n <- AMR_paeds_sumMDR_n %>% 
   pivot_longer(cols = c(MDR, R,S), names_to = "AMR", values_to = "Total")%>% 
   filter(!is.na(ageband))
+
+AMR_neoMDR_n <- AMR_paeds_sumMDR_long_n %>% filter(ageband=="<=28d" & AMR=="MDR")
+AMR_neoR_n <- AMR_paeds_sumMDR_long_n %>% filter(ageband=="<=28d" & AMR=="R")
+AMR_neoS_n <- AMR_paeds_sumMDR_long_n %>% filter(ageband=="<=28d" & AMR=="S")
+
+AMR_infMDR_n <- AMR_paeds_sumMDR_long_n %>% filter(ageband=="1-11m" & AMR=="MDR")
+AMR_infR_n <- AMR_paeds_sumMDR_long_n %>% filter(ageband=="1-11m" & AMR=="R")
+AMR_infS_n <- AMR_paeds_sumMDR_long_n %>% filter(ageband=="1-11m" & AMR=="S")
 
 ### Organism
 ### By Percent
@@ -1177,15 +1273,27 @@ AMR_paeds_sumOrg_long_n <- AMR_paeds_sumOrg_n %>%
   pivot_longer(cols = c(STm, SEn, Spp), names_to = "Serotype", values_to = "Total") %>% 
   filter(!is.na(ageband))
 
+AMR_paeds_sumOrgSum <- AMR_paeds_sumOrg_n %>% 
+  summarise(
+            STm = sum(STm, na.rm = T),
+            SEn = sum(SEn, na.rm = T),
+            Spp = sum(Spp, na.rm = T),
+            total = STm + SEn + Spp,
+            STm_per = (STm/total)*100,
+            SEn_per = (SEn/total)*100,
+            Spp_per = (Spp/total)*100) %>% 
+  mutate(across(where(is.numeric), round, 1))
+
+
 ```
+
 ### Antimicrobial resistance
 
-Non-typhoidal salmonella serotypes in children 0 - 10 years of age were `{r} print(AMR_paeds_sumOrg_n$STm)`
+Antimicrobial resistance data was available for 2010 - 2022. During this period non-typhoidal salmonella serotypes in children 0 - 10 years of age were `{r} print(AMR_paeds_sumOrgSum$STm)` (`{r} print(AMR_paeds_sumOrgSum$STm_per)`%) for Salmonella typhimurium `{r} print(AMR_paeds_sumOrgSum$SEn)` (`{r} print(AMR_paeds_sumOrgSum$SEn_per)`%) for Salmonella enteritidis, and `{r} print(AMR_paeds_sumOrgSum$Spp)` (`{r} print(AMR_paeds_sumOrgSum$Spp_per)`%) for Salmonella species (@fig-AMR, A,B).
+
+In neonates (age less than or equal to 28 days) there were `{r} AMR_neoMDR_n$Total` (`{r} AMR_neoMDR$perc.` %) multi-drug resistant (MDR) strains; `{r} AMR_neoR_n$Total` (`{r} AMR_neoR$perc.` %) resistant (R) strains, and `{r} AMR_neoS_n$Total` (`{r} AMR_neoS$perc.` %) sensitive (S) strains. In comparison, children between 1 - 11 months `{r} AMR_infMDR_n$Total` (`{r} AMR_infMDR$perc.` %) multi-drug resistant (MDR) strains; `{r} AMR_infR_n$Total` (`{r} AMR_infR$perc.` %) resistant (R) strains, and `{r} AMR_infS_n$Total` (`{r} AMR_infS$perc.` %) sensitive (S) strains (@fig-AMR, C,D).
 
 ```{r echo=FALSE, results='hide', warning=FALSE, message=FALSE, fig.align = "left"}
-# fig.height = 5, fig.width = 5.5, out.width = "6in"
-#| fig-height: !expr size_list$fig_height
-#| fig-width: !expr size_list$fig_width
 #| label: fig-AMR
 #| fig-cap: Antimicrobial resistance in Non-Typhoidal Salmonella isolates in children at QECH, Blantyre. Isolates were described as ‘fully susceptible’ (S) if susceptible to these 5 antimicrobials (cotrimoxazole, ampicillin, chloramphenicol, cefpodoxime, ciprofloxacin) and resistant (R) if had resistance to 1 or 2 of these antimicrobials, and multidrug resistant (MDR) if resistant to ampicillin, cotrimoxazole, and chloramphenicol.
 
@@ -1227,7 +1335,6 @@ p3 <- ggplot(AMR_paeds_sumOrg_p_long, aes(x=ageband, y=perc., fill = Serotype))+
         legend.text = element_text(size = 6),
         legend.title  = element_text(face = "bold", size = 8))
 
-
 p4 <- ggplot(AMR_paeds_sumOrg_long_n, aes(x=ageband, y=Total, fill = Serotype))+
   geom_bar(position="stack", stat="identity")+
   xlab("Age") +
@@ -1268,55 +1375,24 @@ cowplot::plot_grid(p1,p2,p3,p4, labels = "AUTO", label_size = 8)
 #           legend.title  = element_text(face = "bold", size = 8))
 ```
 
+\newpage
+
 ## Discussion
 
-The incidence of invasive non-typhoidal salmonella rose to an epidemic peak in 2002 has been declining since an
+Between 1996 and 2024 estimated incidence of invasive non-typhoidal salmonella through passive blood culture surveillance at QECH-MLW rose to an epidemic peak in 2002 was been steadily declining until 2010 where incidence levelled off to a steady endemic state. Following the COVID-19 pandemic in 2020 there was a further decline. The decline in iNTS has been previously been attributed to public health interventions leading to reductions in HIV and malnutrition prevalence including improved access to anti-retroviral therapy, and community malnutrition programmes [@feasey_modelling_2015]. The relationship with malaria is less clearly directly related with malaria declines; Feasey et al. [@feasey_modelling_2015] found there was an initial decline in malaria slide positivity between 2001 - 2003 at QECH, but then no subsequent sustained decline despite continued iNTS incidence declines. The WHO world malaria report similarly does not show declines in malaria cases in Malawi 2010 - 2022[@worldma]. There is a further decline post the COVID-19 pandemic in 2020. However this was accompanied by a significant decline in healthcare attendance and subsequent blood culture collection in the post-COVID period, which had not fully recovered in the subsequent data collection period to April 2022. In [@dale], we describe a substantial decrease in typhoid detection by 59% (53.9 - 65.8%), likely as a result of declines in health facility attendance and as a result reduced blood culture collection. Reduction in health facility attendances appeared to be driven fear of being infected with SARS-COV2 or conspiracies around being forced to receive a potentially unsafe COVID vaccine [@mzumara_health_2021], [@chaziya_covid-19_2021, @metheney_erica_lust_ellen_dulani_boniface_ahsan_jansson_cecilia_ferree_karen_harris_adam_kao_kristen_covid-19_2020], which has been documented across other settings throughout the pandemic [@quadros_s_et_al_fear_2021]. In addition rises in bus fares from government mandated reduction in vehicle capacity to respect social distancing, made it unaffordable for some people to get to health facilities. It is likely that COVID-19 had a similar impact on detection for iNTS. It has been argued that due to the generally greater severity of presentation of iNTS compared to typhoid, that presentation to hospital will be be less affected by COVID-19, however, it is difficult to find data to support or refute this, and with such a significant decline in blood culture collection, it is possible the COVID-19 reduced iNTS detection. In addition, although the source and transmission of NTS serovars associated with invasive disease is unclear, the pandemic and associated impact of control measures including social distancing and increased hand washing facilities may have impacted on epidemiology and transmission.
 
-There are differences between the methodologies used between sites in Malawi, Burkina Faso and Kenya on these field sites (explored in [@carey_surveillance_2020]), which make it difficult to directly compare these data, and adjusting crude data to give an adjusted incidence adds additional variability and has not yet been undertaken for the Malawi estimates. However, the most directly comparable data sets, on crude unadjusted incidence (see below) in the relevant age-bands, suggest that Malawi could have the highest age-linked incidences of iNTS.
+The distribution of iNTS incidence by age in children under 5 years has remained relatively consistent over time from 1996 - 2024. The age-stratified incidence pattern seen in all NTS serovars and when restricted to the main NTS serovars known to be associated with invasive disease globally *Salmonella* typhimurium and *Salmonella* enteritidis, showed relatively similar ages of peak disease of 9 months for all NTS serovars and 10 months for vaccine targeted serovars only, which is lower than previously reported peaks of iNTS at 13 months in Malawi [@nyirenda_sequential_2014]. This earlier age of peak age may be a result of the granularity of the age data in months on incidence in children under 5 years; this is a key contribution to the literature, particularly to inform vaccine development and implementation. In order to ensure adequate protection against invasive NTS disease for infants well before the 9 - 11 month peak vaccines need to be designed to be used in the 6 weeks, 3, 4 months Extended Program of Immunisations (EPI) schedule. Neonatal iNTS disease peaked in 2001 - 2005, coinciding with the iNTS epidemic, and declined thereafter. Interestingly, the neonatal peak incidence was higher than the peak at 10 months of age in the 2016-2020 period for all serovars, however, when restricting to vaccine-targeted serovars only, the neontal peak was not seen. This indicates that neonatal disease in 2016 - 2020 was dominated by non-vaccine serotypes (serovars other than *S.* typhimurium and *S*. enteritidis). In contrast, the main peak at 10-11 months remained persistent across all time periods, albeit with reducing absolute incidence over time.
 
-More granular data on incidence in children under 5 years is a key contribution to the literature, particularly to form vaccine development
+Interestingly although incidence was declining to very low levels in older age groups since 2012, incidence in children under 5 years remained persistent. In 2019 pre-COVID-19 the incidence in children appeared to be increasing, although this year there was an increased number of *Salmonella* species isolated in neonates which may account for this increase. This further indicates the importance of focusing public health measures to protect younger children, but also considerations of how vaccines may be developed to offer cross-protection against other *Salmonella* serovars. Other considerations to vaccine development is the need to protect neonates, and the possibility of maternal vaccines. The incidence of neonatal iNTS has been considerable in Malawi, however the key peak age group at risk, particularly when for at S. typhimurium and S. enteritidis appears to be infants 6 - 18 months. Proportionally, the incidence in neonates has declined more quickly compared to infants 6-18 months from 2011 onward, this may be a reflection of reduced maternal HIV, malaria and malnutrition leading to better transplacental antibody transfer to the fetus. Therefore other public health measures such as testing for HIV in pregancy, access to anti-retroviral therapy, anti-malarial measures and community food programs to improve the efficacy of natural passive immunisation are likely more cost-effective than developing maternal iNTS vaccines.
 
-
-Put table in intro?
-
-+------------------+------------------+--------+----------------------------+--------+----------------------------+--------+
-| Country          |                  |        | Crude incidence,           |        | Adjusted incidence         |        |
-|                  |                  |        |                            |        |                            |        |
-|                  |                  |        | iNTS cases per 100,000 PYO |        | iNTS cases per 100,000 PYO |        |
-+==================+==================+========+============================+========+============================+========+
-| **Malawi**       |                  |        |                            |        |                            |        |
-+------------------+------------------+--------+----------------------------+--------+----------------------------+--------+
-|                  | Age 0-11 months  |        | 80 (22-205)                |        | n/a                        |        |
-+------------------+------------------+--------+----------------------------+--------+----------------------------+--------+
-|                  | Age 12-23 months |        | 124 (45-269)               |        | n/a                        |        |
-+------------------+------------------+--------+----------------------------+--------+----------------------------+--------+
-|                  | Age 24-35 months |        | 41 (1-156)                 |        | n/a                        |        |
-+------------------+------------------+--------+----------------------------+--------+----------------------------+--------+
-|                  | Age 36-47 months |        | 18 (0-130)                 |        | n/a                        |        |
-+------------------+------------------+--------+----------------------------+--------+----------------------------+--------+
-| **Ghana**        |                  |        |                            |        |                            |        |
-+------------------+------------------+--------+----------------------------+--------+----------------------------+--------+
-|                  | Under 2 years    |        | 7.9                        |        | 82 (61 - 110)              |        |
-+------------------+------------------+--------+----------------------------+--------+----------------------------+--------+
-|                  | 2-4 years        |        | 11.0                       |        | 167 (124 - 219)            |        |
-+------------------+------------------+--------+----------------------------+--------+----------------------------+--------+
-| **Burkina Faso** |                  |        |                            |        |                            |        |
-+------------------+------------------+--------+----------------------------+--------+----------------------------+--------+
-|                  | Under 2 years    |        | 18.7                       |        | 339 (245 - 497)            |        |
-+------------------+------------------+--------+----------------------------+--------+----------------------------+--------+
-|                  | 2-4 years        |        | 36.3                       |        | 605 (486 - 772)            |        |
-+------------------+------------------+--------+----------------------------+--------+----------------------------+--------+
-| Kenya (2014)     |                  |        |                            |        |                            |        |
-+------------------+------------------+--------+----------------------------+--------+----------------------------+--------+
-
-: Crude and Adjusted incidence rates for iNTS disease in Malawi, Burkina Faso, and Kenya. The Malawi incidence was estimated from the community-based STRATAA study (Meiring et al, Lancet Infectious Disease 2021). The incidences from Ghana and Burkina Faso are estimated from the SEAP study (unpublished data, personal communication from investigators).
-
-Kenya [@verani2015]
-
-![](figures/3_images/Kenya_iNTS_age.jpg){width="495"}
-
-
+Previous modelled age stratified estimates of incidence from the Global Burden of Diseases Study 1990 - 2017 showed the highest incidence in the 'late neonatal' and 'postnatal' periods (these definitions are not clearly defined) at around 150 per 100,000, and falling to 130 per 100,000 for children ages 1 - 4 years across sub-Saharan Africa [@stanaway_global_2019-1]. Comparisons of existing incidence estimates for the VacciNTS sites; Malawi, Kenya, Burkina Faso, Ghana were shown in @tbl-siteInc. A systematic review [@marchello_incidence_2021] reporting crude age-stratified incidence in children from individual sub-Saharan African sites, showed almost universally highest incidence for 0 - 1 year age group ranging from 49.2 per 100,000 in Kibera, Kenya (2012), 77.7 per 100,000 in Imerintsiatosika, Madagascar (2011), 143.1 per 100,000 in Nioko II, Burkina Faso (2012), 217.7 per 100,000 in Manhiça District, Mozambique (2001), 336.1 per 100,000 in Moshi, Tanzania (2011), 380 per 100,000 Asante Akim (urban), Ghana (2010), 966.2 per 100,000 Asante Akim (rural), Ghana (2010) to 4,133 per 100,000 in Siaya County, Kenya (2009), and several sites reporting 0 incidence in 0-1 years of life in Senegal, Ethiopia and South Africa. Crude incidence specifically for neonates, defined as the first 28 days of life, has not been widely reported; in Ashanti region, Ghana (2007) crude neonatal incidence was reported at 37.5 per 100,000. However, there is very little iNTS incidence data reported beyond 2014. in The incidence from this single site in urban Malawi shows crude incidence in children 0 - 12 years at 950 per 100,000 in 2001 - 2005 and 233 per 100,000 in 2006 - 2010 comparable to higher end of estimates reported by other sub-Saharan African sites. As urban sites tend to show lower lower incidence relative to their rural counterparts within the same country, potentially due to higher malaria prevalances and reduced access to malaria treatment, the incidence in rural Malawi may well be higher than we have found in this study. However, there may also be differences in methods of accurately obtaining population denominators for urban verses rural populations. Although the overall decline in iNTS incidence has declined in Malawi, with an overall incidence of 20 in 2019 and 3.5 per 100,000 PYO in 2023, the incidence in children 0 - 12 months remains significant at 153 per 100,000 CYO in 2016 - 2020 and 26 per 100,000 in 2021-2024. This data reinforces focusing preventative public health measures such as induction of vaccine-dervived immunity at the most at risk age group (1 - 12 months), particularly as this age-group is most likely to benefit from vaccine-induced immunity, compared to older age groups where natural immunity is likely to already be acquired and secondary transient immunosuceptability may be induced by host co-morbidities such as malaria and anaemia. As discussed above the post 2020 COVID period has uncertain interpretation, particularly as mistrust of healthcare systems has continued post-COVID, although the continued low overall incidence suggests there may also have been a substantial decline in iNTS in Malawi.
 
 ### Limitations
 
-Many ages coded as 0, particularly pre 2010???? so difficult to tell which are neonates and which are unknown age. Reporting on electronic systems means that age has been captured more accurately since 2010?\>?? However, as this is a time after the iNTS epidemic in Malawi, it is unclear if the age-stratifed incidence has changed during this time and during the epidemic neonatal disease was the peak of disease, or the age distribution has remained more consistent over time. Neonatal blood cultures account for the highest proportion of all blood cultures collected at QECH, and this has remained relatively stable over the time period that data was available to measure this over. Therefore
+The analysis only analysed crude incidence rates based on census data as a denominator. As discussed in chapter 1, although blood cultures are the gold standard diagnostic method for iNTS, they are likely to significantly underestimate incidence due their low sensitivity, which is even lower when obtaining small sample volumes in children, and the requirement for access to expensive microbiology laboratory infrastructure which is often not available in high incidence settings. As blood culture facilities are not available in rural settings where host susceptibility factors such as malaria and malnutrition are higher in Malawi, it is likely that iNTS disease is being underestimated. In addition, adjustments for health-seeking behviour need to be taken into account. As discussed in chapter 1, the effect of health-care utilisation is likely to be smaller for iNTS compared to *S*. typhi, due to the increased severity of the clinical presentation of iNTS, and therefore higher likelihood of seeking healthcare. However, there is likely to remain an underestimation of iNTS due to health-seeking behaviours and healthcare utilisation, and particularly delayed health-care seeking where children may have already died before reaching hospital or having their blood culture taken due to delays in transportation, financial limitations of transport and attending traditional healers before attending formal healthcare centres. Adjustments for blood culture sensitivity and health-care utilisation were made for typhoid incidence estimates for Blantrye, Malawi, in the STRATAA study [@meiring_burden_2021]. Further work would be to adapt these methods to make adjusted estimates for iNTS incidence in Blantyre. However, the health-care utilisation surveys carried out in STRATAA covered 2015-2017, and there may have been significant changes to healthcare utilisation during the period for which this iNTS incidence data has been analysed, particularly following the COVID-19 pandemic. It is not clear that the healthcare utilisation studies from STRATAA could be directly applied to iNTS, as questions were asked regarding seeking medical review for general fever, which may be too broad for the often more severe presentation of iNTS. Further consideration of the best methods to calculate adjusted estimates are needed to inform vaccine policy decision making, including further healthcare utilisation surveys to understand the post-COVID landscape.
+
+Granular data by age in months for children under 5 years is particularly difficult to obtain in countries such as Malawi, where some parents do not know the child's date of birth, or exact age in months. The bias to reporting ages to the nearest whole year above the age of 12 months is a substantial problem. The technique used in this analysis to distribute ages above one year into each of the 12 months is a somewhat crude method, but without further information for inform this it is our best guess. It was noted that an additional challenge was the way ages were captured on the electronic laboratory system (LIMS) meant that even if ages above 1 year were written with additional month information, this was not captured electronically, only whole numbers of years were captured. Scanned copies of the paper blood culture submission forms submitted to the laboratory were manually searched for additional information on age for children under 5 years, however, this was only available in a small proportion of children. For the extracted dataset, many ages were coded as 0, or were missing, particularly pre 2000 when records were hand-written. As a result it is difficult to know if any of these may have been neonates and which are other ages. The ward from which the sample was received was poorly reported, so trying to estimate the number of missing age samples coming from the neonatal unit was not possible. In general, the data were age was determined for neonates, this was provided from their date of birth, which was more reliably reported in this age group, therefore although it is possible that neonates were differentially underestimated, this seems less likely due to proximity of sample collection to known date of birth. Reporting on electronic systems means that age has been captured more accurately since 2010. However, as this occurred after the iNTS epidemic in Malawi, it is unclear if this may have impacted on the patterns in age-stratified incidence. Neonatal and infant (age under 12 months) blood cultures account for the highest proportion of all blood cultures collected at QECH, and this as well as absolute numbers has increased over the time period that data was available to measure this over, except for a notable decline following COVID-19. Therefore, overall declines seen in age-stratified iNTS incidence in children is likely to be reflective of underlying population trends.
+
+### Conclusions
+
+Overall there has been a consistent decline in non-typhoidal salmonella isolates from blood and cerebrospinal fluid in Malawi since it's epidemic peak in 2002. From 2010 to 2020, incidence appeared to reach a steady endemic state. There were further declines in incidence following the COVID-19 pandemic in 2020, that were associated with a reduction in healthcare attendance and blood culture collection, which do not appear to have fully returned to baseline post pandemic. Further work is needed to understand if this decline post-COVID is a true decline in incidence, or a reflection of decline in healthcare facility attendance and thus detection of iNTS due to mistrust of formal healthcare systems. The persistent incidence of iNTS in children under 5 years despite declines in adult incidence in the same time period, emphasises the importance of targeted inteventions to protect this vulnerable group, including vaccination to boost the window of susceptibility in natural immunity, particularly in infants 6 - 18 months.
