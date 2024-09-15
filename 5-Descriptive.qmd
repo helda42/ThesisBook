@@ -23,34 +23,119 @@ editor: visual
 
 ## Introduction
 
-1/2 page - brief summary - all build up in introdution
+As illustrated in the previous chapter, understanding the relationship and interactions between non-typhoidal salmonella infections and host susceptibility factors such as malaria, HIV, severe acute malnutrition, and anaemia, is key to informing the focus of public health interventions. Previous work has been done to understand the underlying immune mechanisms leading to susceptibility by factors such as malaria [@nyirenda_immunological_2018, @nyirenda_loss_2017, @cunnington_suppression_2010, @gondwe_importance_2010], haemolysis [@cunnington2011], sickle cell disease [@hand_wl_deficiency_1977, @sanhadji1988], HIV [@gordon2002, @okoro2012, @gordon_invasive_2010, @maclennan_dysregulated_2010] and severe acute malnutrition (SAM) [@vásquez-garibay2002], as described in chapter 1. Asymptomatic carriage of NTS subclades associated with invasive disease have been demonstrated in 0.79% of stools from health children recruited as controls from a population living in Mukuru informal settlements in Kenya [@kariuki_high_2020]. NTS was found in the stools of 8-9% of children 6 - 18 months, 48% of which were *salmonella* typhimurium ST313, during monthly sampling in a longitudinal community cohort of 50 Malawian children [@nyirenda2015] as described in chapter 1. However, no large scale community stool testing for NTS in children under 5 years has been carried out in endemic settings, with simultaneous collection of data on host susceptibility factors such as malaria, malnutrition, anaemia and sickle cell disease, combined with markers of immune response to NTS. Previous seroepidemiological studies have relied on data collected at a single time point, and may miss crucial interactions of seasonal changes on exposure to enteric pathogens, seasonality of host susceptibility factors, and seasonality of immune responses to NTS enteric exposures.
+
+This chapter sets out the descriptive epidemiological findings from the SAiNTS Malawi study, describing the spatial and temporal distribution of host susceptibility factors to NTS in children 0 - 5 years recruited in the Chikwawa district, Southern Malawi.
 
 ## Methods
 
-Brief - main details in methods ch
+As described in chapter 2, children were recruited prospectively randomly sampled from census data collected by the EPIMAL study across two clusters; St Montfort that was randomly allocated to receive the malaria RTS,S/AS01~E~ vaccine and Chikwawa that was randomly allocated to not receive the RTS,S/AS01~E~ vaccine. Two stage sampling was carried out using 2-stage sampling technique; Stage 1: sampling enumeration areas stratified by baseline malaria prevalence from the malaria indicator survey data for Chikwawa (@fig-MIS2017) [@malaria2017], and based on probability proportional to population size of the EA (PPS), and Stage 2: households containing children 0–5 years were randomly sampled from selected Enumeration Area (EA). Any child eligible in the household was invited to participate in the study. Children were recruited and samples were collected for stool, serology and host susceptibility data (malaria, anaemia, SAM, sickle cell) at day 1 and repeat serology and host susceptibility data at day 90. Serum samples were tested for lipopolysaccharide O-antigen immunoglobin-G antibody to the main serovars causing invasive NTS disease (*Salmonella* Typhimurium and Enteritidis). Host susceptibility factors were measured through anthropometric measurements, malaria (rapid diagnostic tests \[RDT\] and thick blood films), haemocue and sickle RDT. Stool samples were processed for Salmonella culture and pan-Salmonella PCR (TTR-primer). Data on medical history, vaccination history, socioeconomic status, water and sanitation and GPS location of households were collected by electronic case report forms on tablets at the household and blood sampling tent.
 
-High low malaria EA
+### Statistical methods
 
-Malaria RTS,S/AS01 vaccine is highly confounded so not useful to look at in this setting. Mostly interested only in do kids have malaria exposure or not, regardless of cause. Not much impact of malaria
+A proxy poverty score was derived as used in the SCALE trial [@feasey2023] to assess poverty in research studies in Malawi, with different variables selected to be appropriate for urban verses rural settings. Logistic regression was used to select the 10 most important variables from the Malawi 4^th^ Integrated Household Survey 2016-2017 (<https://microdata.worldbank.org/index.php/catalog/2936>) associated with poverty. Sequential models were run from 10 down to 6 variables to try and use the minimum variables possible to create a proxy poverty score. The model was run with and without the two ennumerator-defined variables (housing structure and floor composition) due to these variables being observed by fieldworkers and might not be able to be asked of participants. Bootstrapping was used to validate the model. The new model was compared with proxy poverty score variables from 1998 HIS, and the new variables improved the model fit. The coefficients from the final 10 variables were used as weights to form the final proxy poverty score.
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.align = "centre", fig.width = 6, fig.height=7, out.width = "6.5in"}
+
+# setup
+library(rio)
+library(here)
+library(tidyverse)
+library(janitor)
+library(Hmisc)
+library(flextable)
+library(gt)
+library(gtsummary)
+
+master <- import(here("data", "5_data", "master.csv")) %>% 
+  mutate(ta_code = substr(ta_code,5,8)) 
+         # cluster = ifelse(cluster==1,"Chikwawa","St Montfort"))
+EA_clusEA <- master %>% 
+  count(cluster, ta_code) 
+EA_clus <- EA_clusEA %>% 
+  count(cluster) 
+n <- count(master)
+nclus <- master %>% count(cluster)
+nchik <- nclus %>% filter(cluster=="Chikwawa")
+nmont <- nclus %>% filter(cluster=="St Montfort")
+
+NclusEA <- EA_clusEA %>% 
+  group_by(cluster) %>% 
+  summarise(mean_no = mean(n, na.rm=T),
+            range = range(n)) %>% 
+  mutate(range_type = rep("low", "high",2)) %>% 
+  pivot_wider(names_from = "range_type", values_from = "range") %>% 
+  mutate(range = substr(low,2,10)) %>% 
+  ungroup()
+
+EAperClus <- EA_clus %>%  left_join(NclusEA)
+chiN <- EAperClus %>% filter(cluster=="Chikwawa")
+StMontN <- EAperClus %>% filter(cluster=="St Montfort")
+
+ageclus <- master %>% 
+  group_by(cluster) %>% 
+  summarise(age_mean = mean(calc_age_months, na.rm=T),
+            age_sd = sd(calc_age_months, na.rm=T))
+ageChi <- ageclus %>% filter(cluster=="Chikwawa")
+ageMon <- ageclus %>% filter(cluster=="St Montfort")
+
+pov <- master %>% 
+  group_by(cluster) %>% 
+  summarise(mean = mean(pov_score, na.rm=T),
+            sd = sd(pov_score, na.rm=T))
+povChi <- pov %>% filter(cluster=="Chikwawa")
+povMon <- pov %>% filter(cluster=="St Montfort")
+
+water <- master %>% select(c(cluster, toilet_type, contains("water"))) %>% 
+  group_by(cluster) %>% 
+  summarise(across(everything(), list(mean)))
+
+# animals <- master %>% select(c(cluster, ta_code, chicken_count, cattle_count, goat_count, pig_count, sheep_count, livestock)) %>% 
+#     group_by(cluster) %>% 
+#     summarise(across(everything(), list(sum)))
+
+## Stools
+stool <- master$pcr %>% 
+  group_by(cluster) %>% 
+  summarise(mean = mean(pov_score, na.rm=T),
+            sd = sd(pov_score, na.rm=T))
+stoolChi <- stool %>% filter(cluster=="Chikwawa")
+stoolMon <- stool %>% filter(cluster=="St Montfort")
+```
 
 ## Results
 
-### Recruitment across VacciNTS sites
+### SAiNTS cohort demographic and socio-economic characteristics
 
-summary table of recruitment numbers
+`{r} print(n$n)` children aged 0-5 were recruited across `{r} print(sum(EA_clus$n))` EAs; `{r} print(chiN$n)` EA's in Chikwawa with a mean number of children per EA of `{r} print(round(chiN$mean_no, digits=1))`, range `{r} print(chiN$range)` equalling a total of `{r} print(nchik$n)` children. In St Montfort `{r} print(StMontN$n)` EA's with a mean number of children per EA of `{r} print(round(StMontN$mean_no, digits=1))`, range `{r} print(StMontN$range)`, with a total of `{r} print(nmont$n)` children. The geographical locations of the selected EA's are shown in @fig-selectedEA. The mean age of recruited children in Chikwawa was `{r} print(ageChi$age_mean)` (SD: `{r} print(ageChi$age_sd)`) and `{r} print(ageMon$age_mean)` (SD: `{r} print(ageMon$age_sd)`. The distribution of ages by 1 year age groups is shown in @tbl-cohortEA. Mean poverty scores were `{r} print(povChi$mean)` (SD: `{r} print(povChi$sd)`) in Chikwawa and `{r} print(povMon$mean)` (SD: `{r} print(povMon$sd)`) in St Montfort, and distribution in each cluster by poverty quintile is shown in @tbl-cohortEA .
 
 ::: {layout-nrow="2"}
-![Selected Enumerations from the EPIMAL study census](figures/5_images/clusterMap.png){width="300"} ![EPIMAL Study Clusters](figures/5_images/selectedEA.png){width="300"}
+![Selected Enumerations from the EPIMAL study census](figures/5_images/clusterMap.png){width="300"} ![Selected Enumeration Areas (EA) for the SAiNTS study from the EPIMAL Study Clusters (Chikwawa = Pink, St Montfort = Purple)](figures/5_images/selectedEA.png){#fig-selectedEA width="300"}
 :::
 
-### SAiNTS Cohort demographic and socio-economic characteristics
+### Non-typhoidal salmonella enteric infections
 
-2428 children were aged 0-5 were recruited across xx EAs. *Salmonella* stool positivity rate in healthy children is 5.3% (n=128): *S. Typhimurium* 16.4% (21), *S.* *Enteritidis* 12.5% (16), *S.* species 71.1% (91), S. Typhi 1.6% (2) and shows a seasonal pattern. Age-stratified distribution of salmonella stool culture and PCR positivity shows a sigmoidal distribution, showing low rates of exposure in the first 6 month of life (2% culture and 5% PCR positive), entering the exponential phase during the weaning period, and a plateau phase after 24 months (10% culture and 20% PCR positive).  Malaria RDT positivity at enrolment is 10.9% (262); 17.1% (210) in high and 4.3% (52) in low malaria transmission areas. Severe-acute malnutrition was present in 1.2% (31) by weight-for-height z-scores (\<-3 SD) and 3.2% (79) by mid-upper arm circumference \<12.5cm.
+*Salmonella* was detected in stools in
 
-\newpage
+positivity rate in healthy children is 5.3% (n=128): *S. Typhimurium* 16.4% (21), *S.* *Enteritidis* 12.5% (16), *S.* species 71.1% (91), S. Typhi 1.6% (2) and shows a seasonal pattern. Age-stratified distribution of salmonella stool culture and PCR positivity shows a sigmoidal distribution, showing low rates of exposure in the first 6 month of life (2% culture and 5% PCR positive), entering the exponential phase during the weaning period, and a plateau phase after 24 months (10% culture and 20% PCR positive).
+
+### Epidemiology of host factor susceptibility
+
+#### Malaria
+
+Malaria RDT positivity at enrolment is 10.9% (262); 17.1% (210) in high and 4.3% (52) in low malaria transmission areas.
+
+#### Anaemia
+
+#### Malnutrition
+
+Severe-acute malnutrition was present in 1.2% (31) by weight-for-height z-scores (\<-3 SD) and 3.2% (79) by mid-upper arm circumference \<12.5cm.
+
+#### Sickle Cell
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, fig.align = "centre", fig.width = 6, fig.height=7, out.width = "6.5in"}
 #| tbl-cap: Descriptive summary of children recruited across enumeration areas, by cluster. Chikwawa cluster did not receieve RTS,S/AS01 malaria vaccine. St Montfort did recieve RTS,S AS01 malaria vaccine
+#| label: tbl-cohortEA
 
 library(rio)
 library(here)
@@ -66,7 +151,7 @@ master <- import(here("data", "5_data", "master.csv")) %>%
          # cluster = ifelse(cluster==1,"Chikwawa","St Montfort"))
 
 master %>% 
-  select(c(cluster, calc_age_months, AGEGROUP_yr, gender, pov_score, pov_score_cat, mrdt_result, d90_stl_mrdt_result, malaria_film_result_d1, malaria_film_grade_d1, malaria_film_result_d90, malaria_film_grade_d90, hemocue_result, wfh_zscore, muac, sicklecell_test_result, hiv_exposed, hiv_test, hivtest_result, PCR_pos, Salmonella_bin, salm_fact)) %>% 
+  select(c(cluster, calc_age_months, AGEGROUP_yr, gender, pov_score, pov_score_cat,toilet_type, cooking_water_src_1, washing_water_src_1, drinking_water_src_1, treat_dwater_1, mrdt_result, d90_stl_mrdt_result, malaria_film_result_d1, malaria_film_grade_d1, malaria_film_result_d90, malaria_film_grade_d90, hemocue_result, wfh_zscore, muac, sicklecell_test_result, hiv_exposed, hiv_test, hivtest_result, PCR_pos, Salmonella_bin, salm_fact)) %>% 
   mutate(sicklecell_test_result = ifelse(sicklecell_test_result=="", NA,sicklecell_test_result),
          hiv_exposed = ifelse(hiv_exposed=="", NA,hiv_exposed),
          hiv_test = ifelse(hiv_test=="", NA,hiv_test),
@@ -497,10 +582,16 @@ Table high/ low malaria definitions
 
 ![](images/clipboard-4586853.png)
 
+### Recruitment across VacciNTS sites
+
+summary table of recruitment numbers
+
 ## Discussion
 
 iNTS incidence increases rapidly in early life, but begins to fall between 18-36 months, despite continuing community exposure to *Salmonella* and malaria
 
 Salmonella shedding [@gal-mor2018] NTS shedding rates......
+
+Malaria RTS,S/AS01 vaccine is highly confounded so not useful to look at in this setting. Mostly interested only in do kids have malaria exposure or not, regardless of cause. Not much impact of malaria
 
 ## Conclusion

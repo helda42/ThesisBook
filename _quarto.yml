@@ -15,6 +15,7 @@ book:
     - 5-Descriptive.qmd
     - 6-serocatalytic.qmd
     - 7-ChangePoint.qmd
+    - 8-discussion.qmd
     - summary.qmd
     - bibliography.qmd
     - appendices.qmd

@@ -1,1 +1,44 @@
-# Preface {.unnumbered}
+## Declaration of Authorship {.unnumbered}
+
+This thesis is the result of my own work except where explicitly stated otherwise in the text. The contributions of my co-workers and collaborators in this project are described below 
+
++-----------------------------------------------------------------------------------------------------------------------------------+------+
+| Col1                                                                                                                              | Col2 |
++===================================================================================================================================+======+
+| Professor Melita A Gordon, University of Liverpool and Malawi-Liverpool-Wellcome Trust Clinical Research Programme (MLW), Malawi  |      |
+|                                                                                                                                   |      |
+| Professor Neil French, University of Liverpool and Malawi-Liverpool-Wellcome Trust Clinical Research Programme (MLW), Malawi      |      |
++-----------------------------------------------------------------------------------------------------------------------------------+------+
+| SAINTS study team                                                                                                                 |      |
++-----------------------------------------------------------------------------------------------------------------------------------+------+
+| VacciNTS collaborators                                                                                                            |      |
++-----------------------------------------------------------------------------------------------------------------------------------+------+
+| Dr Marc Henrion, MLW, Liverpool School of Tropical Medicine, Liverpool, UK                                                        |      |
++-----------------------------------------------------------------------------------------------------------------------------------+------+
+|                                                                                                                                   |      |
++-----------------------------------------------------------------------------------------------------------------------------------+------+
+|                                                                                                                                   |      |
++-----------------------------------------------------------------------------------------------------------------------------------+------+
+
+\newpage
+
+## Funding 
+
+This PhD was funded by a Wellcome Trust Clinical PhD Fellowship award (xxx). 
+
+The SAiNTS study was funded by a Wellcome and EU-H2020 xxx
+
+\newpage
+
+## Acknowledgements 
+
+\newpage
+
+## **Publications, Presentations and Impact Arising from Thesis** 
+
+\newpage
+
+## Abstract
+
+
+Explain methodological changes in the attrib risks chapter from MRes

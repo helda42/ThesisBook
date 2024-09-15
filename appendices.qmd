@@ -123,6 +123,14 @@ ft_desc_tab
 \KOMAoptions{usegeometry, paper=portrait,pagesize}
 \recalctypearea
 ```
+## Descriptive Epidemiology
+
+![Plasmodium falciparum parasite prevalence (PfPR) survey data from the malaria indicator survey by enumeration area (EA) for Chikwawa, Malawi, 2017.](figures/9_images/EPIMALClusters Mal Prev2017 (1).png){#fig-MIS2017 width="617"}
+
+## Serocatalytic model
+
+![Cumulative incidence of Shigella infections in children aged 0 - 24 months in the MAL-ED cohort. Reproduced from [@rogawski_mcquade_epidemiology_2020]](images/clipboard-3439657591.png){#fig-MAL_ED width="686"}
+
 ## Estimating protective thresholds for STm anti-OAg IgG using reverse cumulative distribution curve functions (RCD’s)
 
 We estimated protective thresholds using the population-based model developed by Chang and Kohberger for pneumococcal vaccines [@siber_methods_1997]. The model makes one critical simplifying assumption which is that there is a sharp cut-off between protective and non-protective antibody levels: i.e. that all individuals, whether immunized or controls, with antibody above the threshold are protected and those with antibody below it are at risk. To estimate a protective threshold of IgG against iNTS, we assumed that all children with an antibody response above a specified level are protected. We estimated the PEth quantile of the RCD, where PE (protective efficacy) is the protection against iNTS seen in a low-risk group (children \>35 months), relative to a high-risk group (children \<=35 months).
