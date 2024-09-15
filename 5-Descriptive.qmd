@@ -95,12 +95,28 @@ water <- master %>% select(c(cluster, toilet_type, contains("water"))) %>%
 #     summarise(across(everything(), list(sum)))
 
 ## Stools
-stool <- master$pcr %>% 
-  group_by(cluster) %>% 
-  summarise(mean = mean(pov_score, na.rm=T),
-            sd = sd(pov_score, na.rm=T))
-stoolChi <- stool %>% filter(cluster=="Chikwawa")
-stoolMon <- stool %>% filter(cluster=="St Montfort")
+# stool <- master %>% 
+#   group_by(cluster) %>% 
+#   summarise(mean = mean(stool, na.rm=T),
+#             sd = sd(pov_score, na.rm=T))
+# stoolChi <- stool %>% filter(cluster=="Chikwawa")
+# stoolMon <- stool %>% filter(cluster=="St Montfort")
+
+
+sum_cum_all <- master %>% 
+  filter(!is.na(AGEGROUP_3mth) & AGEGROUP_3mth!="") %>% ## remove longitudinal for now as need to calculate age separately
+  mutate(AGEGROUP_3mth = fct_relevel(AGEGROUP_3mth, c("[0,3]", "(3,6]","(6,9]","(9,12]","(12,15]", "(15,18]", "(18,21]","(21,24]",
+                                               "(24,27]", "(27,30]","(30,33]","(33,36]","(36,39]", "(39,42]", "(42,45]","(45,48]",
+                                               "(48,51]", "(51,54]","(54,57]","(57,60]"))) %>% 
+  group_by(AGEGROUP_3mth) %>% 
+  summarise(age_mean_stool = mean(calc_age_months, na.rm = T),
+            age_sd_stool = sd(calc_age_months, na.rm=T),
+            sum_pcr_pos = sum(PCR_pos_num, na.rm = T),
+            sum_pcr_tested = sum(PCR_tested_bin, na.rm = T),
+            PCR_pos_percent = (sum_pcr_pos/sum_pcr_tested)*100,
+            sum_sal_pos = sum(Salmonella_num, na.rm = T),
+            sum_stool_tested = sum(stool_tested, na.rm = T),
+            Salm_pos_percent = sum_sal_pos/sum_stool_tested*100) 
 ```
 
 ## Results
@@ -113,45 +129,12 @@ stoolMon <- stool %>% filter(cluster=="St Montfort")
 ![Selected Enumerations from the EPIMAL study census](figures/5_images/clusterMap.png){width="300"} ![Selected Enumeration Areas (EA) for the SAiNTS study from the EPIMAL Study Clusters (Chikwawa = Pink, St Montfort = Purple)](figures/5_images/selectedEA.png){#fig-selectedEA width="300"}
 :::
 
-### Non-typhoidal salmonella enteric infections
-
-*Salmonella* was detected in stools in
-
-positivity rate in healthy children is 5.3% (n=128): *S. Typhimurium* 16.4% (21), *S.* *Enteritidis* 12.5% (16), *S.* species 71.1% (91), S. Typhi 1.6% (2) and shows a seasonal pattern. Age-stratified distribution of salmonella stool culture and PCR positivity shows a sigmoidal distribution, showing low rates of exposure in the first 6 month of life (2% culture and 5% PCR positive), entering the exponential phase during the weaning period, and a plateau phase after 24 months (10% culture and 20% PCR positive).
-
-### Epidemiology of host factor susceptibility
-
-#### Malaria
-
-Malaria RDT positivity at enrolment is 10.9% (262); 17.1% (210) in high and 4.3% (52) in low malaria transmission areas.
-
-#### Anaemia
-
-#### Malnutrition
-
-Severe-acute malnutrition was present in 1.2% (31) by weight-for-height z-scores (\<-3 SD) and 3.2% (79) by mid-upper arm circumference \<12.5cm.
-
-#### Sickle Cell
-
 ```{r echo=FALSE, warning=FALSE, message=FALSE, fig.align = "centre", fig.width = 6, fig.height=7, out.width = "6.5in"}
 #| tbl-cap: Descriptive summary of children recruited across enumeration areas, by cluster. Chikwawa cluster did not receieve RTS,S/AS01 malaria vaccine. St Montfort did recieve RTS,S AS01 malaria vaccine
 #| label: tbl-cohortEA
 
-library(rio)
-library(here)
-library(tidyverse)
-library(janitor)
-library(Hmisc)
-library(flextable)
-library(gt)
-library(gtsummary)
-
-master <- import(here("data", "5_data", "master.csv")) %>% 
-  mutate(ta_code = substr(ta_code,5,8)) 
-         # cluster = ifelse(cluster==1,"Chikwawa","St Montfort"))
-
 master %>% 
-  select(c(cluster, calc_age_months, AGEGROUP_yr, gender, pov_score, pov_score_cat,toilet_type, cooking_water_src_1, washing_water_src_1, drinking_water_src_1, treat_dwater_1, mrdt_result, d90_stl_mrdt_result, malaria_film_result_d1, malaria_film_grade_d1, malaria_film_result_d90, malaria_film_grade_d90, hemocue_result, wfh_zscore, muac, sicklecell_test_result, hiv_exposed, hiv_test, hivtest_result, PCR_pos, Salmonella_bin, salm_fact)) %>% 
+  select(c(cluster, calc_age_months, AGEGROUP_yr, gender, pov_score, pov_score_cat,toilet_type, washing_water_src, drinking_water_src, treat_dwater, mrdt_result, d90_stl_mrdt_result, malaria_film_result_d1, malaria_film_grade_d1, malaria_film_result_d90, malaria_film_grade_d90, hemocue_result, wfh_zscore, muac, sicklecell_test_result, hiv_exposed, hiv_test, hivtest_result, PCR_pos, Salmonella_bin, salm_fact)) %>% 
   mutate(sicklecell_test_result = ifelse(sicklecell_test_result=="", NA,sicklecell_test_result),
          hiv_exposed = ifelse(hiv_exposed=="", NA,hiv_exposed),
          hiv_test = ifelse(hiv_test=="", NA,hiv_test),
@@ -225,7 +208,7 @@ sum_tab <- master %>%
             sum_stool_tested = sum(stool_tested, na.rm = T),
             Salm_pos_percent = round((sum_sal_pos/sum_stool_tested)*100,digits=1)) %>% 
   select(-c(sum_pcr_tested, sum_stool_tested)) %>% 
-  ungroup()
+  ungroup() 
 
 # sum_tab2 <- tabulator(x = sum_tab, rows = c("cluster", "ta_code"), columns = c("N","MRDT_pos_d1","perMRDT_pos_d1","MRDT_pos_d90", "perMRDT_pos_d90","sum_pcr_pos","PCR_pos_percent","sum_sal_pos","Salm_pos_percent"))
 
@@ -277,15 +260,29 @@ sum_tab %>%
 ```
 ### Epidemiology of enteric non-typhoidal salmonella
 
-### Stool micro
+*Salmonella* was detected in stools in positivity rate in healthy children is 5.3% (n=128): *S. Typhimurium* 16.4% (21), *S.* *Enteritidis* 12.5% (16), *S.* species 71.1% (91), S. Typhi 1.6% (2) and shows a seasonal pattern. Age-stratified distribution of salmonella stool culture and PCR positivity shows a sigmoidal distribution, showing low rates of exposure in the first 6 month of life (2% culture and 5% PCR positive), entering the exponential phase during the weaning period, and a plateau phase after 24 months (10% culture and 20% PCR positive).
+
+### Epidemiology of host factor susceptibility
+
+#### Malaria
+
+Malaria RDT positivity at enrolment is 10.9% (262); 17.1% (210) in high and 4.3% (52) in low malaria transmission areas.
+
+#### Anaemia
+
+#### Malnutrition
+
+Severe-acute malnutrition was present in 1.2% (31) by weight-for-height z-scores (\<-3 SD) and 3.2% (79) by mid-upper arm circumference \<12.5cm.
+
+#### Sickle Cell
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, fig.align = "centre", fig.width = 7, fig.height=7, out.width = "7.5in"}
-# #| fig-cap: Host risk factor and NTS exposure distribution across recruited enumeration areas
-#
+#| fig-cap: Host risk factor and NTS exposure distribution across recruited enumeration areas
+
 # master %>%
 #   filter(salm_fact!="Nil") %>%
 #   ggplot() +
-#     geom_histogram(aes(salm_fact), fill="dark green") +
+#     geom_bar(aes(salm_fact), fill="dark green") +
 #     theme_bw() +
 #     theme(axis.text=element_text(size=12),
 #           axis.title=element_text(size=18,face="bold"),
@@ -580,7 +577,7 @@ sum_tab %>%
 
 Table high/ low malaria definitions
 
-![](images/clipboard-4586853.png)
+![Salmonella stool culture results by 3 month age group in children 0 - 60 months in children recruited in the SAiNTS study, Chikwawa, Malawi](images/clipboard-4586853.png){#fig-NTSculture width="601"}
 
 ### Recruitment across VacciNTS sites
 

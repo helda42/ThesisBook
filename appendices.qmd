@@ -48,7 +48,8 @@ sumtab_all <- SalmAllYr %>%
             risk_pred = mean(risk_pred, na.rm = T),
             risk_low = mean(risk_low, na.rm = T),
             risk_high = mean(risk_high, na.rm = T)) %>% 
-  filter(!is.na(ageyr))
+  filter(!is.na(ageyr)) %>% 
+  mutate(across(where(is.numeric), round, 2))
 
 sumtab_all %>% 
   flextable() %>% 
@@ -77,10 +78,13 @@ sumtab_vac <- SalmAllYra %>%
             risk_pred = mean(risk_pred, na.rm = T),
             risk_low = mean(risk_low, na.rm = T),
             risk_high = mean(risk_high, na.rm = T)) %>% 
-  filter(!is.na(ageyr))
+  filter(!is.na(ageyr)) %>% 
+  mutate(across(where(is.numeric), round, 2))
 
 sumtab_vac %>% 
   flextable() %>% 
+  fontsize(i = 1, size = 8, part = "header") %>%   # adjust font size of header
+  fontsize(i = 1, size = 8, part = "body") %>%   # adjust font size of header
    set_header_labels(
     YearBand3 = "Year Period",
     count = "N",
@@ -110,7 +114,8 @@ sumtab_vac %>%
 
 descript_tab2 <- import(here("data", "9_data", "descript_tab2.csv"))
 ft_desc_tab <- flextable(descript_tab2) %>% 
-  fontsize(i = 1, size = 12, part = "header") %>%   # adjust font size of header
+  fontsize(i = 1, size = 8, part = "header") %>%   # adjust font size of header
+  fontsize(i = 1, size = 8, part = "body") %>%   # adjust font size of header
   bold(i = 1, bold = TRUE, part = "header")#
 ft_desc_tab
 ```
@@ -157,7 +162,7 @@ risk_per_1mth_ms <- import(here("data", "9_data", "risk_per_mth.csv"))
 
 ## Inverse relationship of incidence of invasive disease in children under 5 years in Malawi, compared to acquisition of immunity
 
-![Acquisition of STm OAg IgG in children recruited into the SAINTS study vs iNTS incidence from QECH-MLW blood culture service Blantyre, Malawi in children (0-5 years)](figures/9_images/inverseAbiNTS.png){#fig-inverseiNTSAb width="890"}
+![Acquisition of STm OAg IgG in children recruited into the SAINTS study vs iNTS incidence from QECH-MLW blood culture service Blantyre, Malawi in children (0-5 years)](figures/9_images/inverseAbiNTS.png){#fig-inverseiNTSAb width="681"}
 
 ## RCD curves by 1 year age band for LPS IgG to STm
 
