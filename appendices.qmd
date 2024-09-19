@@ -20,6 +20,16 @@ format:
 editor: visual
 ---
 
+## Methods
+
+### Malaria parasite prevalence from malaria indicator survey
+
+![Plasmodium falciparum parasite prevalence (PfPR) survey data from the malaria indicator survey by enumeration area (EA) for Chikwawa, Malawi, 2017.](figures/9_images/EPIMALClusters%20Mal%20Prev2017%20(1).png){#fig-MIS2017 width="617"}
+
+### Polymerase Chain Reaction (PCR) cut-off level
+
+![Polymerase Chain Reaction (PCR) positivity cut-off levels estimated by fitting a mixture model to Ct value distributions](figures/9_images/PCR_mixture_modl_hist.tiff){#fig-PCRMixMod}
+
 ## Incidence of invasive non-typhoidal salmonella
 
 ### Age-stratified incidence for under 5 years of age
@@ -120,6 +130,48 @@ ft_desc_tab <- flextable(descript_tab2) %>%
 ft_desc_tab
 ```
 
+## Descriptive Epidemiology
+
+### Age-stratified prevalence of enteric salmonella infections in the SAiNTS study
+
+```{r, echo=FALSE, results='show', warning=FALSE, message=FALSE}
+#| tbl-cap: "Details of included studies in attributable fractions analysis"
+#| label: tbl-stool3m_sum
+
+master <- import(here("data", "5_data", "master.csv"))
+sum_stool_3m <- master %>% 
+  filter(!is.na(AGEGROUP_3mth) & AGEGROUP_3mth!="") %>% ## remove longitudinal for now as need to calculate age separately
+  mutate(AGEGROUP_3mth = fct_relevel(AGEGROUP_3mth, c("[0,3]", "(3,6]","(6,9]","(9,12]","(12,15]", "(15,18]", "(18,21]","(21,24]",
+                                               "(24,27]", "(27,30]","(30,33]","(33,36]","(36,39]", "(39,42]", "(42,45]","(45,48]",
+                                               "(48,51]", "(51,54]","(54,57]","(57,60]"))) %>% 
+  group_by(AGEGROUP_3mth) %>% 
+  summarise(age_mean_stool = mean(calc_age_months, na.rm = T),
+            age_sd_stool = sd(calc_age_months, na.rm=T),
+            sum_pcr_pos = sum(PCR_pos_num, na.rm = T),
+            sum_pcr_tested = sum(PCR_tested_bin, na.rm = T),
+            PCR_pos_percent = (sum_pcr_pos/sum_pcr_tested)*100,
+            sum_sal_pos = sum(Salmonella_num, na.rm = T),
+            sum_stool_tested = sum(stool_tested, na.rm = T),
+            Salm_pos_percent = sum_sal_pos/sum_stool_tested*100) %>% 
+  flextable() %>% 
+  fontsize(size = 8, part = "header") %>%   # adjust font size of header
+  fontsize(size = 8, part = "body") %>%   # adjust font size of header
+   set_header_labels(
+    AGEGROUP_3mth = "Age Group (months)",
+    age_mean_stool = "Mean age (months)",
+    age_sd_stool = "SD age (months)",
+    sum_pcr_pos = "Number PCR positive",
+    sum_pcr_tested = "Number of stools PCR tested",
+    PCR_pos_percent = "% PCR positive", 
+    sum_sal_pos = "Number salmonella culture positive",
+    sum_stool_tested = "Number samples cultured",
+    Salm_pos_percent = "% Salmonella culture positive"
+   ) %>% 
+  autofit()
+
+sum_stool_3m
+```
+
 \newpage
 
 <!-- changing the orientation to portrait --------------------------------- -->
@@ -128,13 +180,11 @@ ft_desc_tab
 \KOMAoptions{usegeometry, paper=portrait,pagesize}
 \recalctypearea
 ```
-## Descriptive Epidemiology
-
-![Plasmodium falciparum parasite prevalence (PfPR) survey data from the malaria indicator survey by enumeration area (EA) for Chikwawa, Malawi, 2017.](figures/9_images/EPIMALClusters Mal Prev2017 (1).png){#fig-MIS2017 width="617"}
-
 ## Serocatalytic model
 
 ![Cumulative incidence of Shigella infections in children aged 0 - 24 months in the MAL-ED cohort. Reproduced from [@rogawski_mcquade_epidemiology_2020]](images/clipboard-3439657591.png){#fig-MAL_ED width="686"}
+
+## Descriptive Epidemiology
 
 ## Estimating protective thresholds for STm anti-OAg IgG using reverse cumulative distribution curve functions (RCD’s)
 

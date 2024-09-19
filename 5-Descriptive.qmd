@@ -50,6 +50,15 @@ library(gtsummary)
 master <- import(here("data", "5_data", "master.csv")) %>% 
   mutate(ta_code = substr(ta_code,5,8)) 
          # cluster = ifelse(cluster==1,"Chikwawa","St Montfort"))
+seqdat <- import(here("data", "5_data", "2023.06.29.SAiNTS_seq_results.xlsx"))
+watsan <- import(here("data", "5_data", "WatSan.xlsx"))
+
+master2 <- master %>% left_join(watsan)
+table(master2$drink_wat_desc)
+
+watsancheck <- master2 %>% 
+  select(c(pid, drinking_water_src...7, drink_wat_desc, cooking_water_src, cooking_wat_desc, toilet_type...3, toilet_type...4, share_with, share_toilet_des, bathing_water_src, bathing_wat_desc))
+
 EA_clusEA <- master %>% 
   count(cluster, ta_code) 
 EA_clus <- EA_clusEA %>% 
@@ -86,9 +95,10 @@ pov <- master %>%
 povChi <- pov %>% filter(cluster=="Chikwawa")
 povMon <- pov %>% filter(cluster=="St Montfort")
 
-water <- master %>% select(c(cluster, toilet_type, contains("water"))) %>% 
-  group_by(cluster) %>% 
-  summarise(across(everything(), list(mean)))
+water <- master %>% select(c(cluster, toilet_type, contains("water")))
+  
+  # group_by(cluster) %>% 
+  # summarise(across(everything(), list(mean)))
 
 # animals <- master %>% select(c(cluster, ta_code, chicken_count, cattle_count, goat_count, pig_count, sheep_count, livestock)) %>% 
 #     group_by(cluster) %>% 
@@ -102,8 +112,7 @@ water <- master %>% select(c(cluster, toilet_type, contains("water"))) %>%
 # stoolChi <- stool %>% filter(cluster=="Chikwawa")
 # stoolMon <- stool %>% filter(cluster=="St Montfort")
 
-
-sum_cum_all <- master %>% 
+sum_stool_3m <- master %>% 
   filter(!is.na(AGEGROUP_3mth) & AGEGROUP_3mth!="") %>% ## remove longitudinal for now as need to calculate age separately
   mutate(AGEGROUP_3mth = fct_relevel(AGEGROUP_3mth, c("[0,3]", "(3,6]","(6,9]","(9,12]","(12,15]", "(15,18]", "(18,21]","(21,24]",
                                                "(24,27]", "(27,30]","(30,33]","(33,36]","(36,39]", "(39,42]", "(42,45]","(45,48]",
@@ -116,12 +125,67 @@ sum_cum_all <- master %>%
             PCR_pos_percent = (sum_pcr_pos/sum_pcr_tested)*100,
             sum_sal_pos = sum(Salmonella_num, na.rm = T),
             sum_stool_tested = sum(stool_tested, na.rm = T),
-            Salm_pos_percent = sum_sal_pos/sum_stool_tested*100) 
+            Salm_pos_percent = sum_sal_pos/sum_stool_tested*100) %>% 
+  mutate(across(where(is.numeric), round, 1))
+
+sum_stool_all <- master %>% 
+  summarise(age_mean_stool = mean(calc_age_months, na.rm = T),
+            age_sd_stool = sd(calc_age_months, na.rm=T),
+            sum_pcr_pos = sum(PCR_pos_num, na.rm = T),
+            sum_pcr_tested = sum(PCR_tested_bin, na.rm = T),
+            PCR_pos_percent = (sum_pcr_pos/sum_pcr_tested)*100,
+            sum_sal_pos = sum(Salmonella_num, na.rm = T),
+            sum_stool_tested = sum(stool_tested, na.rm = T),
+            Salm_pos_percent = sum_sal_pos/sum_stool_tested*100) %>% 
+  mutate(across(where(is.numeric), round, 1))
+
+
+#age03m <- sum_stool_3m %>% filter(AGEGROUP_3mth=="(0-3]")
+max_age_PCR <- sum_stool_3m %>% slice_max(PCR_pos_percent)
+max_age_stool <- sum_stool_3m %>% slice_max(Salm_pos_percent)
+min_age_PCR <- sum_stool_3m %>% slice_min(PCR_pos_percent)
+min_age_stool <- sum_stool_3m %>% slice_min(Salm_pos_percent)
+
+seq_sum <- seqdat %>% 
+  group_by(cgmlst_subspecies) %>% 
+  mutate(total = n()) %>% 
+  ungroup() %>% 
+  group_by(cgmlst_subspecies, `O antigen prediction`) %>%
+  summarise(count = n(),
+            `percent (%)` = round(count/total, digits=3)*100) %>% 
+  slice_head(n=1) %>% 
+  ungroup()
+
+seq_sum_ent <- seq_sum %>% subset(cgmlst_subspecies=="enterica", c(`O antigen prediction`, count, `percent (%)`))
+seq_sum_sal <- seq_sum %>% subset(cgmlst_subspecies=="salamae", c(`O antigen prediction`, count, `percent (%)`))
+
+## MOnthly
+seasonStool <- master %>% 
+  mutate(month_yr = zoo::as.yearmon(d1s_data_date),
+         month_yrfull = format(d1s_data_date, "%B %Y")) %>% 
+  filter(!is.na(d1s_data_date)) %>% 
+  group_by(month_yr, month_yrfull) %>% 
+  summarise(age_mean_stool = mean(calc_age_months, na.rm = T),
+            age_sd_stool = sd(calc_age_months, na.rm=T),
+            sum_pcr_pos = sum(PCR_pos_num, na.rm = T),
+            sum_pcr_tested = sum(PCR_tested_bin, na.rm = T),
+            PCR_pos_percent = (sum_pcr_pos/sum_pcr_tested)*100,
+            sum_sal_pos = sum(Salmonella_num, na.rm = T),
+            sum_stool_tested = sum(stool_tested, na.rm = T),
+            Salm_pos_percent = sum_sal_pos/sum_stool_tested*100) %>% 
+  mutate(across(where(is.numeric), round, 1)) %>% 
+  ungroup()
+
+max_mth_PCR <- seasonStool %>% slice_max(PCR_pos_percent)
+max_mth_stool <- seasonStool %>% slice_max(Salm_pos_percent)
+min_mth_PCR <- seasonStool %>% slice_min(PCR_pos_percent)
+min_mth_stool <- seasonStool %>% slice_min(Salm_pos_percent)
+
 ```
 
 ## Results
 
-### SAiNTS cohort demographic and socio-economic characteristics
+### SAiNTS cohort demographic and socioeconomic characteristics
 
 `{r} print(n$n)` children aged 0-5 were recruited across `{r} print(sum(EA_clus$n))` EAs; `{r} print(chiN$n)` EA's in Chikwawa with a mean number of children per EA of `{r} print(round(chiN$mean_no, digits=1))`, range `{r} print(chiN$range)` equalling a total of `{r} print(nchik$n)` children. In St Montfort `{r} print(StMontN$n)` EA's with a mean number of children per EA of `{r} print(round(StMontN$mean_no, digits=1))`, range `{r} print(StMontN$range)`, with a total of `{r} print(nmont$n)` children. The geographical locations of the selected EA's are shown in @fig-selectedEA. The mean age of recruited children in Chikwawa was `{r} print(ageChi$age_mean)` (SD: `{r} print(ageChi$age_sd)`) and `{r} print(ageMon$age_mean)` (SD: `{r} print(ageMon$age_sd)`. The distribution of ages by 1 year age groups is shown in @tbl-cohortEA. Mean poverty scores were `{r} print(povChi$mean)` (SD: `{r} print(povChi$sd)`) in Chikwawa and `{r} print(povMon$mean)` (SD: `{r} print(povMon$sd)`) in St Montfort, and distribution in each cluster by poverty quintile is shown in @tbl-cohortEA .
 
@@ -180,7 +244,7 @@ master %>%
   as_kable_extra(booktabs = TRUE, longtable = TRUE) %>%
   # reduce font size to make table fit. 
   # you may also use the `latex_options = "scale_down"` argument here.
-  kableExtra::kable_styling(latex_options = "scale_down", position='float_left')
+  kableExtra::kable_styling(latex_options = "scale_down", position='float_left') 
 ```
 
 \newpage
@@ -208,7 +272,7 @@ sum_tab <- master %>%
             sum_stool_tested = sum(stool_tested, na.rm = T),
             Salm_pos_percent = round((sum_sal_pos/sum_stool_tested)*100,digits=1)) %>% 
   select(-c(sum_pcr_tested, sum_stool_tested)) %>% 
-  ungroup() 
+  ungroup()  
 
 # sum_tab2 <- tabulator(x = sum_tab, rows = c("cluster", "ta_code"), columns = c("N","MRDT_pos_d1","perMRDT_pos_d1","MRDT_pos_d90", "perMRDT_pos_d90","sum_pcr_pos","PCR_pos_percent","sum_sal_pos","Salm_pos_percent"))
 
@@ -260,7 +324,108 @@ sum_tab %>%
 ```
 ### Epidemiology of enteric non-typhoidal salmonella
 
-*Salmonella* was detected in stools in positivity rate in healthy children is 5.3% (n=128): *S. Typhimurium* 16.4% (21), *S.* *Enteritidis* 12.5% (16), *S.* species 71.1% (91), S. Typhi 1.6% (2) and shows a seasonal pattern. Age-stratified distribution of salmonella stool culture and PCR positivity shows a sigmoidal distribution, showing low rates of exposure in the first 6 month of life (2% culture and 5% PCR positive), entering the exponential phase during the weaning period, and a plateau phase after 24 months (10% culture and 20% PCR positive).
+*Salmonella* was detected in stools on microbiological culture in `{r} sum_stool_all$sum_sal_pos` of `{r} sum_stool_all$sum_stool_tested` (`{r} sum_stool_all$Salm_pos_percent` %) in healthy children at an average age of `{r} sum_stool_all$age_mean_stool` (SD: `{r} sum_stool_all$age_sd_stool`) months. Using pan-salmonella (TTR primer) PCR was positive in `{r} sum_stool_all$sum_pcr_pos` of `{r} sum_stool_all$sum_pcr_tested` (`{r} sum_stool_all$PCR_pos_percent` %) stools tested. The proportion of children with *salmonella* positive stools increased with age, ranging from `{r} min_age_PCR$Salm_pos_percent`% PCR positive at a mean age of `{r} min_age_PCR$age_mean_stool` months and `{r} min_age_stool$Salm_pos_percent`% culture positive at `{r} min_age_stool$age_mean_stool` months, to `{r} max_age_PCR$Salm_pos_percent`% PCR positive at a mean age of `{r} max_age_PCR$age_mean_stool` months and `{r} max_age_stool$Salm_pos_percent`% culture positive at `{r} max_age_stool$age_mean_stool` months (@tbl-stool3m_sum, @fig-stool3m). The percentage of stools that were salmonella culture and PCR positive by month of sample collection is shown in @fig-stoolseason . The months with the lowest percentages of children with salmonella culture positive stools was `{r} min_mth_stool$Salm_pos_percent`% in `{r} min_mth_stool$month_yrfull` and for PCR positive stools was `{r} min_mth_PCR$PCR_pos_percent`%, in `{r} min_mth_PCR$month_yrfull`. The months that had the highest salmonella culture positive stools was `{r} max_mth_stool$Salm_pos_percent`% in `{r} max_mth_stool$month_yrfull` and for PCR positive stools was `{r} max_mth_PCR$PCR_pos_percent`% in `{r} max_mth_PCR$month_yrfull`. Genome sequencing results were available for a subset of xx NTS isolates.
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.align = "centre", fig.width = 5.5, fig.height=4.5, out.width = "6in"}
+#| fig-cap: Percentage of children in each 3 month age group with A. Salmonella positive stool culture and B. Salmonella TTR PCR positive.
+#| label: fig-stool3m
+
+pPCR <- sum_stool_3m %>%
+  ggplot() +
+    geom_col(aes(x=AGEGROUP_3mth, y=PCR_pos_percent), fill="cornflowerblue") +
+    theme_bw() +
+    theme(axis.text=element_text(size=6),
+          axis.title=element_text(size=6,face="bold"),
+          axis.text.x = element_text(angle=45, hjust=1)) +
+    labs(y="PCR positive (%)", x="Age (months)")
+    #geom_text(stat='count', aes(label=..count..), vjust=-1) +
+pcul <- sum_stool_3m %>%
+  ggplot() +
+    geom_col(aes(x=AGEGROUP_3mth, y=Salm_pos_percent), fill="orange") +
+    theme_bw() +
+    theme(axis.text=element_text(size=6),
+          axis.title=element_text(size=6,face="bold"),
+          axis.text.x = element_text(angle=45, hjust=1)) +
+    labs(y="Salmonella culture positive (%)", x="Age (months)")+
+    scale_y_continuous(limits = c(0, 25))
+
+pSerovar <- master %>% 
+  filter(salm_fact!="Nil") %>% 
+  mutate(AGEGROUP_3mth = fct_relevel(AGEGROUP_3mth, c("[0,3]", "(3,6]","(6,9]","(9,12]","(12,15]", "(15,18]", "(18,21]","(21,24]",
+                                               "(24,27]", "(27,30]","(30,33]","(33,36]","(36,39]", "(39,42]", "(42,45]","(45,48]",
+                                               "(48,51]", "(51,54]","(54,57]","(57,60]"))) %>% 
+  mutate(`O antigen` = case_when(
+    salm_fact=="Salmonella enteritidis" ~ "O9",
+    salm_fact=="Salmonella typhimurium" ~ "O4",
+    salm_fact=="Salmonella species" ~ "Other"
+  )) %>% 
+  # mutate(salm_fact = ifelse(salm_fact=="Nil", NA,salm_fact)) %>% 
+  ggplot() +
+  geom_bar(aes(fill=`O antigen`, x=AGEGROUP_3mth)) +
+  scale_fill_manual(values = c("O9" = "orange", "O4" = "orchid", "Other" = "cyan3")) +  # Custom colors
+  theme_bw() +
+  theme(axis.text=element_text(size=6),
+        axis.title=element_text(size=6,face="bold"),
+        legend.text=element_text(size=6),
+        legend.title=element_text(size=6),
+        axis.text.x = element_text(angle=45, hjust=1)) +
+  labs(y="Salmonella culture positive (n)", x="Age (months)") +
+  scale_y_continuous(limits = c(0, 25))
+
+
+# row1 <- cowplot::plot_grid(pcul, pPCR, labels="AUTO", label_size = 7)
+# row2 <- cowplot::plot_grid(pSerovar, labels="C", label_size = 7)
+# cowplot::plot_grid(row1, row2, nrow=2, ncol=1, rel_heights=c(0.9,1)) # 
+cowplot::plot_grid(pSerovar, pPCR, nrow=2, labels="AUTO", label_size=7, rel_widths=c(1,0.85)) # 
+
+```
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.align = "centre", fig.width = 4.5, fig.height=4, out.width = "5in"}
+#| fig-cap: Percentage of children with positive salmonella stool by month of sample collection, A. Salmonella positive culture, B. Salmonella PCR (TTR primer) positive.
+#| label: fig-stoolseason
+#| 
+pSalm_seas_n <- seasonStool %>% 
+  ggplot() +
+    geom_col(aes(x= factor(month_yr), y=Salm_pos_percent), fill="orchid")+
+    # geom_bar(position="stack", stat='identity',  width = .7, colour="black", lwd=0.1) +
+    # geom_text(aes(label = Percentage), colour="black", size = 2.5, position = position_stack(vjust = .5)) +
+    labs(y="Culture positive (%)", x="Month") +
+    scale_y_continuous(limits = c(0, 35))+
+    theme_bw() +
+    theme(axis.text=element_text(size=6),
+          axis.title=element_text(size=6,face="bold"),
+          axis.text.x = element_text(angle=45, hjust=1))
+
+pSalm_seas_p <- seasonStool %>% 
+  ggplot() +
+    geom_col(aes(x= factor(month_yr), y=PCR_pos_percent), fill="cornflowerblue")+
+    # geom_bar(position="stack", stat='identity',  width = .7, colour="black", lwd=0.1) +
+    # geom_text(aes(label = Percentage), colour="black", size = 2.5, position = position_stack(vjust = .5)) +
+    labs(y="PCR positive (%)", x="Month") +
+    theme_bw() +
+    scale_y_continuous(limits = c(0, 35))+
+    theme(axis.text=element_text(size=6),
+          axis.title=element_text(size=6,face="bold"),
+          axis.text.x = element_text(angle=45, hjust=1))
+cowplot::plot_grid(pSalm_seas_n, pSalm_seas_p, labels="AUTO", nrow=2, label_size = 7, rel_widths = c(1,0.8))
+```
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.align = "centre", fig.width = 7, fig.height=7, out.width = "7.5in"}
+#| tbl-cap: Genome sequencing data for subset of non-typhoidal salmonella stool isolates from children recruited into the SAiNTS study
+#| label: tbl-NTSgen
+
+flextable(seq_sum_ent) %>%
+  add_header_row(values=c("Salmonella enterica subspecies enterica (subspecies II)", "", "")) %>% 
+  fontsize(size=8, part = "body") %>%
+  fontsize(size=8, part = "header") %>%
+  autofit()    
+
+flextable(seq_sum_sal) %>%
+  add_header_row(values=c("Salmonella enterica subspecies salamae (subspecies II)", "", "")) %>% 
+  fontsize(size=8, part = "body") %>%
+  fontsize(size=8, part = "header") %>%
+  autofit()
+```
 
 ### Epidemiology of host factor susceptibility
 
@@ -275,28 +440,6 @@ Malaria RDT positivity at enrolment is 10.9% (262); 17.1% (210) in high and 4.3%
 Severe-acute malnutrition was present in 1.2% (31) by weight-for-height z-scores (\<-3 SD) and 3.2% (79) by mid-upper arm circumference \<12.5cm.
 
 #### Sickle Cell
-
-```{r echo=FALSE, warning=FALSE, message=FALSE, fig.align = "centre", fig.width = 7, fig.height=7, out.width = "7.5in"}
-#| fig-cap: Host risk factor and NTS exposure distribution across recruited enumeration areas
-
-# master %>%
-#   filter(salm_fact!="Nil") %>%
-#   ggplot() +
-#     geom_bar(aes(salm_fact), fill="dark green") +
-#     theme_bw() +
-#     theme(axis.text=element_text(size=12),
-#           axis.title=element_text(size=18,face="bold"),
-#           axis.text.x = element_text(angle=45, hjust=1)) +
-#     labs(y="Number of samples", x="Organism") +
-#     geom_text(stat='count', aes(label=..count..), vjust=-1) +
-#     scale_y_continuous(limits = c(0, 60)) +
-#     facet_grid(~cluster)
-
-```
-
-### Stool micro season
-
-![](images/clipboard-1197040819.png)
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, fig.align = "centre", fig.width = 7, fig.height=7, out.width = "7.5in"}
 # 
@@ -577,8 +720,6 @@ Severe-acute malnutrition was present in 1.2% (31) by weight-for-height z-scores
 
 Table high/ low malaria definitions
 
-![Salmonella stool culture results by 3 month age group in children 0 - 60 months in children recruited in the SAiNTS study, Chikwawa, Malawi](images/clipboard-4586853.png){#fig-NTSculture width="601"}
-
 ### Recruitment across VacciNTS sites
 
 summary table of recruitment numbers
@@ -588,6 +729,10 @@ summary table of recruitment numbers
 iNTS incidence increases rapidly in early life, but begins to fall between 18-36 months, despite continuing community exposure to *Salmonella* and malaria
 
 Salmonella shedding [@gal-mor2018] NTS shedding rates......
+
+Seasonality of eNTS and shows a seasonal pattern. Age-stratified distribution of salmonella stool culture and PCR positivity shows a sigmoidal distribution, showing low rates of exposure in the first 6 month of life (2% culture and 5% PCR positive), entering the exponential phase during the weaning period, and a plateau phase after 24 months (10% culture and 20% PCR positive).
+
+For the subset of NTS stool isolates sequenced the only isolates that were O:4 or O:9 antigen positive (corresponding to the immunodominant O-antigens found on S. typhimurium and S. enteritidis respectively), were not Salmonella enterica subspecies enterica, but Salmonella enterica subspecies salamae (subspecies II) on genomic sequencing (@tbl-NTSgen), which have not been previously found to be associated with invasive NTS disease. Further testing on the remaining NTS isolates from stools in the SAINTS study is needed, but this change in epidemiology of NTS subspecies in enteric infections in children in Malawi, may also be correlated with the declines seen in invasive iNTS disease. Previous studies found S. typhimurium including ST313 strains in stool isolates from children 6-18 months in Malawi [@nyirenda2015], from data collected in 2012-14 - when iNTS disease incidence was higher (see chapter 3). Potentially the combination of reduced host susceptibility factors combined with changing epidemiology of NTS strains exposed to may explain the declines seen in iNTS disease. It is possible with the reduction in availability of host reservoirs in the immuno-compromised niche, that invasive NTS strains have become host adapted to, particularly in HIV infected adults where this niche is longer-term, compared to the transient immunosuceptibility associated with malaria, that the circulating invasive NTS strains have reduced, therefore further reducing iNTS incidence.
 
 Malaria RTS,S/AS01 vaccine is highly confounded so not useful to look at in this setting. Mostly interested only in do kids have malaria exposure or not, regardless of cause. Not much impact of malaria
 
