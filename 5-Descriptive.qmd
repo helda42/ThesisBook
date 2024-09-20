@@ -300,8 +300,8 @@ sum_MRDT_3m_m <- sum_MRDT_3m_clus %>% filter(cluster=="St Montfort")
 
 min_age_MRDT_c <- sum_MRDT_3m_c %>% slice_min(MRDT_all_per)
 max_age_MRDT_c <- sum_MRDT_3m_c %>% slice_max(MRDT_all_per)
-min_age_MRDT_m <- sum_MRDT_3m_m %>% slice_min(MRDT_all_per)
-max_age_MRDT_m <- sum_MRDT_3m_m %>% slice_max(MRDT_all_per)
+min_age_MRDT_m <- sum_MRDT_3m_m %>% slice_min(MRDT_all_per, with_ties = F)
+max_age_MRDT_m <- sum_MRDT_3m_m %>% slice_max(MRDT_all_per, with_ties = F)
 
 seasonMRDT <- master %>% 
   mutate(month_yr = zoo::as.yearmon(d1s_data_date),
@@ -345,6 +345,23 @@ MRDT <- master %>%
   mutate(across(where(is.numeric), round, 1)) %>% 
   ungroup()
 
+MRDT_clus <- master %>% 
+  mutate(mrdt_num_d90 = ifelse(d90_stl_mrdt_result=="Positive",1,0)) %>% 
+  group_by(cluster) %>% 
+  summarise(age_mean = mean(calc_age_months, na.rm = T),
+            age_sd = sd(calc_age_months, na.rm=T),
+            sum_MRDT_posd1 = sum(mrdt_num, na.rm = T),
+            sum_MRDT_testedd1 = sum(mrdt, na.rm = T),
+            MRDT_pos_percentd1 = (sum_MRDT_posd1/sum_MRDT_testedd1)*100,
+            sum_MRDT_posd90 = sum(mrdt_num_d90, na.rm = T),
+            sum_MRDT_testedd90 = sum(d90_stl_mrdt, na.rm = T),
+            MRDT_pos_percentd90 = (sum_MRDT_posd90/sum_MRDT_testedd90)*100,
+            MDRT_tot = sum_MRDT_posd1+sum_MRDT_posd90,
+            MRDT_all_per = MDRT_tot/ (sum_MRDT_testedd1+sum_MRDT_testedd90)*100) %>% 
+  mutate(across(where(is.numeric), round, 1)) %>% 
+  ungroup()
+MRDT_clus_c <- MRDT_clus %>% filter(cluster=="Chikwawa")
+MRDT_clus_m <- MRDT_clus %>% filter(cluster=="St Montfort")
 ```
 
 ## Results
@@ -633,7 +650,7 @@ flextable(seq_sum_sal) %>%
 
 #### Malaria
 
-Malaria rapid diagnostic (MRDT) was positive in `{r} MRDT$MDRT_tot` (`{r} MRDT$MRDT_all_per`%); `{r} min_mth_MRDT_c$MDRT_tot` (`{r} min_mth_MRDT_c$MRDT_all_per`%) in Chikwawa and `{r} min_mth_MRDT_m$MDRT_tot` (`{r} min_mth_MRDT_m$MRDT_all_per`%) in St Montfort (@fig-MRDT A). In Chikwawa, children in the age group `{r} min_mth_MRDT_c$AGEGROUP_3mth` months (mean `{r} min_mth_MRDT_c$age_mean` months) had MRDT positive results in `{r} min_mth_MRDT_c$MDRT_tot` (`{r} min_mth_MRDT_c$MRDT_all_per`%) , and age group `{r} max_age_MRDT_c$AGEGROUP_3mth` months (mean `{r} min_age_MRDT_c$age_mean` months) had `{r} max_age_MRDT_c$MDRT_tot` (`{r} max_age_MRDT_c$MRDT_all_per`%). In St Montfort, children in the age group `{r} min_age_MRDT_m$AGEGROUP_3mth` months (mean `{r} min_age_MRDT_m$age_mean` months) had MRDT positive results in `{r} min_age_MRDT_m$MDRT_tot` (`{r} min_age_MRDT_m$MRDT_all_per`%) , and age group `{r} max_age_MRDT_m$AGEGROUP_3mth` months (mean `{r} min_age_MRDT_m$age_mean` months) had `{r} max_age_MRDT_m$MDRT_tot` (`{r} max_age_MRDT_m$MRDT_all_per`%) (@fig-MRDT B).
+Malaria rapid diagnostic (MRDT) was positive in `{r} MRDT$MDRT_tot` (`{r} MRDT$MRDT_all_per`%) children over the whole duration of the study; `{r} MRDT_clus_c$MDRT_tot` (`{r} MRDT_clus_c$MRDT_all_per`%) in Chikwawa and `{r} MRDT_clus_m$MDRT_tot` (`{r} MRDT_clus_m$MRDT_all_per`%) in St Montfort (@fig-MRDT A). In Chikwawa, children in the age group `{r} min_age_MRDT_c$AGEGROUP_3mth` months (mean `{r} min_age_MRDT_c$age_mean` months) had MRDT positive results in `{r} min_age_MRDT_c$MDRT_tot` (`{r} min_age_MRDT_c$MRDT_all_per`%) , and age group `{r} max_age_MRDT_c$AGEGROUP_3mth` months (mean `{r} max_age_MRDT_c$age_mean` months) had `{r} max_age_MRDT_c$MDRT_tot` (`{r} max_age_MRDT_c$MRDT_all_per`%). In St Montfort, children in the age group `{r} min_age_MRDT_m$AGEGROUP_3mth` months (mean `{r} min_age_MRDT_m$age_mean` months) had MRDT positive results in `{r} min_age_MRDT_m$MDRT_tot` (`{r} min_age_MRDT_m$MRDT_all_per`%) , and age group `{r} max_age_MRDT_m$AGEGROUP_3mth` months (mean `{r} max_age_MRDT_m$age_mean` months) had `{r} max_age_MRDT_m$MDRT_tot` (`{r} max_age_MRDT_m$MRDT_all_per`%) (@fig-MRDT B). In Chikwawa, in `{r} min_mth_MRDT_c$month_yrfull` there were `{r} min_mth_MRDT_c$MDRT_tot` (`{r} min_mth_MRDT_c$MRDT_all_per`%) children with positive MRDT results, compared to `{r} max_mth_MRDT_c$month_yrfull` where there were `{r} max_mth_MRDT_c$MDRT_tot` (`{r} max_mth_MRDT_c$MRDT_all_per`%). In St Montfort, in `{r} min_mth_MRDT_m$month_yrfull` there were `{r} min_mth_MRDT_m$MDRT_tot` (`{r} min_mth_MRDT_m$MRDT_all_per`%) children with positive MRDT results, compared to `{r} max_mth_MRDT_m$month_yrfull` where there were `{r} max_mth_MRDT_m$MDRT_tot` (`{r} max_mth_MRDT_m$MRDT_all_per`%).
 
 #### Anaemia
 
