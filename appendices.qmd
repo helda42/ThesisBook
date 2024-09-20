@@ -47,6 +47,9 @@ library(naniar)
 library(tidyverse)
 library(here)
 library(rio)
+library(janitor)
+library(gt)
+library(gtsummary)
 
 SalmAllYr <- import(here("data", "3_data", "SalmAllYr.csv"))
 SalmAllYra <- import(here("data", "3_data", "SalmAllYr.csv"))
@@ -134,6 +137,39 @@ ft_desc_tab
 ```
 
 ## Descriptive Epidemiology
+
+### Water and Sanitation
+
+```{r, echo=FALSE, results='show', warning=FALSE, message=FALSE}
+#| tbl-cap: "Details of water and sanitation characteristics by cluster for children recruited into the SAiNTS study"
+#| label: tbl-watsan
+
+master2 <- import(here("data", "5_data", "master2.csv"))
+
+master2 %>% 
+  select(c(cluster, toilet_type_desc, share_toilet_des, drinking_desc, treatW_desc, treat_dwater_how_desc, bathing_wat_desc, cooking_wat_desc)) %>% 
+   tbl_summary(by=cluster,
+              statistic = list(all_continuous() ~ "{mean} ({sd})"),        # stats and format for continuous columns
+                     # all_categorical() ~ "{n} / {N} ({p}%)"),   # stats and format for categorical columns
+              digits = all_continuous() ~ 1,                              # rounding for continuous columns
+              type   = all_categorical() ~ "categorical",                 # force all categorical levels to display
+              label  = list(                                              # display labels for column names
+                toilet_type_desc   ~ "Toilet Type",                           
+                share_toilet_des ~ "Shared toilet",
+                drinking_desc    ~ "Drinking water",
+                treatW_desc ~ "Water Treatment",
+                treat_dwater_how_desc ~ "Water Treatment Method",
+                bathing_wat_desc  ~ "Bathing water",
+                cooking_wat_desc  ~ "Cooking water",
+               missing_text = "Missing"                                    # how missing values should display
+            )) %>% 
+  bold_labels() %>%
+  # convert to kableExtra
+  as_kable_extra(booktabs = TRUE, longtable = TRUE) %>%
+  # reduce font size to make table fit. 
+  # you may also use the `latex_options = "scale_down"` argument here.
+  kableExtra::kable_styling(latex_options = "scale_down", position='float_left') 
+```
 
 ### Age-stratified prevalence of enteric salmonella infections in the SAiNTS study
 

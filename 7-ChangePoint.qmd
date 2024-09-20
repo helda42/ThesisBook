@@ -2,6 +2,7 @@
 title: "Relationship between NTS immunity and age in Children aged 0-60 months across four sub-Saharan African sites: Principled Change Point Analysis"
 format:    
   pdf:
+    mainfont: Didot
     geometry:
       - top=20mm
       - bottom=20mm
