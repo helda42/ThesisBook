@@ -2,6 +2,7 @@
 title: "Population attributable fraction of non-typhoidal Salmonella invasive disease associated with HIV, malaria, anaemia, severe acute malnutrition and sickle cell disease: a systematic review and meta-analysis"
 format:    
   pdf:
+    mainfont: Didot
     geometry:
       - top=20mm
       - bottom=20mm
@@ -18,10 +19,7 @@ format:
         \usepackage{geometry}
         \usepackage{changepage}
         \usepackage{siunitx}
-        
-        \sisetup{
-          output-decimal-marker={\cdot}
-        }
+        \sisetup{output-decimal-marker={.}, group-separator = {,}, group-minimum-digits=4}
     cite-method: citeproc
     bibliography: references.bib
     csl: diabetologia.csl

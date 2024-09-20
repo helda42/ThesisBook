@@ -2,6 +2,7 @@
 title: "Appendices"
 format:    
   pdf:
+    mainfont: Didot
     geometry:
       - top=20mm
       - bottom=20mm
@@ -28,7 +29,7 @@ editor: visual
 
 ### Polymerase Chain Reaction (PCR) cut-off level
 
-![Polymerase Chain Reaction (PCR) positivity cut-off levels estimated by fitting a mixture model to Ct value distributions](figures/9_images/PCR_mixture_modl_hist.tiff){#fig-PCRMixMod}
+![Polymerase Chain Reaction (PCR) positivity cut-off levels estimated by fitting a mixture model to Ct value distributions](figures/9_images/PCR_mixture_modl_hist.jpg){#fig-PCRMixMod width="607"}
 
 ## Incidence of invasive non-typhoidal salmonella
 
@@ -63,6 +64,8 @@ sumtab_all <- SalmAllYr %>%
 
 sumtab_all %>% 
   flextable() %>% 
+  fontsize(size = 8, part = "header") %>%   # adjust font size of header
+  fontsize(size = 8, part = "body") %>%   # adjust font size of header
    set_header_labels(
     YearBand3 = "Year Period",
     count = "N",
@@ -93,8 +96,8 @@ sumtab_vac <- SalmAllYra %>%
 
 sumtab_vac %>% 
   flextable() %>% 
-  fontsize(i = 1, size = 8, part = "header") %>%   # adjust font size of header
-  fontsize(i = 1, size = 8, part = "body") %>%   # adjust font size of header
+  fontsize(size = 8, part = "header") %>%   # adjust font size of header
+  fontsize(size = 8, part = "body") %>%   # adjust font size of header
    set_header_labels(
     YearBand3 = "Year Period",
     count = "N",
@@ -124,8 +127,8 @@ sumtab_vac %>%
 
 descript_tab2 <- import(here("data", "9_data", "descript_tab2.csv"))
 ft_desc_tab <- flextable(descript_tab2) %>% 
-  fontsize(i = 1, size = 8, part = "header") %>%   # adjust font size of header
-  fontsize(i = 1, size = 8, part = "body") %>%   # adjust font size of header
+  fontsize(size = 8, part = "header") %>%   # adjust font size of header
+  fontsize(size = 8, part = "body") %>%   # adjust font size of header
   bold(i = 1, bold = TRUE, part = "header")#
 ft_desc_tab
 ```
@@ -174,6 +177,53 @@ sum_stool_3m
 
 \newpage
 
+<!-- changing the orientation to landscape --------------------------------- -->
+
+```{=tex}
+\KOMAoptions{usegeometry, paper=landscape,pagesize}
+\recalctypearea
+```
+### Genome sequencing data for stool salmonella isolates
+
+```{r, echo=FALSE, results='show', warning=FALSE, message=FALSE,fig.align='left'}
+#| fig-cap: "Genome sequencing results for Salmonella isolates from stools of children recruited into the SAiNTS study"
+#| label: tbl-seqdat_all
+#| 
+seqdat_all <- import(here("data", "5_data", "2023.06.29.SAiNTS_seq_results.xlsx")) %>% 
+  mutate(total = n()) %>% 
+  group_by(cgmlst_subspecies, `O antigen prediction`, serovar) %>%
+  summarise(count = n(),
+            percent = round(count/total, digits=3)*100) %>% 
+  slice_head() %>% 
+  ungroup() %>% 
+  mutate(serovar = ifelse(serovar=="Regent|Suberu|Amsterdam|Westhampton|Southbank|Jedburgh|Macallen|Bolombo|Adabraka|Florian|Rideau|Senftenberg|Kouka|Dessau|Cannstatt|Llandoff|Ochiogu|Sambre", "Regent", serovar))
+
+seqdat_all %>% 
+  flextable() %>% 
+  fontsize(size = 8, part = "header") %>%   # adjust font size of header
+  fontsize(size = 8, part = "body") %>%   # adjust font size of header
+  set_header_labels(
+    cgmlst_subspecies = "Sub-species",
+    serovar = "Serovar",
+    count = "N",
+    percent = "Percent (%)") %>% 
+  footnote(i=5, j=3,
+           value = as_paragraph(c("Regent|Suberu|Amsterdam|Westhampton|Southbank|Jedburgh|Macallen|Bolombo|Adabraka|Florian|Rideau|Senftenberg|Kouka|Dessau|Cannstatt|Llandoff|Ochiogu|Sambre")),
+           ref_symbols = c("*")) %>% 
+  fontsize(size = 6, part = "footer") %>%   # adjust font size of header
+  autofit()
+```
+
+\newpage
+
+<!-- changing the orientation to portrait --------------------------------- -->
+
+```{=tex}
+\KOMAoptions{usegeometry, paper=portrait,pagesize}
+\recalctypearea
+```
+\newpage
+
 <!-- changing the orientation to portrait --------------------------------- -->
 
 ```{=tex}
@@ -182,9 +232,7 @@ sum_stool_3m
 ```
 ## Serocatalytic model
 
-![Cumulative incidence of Shigella infections in children aged 0 - 24 months in the MAL-ED cohort. Reproduced from [@rogawski_mcquade_epidemiology_2020]](images/clipboard-3439657591.png){#fig-MAL_ED width="686"}
-
-## Descriptive Epidemiology
+![Cumulative incidence of Shigella infections in children aged 0 - 24 months in the MAL-ED cohort. Reproduced from [@rogawski_mcquade_epidemiology_2020]](images/clipboard-3439657591.png){#fig-MAL_ED width="561"}
 
 ## Estimating protective thresholds for STm anti-OAg IgG using reverse cumulative distribution curve functions (RCD’s)
 

@@ -2,6 +2,7 @@
 title: "Setting, Materials and Methods"
 format:    
   pdf:
+    mainfont: Didot
     geometry:
       - top=20mm
       - bottom=20mm

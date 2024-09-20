@@ -2,6 +2,7 @@
 title: "General Introduction"
 format:    
   pdf:
+    mainfont: Didot
     geometry:
       - top=20mm
       - bottom=20mm
@@ -54,7 +55,7 @@ It is key to understand patterns of human carriage, and shedding of NTS strains 
 
 ::: {#tbl-phenotypes}
 | Acronym | Clinical Phenotype                   | Description                                                                                                                                                                       |
-|---------|--------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|------------|------------|-------------------------------------------------|
 | eNTS    | Enteric non-typhoidal *Salmonella*   | Asymptomatic colonization of the gastrointestinal tract by non-typhoidal *Salmonella*, which may or may not be associated with clinical symptoms of *Salmonella*-induced illness. |
 | dNTS    | Diarrheal non-typhoidal *Salmonella* | Diarrhoeal symptoms with NTS isolated from the stool.                                                                                                                             |
 | iNTS    | Invasive non-typhoidal *Salmonella*  | Symptomatic disease (eg, sepsis, meningitis) with NTS isolated from a usually sterile site (i.e, bloodstream or cerebrospinal fluid).                                             |

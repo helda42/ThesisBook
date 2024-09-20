@@ -2,6 +2,8 @@
 title: "Mechanistic serological catalytic model for acquisition of natural immunity to non-typhoidal salmonella"
 format:    
   pdf:
+    mainfont: Didot
+    linestretch: 1.5   # Set line spacing to 1.5
     geometry:
       - top=20mm
       - bottom=20mm
@@ -129,7 +131,7 @@ t = time
 
 Using Gompertz function, can calculate $\Phi$
 
-$$ \Phi(\theta n_{s}(a)) = ce^{-i_{s}e^{-k_{s}n_{s}(a)}}$$ Where:
+$$ \Phi(\theta n_{s}(a)) = ce^{-i_{s}e^{-k_{s}n_{s}(a)}} - E$$ Where:
 
 -   ns = number of exposures
 
@@ -143,25 +145,29 @@ $$ \Phi(\theta n_{s}(a)) = ce^{-i_{s}e^{-k_{s}n_{s}(a)}}$$ Where:
 
 -   a = age
 
+-   E = constant
+
 Two parameters that will be fitted to the data:
 
 k = growth rate
 
 i = number of exposures above which the antibody response will enter the growth phase (exponential growth)
 
-### Fitting to model using Markov-Chain Monte-Carlo (MCMC)
-
 ### Model 2: Changing force of infection
 
 In the second model, lambda was allowed to change with age, using a second gompertz curve to model a sigmoidal relationship between age and force of infection (eNTS) events.
 
-$$ f(ns) = m_xe^{-we^{-rt}}$$ Where mx = upper limit of new infections (cumulative) by age 60 months = 40 if 1 infection every 6 weeks on average across cohort - may need to adjust for age distribution $$ lim_{t \to \infty} ke^{-ce^{-rt}} = ke^{0} = k $$\
+$$ f(t) = m_xe^{-we^{-rt}\lambda_b} - E $$ Where mx = upper limit of new infections (cumulative) by age 60 months = 40 if 1 infection every 6 weeks on average across cohort - may need to adjust for age distribution $$ lim_{t \to \infty} ke^{-ce^{-rt}} = ke^{0} = k $$\
 
 -   e = Euler's constant = 2.71828 = the base of natural logarithms
 
 -   w = age in months before before enter exponential phase (x-axis displacement) - weaning
 
 -   r = exponential phase/ growth rate high feco-oral transmission at weaning/ crawling age
+
+-   E = constant
+
+-   $\lambda_b$ = baseline lambda (FOI) - the true lambda will be a function of age, therefore we will fit a baseline lambda to obtain estimates of the baseline lambda across the whole population (ages 0 - 60 months)
 
 The modeled relationship between age and enteric NTS infections were compared to the observed distribution of observed eNTS events (NTS PCR and microbiological culture positive stool samples), from the same cross-sectional sample of children.
 
@@ -349,6 +355,7 @@ gg_fit_func <- function(dataS, c_eff_midage){
   theme_bw() +
   xlab("Age (months)") +
   ylab("Anti-STm IgG (EU/ml)") +
+ # coord_cartesian(ylim = c(0,1000))+
   scale_y_log10(labels = prettyNum) +
   ggtitle("IgG GMC model fit vs data") +
   scale_x_continuous(breaks = c(seq(0,60,5))) +
@@ -482,7 +489,41 @@ c_eff_midage1 <- modelLs$`1`$Malawi$c_eff_midage
 c_eff_midage2 <- modelLs$`2`$Malawi$c_eff_midage
 fit1 <- modelLs$`1`$Malawi$fit
 fit2 <- modelLs$`2`$Malawi$fit
+## sites
+dataSnKen2 <- modelLs$`2`$Kenya$dataSn
+dataSnBF2 <- modelLs$`2`$BF$dataSn
 
+malawi_tab <- dataSn2 %>% select(c(contains("Intercept"))) %>% slice_head(n=1) %>% mutate(Country="Malawi")
+ken_tab <- dataSnKen2 %>% select(c(contains("Intercept"))) %>% slice_head(n=1) %>% mutate(Country="Kenya")
+BF_tab <- dataSnBF2 %>% select(c(contains("Intercept"))) %>% slice_head(n=1) %>% mutate(Country="Burkina Faso")
+sites_tab <- bind_rows(malawi_tab, ken_tab, BF_tab) %>% 
+  mutate(across(where(is.numeric), round, 2)) %>% 
+  mutate("i" = paste0(sep="",mean_b_i_Intercept," (",`|95%_b_i_Intercept`,"-",`95%|_b_i_Intercept`,")"),
+         "k" = paste0(sep="",mean_b_k_Intercept," (",`|95%_b_k_Intercept`,"-",`95%|_b_k_Intercept`,")"),
+         "r" = paste0(sep="",mean_b_r_Intercept," (",`|95%_b_r_Intercept`,"-",`95%|_b_r_Intercept`,")"),
+         "mab" = paste0(sep="",mean_b_mab0_Intercept," (",`|95%_b_mab0_Intercept`,"-",`95%|_b_mab0_Intercept`,")"),
+         "lambdaB" = paste0(sep="",mean_b_lambdaB_Intercept," (",`|95%_b_lambdaB_Intercept`,"-",`95%|_b_lambdaB_Intercept`,")"),
+         "E" = paste0(sep="",mean_b_E_Intercept," (",`|95%_b_E_Intercept`,"-",`95%|_b_E_Intercept`,")")) %>% 
+  select(c(Country, mab, i, k, r, lambdaB, E))
+
+malawi_ninf <- dataSn2 %>% filter(AGEGROUP_mth=="(0,1]"| AGEGROUP_mth=="(6,7]"| AGEGROUP_mth=="(12,13]"|AGEGROUP_mth=="(24,25]"|AGEGROUP_mth=="(59,60]") %>% mutate(Country="Malawi")
+ken_ninf <- dataSnKen2 %>% filter(AGEGROUP_mth=="(0,1]"| AGEGROUP_mth=="(6,7]"| AGEGROUP_mth=="(12,13]"|AGEGROUP_mth=="(24,25]"|AGEGROUP_mth=="(59,60]") %>% mutate(Country="Kenya")
+BF_ninf <- dataSnBF2 %>% filter(AGEGROUP_mth=="(0,1]"| AGEGROUP_mth=="(6,7]"| AGEGROUP_mth=="(12,13]"|AGEGROUP_mth=="(24,25]"|AGEGROUP_mth=="(59,60]") %>% mutate(Country="Burkina Faso")
+ninf_all <- bind_rows(malawi_ninf, ken_ninf, BF_ninf)
+ninf_all2 <- ninf_all %>% 
+  mutate(
+    cum_ninf_mean = ninf_MEAN*MIDAGE,
+    cum_ninf_lo = ninf_lo*MIDAGE,
+    cum_ninf_hi = ninf_hi*MIDAGE) %>% 
+  mutate(across(where(is.numeric), round, 2)) %>% 
+  mutate(
+    ninf = paste0(sep="", ninf_MEAN, " (",ninf_lo,"-",ninf_hi,")"),
+    cum_ninf = paste0(sep="", cum_ninf_mean, " (",cum_ninf_lo,"-",cum_ninf_hi,")")) %>% 
+  select(Country, AGEGROUP_mth, ninf, cum_ninf) 
+
+#sites_tab2 <- sites_tab %>% left_join(ninf_all2)
+      
+## malawi
 i_mean1 <- round(dataSn1$mean_b_i_Intercept, digits=2)[1] 
 i_95CI1 <- paste0(sep="","(", round(dataSn1$`95%|_b_i_Intercept`,digits=2)," - ", round(dataSn1$`|95%_b_i_Intercept`,digits=2),")")[1]
 k_mean1 <- round(dataSn1$mean_b_k_Intercept, digits=2)[1]
@@ -511,10 +552,7 @@ ninf12_2 <- dataSn2 %>% filter(AGEGROUP_mth=="(12,13]")
 ninf24_2 <- dataSn2 %>% filter(AGEGROUP_mth=="(24,25]")
 ninf60_2 <- dataSn2 %>% filter(AGEGROUP_mth=="(59,60]")
 
-## sites
-dataSnKen2 <- modelLs$`2`$Kenya$dataSn
-dataSnBF2 <- modelLs$`2`$BF$dataSn
-
+## Sites
 ninf0_Ken2 <- dataSnKen2 %>% filter(AGEGROUP_mth=="(0,1]")
 ninf06_Ken2 <- dataSnKen2 %>% filter(AGEGROUP_mth=="(6,7]")
 ninf12_Ken2 <- dataSnKen2 %>% filter(AGEGROUP_mth=="(12,13]")
@@ -567,7 +605,7 @@ Model fitting to the observed antibody data is shown in @fig-fit1. The posterior
 
 ### Model 2: Changing force of infection with age
 
-The posterior distributions were i, k and mab are shown in @fig-posteriors2; the mean for i was `{r} i_mean2`, with 95% credible intervals (CI) `{r} i_95CI2`, the mean for k was `{r} k_mean2` 95% CI `{r} k_95CI2`, and the mean for mab was `{r} mab_mean2` 95% CI `{r} mab_95CI2`. The posterior means for the two additional parameters were lambdaB mean `{r} lambdaB_mean2` 95% CI `{r} lambdaB_95CI2`, and r mean was`{r} r_mean2` 95% CI `{r} r_95CI2`. The model fit for the individual model components mab (maternal antibody decay) and phi (acquisition of natural immunity following eNTS exposure) are shown in @fig-fit2. Model 2 estimated that the proportion of children who had a salmonella infection inducing serotype-specific IgG response at age 0 was `{r} print(round(ninf0_2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf0_2$ninf_lo,digits = 2))` - `{r} print(round(ninf0_2$ninf_hi,digits = 2))`), rising to `{r} print(round(ninf06_2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf06_2$ninf_lo,digits = 2))` - `{r} print(round(ninf06_2$ninf_hi,digits = 2))`) at 6 months, `{r} print(round(ninf12_2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf12_2$ninf_lo,digits = 2))` - `{r} print(round(ninf12_2$ninf_hi,digits = 2))`) at 12 months, `{r} print(round(ninf24_2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf24_2$ninf_lo,digits = 2))` - `{r} print(round(ninf24_2$ninf_hi,digits = 2))`), at 24 months, and `{r} print(round(ninf60_2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf60_2$ninf_lo,digits = 2))` - `{r} print(round(ninf60_2$ninf_hi,digits = 2))`) at 60 months. This corresponds to estimated `{r} print(round(ninf0_2$ninf_MEAN*ninf0_2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf0_2$ninf_lo*ninf0_2$MIDAGE,digits = 2))` - `{r} print(round(ninf0_2$ninf_hi*ninf0_2$MIDAGE,digits = 2))`), `{r} print(round(ninf06_2$ninf_MEAN*ninf06_2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf06_2$ninf_lo*ninf06_2$MIDAGE,digits = 2))` - `{r} print(round(ninf06_2$ninf_hi*ninf06_2$MIDAGE,digits = 2))`), `{r} print(round(ninf12_2$ninf_MEAN*ninf12_2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf12_2$ninf_lo*ninf12_2$MIDAGE,digits = 2))` - `{r} print(round(ninf12_2$ninf_hi*ninf12_2$MIDAGE,digits = 2))`), `{r} print(round(ninf24_2$ninf_MEAN*ninf24_2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf24_2$ninf_lo*ninf24_2$MIDAGE,digits = 2))` - `{r} print(round(ninf24_2$ninf_hi*ninf24_2$MIDAGE,digits = 2))`) and `{r} print(round(ninf60_2$ninf_MEAN*ninf60_2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf60_2$ninf_lo*ninf60_2$MIDAGE,digits = 2))` - `{r} print(round(ninf60_2$ninf_hi*ninf60_2$MIDAGE,digits = 2))`) cumulative salmonella infections inducing *S*. typhimurium-specific IgG response at age 0, 6, 12, 24 and 60 months respectively.
+The posterior distributions were i, k and mab are shown in @fig-posteriors2; the mean for i was `{r} i_mean2`, with 95% credible intervals (CI) `{r} i_95CI2`, the mean for k was `{r} k_mean2` 95% CI `{r} k_95CI2`, and the mean for mab was `{r} mab_mean2` 95% CI `{r} mab_95CI2`. The posterior means for the two additional parameters were lambdaB mean `{r} lambdaB_mean2` 95% CI `{r} lambdaB_95CI2`, and r mean was`{r} r_mean2` 95% CI `{r} r_95CI2`. The model fit for the individual model components mab (maternal antibody decay) and phi (acquisition of natural immunity following eNTS exposure) are shown in @fig-fit2. Model 2 estimated that the proportion of children who had a salmonella infection inducing serotype-specific IgG response in the first month of life was `{r} print(round(ninf0_2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf0_2$ninf_lo,digits = 2))` - `{r} print(round(ninf0_2$ninf_hi,digits = 2))`), rising to `{r} print(round(ninf06_2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf06_2$ninf_lo,digits = 2))` - `{r} print(round(ninf06_2$ninf_hi,digits = 2))`) at age 6-7 months, `{r} print(round(ninf12_2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf12_2$ninf_lo,digits = 2))` - `{r} print(round(ninf12_2$ninf_hi,digits = 2))`) at age 12-13 months, `{r} print(round(ninf24_2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf24_2$ninf_lo,digits = 2))` - `{r} print(round(ninf24_2$ninf_hi,digits = 2))`), at age 24-25 months, and `{r} print(round(ninf60_2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf60_2$ninf_lo,digits = 2))` - `{r} print(round(ninf60_2$ninf_hi,digits = 2))`) at 59-60 months. This corresponds to estimated `{r} print(round(ninf0_2$ninf_MEAN*ninf0_2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf0_2$ninf_lo*ninf0_2$MIDAGE,digits = 2))` - `{r} print(round(ninf0_2$ninf_hi*ninf0_2$MIDAGE,digits = 2))`), `{r} print(round(ninf06_2$ninf_MEAN*ninf06_2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf06_2$ninf_lo*ninf06_2$MIDAGE,digits = 2))` - `{r} print(round(ninf06_2$ninf_hi*ninf06_2$MIDAGE,digits = 2))`), `{r} print(round(ninf12_2$ninf_MEAN*ninf12_2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf12_2$ninf_lo*ninf12_2$MIDAGE,digits = 2))` - `{r} print(round(ninf12_2$ninf_hi*ninf12_2$MIDAGE,digits = 2))`), `{r} print(round(ninf24_2$ninf_MEAN*ninf24_2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf24_2$ninf_lo*ninf24_2$MIDAGE,digits = 2))` - `{r} print(round(ninf24_2$ninf_hi*ninf24_2$MIDAGE,digits = 2))`) and `{r} print(round(ninf60_2$ninf_MEAN*ninf60_2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf60_2$ninf_lo*ninf60_2$MIDAGE,digits = 2))` - `{r} print(round(ninf60_2$ninf_hi*ninf60_2$MIDAGE,digits = 2))`) cumulative salmonella infections inducing *S*. typhimurium-specific IgG response by age 0, 6, 12, 24 and 60 months respectively.
 
 ### Model comparison
 
@@ -577,7 +615,7 @@ Model 2 was selected as the best fit model; model 1 had an ELPD difference of `{
 
 Both model 1 and 2 were run for each of the other VacciNTS sites; Burkina Faso and Kenya, model comparisons are shown in @tbl-sites. Model 2 was selected as best fit across all sites. The posterior distributions for Kenya were i mean `{r} i_mean2K` 95% CI `{r} i_95CI2K`, the mean for k was `{r} k_mean2K` 95% CI `{r} k_95CI2K`, mean for mab was `{r} mab_mean2K` 95% CI `{r} mab_95CI2K`, lambdaB mean was `{r} lambdaB_mean2K`95% CI `{r} lambdaB_95CI2K`, and r mean was `{r} r_mean2K` 95% CI `{r} r_95CI2K`. The posterior distributions for Burkina Faso were i mean `{r} i_mean2B` 95% CI `{r} i_95CI2B`, the mean for k was `{r} k_mean2B` 95% CI `{r} k_95CI2B`, mean for mab was `{r} mab_mean2B` 95% CI `{r} mab_95CI2B`, lambdaB mean was `{r} lambdaB_mean2B` 95% CI `{r} lambdaB_95CI2B`, and r mean was `{r} r_mean2K` 95% CI `{r} r_95CI2B`.
 
-In Kenya, model 2 estimated that the proportion of children who had a salmonella infection inducing *S*. typhimurium-specific IgG response at age 0 was `{r} print(round(ninf0_Ken2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf0_Ken2$ninf_lo,digits = 2))` - `{r} print(round(ninf0_Ken2$ninf_hi,digits = 2))`), rising to `{r} print(round(ninf06_Ken2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf06_Ken2$ninf_lo,digits = 2))` - `{r} print(round(ninf06_Ken2$ninf_hi,digits = 2))`) at 6 months, `{r} print(round(ninf12_Ken2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf12_Ken2$ninf_lo,digits = 2))` - `{r} print(round(ninf12_Ken2$ninf_hi,digits = 2))`) at 12 months, `{r} print(round(ninf24_Ken2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf24_Ken2$ninf_lo,digits = 2))` - `{r} print(round(ninf24_Ken2$ninf_hi,digits = 2))`), at 24 months, and `{r} print(round(ninf60_Ken2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf60_Ken2$ninf_lo,digits = 2))` - `{r} print(round(ninf60_Ken2$ninf_hi,digits = 2))`) at 60 months. This corresponds to estimated `{r} print(round(ninf0_Ken2$ninf_MEAN*ninf0_Ken2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf0_Ken2$ninf_lo*ninf0_Ken2$MIDAGE,digits = 2))` - `{r} print(round(ninf0_Ken2$ninf_hi*ninf0_Ken2$MIDAGE,digits = 2))`), `{r} print(round(ninf06_Ken2$ninf_MEAN*ninf06_Ken2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf06_Ken2$ninf_lo*ninf06_Ken2$MIDAGE,digits = 2))` - `{r} print(round(ninf06_Ken2$ninf_hi*ninf06_Ken2$MIDAGE,digits = 2))`), `{r} print(round(ninf12_Ken2$ninf_MEAN*ninf12_Ken2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf12_Ken2$ninf_lo*ninf12_Ken2$MIDAGE,digits = 2))` - `{r} print(round(ninf12_Ken2$ninf_hi*ninf12_Ken2$MIDAGE,digits = 2))`), `{r} print(round(ninf24_Ken2$ninf_MEAN*ninf24_Ken2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf24_Ken2$ninf_lo*ninf24_Ken2$MIDAGE,digits = 2))` - `{r} print(round(ninf24_Ken2$ninf_hi*ninf24_Ken2$MIDAGE,digits = 2))`) and `{r} print(round(ninf60_Ken2$ninf_MEAN*ninf60_Ken2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf60_Ken2$ninf_lo*ninf60_Ken2$MIDAGE,digits = 2))` - `{r} print(round(ninf60_Ken2$ninf_hi*ninf60_Ken2$MIDAGE,digits = 2))`) cumulative salmonella infections inducing serotype-specific IgG response at age 0, 6, 12, 24 and 60 months respectively. In Burkina Faso, model 2 estimated that the proportion of children who had a salmonella infection inducing serotype-specific IgG response at age 0 was `{r} print(round(ninf0_BF2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf0_BF2$ninf_lo,digits = 2))` - `{r} print(round(ninf0_BF2$ninf_hi,digits = 2))`), rising to `{r} print(round(ninf06_BF2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf06_BF2$ninf_lo,digits = 2))` - `{r} print(round(ninf06_BF2$ninf_hi,digits = 2))`) at 6 months, `{r} print(round(ninf12_BF2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf12_BF2$ninf_lo,digits = 2))` - `{r} print(round(ninf12_BF2$ninf_hi,digits = 2))`) at 12 months, `{r} print(round(ninf24_BF2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf24_BF2$ninf_lo,digits = 2))` - `{r} print(round(ninf24_BF2$ninf_hi,digits = 2))`), at 24 months, and `{r} print(round(ninf60_BF2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf60_BF2$ninf_lo,digits = 2))` - `{r} print(round(ninf60_BF2$ninf_hi,digits = 2))`) at 60 months. This corresponds to estimated `{r} print(round(ninf0_BF2$ninf_MEAN*ninf0_BF2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf0_BF2$ninf_lo*ninf0_BF2$MIDAGE,digits = 2))` - `{r} print(round(ninf0_BF2$ninf_hi*ninf0_BF2$MIDAGE,digits = 2))`), `{r} print(round(ninf06_BF2$ninf_MEAN*ninf06_BF2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf06_BF2$ninf_lo*ninf06_BF2$MIDAGE,digits = 2))` - `{r} print(round(ninf06_BF2$ninf_hi*ninf06_BF2$MIDAGE,digits = 2))`), `{r} print(round(ninf12_BF2$ninf_MEAN*ninf12_BF2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf12_BF2$ninf_lo*ninf12_BF2$MIDAGE,digits = 2))` - `{r} print(round(ninf12_BF2$ninf_hi*ninf12_BF2$MIDAGE,digits = 2))`), `{r} print(round(ninf24_BF2$ninf_MEAN*ninf24_BF2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf24_BF2$ninf_lo*ninf24_BF2$MIDAGE,digits = 2))` - `{r} print(round(ninf24_BF2$ninf_hi*ninf24_BF2$MIDAGE,digits = 2))`) and `{r} print(round(ninf60_BF2$ninf_MEAN*ninf60_BF2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf60_BF2$ninf_lo*ninf60_BF2$MIDAGE,digits = 2))` - `{r} print(round(ninf60_BF2$ninf_hi*ninf60_BF2$MIDAGE,digits = 2))`) cumulative salmonella infections inducing serotype-specific IgG response at age 0, 6, 12, 24 and 60 months respectively.
+In Kenya, model 2 estimated that the proportion of children who had a salmonella infection inducing *S*. typhimurium-specific IgG response in the first month of life was `{r} print(round(ninf0_Ken2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf0_Ken2$ninf_lo,digits = 2))` - `{r} print(round(ninf0_Ken2$ninf_hi,digits = 2))`), rising to `{r} print(round(ninf06_Ken2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf06_Ken2$ninf_lo,digits = 2))` - `{r} print(round(ninf06_Ken2$ninf_hi,digits = 2))`) at age 6-7 months, `{r} print(round(ninf12_Ken2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf12_Ken2$ninf_lo,digits = 2))` - `{r} print(round(ninf12_Ken2$ninf_hi,digits = 2))`) at age 12-13 months, `{r} print(round(ninf24_Ken2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf24_Ken2$ninf_lo,digits = 2))` - `{r} print(round(ninf24_Ken2$ninf_hi,digits = 2))`) at age 24-25 months, and `{r} print(round(ninf60_Ken2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf60_Ken2$ninf_lo,digits = 2))` - `{r} print(round(ninf60_Ken2$ninf_hi,digits = 2))`) in months 59 -60. This corresponds to estimated `{r} print(round(ninf0_Ken2$ninf_MEAN*ninf0_Ken2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf0_Ken2$ninf_lo*ninf0_Ken2$MIDAGE,digits = 2))` - `{r} print(round(ninf0_Ken2$ninf_hi*ninf0_Ken2$MIDAGE,digits = 2))`), `{r} print(round(ninf06_Ken2$ninf_MEAN*ninf06_Ken2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf06_Ken2$ninf_lo*ninf06_Ken2$MIDAGE,digits = 2))` - `{r} print(round(ninf06_Ken2$ninf_hi*ninf06_Ken2$MIDAGE,digits = 2))`), `{r} print(round(ninf12_Ken2$ninf_MEAN*ninf12_Ken2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf12_Ken2$ninf_lo*ninf12_Ken2$MIDAGE,digits = 2))` - `{r} print(round(ninf12_Ken2$ninf_hi*ninf12_Ken2$MIDAGE,digits = 2))`), `{r} print(round(ninf24_Ken2$ninf_MEAN*ninf24_Ken2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf24_Ken2$ninf_lo*ninf24_Ken2$MIDAGE,digits = 2))` - `{r} print(round(ninf24_Ken2$ninf_hi*ninf24_Ken2$MIDAGE,digits = 2))`) and `{r} print(round(ninf60_Ken2$ninf_MEAN*ninf60_Ken2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf60_Ken2$ninf_lo*ninf60_Ken2$MIDAGE,digits = 2))` - `{r} print(round(ninf60_Ken2$ninf_hi*ninf60_Ken2$MIDAGE,digits = 2))`) cumulative salmonella infections inducing serotype-specific IgG response the age 0, 6, 12, 24 and 60 months respectively. In Burkina Faso, model 2 estimated that the proportion of children who had a salmonella infection inducing serotype-specific IgG response in the first month of life was `{r} print(round(ninf0_BF2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf0_BF2$ninf_lo,digits = 2))` - `{r} print(round(ninf0_BF2$ninf_hi,digits = 2))`), rising to `{r} print(round(ninf06_BF2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf06_BF2$ninf_lo,digits = 2))` - `{r} print(round(ninf06_BF2$ninf_hi,digits = 2))`) in months 6-7, `{r} print(round(ninf12_BF2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf12_BF2$ninf_lo,digits = 2))` - `{r} print(round(ninf12_BF2$ninf_hi,digits = 2))`) in months 12-13, `{r} print(round(ninf24_BF2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf24_BF2$ninf_lo,digits = 2))` - `{r} print(round(ninf24_BF2$ninf_hi,digits = 2))`) in months 24-25, and `{r} print(round(ninf60_BF2$ninf_MEAN,digits = 2))` (95% CI; `{r} print(round(ninf60_BF2$ninf_lo,digits = 2))` - `{r} print(round(ninf60_BF2$ninf_hi,digits = 2))`) in months 59 -60. This corresponds to estimated `{r} print(round(ninf0_BF2$ninf_MEAN*ninf0_BF2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf0_BF2$ninf_lo*ninf0_BF2$MIDAGE,digits = 2))` - `{r} print(round(ninf0_BF2$ninf_hi*ninf0_BF2$MIDAGE,digits = 2))`), `{r} print(round(ninf06_BF2$ninf_MEAN*ninf06_BF2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf06_BF2$ninf_lo*ninf06_BF2$MIDAGE,digits = 2))` - `{r} print(round(ninf06_BF2$ninf_hi*ninf06_BF2$MIDAGE,digits = 2))`), `{r} print(round(ninf12_BF2$ninf_MEAN*ninf12_BF2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf12_BF2$ninf_lo*ninf12_BF2$MIDAGE,digits = 2))` - `{r} print(round(ninf12_BF2$ninf_hi*ninf12_BF2$MIDAGE,digits = 2))`), `{r} print(round(ninf24_BF2$ninf_MEAN*ninf24_BF2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf24_BF2$ninf_lo*ninf24_BF2$MIDAGE,digits = 2))` - `{r} print(round(ninf24_BF2$ninf_hi*ninf24_BF2$MIDAGE,digits = 2))`) and `{r} print(round(ninf60_BF2$ninf_MEAN*ninf60_BF2$MIDAGE,digits = 2))` (95% CI; `{r} print(round(ninf60_BF2$ninf_lo*ninf60_BF2$MIDAGE,digits = 2))` - `{r} print(round(ninf60_BF2$ninf_hi*ninf60_BF2$MIDAGE,digits = 2))`) cumulative salmonella infections inducing serotype-specific IgG response by age 0, 6, 12, 24 and 60 months respectively.
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results=FALSE, fig.align = "centre", fig.height=6, fig.width = 5, out.width = "5.5in"}
 #| fig-cap: Model 1 outputs using Markov Chain Monte Carlo (MCMC) to estimate model parameters, posterior chains and posterior distributions of parameters i, k, and mab
@@ -713,6 +751,28 @@ print(panel1)
 
 ```
 
+```{r echo=FALSE, warning=FALSE, message=FALSE, ft.align = "centre", ft.height=6, ft.width = 5, out.width = "5.5in"}
+#| tbl-cap: Posterior summaries for fitted parameters across 3 sub-Saharan African sites
+#| label: tbl-sites_possum
+
+sites_tab %>% 
+  flextable() %>% 
+  fontsize(size=8, part = "body") %>% 
+  fontsize(size=8, part = "header") %>% 
+  bold(i = 1, bold = TRUE, part = "header") %>%   
+  add_header_row(values = c("Country","mab", "i", "k", "r", "lambdaB", "E")) %>% 
+  set_header_labels(         # Rename the columns in original header row
+    Country = "",
+    i = "Mean (95% CI)",
+    k = "Mean (95% CI)",
+    r = "Mean (95% CI)",
+    E = "Mean (95% CI)",
+    mab = "Mean (95% CI)",
+    lambdaB = "Mean (95% CI)"
+  ) %>% 
+  autofit()
+```
+
 \newpage
 
 <!-- changing the orientation to portrait --------------------------------- -->
@@ -721,28 +781,37 @@ print(panel1)
 \KOMAoptions{paper=portrait,pagesize}
 \recalctypearea
 ```
+```{r echo=FALSE, warning=FALSE, message=FALSE, ft.align = "centre", ft.height=6, ft.width = 5, out.width = "5.5in"}
+#| tbl-cap: Model predictions of predicted proportion (or probability) of children in each age group who had a salmonella infection inducing a S.typhiurum specific IgG response, and predicted cumulative number of salmonella infections experienced by a child each age group over their lifetime.
+#| label: tbl-sites_ninf
+
+ninf_all2 %>% 
+  flextable() %>% 
+  fontsize(size=8, part = "body") %>% 
+  fontsize(size=8, part = "header") %>% 
+  bold(i = 1, bold = TRUE, part = "header") %>%   
+   set_header_labels(         # Rename the columns in original header row
+    AGEGROUP_mth = "Age Group (months)",
+    ninf = "Proportion with infection",
+    cum_ninf = "Cumulative infections"
+  ) %>% 
+  autofit()
+```
+
 ## Discussion
 
-This serocatalytic model using non-typhoidal salmonella (NTS) antibody data from children living in endemic settings in sub-Saharan Africa, demonstrates how using cross-sectional age-stratified serological data can be used to understand the mechanisms between the relationship between NTS exposures in children and the aquisition of natural immunity. Different hypotheses can be tested by developing mechanistic models able to explain the observed age-patterns in the serology data. The model fitting to the data was improved assuming that the force of infection (lambda) of enteric NTS infections leading to S. typhimurium specific IgG responses increased around age of weaning (\~6 months). The hypothesis that children have a higher infections with enteric pathogens around the age of weaning, and that this increases exponentially as they become more mobile and able to explore their environment through oral contact is consistent with the observed age-stratified point prevalence of eNTS detected on stool microbiology in the SAiNTS study cohort in Malawi as demonstrated in chapter 5 (\@fig-NTSculture). Although the figure shown in chapter 5 shows the age-distribution of all NTS serovars, the proportions of 04 and 09 antigen positive stool samples appear to be distributed similarly. This sigmoidal pattern of rapidly increasing stool postivity at weaning then plateau after 24 months has also been observed in shigella infections in children 0 - 24 months longitudinally followed up in in the MAL-ED study @fig-MAL_ED [@rogawski_mcquade_epidemiology_2020]. There may be other physiological, immunological, and epidemiological host susceptibility age related factors that influence the duration of shedding of enteric NTS stool shedding in younger children compared to older children that may also explain this age pattern, however, the improved model fit assuming sigmoid enteric NTS infection with age, suggests that children are getting more infections inducing a *S*. typhimurium specific IgG response.
+This serocatalytic model using non-typhoidal salmonella (NTS) antibody data from children living in endemic settings in sub-Saharan Africa, demonstrates how using cross-sectional age-stratified serological data can be used to understand the mechanisms between the relationship between NTS exposures in children and the acquisition of natural immunity. Different hypotheses can be tested by developing mechanistic models able to explain the observed age-patterns in the serology data, including different components for the maternal antibody decay and the natural acquisition of systemic antibodies in the child, based on expected patterns of exposure to enteric pathogens by age. The model fitting to the data was improved assuming that the force of infection (lambda) of enteric NTS infections leading to S. typhimurium specific IgG responses increased around age of weaning (\~6 months). The hypothesis that children have a higher infections with enteric pathogens around the age of weaning, and that this increases exponentially as they become more mobile and able to explore their environment through oral contact is consistent with the observed age-stratified point prevalence of eNTS detected on stool microbiology in the SAiNTS study cohort in Malawi as demonstrated in chapter 5 (@fig-NTSculture). Although the figure shown in chapter 5 shows the age-distribution of all NTS serovars, the proportions of 0:4 and 0:9 antigen (corresponding to the immunodominant O-antigens found on S. typhimurium and S. enteritidis respectively) positive stool samples appear to be distributed similarly. This sigmoidal pattern of rapidly increasing stool postivity at weaning then plateau after 24 months has also been observed in shigella infections in children 0 - 24 months longitudinally followed up in in the MAL-ED study [@fig-MAL_ED; @rogawski_mcquade_epidemiology_2020]. There may be other physiological, immunological, and epidemiological host susceptibility age related factors that influence the duration and infective load of shedding of enteric NTS stool shedding in younger children compared to older children that may also explain this age pattern, however, the improved model fit assuming sigmoid enteric NTS infection with age, is consistent with the hypothesis that children are getting more infections inducing a *S*. typhimurium specific IgG response. It is likely there is cross-protective immunity between salmonella serovars due to a common immunodominant O-antigen sub-type, for example as shown in chapter 5, for the subset of samples analysed the only isolates that were O:4 or O:9 antigen positive, were not Salmonella enterica subspecies enterica, but Salmonella enterica subspecies salamae (subspecies II) on genomic sequencing (@tbl-NTSgen). Further testing on the remaining NTS isolates from stools in the SAINTS study is needed, but it appears that based on the prevalence of IgG antibodies to STm in the Malawian children, which will be predominantly against the O:4 antigen, although there may be some IgG responses of lower magnitude to other O-antigens such as O:12, these non-enterica subspecies are likely to be responsible for inducing antibody responses across all NTS species with the same O-Ag. It is unclear however, whether this also translates in to cross-protection against invasive disease.
 
-Fitting the same model across the other VacciNTS sites, further supported the hypothesis that the changing FOI with age was a better fit to the observed serological data across all 3 sites. The cumulative number of infections for each site
+Fitting the same model across the other VacciNTS sites, supports the hypothesis that the changing FOI with age was a better fit to the observed serological data across all 3 sites. The cumulative number of salmonella infections able to induce a *S*. typhimurium specific IgG response for each site was relatively similar across all 3 sites, with children at age 12 months predicted to to have experienced 1.5 to 2 infections by the age of 12 to 13 months in Malawi and Burkina Faso, and slightly lower at 1.3 - 1.8 infections in Kenya, however, 95% credible intervals were overlapping for all site estimates, i. The baseline estimate of lambda (FOI) was also relatively similar across all sites; however the interpretation of this needs to be considered carefully. As we are detecting serological responses at a population level, this represents prior infections, but the period for which this covers is not known.
 
-Fecal shedding/ duration of carriage/
+As shown in the age-stratified epidemiology of enteric NTS infections in chapter 5, children have on-going infections even after they have acquired S. typhimurium IgG in ages above 24 months. This suggests that anti-STm IgG is not protective against further iNTS infections, but as the incidence of iNTS disease declines after 24 months, as children reach a plateau of anti-STm IgG, suggesting that anti-STm IgG may protective against invasive NTS disease. It is likely that children continue to have asymptomatic or sub-clinical NTS enteric infections, but the serum IgG is able to prevent the infection becoming systemic. As shown in S. typhi, IgA may be a more important correlate of protection against enteric NTS infections due to it's role in gut mucosal immunity, and IgG a correlate of protection for invasive NTS disease [@jin_vi-specific_2020].
 
-Enteric NTS exposure events continue throughout childhood, however, anti-LPS IgG and SBA plateau, suggesting that these serological markers of immunity do not represent protection against enteric infections.
+### Limitations
 
-Model 2 was selected as the best fit model, supporting the hypothesis that the relationship of exposure to eNTS is consistent with a changing (sigmoidal) FOI with age, as reflected in anti-STm IgG responses in children.
+Further data from longitudinal serological samples across a range of ages of children living in endemic settings could be informative in estimating antibody decay rates and making inferences about how long a single exposure may be detected by anti-STm IgG responses, as has been done for typhoid serosurveillance as discussed in chapter 1 [@aiemjoy_estimating_2021]. However, assessing NTS infections in the population based on serological data is more complex than S.typhi, as in endemic settings it appears that children are exposed to a high force of infection from an early age of life, and continue to be exposed to multiple antibody inducing infections throughout early childhood as indicated by the point prevalence of NTS detection in the stool samples collected from children in the SAiNTS study as demonstrated in chapter 5, and by the rapid increases in anti-S. typhimurium antibodies by the age of 24 months, as demonstrated by the data in this chapter. Therefore interpreting antibody levels at a single time point is difficult as it is unknown if a child has had a recent NTS infection and subsequent production of specific IgG and the production of antibody levels are still increasing, usually 10-14 days to detect a full serological response, or if the antibody levels are in decline after several months due to antibody decay. It is likely with repeated exposures in a high FOI setting, antibody levels are being continually boosted by continual infections until they reach a saturation point. Therefore it is difficult to directly infer the number of infections that has directly contributed to the antibody concentration at a particular point in time. In addition the antibody response is likely to reduce in magnitude after a certain number of infections have occurred, which has not been taken into account in this model. Incorporating the serological data from the paired samples collected in SAiNTS could help improve the understanding of this process, and model interpretation.
 
-Data from Kenya indicates asymptomatic exposures
-
-\*\* Could try fitting other vaccints sites to predict exposure?? understand how exposure impacts on age-patterns of disease. Make inferences about FOI in different settings/ acquisition of immunity Malaria??
-
-Can infer O4 positivecross-protection? Not enough data...can compare in the groups we do have data for?
-
-Limitations
-
-Does not explicitly model time/ changes in FOI with time. Only cross-sectional data. Assumptions... lambda - no literature for this for NTS. Serotype specific? Or cross-protection
+The force of infection may change with time, and further modeling will be required to take into account both age and time. It is likely there are seasonal changes in FOI due to the seasonal patterns of NTS infections detected in stools of children in Malawi, but also changes over the longer term over years. Understanding the epidemiology of enteric NTS infections over time in relation to the incidence of iNTS diesease as described in chapter 3, in the context of the epidemiology of host factor susceptibility will be key in understanding the relative roles of infection verse host immune response in determining iNTS disease incidence. There was no prior available in the literature for lambda, therefore the prior was based on literature for other enteric pathogens, including shigella (REF). Data for Salmonella Typhimurium only was analysed as this is the main serovar associated with iNTS globally, however the data for Salmonella enteritidis should also be analysed (?add to appendix), particularly as this is known to cause a higher proportion of invasive disease in Kenya.
 
 ## Conclusions
 
-Next steps include modeling age-stratified serological responses versus disease incidence, and cross-validation considering risk factors and epidemiological setting.
+This model has demonstrated that our hypothesis of the dynamics of enteric NTS infections with age is consistent with the serological data, and more advanced models may be used to get a better understanding of the force of infection in different settings. It is important to understand the relationship between cross-protective immunity between NTS serovars sharing the same immunodominant O-antigens, to understand how natural immunity may be effective. Next steps include modeling age-stratified serological responses versus disease incidence, and cross-validation considering risk factors and epidemiological setting. Further work to investigate the impact of malaria on induction of IgG to Salmonella typhimurium and Salmonella enteritidis.
