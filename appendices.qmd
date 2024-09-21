@@ -138,6 +138,24 @@ ft_desc_tab
 
 ## Descriptive Epidemiology
 
+```{r, echo=FALSE, results='show', warning=FALSE, message=FALSE}
+#| tbl-cap: "Poverty questions used in poverty score and weighting"
+#| label: tbl-povQ
+
+povQ <- import(here("data", "5_data", "WatSan.xlsx"), which = "Sheet3") %>% 
+  flextable() %>% 
+  fontsize(size=8, part = "header") %>% 
+  fontsize(size=8, part = "body") %>% 
+  autofit()
+povQ
+povQw <- import(here("data", "5_data", "WatSan.xlsx"), which = "Sheet4") %>% 
+  flextable() %>% 
+  fontsize(size=8, part = "header") %>% 
+  fontsize(size=8, part = "body") %>% 
+  autofit()
+povQw
+```
+
 ### Water and Sanitation
 
 ```{r, echo=FALSE, results='show', warning=FALSE, message=FALSE}
@@ -169,6 +187,63 @@ master2 %>%
   # reduce font size to make table fit. 
   # you may also use the `latex_options = "scale_down"` argument here.
   kableExtra::kable_styling(latex_options = "scale_down", position='float_left') 
+```
+
+### Malaria and salmonella results by EA
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.align = "centre", fig.width = 7, fig.height=7, out.width = "7.5in"}
+#| tbl-cap: Host risk factor and NTS exposure distribution across recruited enumeration areas
+#| label: tbl-EAs
+
+master <- import(here("data", "5_data", "master.csv")) %>% 
+  mutate(ta_code = substr(ta_code,5,8))
+
+sum_tab <- master %>% 
+  group_by(cluster,ta_code) %>% 
+  summarise(N = n(),
+            MRDT_pos_d1 = sum(mrdt_num,na.rm=T),
+            perMRDT_pos_d1 = round((MRDT_pos_d1/N)*100,digits=1),
+            MRDT_pos_d90 = sum(d90_stl_mrdt_num,na.rm=T),
+            perMRDT_pos_d90 = round((MRDT_pos_d90/N)*100,digits=1),
+            sum_pcr_pos = sum(PCR_pos_num,na.rm = T),
+            sum_pcr_tested = sum(PCR_tested_bin,na.rm = T),
+            PCR_pos_percent = round((sum_pcr_pos/sum_pcr_tested)*100,digits=1),
+            sum_sal_pos = sum(Salmonella_num, na.rm = T),
+            sum_stool_tested = sum(stool_tested, na.rm = T),
+            Salm_pos_percent = round((sum_sal_pos/sum_stool_tested)*100,digits=1)) %>% 
+  select(-c(sum_pcr_tested, sum_stool_tested)) %>% 
+  ungroup()  
+
+# sum_tab2 <- tabulator(x = sum_tab, rows = c("cluster", "ta_code"), columns = c("N","MRDT_pos_d1","perMRDT_pos_d1","MRDT_pos_d90", "perMRDT_pos_d90","sum_pcr_pos","PCR_pos_percent","sum_sal_pos","Salm_pos_percent"))
+
+sum_tab %>% 
+  flextable() %>% 
+  fontsize(size=8, part = "body") %>% 
+  fontsize(size=8, part = "header") %>% 
+  bold(i = 1, bold = TRUE, part = "header") %>%           
+  # add_header_row(values = c("EA","N", "MRDT+ day 1 (n)", "MRDT+ day 1 (%)", "MRDT+ day 90 (n)", "MRDT+ day 90 (%)", "Salmonella PCR+ (n)","Salmonella PCR+ (%)","Salmonella Culture+ (n)","Salmonella Culture+ (%)",),
+  #                top = TRUE) %>% 
+  set_header_labels(
+    cluster = "Cluster",
+    ta_code = "EA",
+    N = "N", 
+    MRDT_pos_d1 = "MRDT+ day 1 (n)", 
+    perMRDT_pos_d1 = "MRDT+ day 1 (%)",
+    MRDT_pos_d90 = "MRDT+ day 90 (n)",
+    perMRDT_pos_d90 = "MRDT+ day 90 (%)",
+    sum_pcr_pos = "Salmonella PCR+ (n)",
+    PCR_pos_percent = "Salmonella PCR+ (%)",
+    sum_sal_pos = "Salmonella Culture+ (n)",
+    Salm_pos_percent = "Salmonella Culture+ (%)"
+    ) %>% 
+  font(fontname = "Times New Roman", part = "body") %>% 
+  font(fontname = "Times New Roman", part = "header")
+
+#%>% 
+   # gdtools::register_gfont(family="Roboto")
+  # merge_v(j = ~ cluster) %>% 
+  # align(align = "center", part = "body")
+
 ```
 
 ### Age-stratified prevalence of enteric salmonella infections in the SAiNTS study

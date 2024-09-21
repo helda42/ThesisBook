@@ -33,12 +33,20 @@ This chapter sets out the descriptive epidemiological findings from the SAiNTS M
 
 As described in chapter 2, children were recruited prospectively randomly sampled from census data collected by the EPIMAL study across two clusters; St Montfort that was randomly allocated to receive the malaria RTS,S/AS01~E~ vaccine and Chikwawa that was randomly allocated to not receive the RTS,S/AS01~E~ vaccine. Two stage sampling was carried out using 2-stage sampling technique; Stage 1: sampling enumeration areas stratified by baseline malaria prevalence from the malaria indicator survey data for Chikwawa (@fig-MIS2017) [@malaria2017], and based on probability proportional to population size of the EA (PPS), and Stage 2: households containing children 0–5 years were randomly sampled from selected Enumeration Area (EA). Any child eligible in the household was invited to participate in the study. Children were recruited and samples were collected for stool, serology and host susceptibility data (malaria, anaemia, SAM, sickle cell) at day 1 and repeat serology and host susceptibility data at day 90. Serum samples were tested for lipopolysaccharide O-antigen immunoglobin-G antibody to the main serovars causing invasive NTS disease (*Salmonella* Typhimurium and Enteritidis). Host susceptibility factors were measured through anthropometric measurements, malaria (rapid diagnostic tests \[RDT\] and thick blood films), haemocue and sickle RDT. Stool samples were processed for Salmonella culture and pan-Salmonella PCR (TTR-primer). Data on medical history, vaccination history, socioeconomic status, water and sanitation and GPS location of households were collected by electronic case report forms on tablets at the household and blood sampling tent.
 
-### Statistical methods
+\newpage
 
-A proxy poverty score was derived as used in the SCALE trial [@feasey2023] to assess poverty in research studies in Malawi, with different variables selected to be appropriate for urban verses rural settings. Logistic regression was used to select the 10 most important variables from the Malawi 4^th^ Integrated Household Survey 2016-2017 (<https://microdata.worldbank.org/index.php/catalog/2936>) associated with poverty. Sequential models were run from 10 down to 6 variables to try and use the minimum variables possible to create a proxy poverty score. The model was run with and without the two ennumerator-defined variables (housing structure and floor composition) due to these variables being observed by fieldworkers and might not be able to be asked of participants. Bootstrapping was used to validate the model. The new model was compared with proxy poverty score variables from 1998 HIS, and the new variables improved the model fit. The coefficients from the final 10 variables were used as weights to form the final proxy poverty score.
+<!-- changing the orientation to landscape --------------------------------- -->
 
-```{r echo=FALSE, warning=FALSE, message=FALSE, fig.align = "centre", fig.width = 6, fig.height=7, out.width = "6.5in"}
+```{=tex}
+\KOMAoptions{usegeometry, paper=landscape,pagesize}
+\recalctypearea
+```
+### Definitions
 
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.align = "left", fig.width = 8, fig.height=7, out.width = "8.5in"}
+#| tbl-cap: Integrated Management of Childhood Illness (IMCI) Guidelines 2019 (Organisa-tion 2014). *not in IMCI guidelines
+#| label: tbl-IMCI
+#| 
 # setup
 library(rio)
 library(here)
@@ -49,8 +57,72 @@ library(flextable)
 library(gt)
 library(gtsummary)
 
+IMCI <- import(here("data", "5_data", "WatSan.xlsx"), which = "Sheet2") %>% 
+  flextable() %>% 
+  fontsize(size=8, part = "header") %>% 
+  fontsize(size=8, part = "body") %>% 
+  autofit()
+IMCI
+```
+
+\newpage
+
+<!-- changing the orientation to portrait --------------------------------- -->
+
+```{=tex}
+\KOMAoptions{usegeometry, paper=portrait,pagesize}
+\recalctypearea
+```
+### Statistical methods
+
+A proxy poverty score was derived as used in the SCALE trial [@feasey2023] to assess poverty in research studies in Malawi, with different variables selected to be appropriate for urban verses rural settings. Logistic regression was used to select the 10 most important variables from the Malawi 4^th^ Integrated Household Survey 2016-2017 (<https://microdata.worldbank.org/index.php/catalog/2936>) associated with poverty. Sequential models were run from 10 down to 6 variables to try and use the minimum variables possible to create a proxy poverty score. The model was run with and without the two ennumerator-defined variables (housing structure and floor composition) due to these variables being observed by fieldworkers and might not be able to be asked of participants. Bootstrapping was used to validate the model. The new model was compared with proxy poverty score variables from 1998 HIS, and the new variables improved the model fit. The coefficients from the final 10 variables were used as weights to form the final proxy poverty score (@tbl-povQ).
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.align = "centre", fig.width = 6, fig.height=7, out.width = "6.5in"}
+
 master <- import(here("data", "5_data", "master.csv")) %>% 
-  mutate(ta_code = substr(ta_code,5,8)) 
+  mutate(ta_code = substr(ta_code,5,8)) %>% 
+  mutate(
+          # AGEGROUP_3mth = fct_relevel(AGEGROUP_3mth, c("[0,3]", "(3,6]","(6,9]","(9,12]","(12,15]", "(15,18]", "(18,21]","(21,24]",
+          #                                      "(24,27]", "(27,30]","(30,33]","(33,36]","(36,39]", "(39,42]", "(42,45]","(45,48]",
+          #                                      "(48,51]", "(51,54]","(54,57]","(57,60]")),
+          AGEGROUP_3mth = factor(AGEGROUP_3mth, levels = c("[0,3]", "(3,6]","(6,9]","(9,12]","(12,15]", "(15,18]", "(18,21]","(21,24]","(24,27]", "(27,30]",
+                                     "(30,33]","(33,36]","(36,39]", "(39,42]", "(42,45]","(45,48]", "(48,51]", "(51,54]","(54,57]","(57,60]"),
+                          labels = c("0-3", "3-6", "6-9", "9-12","12-15", "15-18","18-21","21-24","24-27","27-30","30-33","33-36","36-39","39-42","42-45","45-48",
+                                     "48-51","51-54","54-57","57-60")),
+          salm_fact2 = case_when(
+            salm_fact=="Salmonella enteritidis" ~ "O9",
+            salm_fact=="Salmonella typhimurium" ~ "O4",
+            salm_fact=="Salmonella species" ~ "Salmonella other"),
+          malnutrition_MUAC = case_when(
+            muac<11.5 ~ "Severe acute malnutrition",
+            muac>=11.5 & muac<=12.5 ~ "Moderate acute malnutrition",
+            muac>12.5 ~ "No acute malnutrition"
+          ),
+          malnutrition_wfhz = case_when(
+            wfh_zscore< -3 ~ "Severe acute malnutrition",
+            wfh_zscore>= -3 & wfh_zscore <= -2 ~ "Moderate acute malnutrition",
+            wfh_zscore> -2 ~ "No acute malnutrition"
+            ),
+          malnutrition_wfhz = factor(malnutrition_wfhz, levels=c("No acute malnutrition","Moderate acute malnutrition","Severe acute malnutrition")),
+          malnutrition_MUAC = factor(malnutrition_MUAC, levels=c("No acute malnutrition","Moderate acute malnutrition","Severe acute malnutrition")),
+          anaemia_cat = case_when(
+            hemocue_result< 70 ~ "Severe anaemia",
+            hemocue_result>= 70 & hemocue_result <= 110 ~ "Moderate anaemia",
+            hemocue_result> 110 ~ "No anaemia"
+            ),
+          anaemia_cat_d90 = case_when(
+            d90_v2_hemocue_result< 70 ~ "Severe anaemia",
+            d90_v2_hemocue_result>= 70 & hemocue_result <= 110 ~ "Moderate anaemia",
+            d90_v2_hemocue_result> 110 ~ "No anaemia"
+          ),
+           anaemia_cat = factor(anaemia_cat, levels=c("Severe anaemia","Moderate anaemia","No anaemia")),
+           anaemia_cat_d90 = factor(anaemia_cat, levels=c("Severe anaemia","Moderate anaemia","No anaemia")),
+          sickle_cell_res_comb = ifelse(sicklecell_test_result=="Positive"| d90_v2_sicklecell_result==3 | d90_v2_sicklecell_result==4, "Positive (HbSS/ HbSC)", 
+                                        ifelse(sicklecell_test_result=="Negative"| d90_v2_sicklecell_result==1,"Negative",NA))
+
+  )
+
+
          # cluster = ifelse(cluster==1,"Chikwawa","St Montfort"))
 seqdat <- import(here("data", "5_data", "2023.06.29.SAiNTS_seq_results.xlsx"))
 watsan <- import(here("data", "5_data", "WatSan.xlsx"))
@@ -172,9 +244,6 @@ povMon <- pov %>% filter(cluster=="St Montfort")
 
 sum_stool_3m <- master %>% 
   filter(!is.na(AGEGROUP_3mth) & AGEGROUP_3mth!="") %>% ## remove longitudinal for now as need to calculate age separately
-  mutate(AGEGROUP_3mth = fct_relevel(AGEGROUP_3mth, c("[0,3]", "(3,6]","(6,9]","(9,12]","(12,15]", "(15,18]", "(18,21]","(21,24]",
-                                               "(24,27]", "(27,30]","(30,33]","(33,36]","(36,39]", "(39,42]", "(42,45]","(45,48]",
-                                               "(48,51]", "(51,54]","(54,57]","(57,60]"))) %>% 
   group_by(AGEGROUP_3mth) %>% 
   summarise(age_mean_stool = mean(calc_age_months, na.rm = T),
             age_sd_stool = sd(calc_age_months, na.rm=T),
@@ -255,13 +324,35 @@ max_mth_stool <- seasonStool %>% slice_max(Salm_pos_percent)
 min_mth_PCR <- seasonStool %>% slice_min(PCR_pos_percent)
 min_mth_stool <- seasonStool %>% slice_min(Salm_pos_percent)
 
+seasonStool_clst <- master %>% 
+  mutate(month_yr = zoo::as.yearmon(d1s_data_date),
+         month_yrfull = format(d1s_data_date, "%B %Y")) %>% 
+  filter(!is.na(d1s_data_date)) %>% 
+  group_by(cluster, month_yr, month_yrfull) %>% 
+  summarise(age_mean_stool = mean(calc_age_months, na.rm = T),
+            age_sd_stool = sd(calc_age_months, na.rm=T),
+            sum_pcr_pos = sum(PCR_pos_num, na.rm = T),
+            sum_pcr_tested = sum(PCR_tested_bin, na.rm = T),
+            PCR_pos_percent = (sum_pcr_pos/sum_pcr_tested)*100,
+            sum_sal_pos = sum(Salmonella_num, na.rm = T),
+            sum_stool_tested = sum(stool_tested, na.rm = T),
+            Salm_pos_percent = sum_sal_pos/sum_stool_tested*100) %>% 
+  mutate(across(where(is.numeric), round, 1)) %>% 
+  ungroup()
+
+sum_stoolseason_long_clst <- seasonStool_clst %>% 
+  select(c(cluster, month_yr, month_yrfull, Salm_pos_percent, PCR_pos_percent)) %>% 
+  pivot_longer(cols = c(Salm_pos_percent, PCR_pos_percent), names_to = "Method", values_to = "Percent")
+
+max_mth_PCR <- seasonStool %>% slice_max(PCR_pos_percent)
+max_mth_stool <- seasonStool %>% slice_max(Salm_pos_percent)
+min_mth_PCR <- seasonStool %>% slice_min(PCR_pos_percent)
+min_mth_stool <- seasonStool %>% slice_min(Salm_pos_percent)
+
 ############ MRDT
 ## Age
 sum_MRDT_3m_clus <- master %>% 
   filter(!is.na(AGEGROUP_3mth) & AGEGROUP_3mth!="") %>% ## remove longitudinal for now as need to calculate age separately
-  mutate(AGEGROUP_3mth = fct_relevel(AGEGROUP_3mth, c("[0,3]", "(3,6]","(6,9]","(9,12]","(12,15]", "(15,18]", "(18,21]","(21,24]",
-                                               "(24,27]", "(27,30]","(30,33]","(33,36]","(36,39]", "(39,42]", "(42,45]","(45,48]",
-                                               "(48,51]", "(51,54]","(54,57]","(57,60]"))) %>% 
   mutate(mrdt_num_d90 = ifelse(d90_stl_mrdt_result=="Positive",1,0)) %>% 
   group_by(cluster, AGEGROUP_3mth) %>% 
   summarise(age_mean = mean(calc_age_months, na.rm = T),
@@ -278,9 +369,6 @@ sum_MRDT_3m_clus <- master %>%
 
 sum_MRDT_3m <- master %>% 
   filter(!is.na(AGEGROUP_3mth) & AGEGROUP_3mth!="") %>% ## remove longitudinal for now as need to calculate age separately
-  mutate(AGEGROUP_3mth = fct_relevel(AGEGROUP_3mth, c("[0,3]", "(3,6]","(6,9]","(9,12]","(12,15]", "(15,18]", "(18,21]","(21,24]",
-                                               "(24,27]", "(27,30]","(30,33]","(33,36]","(36,39]", "(39,42]", "(42,45]","(45,48]",
-                                               "(48,51]", "(51,54]","(54,57]","(57,60]"))) %>% 
   mutate(mrdt_num_d90 = ifelse(d90_stl_mrdt_result=="Positive",1,0)) %>% 
   group_by(AGEGROUP_3mth) %>% 
   summarise(age_mean = mean(calc_age_months, na.rm = T),
@@ -362,13 +450,76 @@ MRDT_clus <- master %>%
   ungroup()
 MRDT_clus_c <- MRDT_clus %>% filter(cluster=="Chikwawa")
 MRDT_clus_m <- MRDT_clus %>% filter(cluster=="St Montfort")
+
+### Anaemaia
+other_clus <- master %>% 
+  group_by(cluster) %>% 
+  summarise(age_mean = mean(calc_age_months, na.rm = T),
+            age_sd = sd(calc_age_months, na.rm=T),
+            total = n(),
+            hb_mean = mean(hemocue_result, na.rm = T),
+            muac_mean = mean(muac, na.rm = T),
+            wfh_zscore_mean = mean(wfh_zscore, na.rm = T),
+            S.anaemia_cat_bin = ifelse(anaemia_cat=="Severe anaemia",1,ifelse(anaemia_cat=="Moderate anaemia"|anaemia_cat=="No anaemia",0,NA)),
+            S.anaemia_cat_n = sum(S.anaemia_cat_bin, na.rm=T),
+            S.anaemia_cat_per = (S.anaemia_cat_n/total)*100,
+            M.anaemia_cat_bin = ifelse(anaemia_cat=="Moderate anaemia",1,ifelse(anaemia_cat=="Severe anaemia"|anaemia_cat=="No anaemia",0,NA)),
+            M.anaemia_cat_n = sum(M.anaemia_cat_bin, na.rm=T),
+            M.anaemia_cat_per = (M.anaemia_cat_n/total)*100,
+            n.anaemia_cat_bin = ifelse(anaemia_cat=="No anaemia",1,ifelse(anaemia_cat=="Severe anaemia"|anaemia_cat=="Moderate anaemia",0,NA)),
+            n.anaemia_cat_n = sum(n.anaemia_cat_bin, na.rm=T),
+            n.anaemia_cat_per = (n.anaemia_cat_n/total)*100,
+            hiv_exposed_bin = ifelse(hiv_exposed=="No",0,ifelse(hiv_exposed=="Yes",1,NA)),
+            hiv_exposed_n = sum(hiv_exposed_bin, na.rm=T),
+            hiv_exposed_per = (hiv_exposed_n/total)*100,
+            hiv_test_bin = ifelse(hiv_test=="No",0,ifelse(hiv_test=="Yes",1,NA)),
+            hiv_test_n = sum(hiv_test_bin, na.rm=T),
+            hiv_test_per = (hiv_test_n/total)*100,
+            hivtest_result_bin = ifelse(hivtest_result=="Negative",0,ifelse(hivtest_result=="Positive",1,NA)),
+            hivtest_result_n = sum(hivtest_result_bin, na.rm=T),
+            hivtest_result_per = (hivtest_result_n/total)*100,
+            S.malnutrition_wfhz_bin = ifelse(malnutrition_wfhz=="Severe acute malnutrition",1,ifelse(malnutrition_wfhz=="Moderate acute malnutrition"| malnutrition_wfhz=="No acute malnutrition",0,NA)),
+            S.malnutrition_wfhz_n = sum(S.malnutrition_wfhz_bin, na.rm=T),
+            S.malnutrition_wfhz_per = (S.malnutrition_wfhz_n/total)*100,
+            M.malnutrition_wfhz_bin = ifelse(malnutrition_wfhz=="Moderate acute malnutrition",1,ifelse(malnutrition_wfhz=="Severe acute malnutrition"| malnutrition_wfhz=="No acute malnutrition",0,NA)),
+            M.malnutrition_wfhz_n = sum(M.malnutrition_wfhz_bin, na.rm=T),
+            M.malnutrition_wfhz_per = (M.malnutrition_wfhz_n/total)*100,
+            n.malnutrition_wfhz_bin = ifelse(malnutrition_wfhz=="No acute malnutrition",1,ifelse(malnutrition_wfhz=="Moderate acute malnutrition"| malnutrition_wfhz=="Severe acute malnutrition",0,NA)),
+            n.malnutrition_wfhz_n = sum(n.malnutrition_wfhz_bin, na.rm=T),
+            n.malnutrition_wfhz_per = (n.malnutrition_wfhz_n/total)*100,
+            S.malnutrition_muac_bin = ifelse(malnutrition_MUAC=="Severe acute malnutrition",1,ifelse(malnutrition_MUAC=="Moderate acute malnutrition"| malnutrition_MUAC=="No acute malnutrition",0,NA)),
+            S.malnutrition_muac_n = sum(S.malnutrition_muac_bin, na.rm=T),
+            S.malnutrition_muac_per = (S.malnutrition_muac_n/total)*100,
+            M.malnutrition_muac_bin = ifelse(malnutrition_MUAC=="Moderate acute malnutrition",1,ifelse(malnutrition_MUAC=="Severe acute malnutrition"| malnutrition_MUAC=="No acute malnutrition",0,NA)),
+            M.malnutrition_muac_n = sum(M.malnutrition_muac_bin, na.rm=T),
+            M.malnutrition_muac_per = (M.malnutrition_muac_n/total)*100,
+            n.malnutrition_muac_bin = ifelse(malnutrition_MUAC=="No acute malnutrition",1,ifelse(malnutrition_MUAC=="Moderate acute malnutrition"| malnutrition_MUAC=="Severe acute malnutrition",0,NA)),
+            n.malnutrition_muac_n = sum(n.malnutrition_muac_bin, na.rm=T),
+            n.malnutrition_muac_per = (n.malnutrition_muac_n/total)*100,
+            sicklecell_d1_bin = ifelse(sicklecell_test_result=="Positive",1,ifelse(sicklecell_test_result=="Negative",0,NA)),
+            sicklecell_d1_n = sum(sicklecell_d1_bin, na.rm=T),
+            sicklecelld1_ntest = sum(sicklecell_test, na.rm=T),
+            # sicklecell_test_result_per = (sicklecell_test_result_n/total)*100,
+            sicklecell_d90bin = ifelse(d90_v2_sicklecell_result==3,1,ifelse(d90_v2_sicklecell_result==1,0,NA)),
+            sicklecell_d90_n = sum(sicklecell_d90bin, na.rm=T),
+            sicklecell_d90test = ifelse(d90_v2_sicklecell_test==1,1,NA),
+            sicklecelld90_ntest = sum(sicklecell_d90test, na.rm=T),
+            sicklecell_n = sicklecell_d1_n+sicklecell_d90_n,
+            sicklecell_test_per = sicklecell_n/(sicklecelld1_ntest+sicklecelld90_ntest)*100
+            ) %>% 
+  slice_head() %>% 
+  mutate(across(where(is.numeric), round, 1)) %>% 
+  ungroup()
+other_clus_c <- other_clus %>% filter(cluster=="Chikwawa")
+other_clus_m <- other_clus %>% filter(cluster=="St Montfort")
+
 ```
 
 ## Results
 
 ### SAiNTS cohort demographic and socioeconomic characteristics
 
-`{r} print(n$n)` children aged 0-5 were recruited across `{r} print(sum(EA_clus$n))` EAs; `{r} print(chiN$n)` EA's in Chikwawa with a mean number of children per EA of `{r} print(round(chiN$mean_no, digits=1))`, range `{r} print(chiN$range)` equalling a total of `{r} print(nchik$n)` children. In St Montfort `{r} print(StMontN$n)` EA's with a mean number of children per EA of `{r} print(round(StMontN$mean_no, digits=1))`, range `{r} print(StMontN$range)`, with a total of `{r} print(nmont$n)` children. The geographical locations of the selected EA's are shown in @fig-map, @fig-selectedEA . The mean age of recruited children in Chikwawa was `{r} print(ageChi$age_mean)` (SD: `{r} print(ageChi$age_sd)`) and `{r} print(ageMon$age_mean)` (SD: `{r} print(ageMon$age_sd)`). The distribution of ages by 1 year age groups is shown in @tbl-cohortEA. Mean poverty scores were `{r} print(povChi$mean)` (SD: `{r} print(povChi$sd)`) in Chikwawa and `{r} print(povMon$mean)` (SD: `{r} print(povMon$sd)`) in St Montfort, and distribution in each cluster by poverty quintile is shown in @tbl-cohortEA. In Chikwawa `{r} watsan_sumC$toilet_type_desc3` (`{r} watsan_sumC$toilet_type_desc_per3`%) children lived in a household that used a pit latrine with slab, and `{r} watsan_sumC$toilet_type_desc2` (`{r} watsan_sumC$toilet_type_desc_per2`%) used pit latrine with wood/soil floor, compared to `{r} watsan_sumM$toilet_type_desc3` (`{r} watsan_sumM$toilet_type_desc_per3`%) and `{r} watsan_sumM$toilet_type_desc2` (`{r} watsan_sumM$toilet_type_desc_per2`%) respectively for children in St Montfort (@tbl-cohortEA). In Chikwawa `{r} watsan_sumC$share_toilet_desc1` (`{r} watsan_sumC$share_toilet_desc_per1`%) children lived in a household shared a toilet with more than three households, compared to `{r} watsan_sumC$share_toilet_desc3` (`{r} watsan_sumC$share_toilet_desc_per3`%) that did not share a toilet with another household; in St Montfort `{r} watsan_sumM$share_toilet_desc1` (`{r} watsan_sumM$share_toilet_desc_per1`%) shared a toilet with more than three households and `{r} watsan_sumM$share_toilet_desc3` (`{r} watsan_sumM$share_toilet_desc_per3`%) not sharing a toilet with another household respectively. Additional water and sanition variables are shown in @tbl-watsan .
+`{r} print(n$n)` children aged 0-60 months were recruited across `{r} print(sum(EA_clus$n))` EAs; `{r} print(chiN$n)` EA's were recruited from the Chikwawa cluster with a mean number of children per EA of `{r} print(round(chiN$mean_no, digits=1))`, range: `{r} print(chiN$range)` equaling a total of `{r} print(nchik$n)` children. In the St Montfort cluster `{r} print(StMontN$n)` EA's with a mean number of children per EA of `{r} print(round(StMontN$mean_no, digits=1))`, range: `{r} print(StMontN$range)`, with a total of `{r} print(nmont$n)` children were recruited. The geographical locations of the selected EA's are shown in @fig-map & @fig-selectedEA . The mean age of recruited children in Chikwawa was `{r} print(ageChi$age_mean)` (SD: `{r} print(ageChi$age_sd)`) months and in St Montfort `{r} print(ageMon$age_mean)` (SD: `{r} print(ageMon$age_sd)`) months. The distribution of ages by 1 year age groups is shown in @tbl-cohortEA. Mean poverty scores were `{r} print(povChi$mean)` (SD: `{r} print(povChi$sd)`) in Chikwawa and `{r} print(povMon$mean)` (SD: `{r} print(povMon$sd)`) in St Montfort, and distribution in each cluster by poverty quintile is shown in @tbl-cohortEA. In Chikwawa `{r} watsan_sumC$toilet_type_desc3` (`{r} watsan_sumC$toilet_type_desc_per3`%) children lived in a household that used a pit latrine with slab, and `{r} watsan_sumC$toilet_type_desc2` (`{r} watsan_sumC$toilet_type_desc_per2`%) used pit latrine with wood/soil floor, compared to `{r} watsan_sumM$toilet_type_desc3` (`{r} watsan_sumM$toilet_type_desc_per3`%) and `{r} watsan_sumM$toilet_type_desc2` (`{r} watsan_sumM$toilet_type_desc_per2`%) respectively for children in St Montfort (@tbl-cohortEA). In Chikwawa `{r} watsan_sumC$share_toilet_desc1` (`{r} watsan_sumC$share_toilet_desc_per1`%) children lived in a household shared a toilet with more than three households, compared to `{r} watsan_sumC$share_toilet_desc3` (`{r} watsan_sumC$share_toilet_desc_per3`%) that did not share a toilet with another household; in St Montfort `{r} watsan_sumM$share_toilet_desc1` (`{r} watsan_sumM$share_toilet_desc_per1`%) shared a toilet with more than three households and `{r} watsan_sumM$share_toilet_desc3` (`{r} watsan_sumM$share_toilet_desc_per3`%) not sharing a toilet with another household respectively. Additional water and sanition variables are shown in @tbl-watsan .
 
 ![Location of SAiNTS study in Chikwawa, Southern Malawi](figures/5_images/clusterMap.png){#fig-map nrow="2" width="423"}
 
@@ -379,8 +530,9 @@ MRDT_clus_m <- MRDT_clus %>% filter(cluster=="St Montfort")
 #| label: tbl-cohortEA
 
 descript <- master2 %>% 
-  select(c(cluster, calc_age_months, AGEGROUP_yr, gender, pov_score, pov_score_cat, toilet_type_desc, share_toilet_des, drinking_desc, mrdt_result, d90_stl_mrdt_result, malaria_film_result_d1, malaria_film_grade_d1, malaria_film_result_d90, malaria_film_grade_d90, hemocue_result, wfh_zscore, muac, sicklecell_test_result, hiv_exposed, hiv_test, hivtest_result, PCR_pos, Salmonella_bin, salm_fact)) %>% 
-  mutate(sicklecell_test_result = ifelse(sicklecell_test_result=="", NA,sicklecell_test_result),
+  select(c(cluster, calc_age_months, AGEGROUP_yr, gender, pov_score, pov_score_cat, toilet_type_desc, share_toilet_des, drinking_desc, mrdt_result, d90_stl_mrdt_result, malaria_film_result_d1, malaria_film_grade_d1, malaria_film_result_d90, malaria_film_grade_d90, anaemia_cat, malnutrition_MUAC, malnutrition_wfhz, sickle_cell_res_comb, hiv_exposed, hiv_test, hivtest_result, PCR_pos, Salmonella_bin, salm_fact2)) %>% 
+  mutate(
+        #sicklecell_test_result = ifelse(sicklecell_test_result=="", NA,sicklecell_test_result),
          hiv_exposed = ifelse(hiv_exposed=="", NA,hiv_exposed),
          hiv_test = ifelse(hiv_test=="", NA,hiv_test),
          hivtest_result = ifelse(hivtest_result=="", NA,hivtest_result),
@@ -411,16 +563,16 @@ descript <- master2 %>%
                 malaria_film_result_d90  ~ "Malaria film result (day 90)",
                 malaria_film_grade_d1  ~ "Malaria film grade (day 1)",
                 malaria_film_grade_d90  ~ "Malaria film grade (day 90)",
-                hemocue_result  ~ "Haemoglobin",
-                wfh_zscore    ~ "Weight-for-height z-score",
-                muac    ~ "Mid-Upper Arm Circumference",
-                sicklecell_test_result    ~ "Sickle Cell Disease",
+                anaemia_cat  ~ "Anaemia",
+                malnutrition_wfhz    ~ "Weight-for-height z-score",
+                malnutrition_MUAC    ~ "Mid-upper arm circumference",
+                sickle_cell_res_comb    ~ "Sickle Cell Disease",
                 hiv_exposed~ "HIV exposed",
                 hiv_test ~ "Had HIV test",
                 hivtest_result ~ "HIV test result (if done)",
                 PCR_pos ~ "Salmonella PCR result",
                 Salmonella_bin ~ "Salmonella Culture result",
-                salm_fact ~ "Salmonella sub-species (if culture positive"),
+                salm_fact2 ~ "Salmonella O-antigen (if culture positive"),
                missing_text = "Missing"                                    # how missing values should display
             ) %>% 
   bold_labels() %>%
@@ -445,76 +597,9 @@ descript
 #   )
 ```
 
-\newpage
-
-<!-- changing the orientation to landscape --------------------------------- -->
-
-```{=tex}
-\KOMAoptions{usegeometry, paper=landscape,pagesize}
-\recalctypearea
-```
-```{r echo=FALSE, warning=FALSE, message=FALSE, fig.align = "centre", fig.width = 7, fig.height=7, out.width = "7.5in"}
-#| tbl-cap: Host risk factor and NTS exposure distribution across recruited enumeration areas
-
-sum_tab <- master %>% 
-  group_by(cluster,ta_code) %>% 
-  summarise(N = n(),
-            MRDT_pos_d1 = sum(mrdt_num,na.rm=T),
-            perMRDT_pos_d1 = round((MRDT_pos_d1/N)*100,digits=1),
-            MRDT_pos_d90 = sum(d90_stl_mrdt_num,na.rm=T),
-            perMRDT_pos_d90 = round((MRDT_pos_d90/N)*100,digits=1),
-            sum_pcr_pos = sum(PCR_pos_num,na.rm = T),
-            sum_pcr_tested = sum(PCR_tested_bin,na.rm = T),
-            PCR_pos_percent = round((sum_pcr_pos/sum_pcr_tested)*100,digits=1),
-            sum_sal_pos = sum(Salmonella_num, na.rm = T),
-            sum_stool_tested = sum(stool_tested, na.rm = T),
-            Salm_pos_percent = round((sum_sal_pos/sum_stool_tested)*100,digits=1)) %>% 
-  select(-c(sum_pcr_tested, sum_stool_tested)) %>% 
-  ungroup()  
-
-# sum_tab2 <- tabulator(x = sum_tab, rows = c("cluster", "ta_code"), columns = c("N","MRDT_pos_d1","perMRDT_pos_d1","MRDT_pos_d90", "perMRDT_pos_d90","sum_pcr_pos","PCR_pos_percent","sum_sal_pos","Salm_pos_percent"))
-
-sum_tab %>% 
-  flextable() %>% 
-  fontsize(size=8, part = "body") %>% 
-  fontsize(size=8, part = "header") %>% 
-  bold(i = 1, bold = TRUE, part = "header") %>%           
-  # add_header_row(values = c("EA","N", "MRDT+ day 1 (n)", "MRDT+ day 1 (%)", "MRDT+ day 90 (n)", "MRDT+ day 90 (%)", "Salmonella PCR+ (n)","Salmonella PCR+ (%)","Salmonella Culture+ (n)","Salmonella Culture+ (%)",),
-  #                top = TRUE) %>% 
-  set_header_labels(
-    cluster = "Cluster",
-    ta_code = "EA",
-    N = "N", 
-    MRDT_pos_d1 = "MRDT+ day 1 (n)", 
-    perMRDT_pos_d1 = "MRDT+ day 1 (%)",
-    MRDT_pos_d90 = "MRDT+ day 90 (n)",
-    perMRDT_pos_d90 = "MRDT+ day 90 (%)",
-    sum_pcr_pos = "Salmonella PCR+ (n)",
-    PCR_pos_percent = "Salmonella PCR+ (%)",
-    sum_sal_pos = "Salmonella Culture+ (n)",
-    Salm_pos_percent = "Salmonella Culture+ (%)"
-    ) %>% 
-  font(fontname = "Times New Roman", part = "body") %>% 
-  font(fontname = "Times New Roman", part = "header")
-
-#%>% 
-   # gdtools::register_gfont(family="Roboto")
-  # merge_v(j = ~ cluster) %>% 
-  # align(align = "center", part = "body")
-
-```
-
-\newpage
-
-<!-- % changing the orientation to portrait again -------------------------- -->
-
-```{=tex}
-\KOMAoptions{usegeometry, paper=portrait,pagesize}
-\recalctypearea
-```
 ### Epidemiology of enteric non-typhoidal salmonella
 
-*Salmonella* was detected in stools on microbiological culture in `{r} sum_stool_all$sum_sal_pos` of `{r} sum_stool_all$sum_stool_tested` (`{r} sum_stool_all$Salm_pos_percent` %) in healthy children at an average age of `{r} sum_stool_all$age_mean_stool` (SD: `{r} sum_stool_all$age_sd_stool`) months. Using pan-salmonella (TTR primer) PCR was positive in `{r} sum_stool_all$sum_pcr_pos` of `{r} sum_stool_all$sum_pcr_tested` (`{r} sum_stool_all$PCR_pos_percent` %) stools tested. The proportion of children with *salmonella* positive stools increased with age, ranging from `{r} min_age_PCR$Salm_pos_percent`% PCR positive in age group (`{r} min_age_PCR$AGEGROUP_3mth`) at a mean age of `{r} min_age_PCR$age_mean_stool` months and `{r} min_age_stool$Salm_pos_percent`% culture positive in age group (`{r} min_age_stool$AGEGROUP_3mth`) with a mean age of `{r} min_age_stool$age_mean_stool` months, to `{r} max_age_PCR$Salm_pos_percent`% PCR positive in age group (`{r} max_age_PCR$AGEGROUP_3mth`) at a mean age of `{r} max_age_PCR$age_mean_stool` months and `{r} max_age_stool$Salm_pos_percent`% culture positive in age group (`{r} max_age_stool$AGEGROUP_3mth`) with a `{r} max_age_stool$age_mean_stool` months (@tbl-stool3m_sum, @fig-stool3m). The percentage of stools that were salmonella culture and PCR positive by month of sample collection is shown in @fig-stoolseason . The months with the lowest percentages of children with salmonella culture positive stools was `{r} min_mth_stool$Salm_pos_percent`% in `{r} min_mth_stool$month_yrfull` and for PCR positive stools was `{r} min_mth_PCR$PCR_pos_percent`%, in `{r} min_mth_PCR$month_yrfull`. The months that had the highest salmonella culture positive stools was `{r} max_mth_stool$Salm_pos_percent`% in `{r} max_mth_stool$month_yrfull` and for PCR positive stools was `{r} max_mth_PCR$PCR_pos_percent`% in `{r} max_mth_PCR$month_yrfull`. Genome sequencing results were available for a subset of `{r} seq_sum_total$count_tot` NTS isolates, of which `{r} tot_ent$count_tot` were Salmonella enterica subspecies enterica (subspecies II) and `{r} tot_sal$count_tot` were Salmonella enterica subspecies salamae (subspecies II) . Those isolates identified as Salmonella enterica subspecies salamae (subspecies II) were `{r} O9_sal$count` (`{r}  O9_ent$percent`%) identified with O9 antigen, and `{r} O4_sal$count` (`{r} O4_sal$percent`%) with O4 antigen. Those isolates identified as Salmonella enterica subspecies enterica (subspecies II) were `{r} O9_ent$count` (`{r} O9_ent$percent` %) identified with O9 antigen, and `{r} O4_ent$count` (`{r} O4_ent$percent` %) with O4 antigen. Full list of serovars are shown in @tbl-seqdat_all.
+*Salmonella* was detected in stools on microbiological culture in `{r} sum_stool_all$sum_sal_pos` of `{r} sum_stool_all$sum_stool_tested` (`{r} sum_stool_all$Salm_pos_percent` %) in healthy children at an average age of `{r} sum_stool_all$age_mean_stool` (SD: `{r} sum_stool_all$age_sd_stool`) months. Using pan-salmonella (TTR primer) PCR was positive in `{r} sum_stool_all$sum_pcr_pos` of `{r} sum_stool_all$sum_pcr_tested` (`{r} sum_stool_all$PCR_pos_percent` %) stools tested. The proportion of children with *salmonella* positive stools increased with age, ranging from `{r} min_age_PCR$Salm_pos_percent`% PCR positive in age group `{r} min_age_PCR$AGEGROUP_3mth` (mean: `{r} min_age_PCR$age_mean_stool`) months and `{r} min_age_stool$Salm_pos_percent`% culture positive in age group `{r} min_age_stool$AGEGROUP_3mth` (mean: `{r} min_age_stool$age_mean_stool`) months, to `{r} max_age_PCR$Salm_pos_percent`% PCR positive in age group `{r} max_age_PCR$AGEGROUP_3mth` (mean: `{r} max_age_PCR$age_mean_stool`) months and `{r} max_age_stool$Salm_pos_percent`% culture positive in age group `{r} max_age_stool$AGEGROUP_3mth` (mean: `{r} max_age_stool$age_mean_stool`) months (@tbl-stool3m_sum, @fig-stool3m). The percentage of stools that were salmonella culture and PCR positive by month of sample collection is shown in @fig-stoolseason. The months with the lowest percentages of children with salmonella culture positive stools was `{r} min_mth_stool$Salm_pos_percent`% in `{r} min_mth_stool$month_yrfull` and for PCR positive stools was `{r} min_mth_PCR$PCR_pos_percent`%, in `{r} min_mth_PCR$month_yrfull`. The months that had the highest salmonella culture positive stools was `{r} max_mth_stool$Salm_pos_percent`% in `{r} max_mth_stool$month_yrfull` and for PCR positive stools was `{r} max_mth_PCR$PCR_pos_percent`% in `{r} max_mth_PCR$month_yrfull`. Genome sequencing results were available for a subset of `{r} seq_sum_total$count_tot` NTS isolates, of which `{r} tot_ent$count_tot` were Salmonella enterica subspecies enterica (subspecies II) and `{r} tot_sal$count_tot` were Salmonella enterica subspecies salamae (subspecies II). Those isolates identified as Salmonella enterica subspecies salamae (subspecies II) were `{r} O9_sal$count` (`{r}  O9_ent$percent`%) identified with O9 antigen, and `{r} O4_sal$count` (`{r} O4_sal$percent`%) with O4 antigen. Those isolates identified as Salmonella enterica subspecies enterica (subspecies II) were `{r} O9_ent$count` (`{r} O9_ent$percent` %) identified with O9 antigen, and 0 with O4 antigen. Full list of serovars are shown in @tbl-seqdat_all.
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, fig.align = "centre", fig.width = 5.5, fig.height=4.5, out.width = "6in"}
 #| fig-cap: Percentage of children in each 3 month age group with A. Salmonella positive stool culture and B. Salmonella TTR PCR positive.
@@ -580,8 +665,8 @@ cowplot::plot_grid(pSerovar, pPCR, nrow=2, labels="AUTO", label_size=7, rel_widt
 
 ```
 
-```{r echo=FALSE, warning=FALSE, message=FALSE, fig.align = "centre", fig.width = 5.5, fig.height=3, out.width = "6in"}
-#| fig-cap: Percentage of children with positive salmonella stool by month of sample collection, for Salmonella positive culture, and Salmonella PCR (TTR primer) positive.
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.align = "centre", fig.width = 5.5, fig.height=6, out.width = "6in"}
+#| fig-cap: Percentage of children with positive salmonella stool by month of sample collection, for Salmonella positive culture, and Salmonella PCR (TTR primer) positive, A. All children recruited into SAiNTS study, B. by study cluster.
 #| label: fig-stoolseason
 #| 
 pSalm_seas_n <- seasonStool %>% 
@@ -619,7 +704,22 @@ pcomb <- sum_stoolseason_long %>%
           legend.title=element_text(size=6),
           axis.text.x = element_text(angle=45, hjust=1)) +
     labs(y="Salmonella positive (%)", x="Age (months)")
-pcomb
+
+pcomb_clus <- sum_stoolseason_long_clst %>% 
+  ggplot(aes(x=factor(month_yr), y=Percent, fill=Method)) +
+    geom_bar(position="dodge", stat="identity")+
+    scale_fill_manual(values = c("Salm_pos_percent" = "coral", "PCR_pos_percent" = "seagreen"), labels=c("Culture Positive", "PCR Positive"))+
+    theme_bw() +
+    theme(axis.text=element_text(size=6),
+          axis.title=element_text(size=6,face="bold"),
+          legend.text=element_text(size=6),
+          legend.title=element_text(size=6),
+          axis.text.x = element_text(angle=45, hjust=1)) +
+    labs(y="Salmonella positive (%)", x="Age (months)") +
+  facet_wrap(~cluster)
+
+cowplot::plot_grid(pcomb, pcomb_clus,nrow=2, labels="AUTO", label_size = 7) # rel_widths = c(1,0.8)
+
 #cowplot::plot_grid(pSalm_seas_n, pSalm_seas_p, pcomb,nrow=3, labels="AUTO", label_size = 7) # rel_widths = c(1,0.8)
 ```
 
@@ -650,15 +750,23 @@ flextable(seq_sum_sal) %>%
 
 #### Malaria
 
-Malaria rapid diagnostic (MRDT) was positive in `{r} MRDT$MDRT_tot` (`{r} MRDT$MRDT_all_per`%) children over the whole duration of the study; `{r} MRDT_clus_c$MDRT_tot` (`{r} MRDT_clus_c$MRDT_all_per`%) in Chikwawa and `{r} MRDT_clus_m$MDRT_tot` (`{r} MRDT_clus_m$MRDT_all_per`%) in St Montfort (@fig-MRDT A). In Chikwawa, children in the age group `{r} min_age_MRDT_c$AGEGROUP_3mth` months (mean `{r} min_age_MRDT_c$age_mean` months) had MRDT positive results in `{r} min_age_MRDT_c$MDRT_tot` (`{r} min_age_MRDT_c$MRDT_all_per`%) , and age group `{r} max_age_MRDT_c$AGEGROUP_3mth` months (mean `{r} max_age_MRDT_c$age_mean` months) had `{r} max_age_MRDT_c$MDRT_tot` (`{r} max_age_MRDT_c$MRDT_all_per`%). In St Montfort, children in the age group `{r} min_age_MRDT_m$AGEGROUP_3mth` months (mean `{r} min_age_MRDT_m$age_mean` months) had MRDT positive results in `{r} min_age_MRDT_m$MDRT_tot` (`{r} min_age_MRDT_m$MRDT_all_per`%) , and age group `{r} max_age_MRDT_m$AGEGROUP_3mth` months (mean `{r} max_age_MRDT_m$age_mean` months) had `{r} max_age_MRDT_m$MDRT_tot` (`{r} max_age_MRDT_m$MRDT_all_per`%) (@fig-MRDT B). In Chikwawa, in `{r} min_mth_MRDT_c$month_yrfull` there were `{r} min_mth_MRDT_c$MDRT_tot` (`{r} min_mth_MRDT_c$MRDT_all_per`%) children with positive MRDT results, compared to `{r} max_mth_MRDT_c$month_yrfull` where there were `{r} max_mth_MRDT_c$MDRT_tot` (`{r} max_mth_MRDT_c$MRDT_all_per`%). In St Montfort, in `{r} min_mth_MRDT_m$month_yrfull` there were `{r} min_mth_MRDT_m$MDRT_tot` (`{r} min_mth_MRDT_m$MRDT_all_per`%) children with positive MRDT results, compared to `{r} max_mth_MRDT_m$month_yrfull` where there were `{r} max_mth_MRDT_m$MDRT_tot` (`{r} max_mth_MRDT_m$MRDT_all_per`%).
+Malaria rapid diagnostic test (MRDT) was positive in `{r} MRDT$MDRT_tot` (`{r} MRDT$MRDT_all_per`%) children over the whole duration of the study; `{r} MRDT_clus_c$MDRT_tot` (`{r} MRDT_clus_c$MRDT_all_per`%) in Chikwawa and `{r} MRDT_clus_m$MDRT_tot` (`{r} MRDT_clus_m$MRDT_all_per`%) in St Montfort. In Chikwawa, children in the age group `{r} min_age_MRDT_c$AGEGROUP_3mth` months (mean: `{r} min_age_MRDT_c$age_mean` months) had the lowest proportion of MRDT positive results `{r} min_age_MRDT_c$MDRT_tot` (`{r} min_age_MRDT_c$MRDT_all_per`%), and the age group `{r} max_age_MRDT_c$AGEGROUP_3mth` months (mean: `{r} max_age_MRDT_c$age_mean` months) had the highest `{r} max_age_MRDT_c$MDRT_tot` (`{r} max_age_MRDT_c$MRDT_all_per`%). In St Montfort, children in the age group `{r} min_age_MRDT_m$AGEGROUP_3mth` months (mean: `{r} min_age_MRDT_m$age_mean` months) had the lowest proportion of MRDT positive results `{r} min_age_MRDT_m$MDRT_tot` (`{r} min_age_MRDT_m$MRDT_all_per`%), and the age group `{r} max_age_MRDT_m$AGEGROUP_3mth` months (mean:`{r} max_age_MRDT_m$age_mean` months) had the highest `{r} max_age_MRDT_m$MDRT_tot` (`{r} max_age_MRDT_m$MRDT_all_per`%) (@fig-MRDT A). In Chikwawa, the month with the lowest proportion of MRDT positive results was `{r} min_mth_MRDT_c$month_yrfull` where there was `{r} min_mth_MRDT_c$MDRT_tot` (`{r} min_mth_MRDT_c$MRDT_all_per`%) children with positive MRDT results, compared to `{r} max_mth_MRDT_c$month_yrfull` with the highest percentage of `{r} max_mth_MRDT_c$MDRT_tot` (`{r} max_mth_MRDT_c$MRDT_all_per`%). In St Montfort, `{r} min_mth_MRDT_m$month_yrfull` had the lowest percentage children with positive MRDT results `{r} min_mth_MRDT_m$MDRT_tot` (`{r} min_mth_MRDT_m$MRDT_all_per`%) compared to `{r} max_mth_MRDT_m$month_yrfull` with the highest percentage `{r} max_mth_MRDT_m$MDRT_tot` (`{r} max_mth_MRDT_m$MRDT_all_per`%) (@fig-MRDT B).
 
 #### Anaemia
 
+The mean haemoglobin was `{r} other_clus_c$hb_mean` g/L in Chikwawa and `{r} other_clus_m$hb_mean` g/L in St Montfort (@tbl-cohortEA). In Chikwawa there were `{r} other_clus_c$S.anaemia_cat_n` (`{r} other_clus_c$S.anaemia_cat_per`%) children with severe anaemia, `{r} other_clus_c$M.anaemia_cat_n` (`{r} other_clus_c$M.anaemia_cat_per`%) with moderate anaemia, and `{r} other_clus_c$n.anaemia_cat_n` (`{r} other_clus_c$n.anaemia_cat_per`%) with no anaemia; compared to `{r} other_clus_m$S.anaemia_cat_n` (`{r} other_clus_m$S.anaemia_cat_per`%) with severe, `{r} other_clus_m$M.anaemia_cat_n` (`{r} other_clus_m$M.anaemia_cat_per`%) with moderate and `{r} other_clus_m$n.anaemia_cat_n` (`{r} other_clus_m$n.anaemia_cat_per`%) with no anaemia in St Montfort (@tbl-cohortEA).
+
 #### Malnutrition
 
-Severe-acute malnutrition was present in 1.2% (31) by weight-for-height z-scores (\<-3 SD) and 3.2% (79) by mid-upper arm circumference \<12.5cm.
+The mean mid-upper arm circumference (MUAC) was `{r} other_clus_c$muac_mean`cm in Chikwawa and `{r} other_clus_m$muac_mean`cm in St Montfort, and mean weight-for-height z-score (WFHZ) was `{r} other_clus_c$wfh_zscore_mean` in Chikwawa and `{r} other_clus_m$wfh_zscore_mean` in St Montfort (@tbl-cohortEA). In Chikwawa, using WFHZ criteria (@tbl-IMCI) there were `{r} other_clus_c$S.malnutrition_wfhz_n` (`{r} other_clus_c$S.malnutrition_wfhz_per`%) children with severe acute malnutrition, `{r} other_clus_c$M.malnutrition_wfhz_n` (`{r} other_clus_c$M.malnutrition_wfhz_per`%) with moderate acute malnutrition, and `{r} other_clus_c$n.malnutrition_wfhz_n` (`{r} other_clus_c$n.malnutrition_wfhz_per`%) with no acute malnutrition; compared to `{r} other_clus_m$S.malnutrition_wfhz_n` (`{r} other_clus_m$S.malnutrition_wfhz_per`%) children with severe acute malnutrition, `{r} other_clus_m$M.malnutrition_wfhz_n` (`{r} other_clus_m$M.malnutrition_wfhz_per`%) with moderate acute malnutrition, and `{r} other_clus_m$n.malnutrition_wfhz_n` (`{r} other_clus_m$n.malnutrition_wfhz_per`%) with no acute malnutrition in St Montfort (@tbl-cohortEA). In Chikwawa, using MUAC criteria (@tbl-IMCI) there were `{r} other_clus_c$S.malnutrition_muac_n` (`{r} other_clus_c$S.malnutrition_muac_per`%) children with severe acute malnutrition, `{r} other_clus_c$M.malnutrition_muac_n` (`{r} other_clus_c$M.malnutrition_muac_per`%) with moderate acute malnutrition, and `{r} other_clus_c$n.malnutrition_muac_n` (`{r} other_clus_c$n.malnutrition_muac_per`%) with no acute malnutrition; compared to `{r} other_clus_m$S.malnutrition_muac_n` (`{r} other_clus_m$S.malnutrition_muac_per`%) children with severe acute malnutrition, `{r} other_clus_m$M.malnutrition_muac_n` (`{r} other_clus_m$M.malnutrition_muac_per`%) with moderate acute malnutrition, and `{r} other_clus_m$n.malnutrition_muac_n` (`{r} other_clus_m$n.malnutrition_muac_per`%) with no acute malnutrition in St Montfort (@tbl-cohortEA).
 
 #### Sickle Cell
+
+Rapid diagnostic test for haemoglobin S (in the absence of haemoglobin A) indicating sickle cell disease was positive in `{r} other_clus_c$sicklecell_n` (`{r} other_clus_c$sicklecell_test_per`%) in Chikwawa, and `{r} other_clus_m$sicklecell_n` (`{r} other_clus_m$sicklecell_test_per`%) in St Montfort (@tbl-cohortEA).
+
+#### HIV
+
+In Chikwawa `{r} other_clus_c$hiv_exposed_n` (`{r} other_clus_c$hiv_exposed_per`%) of children were HIV exposed, `{r} other_clus_c$hiv_test_n` (`{r} other_clus_c$hiv_test_per`%) had received an HIV test, and `{r} other_clus_c$hivtest_result_n` (`{r} other_clus_c$hivtest_result_per`%) of children who had been tested had a positive result. In St Montfort `{r} other_clus_m$hiv_exposed_n` (`{r} other_clus_m$hiv_exposed_per`%) of children were HIV exposed, `{r} other_clus_m$hiv_test_n` (`{r} other_clus_m$hiv_test_per`%) had received an HIV test, and `{r} other_clus_m$hivtest_result_n` (`{r} other_clus_m$hivtest_result_per`%) of children who had been tested had a positive result (@tbl-cohortEA). 
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, fig.align = "centre", fig.width = 5.5, fig.height=5, out.width = "6in"}
 #| fig-cap: Percentage of children with positive HHRP malaria rapid diagnostic tests (MRDT) A. by age group (months), and B. by month of sample collection
@@ -693,17 +801,17 @@ cowplot::plot_grid(pMRDTa, pMRDTs, nrow = 2, labels = "AUTO", label_size = 7)
 
 ### Geospatial distribution of salmonella and malaria parasite prevalence
 
-::: {layout-nrow="2"}
-![MRDT positivity (%) by EA (dry season; May-Oct)](figures/5_images/MRDTdry.png){width="200"}
+::: {#fig-geoMRDTSal layout-nrow="2"}
+![MRDT positive results (%) by EA (dry season; May-Oct)](figures/5_images/MRDTdry.png){width="200"}
 
-![MRDT positivity (%) by EA (wet season; Nov-Apr)](figures/5_images/MRDTwet.png){width="200"}
+![MRDT positive (%) by EA (wet season; Nov-Apr)](figures/5_images/MRDTwet.png){width="200"}
 
-![Salmonella PCR positivity (%) (dry season; May-Oct)](figures/5_images/PCRdry.png){width="200"}
+![Salmonella PCR positive (%) (dry season; May-Oct)](figures/5_images/PCRdry.png){width="200"}
 
-![Salmonella PCR positivity (%) (wet season; Nov - Apr)](figures/5_images/PCRwet.png){width="200"}
+![Salmonella PCR positive (%) (wet season; Nov - Apr)](figures/5_images/PCRwet.png){width="200"}
 :::
 
-Table high/ low malaria definitions
+The distribution of salmonella PCR A summary of salmonella and MRDT results by individual EA is shown in @tbl-EAs & @fig-geoMRDTSal .
 
 ### Recruitment across VacciNTS sites
 
@@ -711,9 +819,9 @@ summary table of recruitment numbers
 
 ## Discussion
 
-iNTS incidence increases rapidly in early life, but begins to fall between 18-36 months, despite continuing community exposure to *Salmonella* and malaria
+These results show an increasing  continuing community exposure to *Salmonella* and malaria iNTS incidence increases rapidly in early life, but begins to fall between 18-36 months, 
 
-Salmonella shedding [@gal-mor2018] NTS shedding rates......
+There are few studies with large scale community stool sampling Salmonella shedding [@gal-mor2018] NTS shedding rates......
 
 Seasonality of eNTS and shows a seasonal pattern. Age-stratified distribution of salmonella stool culture and PCR positivity shows a sigmoidal distribution, showing low rates of exposure in the first 6 month of life (2% culture and 5% PCR positive), entering the exponential phase during the weaning period, and a plateau phase after 24 months (10% culture and 20% PCR positive).
 
