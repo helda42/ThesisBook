@@ -56,6 +56,7 @@ library(Hmisc)
 library(flextable)
 library(gt)
 library(gtsummary)
+library(lubridate)
 
 IMCI <- import(here("data", "5_data", "WatSan.xlsx"), which = "Sheet2") %>% 
   flextable() %>% 
@@ -81,14 +82,23 @@ A proxy poverty score was derived as used in the SCALE trial [@feasey2023] to as
 
 master <- import(here("data", "5_data", "master.csv")) %>% 
   mutate(ta_code = substr(ta_code,5,8)) %>% 
-  mutate(
-          # AGEGROUP_3mth = fct_relevel(AGEGROUP_3mth, c("[0,3]", "(3,6]","(6,9]","(9,12]","(12,15]", "(15,18]", "(18,21]","(21,24]",
-          #                                      "(24,27]", "(27,30]","(30,33]","(33,36]","(36,39]", "(39,42]", "(42,45]","(45,48]",
-          #                                      "(48,51]", "(51,54]","(54,57]","(57,60]")),
+  mutate( month_yr = zoo::as.yearmon(d1s_data_date),
+          month_yrfull = format(d1s_data_date, "%B %Y"),
+          month_yr_d90 = zoo::as.yearmon(d90_fup_crf_date),
+          month_yrfull_d90 = format(d90_fup_crf_date, "%B %Y"),
+          mrdt_num = ifelse(mrdt_result=="Positive",1,ifelse(mrdt_result=="Negative",0,NA)),
+          mrdt_num_d90 = ifelse(d90_stl_mrdt_result=="Positive",1,ifelse(d90_stl_mrdt_result=="Negative",0,NA)),
+          age_d90 = time_length(interval(dob, d90_fup_crf_date), "months"),
+          age_d90 = ifelse(age_d90<70,age_d90,NA),
+          AGEGROUP_3mth_d90 = cut(age_d90, breaks = seq(0,60,3)),
           AGEGROUP_3mth = factor(AGEGROUP_3mth, levels = c("[0,3]", "(3,6]","(6,9]","(9,12]","(12,15]", "(15,18]", "(18,21]","(21,24]","(24,27]", "(27,30]",
                                      "(30,33]","(33,36]","(36,39]", "(39,42]", "(42,45]","(45,48]", "(48,51]", "(51,54]","(54,57]","(57,60]"),
-                          labels = c("0-3", "3-6", "6-9", "9-12","12-15", "15-18","18-21","21-24","24-27","27-30","30-33","33-36","36-39","39-42","42-45","45-48",
-                                     "48-51","51-54","54-57","57-60")),
+                          labels = c("0-3", "4-6", "7-9", "10-12","13-15", "16-18","19-21","22-24","25-27","28-30","31-33","34-36","37-39","40-42","43-45","46-48",
+                                     "49-51","52-54","55-57","58-60")),
+          AGEGROUP_3mth_d90 = factor(AGEGROUP_3mth_d90, levels = c("[0,3]", "(3,6]","(6,9]","(9,12]","(12,15]", "(15,18]", "(18,21]","(21,24]","(24,27]", "(27,30]",
+                                     "(30,33]","(33,36]","(36,39]", "(39,42]", "(42,45]","(45,48]", "(48,51]", "(51,54]","(54,57]","(57,60]"),
+                          labels = c("0-3", "4-6", "7-9", "10-12","13-15", "16-18","19-21","22-24","25-27","28-30","31-33","34-36","37-39","40-42","43-45","46-48",
+                                     "49-51","52-54","55-57","58-60")),
           salm_fact2 = case_when(
             salm_fact=="Salmonella enteritidis" ~ "O9",
             salm_fact=="Salmonella typhimurium" ~ "O4",
@@ -118,10 +128,12 @@ master <- import(here("data", "5_data", "master.csv")) %>%
            anaemia_cat = factor(anaemia_cat, levels=c("Severe anaemia","Moderate anaemia","No anaemia")),
            anaemia_cat_d90 = factor(anaemia_cat, levels=c("Severe anaemia","Moderate anaemia","No anaemia")),
           sickle_cell_res_comb = ifelse(sicklecell_test_result=="Positive"| d90_v2_sicklecell_result==3 | d90_v2_sicklecell_result==4, "Positive (HbSS/ HbSC)", 
-                                        ifelse(sicklecell_test_result=="Negative"| d90_v2_sicklecell_result==1,"Negative",NA))
-
+                                        ifelse(sicklecell_test_result=="Negative"| d90_v2_sicklecell_result==1,"Negative",NA)),
+          fever_meas = ifelse(temperature>=38,1,ifelse(temperature<38,0,NA)),
+          fever_meas_d90 = ifelse(d90_v2_temperature>=38,1,ifelse(d90_v2_temperature<38,0,NA)),
+          d90_v2_fever = ifelse(d90_v2_fever==2,0,d90_v2_fever)
   )
-
+export(master, here("data", "5_data", "master3.csv"))
 
          # cluster = ifelse(cluster==1,"Chikwawa","St Montfort"))
 seqdat <- import(here("data", "5_data", "2023.06.29.SAiNTS_seq_results.xlsx"))
@@ -242,9 +254,10 @@ povMon <- pov %>% filter(cluster=="St Montfort")
 # stoolChi <- stool %>% filter(cluster=="Chikwawa")
 # stoolMon <- stool %>% filter(cluster=="St Montfort")
 
-sum_stool_3m <- master %>% 
-  filter(!is.na(AGEGROUP_3mth) & AGEGROUP_3mth!="") %>% ## remove longitudinal for now as need to calculate age separately
-  group_by(AGEGROUP_3mth) %>% 
+
+  
+stoolsum_fun <- function(df){  
+  df %>% 
   summarise(age_mean_stool = mean(calc_age_months, na.rm = T),
             age_sd_stool = sd(calc_age_months, na.rm=T),
             sum_pcr_pos = sum(PCR_pos_num, na.rm = T),
@@ -254,22 +267,31 @@ sum_stool_3m <- master %>%
             sum_stool_tested = sum(stool_tested, na.rm = T),
             Salm_pos_percent = sum_sal_pos/sum_stool_tested*100) %>% 
   mutate(across(where(is.numeric), round, 1))
+}
 
+sum_stool_3m <- master %>% 
+  filter(!is.na(AGEGROUP_3mth) & AGEGROUP_3mth!="") %>% ## remove longitudinal for now as need to calculate age separately
+  group_by(AGEGROUP_3mth) %>% 
+  stoolsum_fun() %>% 
+  ungroup()
+
+sum_stool_3m_clus <- master %>% 
+  filter(!is.na(AGEGROUP_3mth) & AGEGROUP_3mth!="") %>% ## remove longitudinal for now as need to calculate age separately
+  group_by(cluster, AGEGROUP_3mth) %>% 
+  stoolsum_fun() %>% 
+  ungroup()
+
+
+# sum_stool_3m_long_clst <- sum_stool_3m_clus %>% 
+#   select(c(cluster, AGEGROUP_3mth, Salm_pos_percent, PCR_pos_percent)) %>% 
+#   pivot_longer(cols = c(Salm_pos_percent, PCR_pos_percent), names_to = "Method", values_to = "Percent")
 # sum_stool_3m_long <- sum_stool_3m %>% 
 #   select(c(AGEGROUP_3mth, Salm_pos_percent, PCR_pos_percent)) %>% 
 #   pivot_longer(cols = c(Salm_pos_percent, PCR_pos_percent), names_to = "Method", values_to = "Percent")
 
 sum_stool_all <- master %>% 
-  summarise(age_mean_stool = mean(calc_age_months, na.rm = T),
-            age_sd_stool = sd(calc_age_months, na.rm=T),
-            sum_pcr_pos = sum(PCR_pos_num, na.rm = T),
-            sum_pcr_tested = sum(PCR_tested_bin, na.rm = T),
-            PCR_pos_percent = (sum_pcr_pos/sum_pcr_tested)*100,
-            sum_sal_pos = sum(Salmonella_num, na.rm = T),
-            sum_stool_tested = sum(stool_tested, na.rm = T),
-            Salm_pos_percent = sum_sal_pos/sum_stool_tested*100) %>% 
-  mutate(across(where(is.numeric), round, 1))
-
+  stoolsum_fun() %>% 
+  ungroup()
 
 #age03m <- sum_stool_3m %>% filter(AGEGROUP_3mth=="(0-3]")
 max_age_PCR <- sum_stool_3m %>% slice_max(PCR_pos_percent)
@@ -300,19 +322,9 @@ O9_sal <- seq_sum_sal %>% filter(`O antigen prediction`=="9")
 
 ## Monthly
 seasonStool <- master %>% 
-  mutate(month_yr = zoo::as.yearmon(d1s_data_date),
-         month_yrfull = format(d1s_data_date, "%B %Y")) %>% 
   filter(!is.na(d1s_data_date)) %>% 
   group_by(month_yr, month_yrfull) %>% 
-  summarise(age_mean_stool = mean(calc_age_months, na.rm = T),
-            age_sd_stool = sd(calc_age_months, na.rm=T),
-            sum_pcr_pos = sum(PCR_pos_num, na.rm = T),
-            sum_pcr_tested = sum(PCR_tested_bin, na.rm = T),
-            PCR_pos_percent = (sum_pcr_pos/sum_pcr_tested)*100,
-            sum_sal_pos = sum(Salmonella_num, na.rm = T),
-            sum_stool_tested = sum(stool_tested, na.rm = T),
-            Salm_pos_percent = sum_sal_pos/sum_stool_tested*100) %>% 
-  mutate(across(where(is.numeric), round, 1)) %>% 
+  stoolsum_fun() %>% 
   ungroup()
 
 sum_stoolseason_long <- seasonStool %>% 
@@ -325,19 +337,9 @@ min_mth_PCR <- seasonStool %>% slice_min(PCR_pos_percent)
 min_mth_stool <- seasonStool %>% slice_min(Salm_pos_percent)
 
 seasonStool_clst <- master %>% 
-  mutate(month_yr = zoo::as.yearmon(d1s_data_date),
-         month_yrfull = format(d1s_data_date, "%B %Y")) %>% 
   filter(!is.na(d1s_data_date)) %>% 
   group_by(cluster, month_yr, month_yrfull) %>% 
-  summarise(age_mean_stool = mean(calc_age_months, na.rm = T),
-            age_sd_stool = sd(calc_age_months, na.rm=T),
-            sum_pcr_pos = sum(PCR_pos_num, na.rm = T),
-            sum_pcr_tested = sum(PCR_tested_bin, na.rm = T),
-            PCR_pos_percent = (sum_pcr_pos/sum_pcr_tested)*100,
-            sum_sal_pos = sum(Salmonella_num, na.rm = T),
-            sum_stool_tested = sum(stool_tested, na.rm = T),
-            Salm_pos_percent = sum_sal_pos/sum_stool_tested*100) %>% 
-  mutate(across(where(is.numeric), round, 1)) %>% 
+  stoolsum_fun() %>% 
   ungroup()
 
 sum_stoolseason_long_clst <- seasonStool_clst %>% 
@@ -351,11 +353,8 @@ min_mth_stool <- seasonStool %>% slice_min(Salm_pos_percent)
 
 ############ MRDT
 ## Age
-sum_MRDT_3m_clus <- master %>% 
-  filter(!is.na(AGEGROUP_3mth) & AGEGROUP_3mth!="") %>% ## remove longitudinal for now as need to calculate age separately
-  mutate(mrdt_num_d90 = ifelse(d90_stl_mrdt_result=="Positive",1,0)) %>% 
-  group_by(cluster, AGEGROUP_3mth) %>% 
-  summarise(age_mean = mean(calc_age_months, na.rm = T),
+mrdtsum_fun <- function(df){  
+  df %>% summarise(age_mean = mean(calc_age_months, na.rm = T),
             age_sd = sd(calc_age_months, na.rm=T),
             sum_MRDT_posd1 = sum(mrdt_num, na.rm = T),
             sum_MRDT_testedd1 = sum(mrdt, na.rm = T),
@@ -366,22 +365,18 @@ sum_MRDT_3m_clus <- master %>%
             MDRT_tot = sum_MRDT_posd1+sum_MRDT_posd90,
             MRDT_all_per = MDRT_tot/ (sum_MRDT_testedd1+sum_MRDT_testedd90)*100) %>% 
   mutate(across(where(is.numeric), round, 1))
+} 
+sum_MRDT_3m_clus <- master %>% 
+  filter(!is.na(AGEGROUP_3mth) & AGEGROUP_3mth!="") %>% ## remove longitudinal for now as need to calculate age separately
+  group_by(cluster, AGEGROUP_3mth) %>% 
+  mrdtsum_fun() %>% 
+  ungroup()
 
 sum_MRDT_3m <- master %>% 
   filter(!is.na(AGEGROUP_3mth) & AGEGROUP_3mth!="") %>% ## remove longitudinal for now as need to calculate age separately
-  mutate(mrdt_num_d90 = ifelse(d90_stl_mrdt_result=="Positive",1,0)) %>% 
   group_by(AGEGROUP_3mth) %>% 
-  summarise(age_mean = mean(calc_age_months, na.rm = T),
-            age_sd = sd(calc_age_months, na.rm=T),
-            sum_MRDT_posd1 = sum(mrdt_num, na.rm = T),
-            sum_MRDT_testedd1 = sum(mrdt, na.rm = T),
-            MRDT_pos_percentd1 = (sum_MRDT_posd1/sum_MRDT_testedd1)*100,
-            sum_MRDT_posd90 = sum(mrdt_num_d90, na.rm = T),
-            sum_MRDT_testedd90 = sum(d90_stl_mrdt, na.rm = T),
-            MRDT_pos_percentd90 = (sum_MRDT_posd90/sum_MRDT_testedd90)*100,
-            MDRT_tot = sum_MRDT_posd1+sum_MRDT_posd90,
-            MRDT_all_per = MDRT_tot/ (sum_MRDT_testedd1+sum_MRDT_testedd90)*100) %>% 
-  mutate(across(where(is.numeric), round, 1))
+  mrdtsum_fun() %>% 
+  ungroup()
 
 sum_MRDT_3m_c <- sum_MRDT_3m_clus %>% filter(cluster=="Chikwawa")
 sum_MRDT_3m_m <- sum_MRDT_3m_clus %>% filter(cluster=="St Montfort")
@@ -392,22 +387,9 @@ min_age_MRDT_m <- sum_MRDT_3m_m %>% slice_min(MRDT_all_per, with_ties = F)
 max_age_MRDT_m <- sum_MRDT_3m_m %>% slice_max(MRDT_all_per, with_ties = F)
 
 seasonMRDT <- master %>% 
-  mutate(month_yr = zoo::as.yearmon(d1s_data_date),
-         month_yrfull = format(d1s_data_date, "%B %Y"),
-         mrdt_num_d90 = ifelse(d90_stl_mrdt_result=="Positive",1,0)) %>% 
   filter(!is.na(d1s_data_date)) %>% 
   group_by(cluster, month_yr, month_yrfull) %>% 
-  summarise(age_mean = mean(calc_age_months, na.rm = T),
-            age_sd = sd(calc_age_months, na.rm=T),
-            sum_MRDT_posd1 = sum(mrdt_num, na.rm = T),
-            sum_MRDT_testedd1 = sum(mrdt, na.rm = T),
-            MRDT_pos_percentd1 = (sum_MRDT_posd1/sum_MRDT_testedd1)*100,
-            sum_MRDT_posd90 = sum(mrdt_num_d90, na.rm = T),
-            sum_MRDT_testedd90 = sum(d90_stl_mrdt, na.rm = T),
-            MRDT_pos_percentd90 = (sum_MRDT_posd90/sum_MRDT_testedd90)*100,
-            MDRT_tot = sum_MRDT_posd1+sum_MRDT_posd90,
-            MRDT_all_per = MDRT_tot/ (sum_MRDT_testedd1+sum_MRDT_testedd90)*100) %>% 
-  mutate(across(where(is.numeric), round, 1)) %>% 
+  mrdtsum_fun() %>% 
   ungroup()
 
 seasonMRDT_c <- seasonMRDT %>% filter(cluster=="Chikwawa")
@@ -419,35 +401,14 @@ min_mth_MRDT_m <- seasonMRDT_m %>% slice_min(MRDT_all_per, with_ties = F)
 max_mth_MRDT_m <- seasonMRDT_m %>% slice_max(MRDT_all_per, with_ties = F)
 
 MRDT <- master %>% 
-  mutate(mrdt_num_d90 = ifelse(d90_stl_mrdt_result=="Positive",1,0)) %>% 
-  summarise(age_mean = mean(calc_age_months, na.rm = T),
-            age_sd = sd(calc_age_months, na.rm=T),
-            sum_MRDT_posd1 = sum(mrdt_num, na.rm = T),
-            sum_MRDT_testedd1 = sum(mrdt, na.rm = T),
-            MRDT_pos_percentd1 = (sum_MRDT_posd1/sum_MRDT_testedd1)*100,
-            sum_MRDT_posd90 = sum(mrdt_num_d90, na.rm = T),
-            sum_MRDT_testedd90 = sum(d90_stl_mrdt, na.rm = T),
-            MRDT_pos_percentd90 = (sum_MRDT_posd90/sum_MRDT_testedd90)*100,
-            MDRT_tot = sum_MRDT_posd1+sum_MRDT_posd90,
-            MRDT_all_per = MDRT_tot/ (sum_MRDT_testedd1+sum_MRDT_testedd90)*100) %>% 
-  mutate(across(where(is.numeric), round, 1)) %>% 
+  mrdtsum_fun() %>% 
   ungroup()
 
 MRDT_clus <- master %>% 
-  mutate(mrdt_num_d90 = ifelse(d90_stl_mrdt_result=="Positive",1,0)) %>% 
   group_by(cluster) %>% 
-  summarise(age_mean = mean(calc_age_months, na.rm = T),
-            age_sd = sd(calc_age_months, na.rm=T),
-            sum_MRDT_posd1 = sum(mrdt_num, na.rm = T),
-            sum_MRDT_testedd1 = sum(mrdt, na.rm = T),
-            MRDT_pos_percentd1 = (sum_MRDT_posd1/sum_MRDT_testedd1)*100,
-            sum_MRDT_posd90 = sum(mrdt_num_d90, na.rm = T),
-            sum_MRDT_testedd90 = sum(d90_stl_mrdt, na.rm = T),
-            MRDT_pos_percentd90 = (sum_MRDT_posd90/sum_MRDT_testedd90)*100,
-            MDRT_tot = sum_MRDT_posd1+sum_MRDT_posd90,
-            MRDT_all_per = MDRT_tot/ (sum_MRDT_testedd1+sum_MRDT_testedd90)*100) %>% 
-  mutate(across(where(is.numeric), round, 1)) %>% 
+  mrdtsum_fun() %>% 
   ungroup()
+
 MRDT_clus_c <- MRDT_clus %>% filter(cluster=="Chikwawa")
 MRDT_clus_m <- MRDT_clus %>% filter(cluster=="St Montfort")
 
@@ -513,13 +474,101 @@ other_clus <- master %>%
 other_clus_c <- other_clus %>% filter(cluster=="Chikwawa")
 other_clus_m <- other_clus %>% filter(cluster=="St Montfort")
 
+##################
+## Malaria blood films
+malaria_filmd1 <- master %>% 
+  select(cluster, AGEGROUP_3mth, month_yr, month_yrfull,mrdt_result, mrdt_num, malaria_film_result_d1, malaria_film_grade_d1, fever, fever_meas) %>% 
+  rename(malaria_film_result = malaria_film_result_d1,
+         malaria_film_grade = malaria_film_grade_d1) %>% 
+  mutate(day = "Day 1")
+
+malaria_filmd90 <- master %>% 
+  select(cluster, AGEGROUP_3mth_d90, month_yr_d90, month_yrfull_d90, mrdt_num_d90, d90_stl_mrdt_result, malaria_film_result_d90, malaria_film_grade_d90, d90_v2_fever, fever_meas_d90) %>% 
+  rename(malaria_film_result = malaria_film_result_d90,
+         malaria_film_grade = malaria_film_grade_d90,
+         mrdt_result = d90_stl_mrdt_result,
+         mrdt_num = mrdt_num_d90,
+         fever = d90_v2_fever,
+         fever_meas = fever_meas_d90,
+         AGEGROUP_3mth = AGEGROUP_3mth_d90,
+         month_yr = month_yr_d90,
+         month_yrfull = month_yrfull_d90) %>% 
+   mutate(day = "Day 90")
+
+malaria_film_all <- bind_rows(malaria_filmd1, malaria_filmd90) %>% 
+    mutate(malaria_film_result_num = ifelse(malaria_film_result=="Positive", 1, ifelse(malaria_film_result=="Negative",0,NA)))
+
+malaria_film_done <- malaria_film_all %>% filter(malaria_film_result!="") %>% 
+  mutate(mrdt_film_neg = ifelse(mrdt_num==0 & malaria_film_result_num==0,1,0),
+         mrdt_pos_film_neg = ifelse(mrdt_num==1 & malaria_film_result_num==0,1,0),
+         mrdt_neg_film_pos = ifelse(mrdt_num==0 & malaria_film_result_num==1,1,0),
+         mrdt_film_pos = ifelse(mrdt_num==1 & malaria_film_result_num==1,1,0),
+         mrdt_pos_fev = ifelse(mrdt_num==1 & fever==1,1,0),
+         film_pos_fev = ifelse(malaria_film_result_num==1 & fever==1,1,0))
+
+mrdtsum_fun <- function(df){  
+  df %>%
+  summarise(sum_film = sum(malaria_film_result_num, na.rm = T),
+          sum_mrdt = sum(mrdt_num, na.rm = T),
+          sum_mrdt_film_neg = sum(mrdt_film_neg, na.rm=T),
+          sum_mrdt_film_pos = sum(mrdt_film_pos, na.rm=T),
+          sum_mrdt_pos_film_neg = sum(mrdt_pos_film_neg, na.rm=T),
+          sum_mrdt_neg_film_pos = sum(mrdt_neg_film_pos, na.rm=T),
+          sum_fever = sum(fever, na.rm = T),
+          sum_fever_meas = sum(fever_meas, na.rm=T),
+          sum_mrdt_pos_fev = sum(mrdt_pos_fev, na.rm = T),
+          sum_film_pos_fev = sum(film_pos_fev, na.rm = T),
+          total = n(),
+          film_per = (sum_film/total)*100,
+          mrdt_per = (sum_mrdt/total)*100,
+          mrdt_film_pos_per = (sum_mrdt_film_pos/total)*100,
+          mrdt_film_neg_per = (sum_mrdt_film_neg/total)*100,
+          mrdt_pos_film_neg_per = (sum_mrdt_pos_film_neg/total)*100,
+          mrdt_neg_film_pos_per = (sum_mrdt_neg_film_pos/total)*100,
+          fever_per = (sum_fever/total)*100,
+          fever_meas_per = (sum_fever_meas/total)*100,
+          mrdt_pos_fev_per = (sum_mrdt_pos_fev/sum_mrdt)*100,
+          film_pos_fev_per = (sum_film_pos_fev/sum_film)*100
+          ) %>% 
+    mutate(across(where(is.numeric), round, 1))
+}
+
+malaria_film_age <- malaria_film_done %>% 
+  group_by(AGEGROUP_3mth) %>% 
+  mrdtsum_fun() %>% 
+  ungroup()
+
+malaria_film_age_clus <- malaria_film_done %>% 
+  group_by(cluster, AGEGROUP_3mth) %>% 
+  mrdtsum_fun() %>% 
+  ungroup()
+
+malaria_film_age_long_clst <- malaria_film_age_clus %>% 
+  select(c(cluster, AGEGROUP_3mth, film_per, mrdt_per)) %>% 
+  pivot_longer(cols = c(film_per, mrdt_per), names_to = "Method", values_to = "Percent")
+
+malaria_film_seas <- malaria_film_done %>% 
+  group_by(month_yr, month_yrfull) %>% 
+  mrdtsum_fun() %>% 
+  ungroup()
+
+malaria_film_seas_clus <- malaria_film_done %>% 
+  group_by(cluster, month_yr, month_yrfull) %>% 
+  mrdtsum_fun() %>% 
+  ungroup()
+
+malaria_film_seas_long_clst <- malaria_film_seas_clus %>% 
+  select(c(cluster, month_yr, month_yrfull, film_per, mrdt_per)) %>% 
+  pivot_longer(cols = c(film_per, mrdt_per), names_to = "Method", values_to = "Percent")
+
+#malaria_film_done_age %>% tbl_summary()
 ```
 
 ## Results
 
 ### SAiNTS cohort demographic and socioeconomic characteristics
 
-`{r} print(n$n)` children aged 0-60 months were recruited across `{r} print(sum(EA_clus$n))` EAs; `{r} print(chiN$n)` EA's were recruited from the Chikwawa cluster with a mean number of children per EA of `{r} print(round(chiN$mean_no, digits=1))`, range: `{r} print(chiN$range)` equaling a total of `{r} print(nchik$n)` children. In the St Montfort cluster `{r} print(StMontN$n)` EA's with a mean number of children per EA of `{r} print(round(StMontN$mean_no, digits=1))`, range: `{r} print(StMontN$range)`, with a total of `{r} print(nmont$n)` children were recruited. The geographical locations of the selected EA's are shown in @fig-map & @fig-selectedEA . The mean age of recruited children in Chikwawa was `{r} print(ageChi$age_mean)` (SD: `{r} print(ageChi$age_sd)`) months and in St Montfort `{r} print(ageMon$age_mean)` (SD: `{r} print(ageMon$age_sd)`) months. The distribution of ages by 1 year age groups is shown in @tbl-cohortEA. Mean poverty scores were `{r} print(povChi$mean)` (SD: `{r} print(povChi$sd)`) in Chikwawa and `{r} print(povMon$mean)` (SD: `{r} print(povMon$sd)`) in St Montfort, and distribution in each cluster by poverty quintile is shown in @tbl-cohortEA. In Chikwawa `{r} watsan_sumC$toilet_type_desc3` (`{r} watsan_sumC$toilet_type_desc_per3`%) children lived in a household that used a pit latrine with slab, and `{r} watsan_sumC$toilet_type_desc2` (`{r} watsan_sumC$toilet_type_desc_per2`%) used pit latrine with wood/soil floor, compared to `{r} watsan_sumM$toilet_type_desc3` (`{r} watsan_sumM$toilet_type_desc_per3`%) and `{r} watsan_sumM$toilet_type_desc2` (`{r} watsan_sumM$toilet_type_desc_per2`%) respectively for children in St Montfort (@tbl-cohortEA). In Chikwawa `{r} watsan_sumC$share_toilet_desc1` (`{r} watsan_sumC$share_toilet_desc_per1`%) children lived in a household shared a toilet with more than three households, compared to `{r} watsan_sumC$share_toilet_desc3` (`{r} watsan_sumC$share_toilet_desc_per3`%) that did not share a toilet with another household; in St Montfort `{r} watsan_sumM$share_toilet_desc1` (`{r} watsan_sumM$share_toilet_desc_per1`%) shared a toilet with more than three households and `{r} watsan_sumM$share_toilet_desc3` (`{r} watsan_sumM$share_toilet_desc_per3`%) not sharing a toilet with another household respectively. Additional water and sanition variables are shown in @tbl-watsan .
+`{r} print(n$n)` children aged 0-60 months were recruited across `{r} print(sum(EA_clus$n))` EAs; `{r} print(chiN$n)` EA's were recruited from the Chikwawa cluster with a mean number of children per EA of `{r} print(round(chiN$mean_no, digits=1))`, range: `{r} print(chiN$range)` equaling a total of `{r} print(nchik$n)` children. In the St Montfort cluster `{r} print(StMontN$n)` EA's with a mean number of children per EA of `{r} print(round(StMontN$mean_no, digits=1))`, range: `{r} print(StMontN$range)`, with a total of `{r} print(nmont$n)` children were recruited. The geographical locations of the selected EA's are shown in @fig-map & @fig-selectedEA . The mean age of recruited children in Chikwawa was `{r} print(ageChi$age_mean)` (SD: `{r} print(ageChi$age_sd)`) months and in St Montfort `{r} print(ageMon$age_mean)` (SD: `{r} print(ageMon$age_sd)`) months. The distribution of ages by 1 year age groups is shown in @tbl-cohortEA. Mean poverty scores were `{r} print(povChi$mean)` (SD: `{r} print(povChi$sd)`) in Chikwawa and `{r} print(povMon$mean)` (SD: `{r} print(povMon$sd)`) in St Montfort, and distribution in each cluster by poverty quintile is shown in @tbl-cohortEA. In Chikwawa `{r} watsan_sumC$toilet_type_desc3` (`{r} watsan_sumC$toilet_type_desc_per3`%) children lived in a household that used a pit latrine with slab, and `{r} watsan_sumC$toilet_type_desc2` (`{r} watsan_sumC$toilet_type_desc_per2`%) used pit latrine with wood/soil floor, compared to `{r} watsan_sumM$toilet_type_desc3` (`{r} watsan_sumM$toilet_type_desc_per3`%) and `{r} watsan_sumM$toilet_type_desc2` (`{r} watsan_sumM$toilet_type_desc_per2`%) respectively for children in St Montfort (@tbl-cohortEA). In Chikwawa `{r} watsan_sumC$share_toilet_desc1` (`{r} watsan_sumC$share_toilet_desc_per1`%) children lived in a household shared a toilet with more than three households, compared to `{r} watsan_sumC$share_toilet_desc3` (`{r} watsan_sumC$share_toilet_desc_per3`%) that did not share a toilet with another household; in St Montfort `{r} watsan_sumM$share_toilet_desc1` (`{r} watsan_sumM$share_toilet_desc_per1`%) shared a toilet with more than three households and `{r} watsan_sumM$share_toilet_desc3` (`{r} watsan_sumM$share_toilet_desc_per3`%) not sharing a toilet with another household respectively. Additional water, sanition and household animal variables are shown in @tbl-watsan .
 
 ![Location of SAiNTS study in Chikwawa, Southern Malawi](figures/5_images/clusterMap.png){#fig-map nrow="2" width="423"}
 
@@ -530,7 +579,7 @@ other_clus_m <- other_clus %>% filter(cluster=="St Montfort")
 #| label: tbl-cohortEA
 
 descript <- master2 %>% 
-  select(c(cluster, calc_age_months, AGEGROUP_yr, gender, pov_score, pov_score_cat, toilet_type_desc, share_toilet_des, drinking_desc, mrdt_result, d90_stl_mrdt_result, malaria_film_result_d1, malaria_film_grade_d1, malaria_film_result_d90, malaria_film_grade_d90, anaemia_cat, malnutrition_MUAC, malnutrition_wfhz, sickle_cell_res_comb, hiv_exposed, hiv_test, hivtest_result, PCR_pos, Salmonella_bin, salm_fact2)) %>% 
+  select(c(cluster, calc_age_months, AGEGROUP_yr, gender, pov_score, pov_score_cat, toilet_type_desc, share_toilet_des, drinking_desc, keep_animals, rtss1, rtss2, rtss3, rtss4, mrdt_result, d90_stl_mrdt_result, malaria_film_result_d1, malaria_film_grade_d1, malaria_film_result_d90, malaria_film_grade_d90, anaemia_cat, malnutrition_MUAC, malnutrition_wfhz, sickle_cell_res_comb, hiv_exposed, hiv_test, hivtest_result, PCR_pos, Salmonella_bin, salm_fact2)) %>% 
   mutate(
         #sicklecell_test_result = ifelse(sicklecell_test_result=="", NA,sicklecell_test_result),
          hiv_exposed = ifelse(hiv_exposed=="", NA,hiv_exposed),
@@ -557,6 +606,10 @@ descript <- master2 %>%
                 toilet_type_desc   ~ "Toilet Type",                           
                 share_toilet_des ~ "Shared toilet",
                 drinking_desc    ~ "Drinking water",
+                rtss1 ~ "RTS,S dose 1", 
+                rtss2 ~ "RTS,S dose 2", 
+                rtss3 ~ "RTS,S dose 3", 
+                rtss4  ~ "RTS,S dose 4", 
                 mrdt_result  ~ "MRDT result (day 1)",
                 d90_stl_mrdt_result  ~ "MRDT result (day 90)",
                 malaria_film_result_d1  ~ "Malaria film result (day 1)",
@@ -601,8 +654,8 @@ descript
 
 *Salmonella* was detected in stools on microbiological culture in `{r} sum_stool_all$sum_sal_pos` of `{r} sum_stool_all$sum_stool_tested` (`{r} sum_stool_all$Salm_pos_percent` %) in healthy children at an average age of `{r} sum_stool_all$age_mean_stool` (SD: `{r} sum_stool_all$age_sd_stool`) months. Using pan-salmonella (TTR primer) PCR was positive in `{r} sum_stool_all$sum_pcr_pos` of `{r} sum_stool_all$sum_pcr_tested` (`{r} sum_stool_all$PCR_pos_percent` %) stools tested. The proportion of children with *salmonella* positive stools increased with age, ranging from `{r} min_age_PCR$Salm_pos_percent`% PCR positive in age group `{r} min_age_PCR$AGEGROUP_3mth` (mean: `{r} min_age_PCR$age_mean_stool`) months and `{r} min_age_stool$Salm_pos_percent`% culture positive in age group `{r} min_age_stool$AGEGROUP_3mth` (mean: `{r} min_age_stool$age_mean_stool`) months, to `{r} max_age_PCR$Salm_pos_percent`% PCR positive in age group `{r} max_age_PCR$AGEGROUP_3mth` (mean: `{r} max_age_PCR$age_mean_stool`) months and `{r} max_age_stool$Salm_pos_percent`% culture positive in age group `{r} max_age_stool$AGEGROUP_3mth` (mean: `{r} max_age_stool$age_mean_stool`) months (@tbl-stool3m_sum, @fig-stool3m). The percentage of stools that were salmonella culture and PCR positive by month of sample collection is shown in @fig-stoolseason. The months with the lowest percentages of children with salmonella culture positive stools was `{r} min_mth_stool$Salm_pos_percent`% in `{r} min_mth_stool$month_yrfull` and for PCR positive stools was `{r} min_mth_PCR$PCR_pos_percent`%, in `{r} min_mth_PCR$month_yrfull`. The months that had the highest salmonella culture positive stools was `{r} max_mth_stool$Salm_pos_percent`% in `{r} max_mth_stool$month_yrfull` and for PCR positive stools was `{r} max_mth_PCR$PCR_pos_percent`% in `{r} max_mth_PCR$month_yrfull`. Genome sequencing results were available for a subset of `{r} seq_sum_total$count_tot` NTS isolates, of which `{r} tot_ent$count_tot` were Salmonella enterica subspecies enterica (subspecies II) and `{r} tot_sal$count_tot` were Salmonella enterica subspecies salamae (subspecies II). Those isolates identified as Salmonella enterica subspecies salamae (subspecies II) were `{r} O9_sal$count` (`{r}  O9_ent$percent`%) identified with O9 antigen, and `{r} O4_sal$count` (`{r} O4_sal$percent`%) with O4 antigen. Those isolates identified as Salmonella enterica subspecies enterica (subspecies II) were `{r} O9_ent$count` (`{r} O9_ent$percent` %) identified with O9 antigen, and 0 with O4 antigen. Full list of serovars are shown in @tbl-seqdat_all.
 
-```{r echo=FALSE, warning=FALSE, message=FALSE, fig.align = "centre", fig.width = 5.5, fig.height=4.5, out.width = "6in"}
-#| fig-cap: Percentage of children in each 3 month age group with A. Salmonella positive stool culture and B. Salmonella TTR PCR positive.
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.align = "centre", fig.width = 5.5, fig.height=7, out.width = "6in"}
+#| fig-cap: Percentage of children in each 3 month age group with A. Salmonella positive stool culture, B. Salmonella TTR PCR positive and C. PCR positive by cluster.
 #| label: fig-stool3m
 
 pPCR <- sum_stool_3m %>%
@@ -614,6 +667,18 @@ pPCR <- sum_stool_3m %>%
           axis.text.x = element_text(angle=45, hjust=1)) +
     labs(y="PCR positive (%)", x="Age (months)")
     #geom_text(stat='count', aes(label=..count..), vjust=-1) +
+
+pPCR_cl <- sum_stool_3m_clus %>%
+  ggplot() +
+    geom_col(aes(x=AGEGROUP_3mth, y=PCR_pos_percent), fill="orchid") +
+    theme_bw() +
+    theme(axis.text=element_text(size=6),
+          axis.title=element_text(size=6,face="bold"),
+          axis.text.x = element_text(angle=45, hjust=1),
+          strip.text = element_text(size = 6)) +
+    labs(y="PCR positive (%)", x="Age (months)") +
+  facet_wrap(~ cluster)
+
 pcul <- sum_stool_3m %>%
   ggplot() +
     geom_col(aes(x=AGEGROUP_3mth, y=Salm_pos_percent), fill="orange") +
@@ -661,7 +726,7 @@ pSerovar <- master %>%
 # row1 <- cowplot::plot_grid(pcul, pPCR, labels="AUTO", label_size = 7)
 # row2 <- cowplot::plot_grid(pSerovar, labels="C", label_size = 7)
 # cowplot::plot_grid(row1, row2, nrow=2, ncol=1, rel_heights=c(0.9,1)) # 
-cowplot::plot_grid(pSerovar, pPCR, nrow=2, labels="AUTO", label_size=7, rel_widths=c(1,0.85)) # 
+cowplot::plot_grid(pSerovar, pPCR, pPCR_cl, nrow=3, labels="AUTO", label_size=7, rel_widths=c(1,0.85,0.85)) # 
 
 ```
 
@@ -708,7 +773,7 @@ pcomb <- sum_stoolseason_long %>%
 pcomb_clus <- sum_stoolseason_long_clst %>% 
   ggplot(aes(x=factor(month_yr), y=Percent, fill=Method)) +
     geom_bar(position="dodge", stat="identity")+
-    scale_fill_manual(values = c("Salm_pos_percent" = "coral", "PCR_pos_percent" = "seagreen"), labels=c("Culture Positive", "PCR Positive"))+
+    scale_fill_manual(values = c("Salm_pos_percent" = "orange", "PCR_pos_percent" = "cyan3"), labels=c("Culture Positive", "PCR Positive"))+
     theme_bw() +
     theme(axis.text=element_text(size=6),
           axis.title=element_text(size=6,face="bold"),
@@ -750,7 +815,7 @@ flextable(seq_sum_sal) %>%
 
 #### Malaria
 
-Malaria rapid diagnostic test (MRDT) was positive in `{r} MRDT$MDRT_tot` (`{r} MRDT$MRDT_all_per`%) children over the whole duration of the study; `{r} MRDT_clus_c$MDRT_tot` (`{r} MRDT_clus_c$MRDT_all_per`%) in Chikwawa and `{r} MRDT_clus_m$MDRT_tot` (`{r} MRDT_clus_m$MRDT_all_per`%) in St Montfort. In Chikwawa, children in the age group `{r} min_age_MRDT_c$AGEGROUP_3mth` months (mean: `{r} min_age_MRDT_c$age_mean` months) had the lowest proportion of MRDT positive results `{r} min_age_MRDT_c$MDRT_tot` (`{r} min_age_MRDT_c$MRDT_all_per`%), and the age group `{r} max_age_MRDT_c$AGEGROUP_3mth` months (mean: `{r} max_age_MRDT_c$age_mean` months) had the highest `{r} max_age_MRDT_c$MDRT_tot` (`{r} max_age_MRDT_c$MRDT_all_per`%). In St Montfort, children in the age group `{r} min_age_MRDT_m$AGEGROUP_3mth` months (mean: `{r} min_age_MRDT_m$age_mean` months) had the lowest proportion of MRDT positive results `{r} min_age_MRDT_m$MDRT_tot` (`{r} min_age_MRDT_m$MRDT_all_per`%), and the age group `{r} max_age_MRDT_m$AGEGROUP_3mth` months (mean:`{r} max_age_MRDT_m$age_mean` months) had the highest `{r} max_age_MRDT_m$MDRT_tot` (`{r} max_age_MRDT_m$MRDT_all_per`%) (@fig-MRDT A). In Chikwawa, the month with the lowest proportion of MRDT positive results was `{r} min_mth_MRDT_c$month_yrfull` where there was `{r} min_mth_MRDT_c$MDRT_tot` (`{r} min_mth_MRDT_c$MRDT_all_per`%) children with positive MRDT results, compared to `{r} max_mth_MRDT_c$month_yrfull` with the highest percentage of `{r} max_mth_MRDT_c$MDRT_tot` (`{r} max_mth_MRDT_c$MRDT_all_per`%). In St Montfort, `{r} min_mth_MRDT_m$month_yrfull` had the lowest percentage children with positive MRDT results `{r} min_mth_MRDT_m$MDRT_tot` (`{r} min_mth_MRDT_m$MRDT_all_per`%) compared to `{r} max_mth_MRDT_m$month_yrfull` with the highest percentage `{r} max_mth_MRDT_m$MDRT_tot` (`{r} max_mth_MRDT_m$MRDT_all_per`%) (@fig-MRDT B).
+Malaria rapid diagnostic test (MRDT) was positive in `{r} MRDT$MDRT_tot` (`{r} MRDT$MRDT_all_per`%) children over the whole duration of the study; `{r} MRDT_clus_c$MDRT_tot` (`{r} MRDT_clus_c$MRDT_all_per`%) in Chikwawa and `{r} MRDT_clus_m$MDRT_tot` (`{r} MRDT_clus_m$MRDT_all_per`%) in St Montfort. In Chikwawa, children in the age group `{r} min_age_MRDT_c$AGEGROUP_3mth` months (mean: `{r} min_age_MRDT_c$age_mean` months) had the lowest proportion of MRDT positive results `{r} min_age_MRDT_c$MDRT_tot` (`{r} min_age_MRDT_c$MRDT_all_per`%), and the age group `{r} max_age_MRDT_c$AGEGROUP_3mth` months (mean: `{r} max_age_MRDT_c$age_mean` months) had the highest `{r} max_age_MRDT_c$MDRT_tot` (`{r} max_age_MRDT_c$MRDT_all_per`%). In St Montfort, children in the age group `{r} min_age_MRDT_m$AGEGROUP_3mth` months (mean: `{r} min_age_MRDT_m$age_mean` months) had the lowest proportion of MRDT positive results `{r} min_age_MRDT_m$MDRT_tot` (`{r} min_age_MRDT_m$MRDT_all_per`%), and the age group `{r} max_age_MRDT_m$AGEGROUP_3mth` months (mean:`{r} max_age_MRDT_m$age_mean` months) had the highest `{r} max_age_MRDT_m$MDRT_tot` (`{r} max_age_MRDT_m$MRDT_all_per`%) (@fig-MRDT A). In Chikwawa, the month with the lowest proportion of MRDT positive results was `{r} min_mth_MRDT_c$month_yrfull` where there was `{r} min_mth_MRDT_c$MDRT_tot` (`{r} min_mth_MRDT_c$MRDT_all_per`%) children with positive MRDT results, compared to `{r} max_mth_MRDT_c$month_yrfull` with the highest percentage of `{r} max_mth_MRDT_c$MDRT_tot` (`{r} max_mth_MRDT_c$MRDT_all_per`%). In St Montfort, `{r} min_mth_MRDT_m$month_yrfull` had the lowest percentage children with positive MRDT results `{r} min_mth_MRDT_m$MDRT_tot` (`{r} min_mth_MRDT_m$MRDT_all_per`%) compared to `{r} max_mth_MRDT_m$month_yrfull` with the highest percentage `{r} max_mth_MRDT_m$MDRT_tot` (`{r} max_mth_MRDT_m$MRDT_all_per`%) (@fig-MRDT B). FILM results!!!
 
 #### Anaemia
 
@@ -766,7 +831,7 @@ Rapid diagnostic test for haemoglobin S (in the absence of haemoglobin A) indica
 
 #### HIV
 
-In Chikwawa `{r} other_clus_c$hiv_exposed_n` (`{r} other_clus_c$hiv_exposed_per`%) of children were HIV exposed, `{r} other_clus_c$hiv_test_n` (`{r} other_clus_c$hiv_test_per`%) had received an HIV test, and `{r} other_clus_c$hivtest_result_n` (`{r} other_clus_c$hivtest_result_per`%) of children who had been tested had a positive result. In St Montfort `{r} other_clus_m$hiv_exposed_n` (`{r} other_clus_m$hiv_exposed_per`%) of children were HIV exposed, `{r} other_clus_m$hiv_test_n` (`{r} other_clus_m$hiv_test_per`%) had received an HIV test, and `{r} other_clus_m$hivtest_result_n` (`{r} other_clus_m$hivtest_result_per`%) of children who had been tested had a positive result (@tbl-cohortEA). 
+In Chikwawa `{r} other_clus_c$hiv_exposed_n` (`{r} other_clus_c$hiv_exposed_per`%) of children were HIV exposed, `{r} other_clus_c$hiv_test_n` (`{r} other_clus_c$hiv_test_per`%) had received an HIV test, and `{r} other_clus_c$hivtest_result_n` (`{r} other_clus_c$hivtest_result_per`%) of children who had been tested had a positive result. In St Montfort `{r} other_clus_m$hiv_exposed_n` (`{r} other_clus_m$hiv_exposed_per`%) of children were HIV exposed, `{r} other_clus_m$hiv_test_n` (`{r} other_clus_m$hiv_test_per`%) had received an HIV test, and `{r} other_clus_m$hivtest_result_n` (`{r} other_clus_m$hivtest_result_per`%) of children who had been tested had a positive result (@tbl-cohortEA).
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, fig.align = "centre", fig.width = 5.5, fig.height=5, out.width = "6in"}
 #| fig-cap: Percentage of children with positive HHRP malaria rapid diagnostic tests (MRDT) A. by age group (months), and B. by month of sample collection
@@ -786,7 +851,7 @@ pMRDTs <- seasonMRDT %>%
 
 pMRDTa <- sum_MRDT_3m_clus %>% 
   ggplot(aes(x=factor(AGEGROUP_3mth), y=MRDT_all_per)) + 
-    geom_col(fill="orchid")+
+    geom_col(fill="orange")+
     theme_bw() +
     theme(axis.text=element_text(size=6),
           axis.title=element_text(size=6,face="bold"),
@@ -797,6 +862,41 @@ pMRDTa <- sum_MRDT_3m_clus %>%
   facet_wrap(~cluster)
 
 cowplot::plot_grid(pMRDTa, pMRDTs, nrow = 2, labels = "AUTO", label_size = 7)
+```
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.align = "centre", fig.width = 5.5, fig.height=5, out.width = "6in"}
+#| fig-cap: Of children who recieved a malarial blood film (n=1331) at any visit, percentage of those with positive blood film compared with percentage with a positive malaria rapid diagnostic test (MRDT) A. by age group (months), and B. by month of sample collection
+#| label: fig-film
+
+pfilms <- malaria_film_seas_long_clst %>% 
+  ggplot(aes(x=factor(month_yr), y=Percent, fill=Method)) + 
+    geom_bar(position="dodge", stat="identity")+
+    scale_fill_manual(values = c("film_per" = "orchid", "mrdt_per" = "cornflowerblue"), labels=c("Film Positive", "MRDT Positive"))+
+    theme_bw() +
+    theme(axis.text=element_text(size=5),
+          axis.title=element_text(size=6,face="bold"),
+          legend.text=element_text(size=6),
+          legend.title=element_text(size=6),
+          strip.text = element_text(size=6),
+          axis.text.x = element_text(angle=45, hjust=1)) +
+    labs(y="Malaria positive (%)", x="Month-Year") +
+  facet_wrap(~cluster)
+
+pfilma <- malaria_film_age_long_clst %>% 
+  ggplot(aes(x=factor(AGEGROUP_3mth), y=Percent, fill=Method)) + 
+    geom_bar(position="dodge", stat="identity")+
+    scale_fill_manual(values = c("film_per" = "coral", "mrdt_per" = "seagreen"), labels=c("Film Positive", "MRDT Positive"))+
+    theme_bw() +
+    theme(axis.text=element_text(size=5),
+          axis.title=element_text(size=6,face="bold"),
+          legend.text=element_text(size=6),
+          legend.title=element_text(size=6),
+          strip.text = element_text(size=6),
+          axis.text.x = element_text(angle=45, hjust=1)) +
+    labs(y="Malaria positive (%)", x="Age (months)") +
+  facet_wrap(~cluster)
+
+cowplot::plot_grid(pfilma, pfilms, nrow = 2, labels = "AUTO", label_size = 7)
 ```
 
 ### Geospatial distribution of salmonella and malaria parasite prevalence
@@ -815,17 +915,35 @@ The distribution of salmonella PCR A summary of salmonella and MRDT results by i
 
 ### Recruitment across VacciNTS sites
 
-summary table of recruitment numbers
+Recruitment across the four sub-Saharan African sites is shown in @tbl-VacciNTS .
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.align = "centre", fig.width = 5.5, fig.height=7, out.width = "6in"}
+#| tbl-cap: Recruitment across sub-Saharan African sites as part of the VacciNTS consortium seroepidemiology workpackage 
+#| label: tbl-VacciNTS
+VacciNTS <- import(here("data", "5_data", "VacciNTS_recruit.xlsx"))
+
+VacciNTS %>% 
+  flextable() %>% 
+  fontsize(size=8, part="header") %>% 
+  fontsize(size=8, part = "body") %>%
+  autofit()
+```
 
 ## Discussion
 
-These results show an increasing  continuing community exposure to *Salmonella* and malaria iNTS incidence increases rapidly in early life, but begins to fall between 18-36 months, 
+This is a large, potentially the largest, community serosurvey of children living in endemic iNTS settings combined with important meta-data on host susceptibility factors for invasive disease and potential risk factors for enteric infections. These results show an increasing enteric exposure to non-typhoidal *salmonella* (eNTS) with age, with children aged 22 - 60 months having higher prevalence of NTS detected in their stools, than children aged under 22 months. As demonstrated in chapter 3, iNTS incidence increases rapidly in early life to a peak between 9-12 months, but begins to decline thereafter with the steepest declines in incidence between 18-36 months. This pattern suggests that although children are continually being exposed to eNTS infections throughout early childhood, the prevalancec of eNTS infections alone does not explain iNTS disease incidence. This may be hypothesised to be due to a number of difference mechanisms. Firstly, eNTS infections may induce systemic immunity protective against iNTS disease following an initial, or several eNTS exposures; therefore older children will have been exposed to more eNTS infections and therefore will be more likely to have developed protective immunity against iNTS. However, it is possible that although eNTS infections may induce systemic immunity against iNTS disease, they may not induce local enteric mucosal immunity against non-invasive enteric infections, and therefore children may continue to have eNTS infections throughout childhood and adulthood, but have very low risk of developing iNTS disease. Secondly the prevalence of host susceptibility factors by age-group may be responsible for the patterns of age-stratified incidence observed in chapter 3. As discussed in chapter 4, the host susceptibility factors associated with highest population attributable fractions were malaria and severe anaemia and for children, and severe acute malnutrition, HIV and sickle cell disease to a lesser degree. However, the malaria parasite prevalence detected by malaria rapid diagnostic test in the SAiNTS study showed increasing malaria parasite prevalence with age, highest in children 24 to 60 months of age, therefore this alone does not explain the decreasing risk of iNTS disease in this age group. This higher malaria parasite prevalence in older children has been reported in other studies [@ujuju2023]. However, it has been shown that repeated malaria infections also induce malaria-specific immunity and older children in high malaria transmission areas are more likely to have asymptomatic plasmodium falciparum parasitaemia.
+
+This would suggest that host susceptibility factors are a bigger determinant of the
+
+Other seroprevalence studies undertaken in Kenya, using a multi-isotype ELISA assay (IgA, IgM, IgG) to be able to determine salmonella exposure from serum samples and used these to examine the relationship between NTS antibody responses and data on potential risk factors for enteric infections [@peter2023]. They reported an association between
 
 There are few studies with large scale community stool sampling Salmonella shedding [@gal-mor2018] NTS shedding rates......
 
-Seasonality of eNTS and shows a seasonal pattern. Age-stratified distribution of salmonella stool culture and PCR positivity shows a sigmoidal distribution, showing low rates of exposure in the first 6 month of life (2% culture and 5% PCR positive), entering the exponential phase during the weaning period, and a plateau phase after 24 months (10% culture and 20% PCR positive).
+Seasonality of eNTS and shows a seasonal pattern. Age-stratified distribution of salmonella stool culture and PCR positive results shows a sigmoidal distribution, showing low rates of exposure in the first 6 month of life (2% culture and 5% PCR positive), entering the exponential phase during the weaning period, and a plateau phase after 24 months (10% culture and 20% PCR positive).
 
 For the subset of NTS stool isolates sequenced the only isolates that were O:4 or O:9 antigen positive (corresponding to the immunodominant O-antigens found on S. typhimurium and S. enteritidis respectively), were not Salmonella enterica subspecies enterica, but Salmonella enterica subspecies salamae (subspecies II) on genomic sequencing (@tbl-NTSgen), which have not been previously found to be associated with invasive NTS disease. Further testing on the remaining NTS isolates from stools in the SAINTS study is needed, but this change in epidemiology of NTS subspecies in enteric infections in children in Malawi, may also be correlated with the declines seen in invasive iNTS disease. Previous studies found S. typhimurium including ST313 strains in stool isolates from children 6-18 months in Malawi [@nyirenda2015], from data collected in 2012-14 - when iNTS disease incidence was higher (see chapter 3). Potentially the combination of reduced host susceptibility factors combined with changing epidemiology of NTS strains exposed to may explain the declines seen in iNTS disease. It is possible with the reduction in availability of host reservoirs in the immuno-compromised niche, that invasive NTS strains have become host adapted to, particularly in HIV infected adults where this niche is longer-term, compared to the transient immunosuceptibility associated with malaria, that the circulating invasive NTS strains have reduced, therefore further reducing iNTS incidence.
+
+### Limitations
 
 Malaria RTS,S/AS01 vaccine is highly confounded so not useful to look at in this setting. Mostly interested only in do kids have malaria exposure or not, regardless of cause. Not much impact of malaria
 

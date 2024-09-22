@@ -156,7 +156,7 @@ povQw <- import(here("data", "5_data", "WatSan.xlsx"), which = "Sheet4") %>%
 povQw
 ```
 
-### Water and Sanitation
+### Water, sanitation and animals
 
 ```{r, echo=FALSE, results='show', warning=FALSE, message=FALSE}
 #| tbl-cap: "Details of water and sanitation characteristics by cluster for children recruited into the SAiNTS study"
@@ -165,7 +165,8 @@ povQw
 master2 <- import(here("data", "5_data", "master2.csv"))
 
 master2 %>% 
-  select(c(cluster, toilet_type_desc, share_toilet_des, drinking_desc, treatW_desc, treat_dwater_how_desc, bathing_wat_desc, cooking_wat_desc)) %>% 
+  select(c(cluster, toilet_type_desc, share_toilet_des, drinking_desc, treatW_desc, treat_dwater_how_desc, bathing_wat_desc, cooking_wat_desc, keep_animals, companion_pet, livestock, chicken_count, cattle_count,
+           goat_count, pig_count, sheep_count, other_livestock)) %>% 
    tbl_summary(by=cluster,
               statistic = list(all_continuous() ~ "{mean} ({sd})"),        # stats and format for continuous columns
                      # all_categorical() ~ "{n} / {N} ({p}%)"),   # stats and format for categorical columns
@@ -179,6 +180,15 @@ master2 %>%
                 treat_dwater_how_desc ~ "Water Treatment Method",
                 bathing_wat_desc  ~ "Bathing water",
                 cooking_wat_desc  ~ "Cooking water",
+                keep_animals ~ "Keep animals", 
+                companion_pet ~ "Companion pet", 
+                livestock ~ "Livestock", 
+                chicken_count ~ "Chicken count", 
+                cattle_count ~ "Cattle count",
+                goat_count ~ "Goat count", 
+                pig_count ~ "Pig count", 
+                sheep_count ~ "Sheep count", 
+                other_livestock ~ "Other livestock",
                missing_text = "Missing"                                    # how missing values should display
             )) %>% 
   bold_labels() %>%
@@ -248,11 +258,11 @@ sum_tab %>%
 
 ### Age-stratified prevalence of enteric salmonella infections in the SAiNTS study
 
-```{r, echo=FALSE, results='show', warning=FALSE, message=FALSE}
+```{r echo=FALSE, results='show', warning=FALSE, message=FALSE}
 #| tbl-cap: "Details of included studies in attributable fractions analysis"
 #| label: tbl-stool3m_sum
 
-master <- import(here("data", "5_data", "master.csv"))
+master <- import(here("data", "5_data", "master3.csv"))
 sum_stool_3m <- master %>% 
   filter(!is.na(AGEGROUP_3mth) & AGEGROUP_3mth!="") %>% ## remove longitudinal for now as need to calculate age separately
   mutate(AGEGROUP_3mth = fct_relevel(AGEGROUP_3mth, c("[0,3]", "(3,6]","(6,9]","(9,12]","(12,15]", "(15,18]", "(18,21]","(21,24]",
@@ -294,6 +304,167 @@ sum_stool_3m
 \KOMAoptions{usegeometry, paper=landscape,pagesize}
 \recalctypearea
 ```
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.align = "centre", fig.width = 5.5, fig.height=5, out.width = "6in"}
+#| fig-cap: Of children who recieved a malarial blood film (n=1331) at any visit, percentage of those with positive blood film compared with percentage with a positive malaria rapid diagnostic test (MRDT) A. by age group (months), and B. by month of sample collection
+#| label: fig-filmextra
+
+##################
+## Malaria blood films
+malaria_filmd1 <- master %>% 
+  select(cluster, AGEGROUP_3mth, month_yr, month_yrfull,mrdt_result, mrdt_num, malaria_film_result_d1, malaria_film_grade_d1, fever, fever_meas) %>% 
+  rename(malaria_film_result = malaria_film_result_d1,
+         malaria_film_grade = malaria_film_grade_d1) %>% 
+  mutate(day = "Day 1")
+
+malaria_filmd90 <- master %>% 
+  select(cluster, AGEGROUP_3mth_d90, month_yr_d90, month_yrfull_d90, mrdt_num_d90, d90_stl_mrdt_result, malaria_film_result_d90, malaria_film_grade_d90, d90_v2_fever, fever_meas_d90) %>% 
+  rename(malaria_film_result = malaria_film_result_d90,
+         malaria_film_grade = malaria_film_grade_d90,
+         mrdt_result = d90_stl_mrdt_result,
+         mrdt_num = mrdt_num_d90,
+         fever = d90_v2_fever,
+         fever_meas = fever_meas_d90,
+         AGEGROUP_3mth = AGEGROUP_3mth_d90,
+         month_yr = month_yr_d90,
+         month_yrfull = month_yrfull_d90) %>% 
+   mutate(day = "Day 90")
+
+malaria_film_all <- bind_rows(malaria_filmd1, malaria_filmd90) %>% 
+    mutate(malaria_film_result_num = ifelse(malaria_film_result=="Positive", 1, ifelse(malaria_film_result=="Negative",0,NA)))
+
+malaria_film_done <- malaria_film_all %>% filter(malaria_film_result!="") %>% 
+  mutate(mrdt_film_neg = ifelse(mrdt_num==0 & malaria_film_result_num==0,1,0),
+         mrdt_pos_film_neg = ifelse(mrdt_num==1 & malaria_film_result_num==0,1,0),
+         mrdt_neg_film_pos = ifelse(mrdt_num==0 & malaria_film_result_num==1,1,0),
+         mrdt_film_pos = ifelse(mrdt_num==1 & malaria_film_result_num==1,1,0),
+         mrdt_pos_fev = ifelse(mrdt_num==1 & fever==1,1,0),
+         film_pos_fev = ifelse(malaria_film_result_num==1 & fever==1,1,0))
+
+mrdtsum_fun <- function(df){  
+  df %>%
+  summarise(sum_film = sum(malaria_film_result_num, na.rm = T),
+          sum_mrdt = sum(mrdt_num, na.rm = T),
+          sum_mrdt_film_neg = sum(mrdt_film_neg, na.rm=T),
+          sum_mrdt_film_pos = sum(mrdt_film_pos, na.rm=T),
+          sum_mrdt_pos_film_neg = sum(mrdt_pos_film_neg, na.rm=T),
+          sum_mrdt_neg_film_pos = sum(mrdt_neg_film_pos, na.rm=T),
+          sum_fever = sum(fever, na.rm = T),
+          sum_fever_meas = sum(fever_meas, na.rm=T),
+          sum_mrdt_pos_fev = sum(mrdt_pos_fev, na.rm = T),
+          sum_film_pos_fev = sum(film_pos_fev, na.rm = T),
+          total = n(),
+          film_per = (sum_film/total)*100,
+          mrdt_per = (sum_mrdt/total)*100,
+          mrdt_film_pos_per = (sum_mrdt_film_pos/total)*100,
+          mrdt_film_neg_per = (sum_mrdt_film_neg/total)*100,
+          mrdt_pos_film_neg_per = (sum_mrdt_pos_film_neg/total)*100,
+          mrdt_neg_film_pos_per = (sum_mrdt_neg_film_pos/total)*100,
+          fever_per = (sum_fever/total)*100,
+          fever_meas_per = (sum_fever_meas/total)*100,
+          mrdt_pos_fev_per = (sum_mrdt_pos_fev/sum_mrdt)*100,
+          film_pos_fev_per = (sum_film_pos_fev/sum_film)*100
+          ) %>% 
+    mutate(across(where(is.numeric), round, 1))
+}
+
+malaria_film_age <- malaria_film_done %>% 
+  group_by(AGEGROUP_3mth) %>% 
+  mrdtsum_fun() %>% 
+  ungroup()
+
+malaria_film_age_long<- malaria_film_age %>% 
+  select(c(AGEGROUP_3mth, film_per, mrdt_per)) %>% 
+  pivot_longer(cols = c(film_per, mrdt_per), names_to = "Method", values_to = "Percent")
+
+# malaria_film_age_clus <- malaria_film_done %>% 
+#   group_by(cluster, AGEGROUP_3mth) %>% 
+#   mrdtsum_fun() %>% 
+#   ungroup()
+# 
+# malaria_film_age_long_clst <- malaria_film_age_clus %>% 
+#   select(c(cluster, AGEGROUP_3mth, film_per, mrdt_per)) %>% 
+#   pivot_longer(cols = c(film_per, mrdt_per), names_to = "Method", values_to = "Percent")
+
+malaria_film_seas <- malaria_film_done %>% 
+  group_by(month_yr, month_yrfull) %>% 
+  mrdtsum_fun() %>% 
+  ungroup()
+
+malaria_film_seas_long <- malaria_film_seas %>% 
+  select(c(month_yr, month_yrfull, film_per, mrdt_per)) %>% 
+  pivot_longer(cols = c(film_per, mrdt_per), names_to = "Method", values_to = "Percent")
+
+# malaria_film_seas_clus <- malaria_film_done %>% 
+#   group_by(cluster, month_yr, month_yrfull) %>% 
+#   mrdtsum_fun() %>% 
+#   ungroup()
+# 
+# malaria_film_seas_long_clst <- malaria_film_seas_clus %>% 
+#   select(c(cluster, month_yr, month_yrfull, film_per, mrdt_per)) %>% 
+#   pivot_longer(cols = c(film_per, mrdt_per), names_to = "Method", values_to = "Percent")
+
+
+pfilms <- malaria_film_seas_long %>% 
+  ggplot(aes(x=factor(month_yr), y=Percent, fill=Method)) + 
+    geom_bar(position="dodge", stat="identity")+
+    scale_fill_manual(values = c("film_per" = "orchid", "mrdt_per" = "cornflowerblue"), labels=c("Film Positive", "MRDT Positive"))+
+    theme_bw() +
+    theme(axis.text=element_text(size=6),
+          axis.title=element_text(size=6,face="bold"),
+          legend.text=element_text(size=6),
+          legend.title=element_text(size=6),
+          axis.text.x = element_text(angle=45, hjust=1)) +
+    labs(y="Malaria positive (%)", x="Month-Year") 
+
+pfilma <- malaria_film_age_long %>% 
+  ggplot(aes(x=factor(AGEGROUP_3mth), y=Percent, fill=Method)) + 
+    geom_bar(position="dodge", stat="identity")+
+    scale_fill_manual(values = c("film_per" = "coral", "mrdt_per" = "seagreen"), labels=c("Film Positive", "MRDT Positive"))+
+    theme_bw() +
+    theme(axis.text=element_text(size=6),
+          axis.title=element_text(size=6,face="bold"),
+          legend.text=element_text(size=6),
+          legend.title=element_text(size=6),
+          axis.text.x = element_text(angle=45, hjust=1)) +
+    labs(y="Malaria positive (%)", x="Age (months)")
+
+#cowplot::plot_grid(pfilma, pfilms, nrow = 2, labels = "AUTO", label_size = 7)
+
+malaria_film_age %>% 
+  select(1,13:22) %>% 
+  flextable() %>% 
+  fontsize(size = 7, part = "header") %>%   # adjust font size of header
+  fontsize(size = 7, part = "body") %>%   # adjust font size of header
+   set_header_labels(
+    AGEGROUP_3mth = "Age Group (months)",
+    film_per = "% film positive",
+    mrdt_per = "% MRDT positive",
+    mrdt_film_pos_per = "% film & MRDT positive",
+    mrdt_film_neg_per = "% film & MRDT negative",
+    mrdt_pos_film_neg_per = "% film negative & MRDT positive", 
+    mrdt_neg_film_pos = "% film positive & MRDT negative"
+   ) %>% 
+  autofit()
+
+malaria_film_seas %>% 
+  select(2,14:23) %>% 
+  flextable() %>% 
+  fontsize(size = 7, part = "header") %>%   # adjust font size of header
+  fontsize(size = 7, part = "body") %>%   # adjust font size of header
+   set_header_labels(
+    AGEGROUP_3mth = "Age Group (months)",
+    film_per = "% film positive",
+    mrdt_per = "% MRDT positive",
+    mrdt_film_pos_per = "% film & MRDT positive",
+    mrdt_film_neg_per = "% film & MRDT negative",
+    mrdt_pos_film_neg_per = "% film negative & MRDT positive", 
+    mrdt_neg_film_pos = "% film positive & MRDT negative"
+   ) %>% 
+  autofit()
+```
+
+
 ### Genome sequencing data for stool salmonella isolates
 
 ```{r, echo=FALSE, results='show', warning=FALSE, message=FALSE,fig.align='left'}
